@@ -262,7 +262,7 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
 
    - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is an origin endpoint.
 
-   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is the origin client.
+   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is the EDHOC Initiator.
 
    - The Request-Hash Option defined in {{I-D.amsuess-core-cachable-oscore}}, when X is not an origin endpoint).
 
@@ -288,7 +288,7 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
 
    - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.
 
-   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is not the origin client.
+   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is not the EDHOC Initiator.
 
 ## Processing an Outgoing Request {#outgoing-requests}
 
@@ -1249,6 +1249,8 @@ request     +-----------------------------------------------+         |
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 ## Version -00 to -01 ## {#sec-00-01}
+
+* Clarified examples of Class U/I CoAP options that become encrypted.
 
 * Added reference to Onion CoAP as use case.
 
