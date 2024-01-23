@@ -10,24 +10,24 @@
 <meta content="
        Object Security for Constrained RESTful Environments (OSCORE) can be used to protect CoAP messages end-to-end between two endpoints at the application layer, also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints, as well as between an application endpoint and an intermediary or between two intermediaries. Thus, this document updates RFC 8613. The same approach can be seamlessly used with Group OSCORE, for protecting CoAP messages when group communication with intermediaries is used. 
     " name="description">
-<meta content="xml2rfc 3.18.2" name="generator">
+<meta content="xml2rfc 3.19.1" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-core-oscore-capable-proxies-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.2
+  xml2rfc 3.19.1
     Python 3.11.6
-    ConfigArgParse 1.5.3
+    ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.11.0
+    platformdirs 4.1.0
     pycountry 22.3.5
-    PyYAML 6.0
+    PyYAML 6.0.1
     requests 2.31.0
-    setuptools 67.7.2
+    setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.8
+    wcwidth 0.2.13
 -->
 <link href="draft-ietf-core-oscore-capable-proxies.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1026,11 +1026,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">OSCORE-capable Proxies</td>
-<td class="right">October 2023</td>
+<td class="right">January 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tiloca &amp; Höglund</td>
-<td class="center">Expires 20 April 2024</td>
+<td class="center">Expires 26 July 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1046,12 +1046,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc8613" class="eref">8613</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-18" class="published">18 October 2023</time>
+<time datetime="2024-01-23" class="published">23 January 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-20">20 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-07-26">26 July 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1100,7 +1100,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1109,7 +1109,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2023 IETF Trust and the persons identified as the
+            Copyright (c) 2024 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1227,10 +1227,18 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-state-diagram-of-the-incomi" class="internal xref">State Diagram of the Incoming Request Processing</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
+                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-C.1" class="auto internal xref">C.1</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1262,8 +1270,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
         <h3 id="name-terminology">
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
         </h3>
-<p id="section-1.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
-<p id="section-1.1-2">Readers are expected to be familiar with the terms and concepts related to CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>; OSCORE <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> and Group OSCORE <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>. This document especially builds on concepts and mechanics related to intermediaries such as CoAP forward-proxies.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">Readers are expected to be familiar with the terms and concepts related to CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, OSCORE <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, and Group OSCORE <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>. This document especially builds on concepts and mechanics related to intermediaries such as CoAP forward-proxies and reverse-proxies.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">In addition, this document uses the following terms.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1.1-4.1">
@@ -1329,8 +1341,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
         </h3>
 <p id="section-2.2-1">The Observe extension for CoAP <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> allows a client to register its interest in "observing" a resource at a server. The server can then send back notification responses upon changes to the resource representation, all matching with the original observation request.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.2-2">In some applications, such as pub-sub <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>, multiple clients are interested to observe the same resource at the same server. Hence, <span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span> defines a method that allows the server to send a multicast notification to all the observer clients at once, e.g., over IP multicast. To this end, the server synchronizes the clients by providing them with a common "phantom observation request", against which the following multicast notifications will match.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
-<p id="section-2.2-3">In case the clients and the server use Group OSCORE for end-to-end security and a proxy is also involved, an additional step is required (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-06#section-12" class="relref">Section 12</a> of [<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>). That is, clients are in turn required to provide the proxy with the obtained "phantom observation request", thus enabling the proxy to receive the multicast notifications from the server.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4">Therefore, it is preferable to have a security association also between each client and the proxy, to especially ensure the integrity of that information provided to the proxy (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-06#section-15.3" class="relref">Section 15.3</a> of [<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>). Like for the use case in <a href="#ssec-uc1" class="auto internal xref">Section 2.1</a>, this would be conveniently achieved with a dedicated OSCORE Security Context between a client and the proxy, since the client is also using Group OSCORE with the origin server.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">In case the clients and the server use Group OSCORE for end-to-end security and a proxy is also involved, an additional step is required (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-07#section-12" class="relref">Section 12</a> of [<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>). That is, clients are in turn required to provide the proxy with the obtained "phantom observation request", thus enabling the proxy to receive the multicast notifications from the server.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">Therefore, it is preferable to have a security association also between each client and the proxy, to especially ensure the integrity of that information provided to the proxy (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-07#section-15.3" class="relref">Section 15.3</a> of [<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>). Like for the use case in <a href="#ssec-uc1" class="auto internal xref">Section 2.1</a>, this would be conveniently achieved with a dedicated OSCORE Security Context between a client and the proxy, since the client is also using Group OSCORE with the origin server.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ssec-uc3">
@@ -1339,8 +1351,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-lwm2m-client-and-external-a" class="section-name selfRef">LwM2M Client and External Application Server</a>
         </h3>
 <p id="section-2.3-1">The Lightweight Machine-to-Machine (LwM2M) protocol <span>[<a href="#LwM2M-Core" class="cite xref">LwM2M-Core</a>]</span> enables a LwM2M Client device to securely bootstrap and then register at a LwM2M Server, with which it will perform most of its following communication exchanges. As per the transport bindings specification of LwM2M <span>[<a href="#LwM2M-Transport" class="cite xref">LwM2M-Transport</a>]</span>, the LwM2M Client and LwM2M Server can use CoAP and OSCORE to secure their communications at the application layer, including during the device registration process.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.3-2">Furthermore, Section 5.5.1 of <span>[<a href="#LwM2M-Transport" class="cite xref">LwM2M-Transport</a>]</span> specifies that: "OSCORE MAY also be used between LwM2M endpoint and non-LwM2M endpoint, e.g., between an Application Server and a LwM2M Client via a LwM2M server. Both the LwM2M endpoint and non-LwM2M endpoint MUST implement OSCORE and be provisioned with an OSCORE Security Context."<a href="#section-2.3-2" class="pilcrow">¶</a></p>
-<p id="section-2.3-3">In such a case, the LwM2M Server can practically act as forward-proxy between the LwM2M Client and the external Application Server. At the same time, the LwM2M Client and LwM2M Server must continue protecting communications on their leg using their Security Context. Like for the use case in <a href="#ssec-uc1" class="auto internal xref">Section 2.1</a>, this also allows the LwM2M Server to identify the LwM2M Client, before forwarding its request outside the LwM2M domain and towards the external Application Server.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.3-2">Furthermore, Section 5.5.1 of <span>[<a href="#LwM2M-Transport" class="cite xref">LwM2M-Transport</a>]</span> specifies that:<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<blockquote id="section-2.3-3">
+          <p id="section-2.3-3.1">OSCORE MAY also be used between LwM2M endpoint and non-LwM2M endpoint, e.g., between an Application Server and a LwM2M Client via a LwM2M server. Both the LwM2M endpoint and non-LwM2M endpoint MUST implement OSCORE and be provisioned with an OSCORE Security Context.<a href="#section-2.3-3.1" class="pilcrow">¶</a></p>
+</blockquote>
+<p id="section-2.3-4">In such a case, the LwM2M Server can practically act as forward-proxy between the LwM2M Client and the external Application Server. At the same time, the LwM2M Client and LwM2M Server must continue protecting communications on their leg using their Security Context. Like for the use case in <a href="#ssec-uc1" class="auto internal xref">Section 2.1</a>, this also allows the LwM2M Server to identify the LwM2M Client, before forwarding its request outside the LwM2M domain and towards the external Application Server.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ssec-uc4">
@@ -1350,7 +1365,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         </h3>
 <p id="section-2.4-1">The specification <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span> extends the LwM2M architecture by defining the LwM2M Gateway functionality. That is, a LwM2M Server can manage end IoT devices "behind" the LwM2M Gateway. While it is outside the scope of such specification, it is possible for the LwM2M Gateway to use any suitable protocol with its connected end IoT devices, as well as to carry out any required protocol translation.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2">Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to forward it to an end IoT device. With particular reference to the CoAP protocol and the related transport binding specified in <span>[<a href="#LwM2M-Transport" class="cite xref">LwM2M-Transport</a>]</span>, the LwM2M Server acting as CoAP client sends its request to the LwM2M Gateway acting as CoAP server.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
-<p id="section-2.4-3">If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a reverse-proxy (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.3" class="relref">Section 5.7.3</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>). That is, in addition to its own resources, the LwM2M Gateway serves the resources of each end IoT device behind itself, as exposed under a dedicated URI-Path. As per <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, the first URI-Path segment is used as "prefix" to identify the specific IoT device, while the remaining URI-Path segments specify the target resource at the IoT device.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.4-3">If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.3" class="relref">Section 5.7.3</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>). That is, in addition to its own resources, the LwM2M Gateway serves the resources of each end IoT device behind itself, as exposed under a dedicated URI path. As per <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, the first URI path segment is used as "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
 <p id="section-2.4-4">As per Section 7 of <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, message exchanges between the LwM2M Server and the L2M2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end for the targeted end IoT device as well as for the LwM2M Gateway acting as reverse-proxy.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1362,7 +1377,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <p id="section-2.5-1">The approach defined in this document can be useful also in the following use cases relying on a proxy.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.5-2.1">
-            <p id="section-2.5-2.1.1">A server aware of a suitable cross proxy can rely on it as a third-party service, in order to indicate transports for CoAP available to that server (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-02#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-transport-indication" class="cite xref">I-D.ietf-core-transport-indication</a>]</span>).<a href="#section-2.5-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-2.5-2.1.1">A server aware of a suitable cross proxy can rely on it as a third-party service, in order to indicate transports for CoAP available to that server (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-03#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-transport-indication" class="cite xref">I-D.ietf-core-transport-indication</a>]</span>).<a href="#section-2.5-2.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.5-2.1.2">
 From a security point of view, it would be convenient if the proxy could provide suitable credentials to the client, as a general trusted proxy for the system. At the same time, it can be desirable to limit the use of such a proxy to a set of clients which have permission to use it, and that the proxy can identify through a secure communication association.<a href="#section-2.5-2.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.5-2.1.3">
@@ -1471,13 +1486,13 @@ Examples of such CoAP options are:<a href="#section-3.1-3.1.3" class="pilcrow">�
 Examples of such CoAP options are:<a href="#section-3.1-3.2.3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.2.4.1">
-                <p id="section-3.1-3.2.4.1.1">The Proxy-Uri, Proxy-Scheme, Uri-Host and Uri-Port Options defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-3.1-3.2.4.1.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.2.4.1.1">The Proxy-Uri, Proxy-Scheme, Uri-Host, and Uri-Port Options defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-3.1-3.2.4.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.1-3.2.4.2">
                 <p id="section-3.1-3.2.4.2.1">The Listen-To-Multicast-Notifications Option defined in <span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>.<a href="#section-3.1-3.2.4.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.1-3.2.4.3">
-                <p id="section-3.1-3.2.4.3.1">The Multicast-Timeout, Response-Forwarding and Group-ETag Options defined in <span>[<a href="#I-D.tiloca-core-groupcomm-proxy" class="cite xref">I-D.tiloca-core-groupcomm-proxy</a>]</span>.<a href="#section-3.1-3.2.4.3.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.2.4.3.1">The Multicast-Timeout, Response-Forwarding, and Group-ETag Options defined in <span>[<a href="#I-D.tiloca-core-groupcomm-proxy" class="cite xref">I-D.tiloca-core-groupcomm-proxy</a>]</span>.<a href="#section-3.1-3.2.4.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1528,7 +1543,7 @@ Otherwise, the endpoint MUST check whether forwarding this request to (the next 
 <p id="section-3.3-2.2.2.1.4">
 In case the authentication check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.2.2.1.4" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.1.5">
-Otherwise, the endpoint consumes the proxy-related options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.2" class="relref">Section 5.7.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-06#section-12" class="relref">Section 12</a> of [<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>).<a href="#section-3.3-2.2.2.1.5" class="pilcrow">¶</a></p>
+Otherwise, the endpoint consumes the proxy-related options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.2" class="relref">Section 5.7.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-07#section-12" class="relref">Section 12</a> of [<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>).<a href="#section-3.3-2.2.2.1.5" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.1.6">
 If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per <a href="#outgoing-requests" class="auto internal xref">Section 3.2</a>.<a href="#section-3.3-2.2.2.1.6" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.1.7">
@@ -1543,7 +1558,7 @@ Otherwise, the endpoint MUST check whether forwarding this request to (the next 
 <p id="section-3.3-2.2.2.2.4">
 In case the authentication check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.2.2.2.4" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.2.5">
-Otherwise, the endpoint consumes the Uri-Path options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.3" class="relref">Section 5.7.3</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-3.3-2.2.2.2.5" class="pilcrow">¶</a></p>
+Otherwise, the endpoint consumes the Uri-Path Options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.3" class="relref">Section 5.7.3</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-3.3-2.2.2.2.5" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.2.6">
 If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per <a href="#outgoing-requests" class="auto internal xref">Section 3.2</a>.<a href="#section-3.3-2.2.2.2.6" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.2.7">
@@ -1566,7 +1581,7 @@ Otherwise, the endpoint delivers REQ to the application.<a href="#section-3.3-2.
               <li class="normal" id="section-3.3-2.3.2.2">
                 <p id="section-3.3-2.3.2.2.1">REQ includes an OSCORE Option.<a href="#section-3.3-2.3.2.2.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.2">
-If REQ includes any URI-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.3.2.2.2" class="pilcrow">¶</a></p>
+If REQ includes any Uri-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.3.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.3">
 Otherwise, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.<a href="#section-3.3-2.3.2.2.3" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.4">
@@ -1587,8 +1602,8 @@ Otherwise, REQ takes REQ*, and the endpoint moves to step 1.<a href="#section-3.
         </h3>
 <p id="section-3.4-1">The rules from <a href="#general-rules" class="auto internal xref">Section 3.1</a> apply when processing an outgoing response message, with the following additions.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <p id="section-3.4-2">When an application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3">The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one they were removed.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.4-4">In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one they were removed.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-4">In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="incoming-responses">
@@ -1596,7 +1611,7 @@ Otherwise, REQ takes REQ*, and the endpoint moves to step 1.<a href="#section-3.
         <h3 id="name-processing-an-incoming-resp">
 <a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-processing-an-incoming-resp" class="section-name selfRef">Processing an Incoming Response</a>
         </h3>
-<p id="section-3.5-1">The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one they were removed.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which they were removed.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <p id="section-3.5-2">When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the outgoing request. In such a case, the endpoint MUST stop processing the response.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1636,7 +1651,7 @@ Then, the proxy stores specifically that resulting response message in its cache
 <li class="normal" id="section-5-3.1">
           <p id="section-5-3.1.1">When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key establishment protocol EDHOC <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>.<a href="#section-5-3.1.1" class="pilcrow">¶</a></p>
 <p id="section-5-3.1.2">
-Assuming the use of OSCORE both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in <a href="#sec-example-edhoc" class="auto internal xref">Appendix A.4</a>).<a href="#section-5-3.1.2" class="pilcrow">¶</a></p>
+Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in <a href="#sec-example-edhoc" class="auto internal xref">Appendix A.4</a>).<a href="#section-5-3.1.2" class="pilcrow">¶</a></p>
 <p id="section-5-3.1.3">
 Furthermore, the additional use of the combined EDHOC + OSCORE request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span> is particularly beneficial in this case (see the example in <a href="#sec-example-edhoc-comb-req" class="auto internal xref">Appendix A.5</a>), and especially when relying on a long chain of proxies.<a href="#section-5-3.1.3" class="pilcrow">¶</a></p>
 </li>
@@ -1680,10 +1695,10 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
 <p id="section-6-7">That is, with respect to the SCHC Compression/Decompression processing, the following holds.<a href="#section-6-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6-8.1">
-          <p id="section-6-8.1.1">An Inner SCHC Compression is intended to a recipient OSCORE endpoint, which will: first, decrypt an incoming message with the OSCORE Security Context shared with the other OSCORE endpoint; and then, perform the corresponding Inner SCHC Decompression, by relying on the SCHC Rules shared with the other OSCORE endpoint.<a href="#section-6-8.1.1" class="pilcrow">¶</a></p>
+          <p id="section-6-8.1.1">An Inner SCHC Compression is intended for a recipient OSCORE endpoint, which will: first, decrypt an incoming message with the OSCORE Security Context shared with the other OSCORE endpoint; and then, perform the corresponding Inner SCHC Decompression, by relying on the SCHC Rules shared with the other OSCORE endpoint.<a href="#section-6-8.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-8.2">
-          <p id="section-6-8.2.1">An Outer SCHC Compression is intended to the (next hop towards the) recipient application endpoint, which will: first, perform a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the (previous hop towards the) recipient application endpoint; then, perform a new Outer SCHC Compression on the result, by relying on the SCHC Rules shared with the (next hop towards the) recipient application endpoint; and, finally, send the result to the (next-hop towards the) recipient application endpoint.<a href="#section-6-8.2.1" class="pilcrow">¶</a></p>
+          <p id="section-6-8.2.1">An Outer SCHC Compression is intended for the (next hop towards the) recipient application endpoint, which will: first, perform a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the (previous hop towards the) recipient application endpoint; then, perform a new Outer SCHC Compression on the result, by relying on the SCHC Rules shared with the (next hop towards the) recipient application endpoint; and, finally, send the result to the (next-hop towards the) recipient application endpoint.<a href="#section-6-8.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-6-9">Note that the generalization above does not alter the core approach, design choices, and features of the SCHC Compression/Decompression applied to CoAP headers.<a href="#section-6-9" class="pilcrow">¶</a></p>
@@ -1756,11 +1771,11 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
 <dl class="references">
 <dt id="I-D.amsuess-core-cachable-oscore">[I-D.amsuess-core-cachable-oscore]</dt>
         <dd>
-<span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Cacheable OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-amsuess-core-cachable-oscore-07</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-amsuess-core-cachable-oscore-07">https://datatracker.ietf.org/doc/html/draft-amsuess-core-cachable-oscore-07</a>&gt;</span>. </dd>
+<span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Cacheable OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-amsuess-core-cachable-oscore-08</span>, <time datetime="2024-01-10" class="refDate">10 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-amsuess-core-cachable-oscore-08">https://datatracker.ietf.org/doc/html/draft-amsuess-core-cachable-oscore-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-coap-est-oscore">[I-D.ietf-ace-coap-est-oscore]</dt>
         <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Furuhed, M.</span>, <span class="refAuthor">Vučinić, M.</span>, and <span class="refAuthor">T. Claeys</span>, <span class="refTitle">"Protecting EST Payloads with OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-coap-est-oscore-02</span>, <time datetime="2023-07-09" class="refDate">9 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-02">https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-02</a>&gt;</span>. </dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Furuhed, M.</span>, <span class="refAuthor">Vučinić, M.</span>, and <span class="refAuthor">T. Claeys</span>, <span class="refTitle">"Protecting EST Payloads with OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-coap-est-oscore-03</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-03">https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-key-groupcomm-oscore">[I-D.ietf-ace-key-groupcomm-oscore]</dt>
         <dd>
@@ -1768,31 +1783,31 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-coap-pm">[I-D.ietf-core-coap-pm]</dt>
         <dd>
-<span class="refAuthor">Fioccola, G.</span>, <span class="refAuthor">Zhou, T.</span>, <span class="refAuthor">Cociglio, M.</span>, <span class="refAuthor">Bulgarella, F.</span>, <span class="refAuthor">Nilo, M.</span>, and <span class="refAuthor">F. Milan</span>, <span class="refTitle">"Constrained Application Protocol (CoAP) Performance Measurement Option"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pm-00</span>, <time datetime="2023-04-19" class="refDate">19 April 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pm-00">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pm-00</a>&gt;</span>. </dd>
+<span class="refAuthor">Fioccola, G.</span>, <span class="refAuthor">Zhou, T.</span>, <span class="refAuthor">Nilo, M.</span>, <span class="refAuthor">Milan, F.</span>, and <span class="refAuthor">F. Bulgarella</span>, <span class="refTitle">"Constrained Application Protocol (CoAP) Performance Measurement Option"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pm-01</span>, <time datetime="2023-10-19" class="refDate">19 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pm-01">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pm-01</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
         <dd>
-<span class="refAuthor">Koster, M.</span>, <span class="refAuthor">Keränen, A.</span>, and <span class="refAuthor">J. Jimenez</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-12</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-12">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-12</a>&gt;</span>. </dd>
+<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-13</span>, <time datetime="2023-10-20" class="refDate">20 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-13</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-groupcomm-bis">[I-D.ietf-core-groupcomm-bis]</dt>
         <dd>
-<span class="refAuthor">Dijk, E.</span>, <span class="refAuthor">Wang, C.</span>, and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-09</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-09">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Dijk, E.</span>, <span class="refAuthor">Wang, C.</span>, and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-10</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-10">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-observe-multicast-notifications">[I-D.ietf-core-observe-multicast-notifications]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-06</span>, <time datetime="2023-04-26" class="refDate">26 April 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-06">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-06</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-07</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-07">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-edhoc">[I-D.ietf-core-oscore-edhoc]</dt>
         <dd>
-<span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Hristozov, S.</span>, and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Using EDHOC with CoAP and OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-edhoc-09</span>, <time datetime="2023-10-13" class="refDate">13 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-edhoc-09">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-edhoc-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Hristozov, S.</span>, and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Using Ephemeral Diffie-Hellman Over COSE (EDHOC) with the Constrained Application Protocol (CoAP) and Object Security for Constrained RESTful Environments (OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-edhoc-10</span>, <time datetime="2023-11-29" class="refDate">29 November 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-edhoc-10">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-edhoc-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-transport-indication">[I-D.ietf-core-transport-indication]</dt>
         <dd>
-<span class="refAuthor">Amsüss, C.</span>, <span class="refTitle">"CoAP Protocol Indication"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-transport-indication-02</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-02">https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-02</a>&gt;</span>. </dd>
+<span class="refAuthor">Amsüss, C.</span>, <span class="refTitle">"CoAP Protocol Indication"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-transport-indication-03</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-03">https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-lake-edhoc">[I-D.ietf-lake-edhoc]</dt>
         <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-edhoc-22</span>, <time datetime="2023-08-25" class="refDate">25 August 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-22">https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-22</a>&gt;</span>. </dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-edhoc-23</span>, <time datetime="2024-01-22" class="refDate">22 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23">https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.tiloca-core-groupcomm-proxy">[I-D.tiloca-core-groupcomm-proxy]</dt>
         <dd>
@@ -1800,7 +1815,7 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
 <dd class="break"></dd>
 <dt id="I-D.tiloca-schc-8824-update">[I-D.tiloca-schc-8824-update]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Toutain, L.</span>, <span class="refAuthor">Martinez, I.</span>, and <span class="refAuthor">A. Minaburo</span>, <span class="refTitle">"Clarifications and Updates on using Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-tiloca-schc-8824-update-01</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-tiloca-schc-8824-update-01">https://datatracker.ietf.org/doc/html/draft-tiloca-schc-8824-update-01</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Toutain, L.</span>, <span class="refAuthor">Martinez, I.</span>, and <span class="refAuthor">A. Minaburo</span>, <span class="refTitle">"Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-tiloca-schc-8824-update-02</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-tiloca-schc-8824-update-02">https://datatracker.ietf.org/doc/html/draft-tiloca-schc-8824-update-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="LwM2M-Core">[LwM2M-Core]</dt>
         <dd>
@@ -2710,17 +2725,37 @@ request     +-----------------------------------------------+         |
 </div>
 </section>
 </div>
-<div id="acknowledgments">
+<div id="sec-document-updates">
 <section id="appendix-C">
+      <h2 id="name-document-updates">
+<a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
+      </h2>
+<p id="appendix-C-1">RFC EDITOR: PLEASE REMOVE THIS SECTION.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<div id="sec-00-01">
+<section id="appendix-C.1">
+        <h3 id="name-version-00-to-01">
+<a href="#appendix-C.1" class="section-number selfRef">C.1. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="appendix-C.1-1.1">
+            <p id="appendix-C.1-1.1.1">Editorial fixes and improvements.<a href="#appendix-C.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-D">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-C-1">The authors sincerely thank <span class="contact-name">Christian Amsüss</span>, <span class="contact-name">Peter Blomqvist</span>, <span class="contact-name">David Navarro</span> and <span class="contact-name">Göran Selander</span> for their comments and feedback.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
-<p id="appendix-C-2">The work on this document has been partly supported by VINNOVA and the Celtic-Next project CRITISEC; and by the H2020 project SIFIS-Home (Grant agreement 952652).<a href="#appendix-C-2" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">The authors sincerely thank <span class="contact-name">Christian Amsüss</span>, <span class="contact-name">Peter Blomqvist</span>, <span class="contact-name">David Navarro</span>, and <span class="contact-name">Göran Selander</span> for their comments and feedback.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-2">The work on this document has been partly supported by VINNOVA and the Celtic-Next project CRITISEC; and by the H2020 project SIFIS-Home (Grant agreement 952652).<a href="#appendix-D-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-D">
+<section id="appendix-E">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
