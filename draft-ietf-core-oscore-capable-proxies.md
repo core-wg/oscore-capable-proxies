@@ -629,7 +629,7 @@ CTX_C_S   |       |
   |<------+       |         Code: 2.04 (Changed)
   |  2.04 |       |        Token: 0x8c
   |       |       |       OSCORE: -
-  |       |       |               0xff
+  |       |       |         0xff
   |       |       |      Payload: {Code: 2.05 (Content),
   |       |       |                0xff,
   |       |       |                "0"
@@ -778,27 +778,27 @@ The example also shows how the client establishes an OSCORE Security Context CTX
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
   |       |       |
-  +------>|       |         Code: 0.02 (POST)
-  | POST  |       |        Token: 0xf3
-  |       |       |     Uri-Path: ".well-known"
-  |       |       |     Uri-Path: "edhoc"
-  |       |       |         0xff
-  |       |       |      Payload: (true, EDHOC message_1)
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0xf3
+  |       |       | Uri-Path: ".well-known"
+  |       |       | Uri-Path: "edhoc"
+  |       |       |     0xff
+  |       |       |  Payload: (true, EDHOC message_1)
   |       |       |
-  |<------+       |         Code: 2.04 (Changed)
-  |  2.04 |       |        Token: 0xf3
-  |       |       |         0xff
-  |       |       |      Payload: EDHOC message_2
+  |<------+       |     Code: 2.04 (Changed)
+  |  2.04 |       |    Token: 0xf3
+  |       |       |     0xff
+  |       |       |  Payload: EDHOC message_2
   |       |       |
 Establish |       |
 CTX_C_P   |       |
   |       |       |
-  +------>|       |         Code: 0.02 (POST)
-  | POST  |       |        Token: 0x82
-  |       |       |     Uri-Path: ".well-known"
-  |       |       |     Uri-Path: "edhoc"
-  |       |       |         0xff
-  |       |       |      Payload: (C_R, EDHOC message_3)
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0x82
+  |       |       | Uri-Path: ".well-known"
+  |       |       | Uri-Path: "edhoc"
+  |       |       |     0xff
+  |       |       |  Payload: (C_R, EDHOC message_3)
   |       |       |
   |     Establish |
   |     CTX_C_P   |
@@ -810,48 +810,48 @@ Encrypt   |       |
 REQ with  |       |
 CTX_C_P   |       |
   |       |       |
-  +------>|       |         Code: 0.02 (POST)
-  | POST  |       |        Token: 0xbe
-  |       |       |       OSCORE: [kid:0x20, Partial IV:0]
-  |       |       |         0xff
-  |       |       |      Payload: {Code: 0.02 (POST),
-  |       |       |                Uri-Host: "example.com",
-  |       |       |                Uri-Path: ".well-known",
-  |       |       |                Uri-Path: "edhoc",
-  |       |       |                Proxy-Scheme: "coap",
-  |       |       |                0xff,
-  |       |       |                (true, EDHOC message_1)
-  |       |       |               } // Encrypted with CTX_C_P
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0xbe
+  |       |       |   OSCORE: [kid:0x20, Partial IV:0]
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 0.02 (POST),
+  |       |       |            Uri-Host: "example.com",
+  |       |       |            Uri-Path: ".well-known",
+  |       |       |            Uri-Path: "edhoc",
+  |       |       |            Proxy-Scheme: "coap",
+  |       |       |            0xff,
+  |       |       |            (true, EDHOC message_1)
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
   |     REQ with  |
   |     CTX_C_P   |
   |       |       |
-  |       +------>|         Code: 0.02 (POST)
-  |       | POST  |        Token: 0xa5
-  |       |       |     Uri-Host: "example.com",
-  |       |       |     Uri-Path: ".well-known"
-  |       |       |     Uri-Path: "edhoc"
-  |       |       |         0xff
-  |       |       |      Payload: (true, EDHOC message_1)
+  |       +------>|     Code: 0.02 (POST)
+  |       | POST  |    Token: 0xa5
+  |       |       | Uri-Host: "example.com",
+  |       |       | Uri-Path: ".well-known"
+  |       |       | Uri-Path: "edhoc"
+  |       |       |     0xff
+  |       |       |  Payload: (true, EDHOC message_1)
   |       |       |
-  |       |<------+         Code: 2.04 (Changed)
-  |       |  2.04 |        Token: 0xa5
-  |       |       |         0xff
-  |       |       |      Payload: EDHOC message_2
+  |       |<------+     Code: 2.04 (Changed)
+  |       |  2.04 |    Token: 0xa5
+  |       |       |     0xff
+  |       |       |  Payload: EDHOC message_2
   |       |       |
   |     Encrypt   |
   |     RESP with |
   |     CTX_C_P   |
   |       |       |
-  |<------+       |         Code: 2.04 (Changed)
-  |  2.04 |       |        Token: 0xbe
-  |       |       |       OSCORE: -
-  |       |       |         0xff
-  |       |       |      Payload: {Code: 2.04 (Changed),
-  |       |       |                0xff,
-  |       |       |                EDHOC message_2
-  |       |       |               } // Encrypted with CTX_C_P
+  |<------+       |     Code: 2.04 (Changed)
+  |  2.04 |       |    Token: 0xbe
+  |       |       |   OSCORE: -
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 2.04 (Changed),
+  |       |       |            0xff,
+  |       |       |            EDHOC message_2
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Establish |       |
 CTX_C_S   |       |
@@ -860,30 +860,30 @@ Encrypt   |       |
 REQ with  |       |
 CTX_C_P   |       |
   |       |       |
-  +------>|       |         Code: 0.02 (POST)
-  | POST  |       |        Token: 0xb9
-  |       |       |       OSCORE: [kid:0x20, Partial IV:1]
-  |       |       |         0xff
-  |       |       |      Payload: {Code: 0.02 (POST),
-  |       |       |                Uri-Host: "example.com",
-  |       |       |                Uri-Path: ".well-known",
-  |       |       |                Uri-Path: "edhoc",
-  |       |       |                Proxy-Scheme: "coap",
-  |       |       |                0xff,
-  |       |       |                (C_R, EDHOC message_3)
-  |       |       |               } // Encrypted with CTX_C_P
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0xb9
+  |       |       |   OSCORE: [kid:0x20, Partial IV:1]
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 0.02 (POST),
+  |       |       |            Uri-Host: "example.com",
+  |       |       |            Uri-Path: ".well-known",
+  |       |       |            Uri-Path: "edhoc",
+  |       |       |            Proxy-Scheme: "coap",
+  |       |       |            0xff,
+  |       |       |            (C_R, EDHOC message_3)
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
   |     REQ with  |
   |     CTX_C_P   |
   |       |       |
-  |       +------>|         Code: 0.02 (POST)
-  |       | POST  |        Token: 0xdd
-  |       |       |     Uri-Host: "example.com",
-  |       |       |     Uri-Path: ".well-known"
-  |       |       |     Uri-Path: "edhoc"
-  |       |       |         0xff
-  |       |       |      Payload: (C_R, EDHOC message_3)
+  |       +------>|     Code: 0.02 (POST)
+  |       | POST  |    Token: 0xdd
+  |       |       | Uri-Host: "example.com",
+  |       |       | Uri-Path: ".well-known"
+  |       |       | Uri-Path: "edhoc"
+  |       |       |     0xff
+  |       |       |  Payload: (C_R, EDHOC message_3)
   |       |       |
   |       |     Establish
   |       |     CTX_C_S
@@ -902,19 +902,19 @@ Encrypt   |       |
 REQ with  |       |
 CTX_C_P   |       |
   |       |       |
-  +------>|       |    Code: 0.02 (POST)
-  | POST  |       |   Token: 0x8c
-  |       |       |  OSCORE: [kid:0x20, Partial IV:2]
-  |       |       |    0xff
-  |       |       | Payload: {Code: 0.02 (POST),
-  |       |       |           OSCORE: [kid:0x5f, Partial IV:0],
-  |       |       |           Uri-Host: "example.com",
-  |       |       |           Proxy-Scheme: "coap",
-  |       |       |           0xff,
-  |       |       |           {Code: 0.01 (GET),
-  |       |       |            Uri-Path: "alarm_status"
-  |       |       |           } // Encrypted with CTX_C_S
-  |       |       |          } // Encrypted with CTX_C_P
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0x8c
+  |       |       |   OSCORE: [kid:0x20, Partial IV:2]
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 0.02 (POST),
+  |       |       |            OSCORE: [kid:0x5f, Partial IV:0],
+  |       |       |            Uri-Host: "example.com",
+  |       |       |            Proxy-Scheme: "coap",
+  |       |       |            0xff,
+  |       |       |            {Code: 0.01 (GET),
+  |       |       |             Uri-Path: "alarm_status"
+  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
   |     REQ with  |
@@ -937,31 +937,31 @@ CTX_C_P   |       |
   |       |     RESP with
   |       |     CTX_C_S
   |       |       |
-  |       |<------+    Code: 2.04 (Changed)
-  |       |  2.04 |   Token: 0x7b
-  |       |       |  OSCORE: -
-  |       |       |    0xff
-  |       |       | Payload: {Code: 2.05 (Content),
-  |       |       |           0xff,
-  |       |       |           "0"
-  |       |       |          } // Encrypted with CTX_C_S
+  |       |<------+     Code: 2.04 (Changed)
+  |       |  2.04 |    Token: 0x7b
+  |       |       |   OSCORE: -
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 2.05 (Content),
+  |       |       |            0xff,
+  |       |       |            "0"
+  |       |       |           } // Encrypted with CTX_C_S
   |       |       |
   |     Encrypt   |
   |     RESP with |
   |     CTX_C_P   |
   |       |       |
-  |<------+       |    Code: 2.04 (Changed)
-  |  2.04 |       |   Token: 0x8c
-  |       |       |  OSCORE: -
-  |       |       |    0xff
-  |       |       | Payload: {Code: 2.04 (Changed),
-  |       |       |           OSCORE: -,
-  |       |       |           0xff,
-  |       |       |           {Code: 2.05 (Content),
+  |<------+       |     Code: 2.04 (Changed)
+  |  2.04 |       |    Token: 0x8c
+  |       |       |   OSCORE: -
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 2.04 (Changed),
+  |       |       |            OSCORE: -,
   |       |       |            0xff,
-  |       |       |            "0"
-  |       |       |           } // Encrypted with CTX_C_S
-  |       |       |          } // Encrypted with CTX_C_P
+  |       |       |            {Code: 2.05 (Content),
+  |       |       |             0xff,
+  |       |       |             "0"
+  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
 RESP with |       |
@@ -995,17 +995,17 @@ In particular, the client relies on the EDHOC + OSCORE request defined in {{I-D.
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
   |       |       |
-  +------>|       |         Code: 0.02 (POST)
-  | POST  |       |        Token: 0xf3
-  |       |       |     Uri-Path: ".well-known"
-  |       |       |     Uri-Path: "edhoc"
-  |       |       |         0xff
-  |       |       |      Payload: (true, EDHOC message_1)
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0xf3
+  |       |       | Uri-Path: ".well-known"
+  |       |       | Uri-Path: "edhoc"
+  |       |       |     0xff
+  |       |       |  Payload: (true, EDHOC message_1)
   |       |       |
-  |<------+       |         Code: 2.04 (Changed)
-  |  2.04 |       |        Token: 0xf3
-  |       |       |         0xff
-  |       |       |      Payload: EDHOC message_2
+  |<------+       |    Code: 2.04 (Changed)
+  |  2.04 |       |   Token: 0xf3
+  |       |       |    0xff
+  |       |       | Payload: EDHOC message_2
   |       |       |
 Establish |       |
 CTX_C_P   |       |
@@ -1019,20 +1019,20 @@ COMB_REQ  |       |
 for P     |       |
 from REQ  |       |
   |       |       |
-  +------>|       |         Code: 0.02 (POST)
-  | POST  |       |        Token: 0x82
-  |       |       |       OSCORE: [kid:0x20, Partial IV:0]
-  |       |       |        EDHOC: -
-  |       |       |         0xff
-  |       |       |      Payload: EDHOC message_3, // Intended for P
-  |       |       |               {Code: 0.02 (POST),
-  |       |       |                Uri-Host: "example.com",
-  |       |       |                Uri-Path: ".well-known",
-  |       |       |                Uri-Path: "edhoc",
-  |       |       |                Proxy-Scheme: "coap",
-  |       |       |                0xff,
-  |       |       |                (true, EDHOC message_1)
-  |       |       |               } // Encrypted with CTX_C_P
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0x82
+  |       |       |   OSCORE: [kid:0x20, Partial IV:0]
+  |       |       |    EDHOC: -
+  |       |       |     0xff
+  |       |       |  Payload: EDHOC message_3, // Intended for P
+  |       |       |           {Code: 0.02 (POST),
+  |       |       |            Uri-Host: "example.com",
+  |       |       |            Uri-Path: ".well-known",
+  |       |       |            Uri-Path: "edhoc",
+  |       |       |            Proxy-Scheme: "coap",
+  |       |       |            0xff,
+  |       |       |            (true, EDHOC message_1)
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Establish |
   |     CTX_C_P   |
@@ -1045,31 +1045,31 @@ from REQ  |       |
   |     REQ with  |
   |     CTX_C_P   |
   |       |       |
-  |       +------>|         Code: 0.02 (POST)
-  |       | POST  |        Token: 0xa5
-  |       |       |     Uri-Host: "example.com",
-  |       |       |     Uri-Path: ".well-known"
-  |       |       |     Uri-Path: "edhoc"
-  |       |       |         0xff
-  |       |       |      Payload: (true, EDHOC message_1)
+  |       +------>|     Code: 0.02 (POST)
+  |       | POST  |    Token: 0xa5
+  |       |       | Uri-Host: "example.com",
+  |       |       | Uri-Path: ".well-known"
+  |       |       | Uri-Path: "edhoc"
+  |       |       |     0xff
+  |       |       |  Payload: (true, EDHOC message_1)
   |       |       |
-  |       |<------+         Code: 2.04 (Changed)
-  |       |  2.04 |        Token: 0xa5
-  |       |       |         0xff
-  |       |       |      Payload: EDHOC message_2
+  |       |<------+    Code: 2.04 (Changed)
+  |       |  2.04 |   Token: 0xa5
+  |       |       |    0xff
+  |       |       | Payload: EDHOC message_2
   |       |       |
   |     Encrypt   |
   |     RESP with |
   |     CTX_C_P   |
   |       |       |
-  |<------+       |    Code: 2.04 (Changed)
-  |  2.04 |       |   Token: 0x82
-  |       |       |  OSCORE: -
-  |       |       |    0xff
-  |       |       | Payload: {Code: 2.04 (Changed),
-  |       |       |           0xff,
-  |       |       |           EDHOC message_2
-  |       |       |          } // Encrypted with CTX_C_P
+  |<------+       |     Code: 2.04 (Changed)
+  |  2.04 |       |    Token: 0x82
+  |       |       |   OSCORE: -
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 2.04 (Changed),
+  |       |       |            0xff,
+  |       |       |            EDHOC message_2
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
 RESP with |       |
@@ -1091,38 +1091,38 @@ Encrypt   |       |
 REQ with  |       |
 CTX_C_P   |       |
   |       |       |
-  +------>|       |         Code: 0.02 (POST)
-  | POST  |       |        Token: 0x83
-  |       |       |       OSCORE: [kid:0x20, Partial IV:1]
-  |       |       |         0xff
-  |       |       |      Payload: {Code: 0.02 (POST),
-  |       |       |                Uri-Host: "example.com",
-  |       |       |                OSCORE: [kid:0x5f, Partial IV:0],
-  |       |       |                EDHOC: -,
-  |       |       |                Proxy-Scheme: "coap",
-  |       |       |                0xff,
-  |       |       |                EDHOC message_3, // Intended for S
-  |       |       |                {
-  |       |       |                 Code: 0.01 (GET),
-  |       |       |                 Uri-Path:"alarm_status"
-  |       |       |                } // Encrypted with CTX_C_S
-  |       |       |               } // Encrypted with CTX_C_P
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0x83
+  |       |       |   OSCORE: [kid:0x20, Partial IV:1]
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 0.02 (POST),
+  |       |       |            Uri-Host: "example.com",
+  |       |       |            OSCORE: [kid:0x5f, Partial IV:0],
+  |       |       |            EDHOC: -,
+  |       |       |            Proxy-Scheme: "coap",
+  |       |       |            0xff,
+  |       |       |            EDHOC message_3, // Intended for S
+  |       |       |            {
+  |       |       |             Code: 0.01 (GET),
+  |       |       |             Uri-Path:"alarm_status"
+  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
   |     REQ with  |
   |     CTX_C_P   |
   |       |       |
-  |       +------>|         Code: 0.02 (POST)
-  |       | POST  |        Token: 0xa6
-  |       |       |     Uri-Host: "example.com",
-  |       |       |       OSCORE: [kid:0x5f, Partial IV:0]
-  |       |       |        EDHOC: -
-  |       |       |         0xff
-  |       |       |      Payload: EDHOC message_3, // Intended for S
-  |       |       |               {
-  |       |       |                Code: 0.01 (GET),
-  |       |       |                Uri-Path: "alarm_status"
-  |       |       |               } // Encrypted with CTX_C_S
+  |       +------>|     Code: 0.02 (POST)
+  |       | POST  |    Token: 0xa6
+  |       |       | Uri-Host: "example.com",
+  |       |       |   OSCORE: [kid:0x5f, Partial IV:0]
+  |       |       |    EDHOC: -
+  |       |       |     0xff
+  |       |       |  Payload: EDHOC message_3, // Intended for S
+  |       |       |           {
+  |       |       |            Code: 0.01 (GET),
+  |       |       |            Uri-Path: "alarm_status"
+  |       |       |           } // Encrypted with CTX_C_S
   |       |       |
   |       |     Establish
   |       |     CTX_C_S
@@ -1139,31 +1139,31 @@ CTX_C_P   |       |
   |       |     RESP with
   |       |     CTX_C_S
   |       |       |
-  |       |<------+    Code: 2.04 (Changed)
-  |       |  2.04 |   Token: 0xa6
-  |       |       |  OSCORE: -
-  |       |       |    0xff
-  |       |       | Payload: {Code: 2.05 (Content),
-  |       |       |           0xff,
-  |       |       |           "0"
-  |       |       |          } // Encrypted with CTX_C_S
+  |       |<------+     Code: 2.04 (Changed)
+  |       |  2.04 |    Token: 0xa6
+  |       |       |   OSCORE: -
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 2.05 (Content),
+  |       |       |            0xff,
+  |       |       |            "0"
+  |       |       |           } // Encrypted with CTX_C_S
   |       |       |
   |     Encrypt   |
   |     RESP with |
   |     CTX_C_P   |
   |       |       |
-  |<------+       |    Code: 2.04 (Changed)
-  |  2.04 |       |   Token: 0x83
-  |       |       |  OSCORE: -
-  |       |       |    0xff
-  |       |       | Payload: {Code: 2.04 (Changed),
-  |       |       |           OSCORE: -,
-  |       |       |           0xff,
-  |       |       |           {Code: 2.05 (Content),
+  |<------+       |     Code: 2.04 (Changed)
+  |  2.04 |       |    Token: 0x83
+  |       |       |   OSCORE: -
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 2.04 (Changed),
+  |       |       |            OSCORE: -,
   |       |       |            0xff,
-  |       |       |            "0"
-  |       |       |           } // Encrypted with CTX_C_S
-  |       |       |          } // Encrypted with CTX_C_P
+  |       |       |            {Code: 2.05 (Content),
+  |       |       |             0xff,
+  |       |       |             "0"
+  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
 RESP with |       |
