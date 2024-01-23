@@ -1401,7 +1401,11 @@ Even in such a scenario, the EST server and every EST client can still effective
             <p id="section-2.5-2.4.1">A proxy may be deployed to act as an entry point to a firewalled network, which only authenticated clients can join. In particular, authentication can rely on the used secure communication association between a client and the proxy. If the proxy could share a dedicated OSCORE Security Context with each client, the proxy can rely on it to identify the client, before forwarding its messages to any other member of the firewalled network.<a href="#section-2.5-2.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.5-2.5">
-            <p id="section-2.5-2.5.1">The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message. This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request using first the OSCORE Security Context shared with the origin server, and then the dedicated OSCORE Security Context shared with each of the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.<a href="#section-2.5-2.5.1" class="pilcrow">¶</a></p>
+            <p id="section-2.5-2.5.1">The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message.<a href="#section-2.5-2.5.1" class="pilcrow">¶</a></p>
+<p id="section-2.5-2.5.2">
+This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request first by using the OSCORE Security Context shared with the origin server, and then by using different OSCORE Security Contexts shared with the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.<a href="#section-2.5-2.5.2" class="pilcrow">¶</a></p>
+<p id="section-2.5-2.5.3">
+Building on that, it is also possible to enable the operation of hidden services and clients through onion routing with CoAP <span>[<a href="#I-D.amsuess-t2trg-onion-coap" class="cite xref">I-D.amsuess-t2trg-onion-coap</a>]</span>, similarly to how Tor (The Onion Router) <span>[<a href="#TOR-SPEC" class="cite xref">TOR-SPEC</a>]</span> enables it for TCP-based protocols.<a href="#section-2.5-2.5.3" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1773,6 +1777,10 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
         <dd>
 <span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Cacheable OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-amsuess-core-cachable-oscore-08</span>, <time datetime="2024-01-10" class="refDate">10 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-amsuess-core-cachable-oscore-08">https://datatracker.ietf.org/doc/html/draft-amsuess-core-cachable-oscore-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="I-D.amsuess-t2trg-onion-coap">[I-D.amsuess-t2trg-onion-coap]</dt>
+        <dd>
+<span class="refAuthor">Amsüss, C.</span>, <span class="refAuthor">Tiloca, M.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Using onion routing with CoAP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-amsuess-t2trg-onion-coap-01</span>, <time datetime="2023-07-04" class="refDate">4 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-amsuess-t2trg-onion-coap-01">https://datatracker.ietf.org/doc/html/draft-amsuess-t2trg-onion-coap-01</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-ace-coap-est-oscore">[I-D.ietf-ace-coap-est-oscore]</dt>
         <dd>
 <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Furuhed, M.</span>, <span class="refAuthor">Vučinić, M.</span>, and <span class="refAuthor">T. Claeys</span>, <span class="refTitle">"Protecting EST Payloads with OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-coap-est-oscore-03</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-03">https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-03</a>&gt;</span>. </dd>
@@ -1842,8 +1850,12 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
 <span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR) Sequences"</span>, <span class="seriesInfo">RFC 8742</span>, <span class="seriesInfo">DOI 10.17487/RFC8742</span>, <time datetime="2020-02" class="refDate">February 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8742">https://www.rfc-editor.org/rfc/rfc8742</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9200">[RFC9200]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Wahlstroem, E.</span>, <span class="refAuthor">Erdtman, S.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Authentication and Authorization for Constrained Environments Using the OAuth 2.0 Framework (ACE-OAuth)"</span>, <span class="seriesInfo">RFC 9200</span>, <span class="seriesInfo">DOI 10.17487/RFC9200</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9200">https://www.rfc-editor.org/rfc/rfc9200</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TOR-SPEC">[TOR-SPEC]</dt>
+      <dd>
+<span class="refAuthor">Tor Project</span>, <span class="refTitle">"Tor Specifications"</span>, <span>&lt;<a href="https://spec.torproject.org/">https://spec.torproject.org/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -2738,7 +2750,10 @@ request     +-----------------------------------------------+         |
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-C.1-1.1">
-            <p id="appendix-C.1-1.1.1">Editorial fixes and improvements.<a href="#appendix-C.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-C.1-1.1.1">Added reference to Onion CoAP as use case.<a href="#appendix-C.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-C.1-1.2">
+            <p id="appendix-C.1-1.2.1">Editorial fixes and improvements.<a href="#appendix-C.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

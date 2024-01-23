@@ -420,13 +420,19 @@ Table of Contents
 
    *  The approach defined in this document does not pose a limit to the
       number of OSCORE protections applied to the same CoAP message.
+
       This enables more privacy-oriented scenarios based on proxy
-      chains, where the origin client protects a CoAP request using
-      first the OSCORE Security Context shared with the origin server,
-      and then the dedicated OSCORE Security Context shared with each of
+      chains, where the origin client protects a CoAP request first by
+      using the OSCORE Security Context shared with the origin server,
+      and then by using different OSCORE Security Contexts shared with
       the different hops in the chain.  Once received at a chain hop,
       the request would be stripped of the OSCORE protection associated
       with that hop before being forwarded to the next one.
+
+      Building on that, it is also possible to enable the operation of
+      hidden services and clients through onion routing with CoAP
+      [I-D.amsuess-t2trg-onion-coap], similarly to how Tor (The Onion
+      Router) [TOR-SPEC] enables it for TCP-based protocols.
 
 3.  Message Processing
 
@@ -946,6 +952,13 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-amsuess-core-
               cachable-oscore-08>.
 
+   [I-D.amsuess-t2trg-onion-coap]
+              Amsüss, C., Tiloca, M., and R. Höglund, "Using onion
+              routing with CoAP", Work in Progress, Internet-Draft,
+              draft-amsuess-t2trg-onion-coap-01, 4 July 2023,
+              <https://datatracker.ietf.org/doc/html/draft-amsuess-
+              t2trg-onion-coap-01>.
+
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
@@ -1075,6 +1088,9 @@ Table of Contents
               Constrained Environments Using the OAuth 2.0 Framework
               (ACE-OAuth)", RFC 9200, DOI 10.17487/RFC9200, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9200>.
+
+   [TOR-SPEC] Tor Project, "Tor Specifications",
+              <https://spec.torproject.org/>.
 
 Appendix A.  Examples
 
@@ -1913,6 +1929,8 @@ Appendix C.  Document Updates
    RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 C.1.  Version -00 to -01
+
+   *  Added reference to Onion CoAP as use case.
 
    *  Editorial fixes and improvements.
 
