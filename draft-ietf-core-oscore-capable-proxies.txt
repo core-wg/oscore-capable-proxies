@@ -117,7 +117,7 @@ Table of Contents
    [I-D.ietf-core-groupcomm-bis], where clients can send a one-to-many
    request targeting all the servers in the group, e.g., by using IP
    multicast.  Like for one-to-one communication, group settings can
-   also rely on intermediaries [I-D.tiloca-core-groupcomm-proxy].
+   also rely on intermediaries [I-D.ietf-core-groupcomm-proxy].
 
    The protocol Object Security for Constrained RESTful Environments
    (OSCORE) [RFC8613] can be used to protect CoAP messages between two
@@ -242,15 +242,15 @@ Table of Contents
    CoAP forward-proxy or reverse-proxy, which relays a group request to
    the origin servers.  If Group OSCORE is used, the proxy is
    intentionally not a member of the OSCORE group.  Furthermore,
-   [I-D.tiloca-core-groupcomm-proxy] defines a signaling protocol
-   between origin client and proxy, to ensure that responses from the
-   different origin servers are forwarded back to the origin client
-   within a time interval set by the client, and that they can be
-   distinguished from one another.
+   [I-D.ietf-core-groupcomm-proxy] defines a signaling protocol between
+   origin client and proxy, to ensure that responses from the different
+   origin servers are forwarded back to the origin client within a time
+   interval set by the client, and that they can be distinguished from
+   one another.
 
    In particular, it is required that the proxy identifies the origin
    client as allowed-listed, before forwarding a group request to the
-   servers (see Section 4 of [I-D.tiloca-core-groupcomm-proxy]).  This
+   servers (see Section 4 of [I-D.ietf-core-groupcomm-proxy]).  This
    requires a security association between the origin client and the
    proxy, which would be convenient to provide with a dedicated OSCORE
    Security Context between the two, since the client is possibly using
@@ -535,7 +535,7 @@ Table of Contents
          [I-D.ietf-core-observe-multicast-notifications].
 
       -  The Multicast-Timeout, Response-Forwarding, and Group-ETag
-         Options defined in [I-D.tiloca-core-groupcomm-proxy].
+         Options defined in [I-D.ietf-core-groupcomm-proxy].
 
    *  Any CoAP option such that the sender endpoint has not added the
       option to the message.
@@ -766,7 +766,7 @@ Table of Contents
 
    The specific rules about serving a request with a cached response are
    defined in Section 5.6 of [RFC7252], as well as in Section 7 of
-   [I-D.tiloca-core-groupcomm-proxy] for group communication scenarios.
+   [I-D.ietf-core-groupcomm-proxy] for group communication scenarios.
 
 5.  Establishment of OSCORE Security Contexts
 
@@ -819,11 +819,11 @@ Table of Contents
 
    To this end, it is possible to use the Static Context Header
    Compression and fragmentation (SCHC) framework [RFC8724].  In
-   particular, [RFC8824] specifies how to use SCHC for compressing
-   headers of CoAP messages, also when messages are protected with
-   OSCORE.  As further clarified in [I-D.tiloca-schc-8824-update], the
-   SCHC Compression/Decompression is applicable also in the presence of
-   CoAP proxies, and especially to the two following cases.
+   particular, [I-D.ietf-schc-8824-update] specifies how to use SCHC for
+   compressing headers of CoAP messages, also when messages are
+   protected with OSCORE.  The SCHC Compression/Decompression is
+   applicable also in the presence of CoAP proxies, and especially to
+   the two following cases.
 
    *  In case OSCORE is not used at all, the SCHC processing occurs hop-
       by-hop, by relying on SCHC Rules that are consistently shared
@@ -832,7 +832,8 @@ Table of Contents
    *  In case OSCORE is used only end-to-end between the application
       endpoints, then an Inner SCHC Compression/Decompression and an
       Outer SCHC Compression/Decompression are performed (see
-      Section 7.2 of [RFC8824]).  In particular, the following holds.
+      Section 8.2 of [I-D.ietf-schc-8824-update]).  In particular, the
+      following holds.
 
       The SCHC processing occurs end-to-end as to the Inner SCHC
       Compression/Decompression.  This relies on Inner SCHC Rules that
@@ -925,6 +926,14 @@ Table of Contents
               September 2023, <https://datatracker.ietf.org/doc/html/
               draft-ietf-core-oscore-groupcomm-20>.
 
+   [I-D.ietf-schc-8824-update]
+              Tiloca, M., Toutain, L., Martinez, I., and A. Minaburo,
+              "Static Context Header Compression (SCHC) for the
+              Constrained Application Protocol (CoAP)", Work in
+              Progress, Internet-Draft, draft-ietf-schc-8824-update-00,
+              5 December 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-schc-8824-update-00>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -949,12 +958,6 @@ Table of Contents
               Compression and Fragmentation", RFC 8724,
               DOI 10.17487/RFC8724, April 2020,
               <https://www.rfc-editor.org/rfc/rfc8724>.
-
-   [RFC8824]  Minaburo, A., Toutain, L., and R. Andreasen, "Static
-              Context Header Compression (SCHC) for the Constrained
-              Application Protocol (CoAP)", RFC 8824,
-              DOI 10.17487/RFC8824, June 2021,
-              <https://www.rfc-editor.org/rfc/rfc8824>.
 
 9.2.  Informative References
 
@@ -1011,6 +1014,13 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               groupcomm-bis-10>.
 
+   [I-D.ietf-core-groupcomm-proxy]
+              Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
+              Communication", Work in Progress, Internet-Draft, draft-
+              ietf-core-groupcomm-proxy-00, 19 December 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              groupcomm-proxy-00>.
+
    [I-D.ietf-core-observe-multicast-notifications]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Observe Notifications as CoAP Multicast Responses", Work
@@ -1041,22 +1051,6 @@ Table of Contents
               Progress, Internet-Draft, draft-ietf-lake-edhoc-23, 22
               January 2024, <https://datatracker.ietf.org/doc/html/
               draft-ietf-lake-edhoc-23>.
-
-   [I-D.tiloca-core-groupcomm-proxy]
-              Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
-              Communication", Work in Progress, Internet-Draft, draft-
-              tiloca-core-groupcomm-proxy-09, 31 August 2023,
-              <https://datatracker.ietf.org/doc/html/draft-tiloca-core-
-              groupcomm-proxy-09>.
-
-   [I-D.tiloca-schc-8824-update]
-              Tiloca, M., Toutain, L., Martinez, I., and A. Minaburo,
-              "Static Context Header Compression (SCHC) for the
-              Constrained Application Protocol (CoAP)", Work in
-              Progress, Internet-Draft, draft-tiloca-schc-8824-update-
-              02, 23 October 2023,
-              <https://datatracker.ietf.org/doc/html/draft-tiloca-schc-
-              8824-update-02>.
 
    [LwM2M-Core]
               Open Mobile Alliance, "Lightweight Machine to Machine
@@ -1964,6 +1958,8 @@ C.1.  Version -00 to -01
    *  Added reference to Onion CoAP as use case.
 
    *  Fixes in the examples of message exchange.
+
+   *  Updated references.
 
    *  Editorial fixes and improvements.
 
