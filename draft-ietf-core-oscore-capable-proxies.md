@@ -118,9 +118,9 @@ The approach defined in this document can be seamlessly adopted also when Group 
 
 ## Terminology ## {#terminology}
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
+{::boilerplate bcp14}
 
-Readers are expected to be familiar with the terms and concepts related to CoAP {{RFC7252}}; OSCORE {{RFC8613}} and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. This document especially builds on concepts and mechanics related to intermediaries such as CoAP forward-proxies.
+Readers are expected to be familiar with the terms and concepts related to CoAP {{RFC7252}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. This document especially builds on concepts and mechanics related to intermediaries such as CoAP forward-proxies and reverse-proxies.
 
 In addition, this document uses the following terms.
 
@@ -172,7 +172,10 @@ Therefore, it is preferable to have a security association also between each cli
 
 The Lightweight Machine-to-Machine (LwM2M) protocol {{LwM2M-Core}} enables a LwM2M Client device to securely bootstrap and then register at a LwM2M Server, with which it will perform most of its following communication exchanges. As per the transport bindings specification of LwM2M {{LwM2M-Transport}}, the LwM2M Client and LwM2M Server can use CoAP and OSCORE to secure their communications at the application layer, including during the device registration process.
 
-Furthermore, Section 5.5.1 of {{LwM2M-Transport}} specifies that: "OSCORE MAY also be used between LwM2M endpoint and non-LwM2M endpoint, e.g., between an Application Server and a LwM2M Client via a LwM2M server. Both the LwM2M endpoint and non-LwM2M endpoint MUST implement OSCORE and be provisioned with an OSCORE Security Context."
+Furthermore, Section 5.5.1 of {{LwM2M-Transport}} specifies that:
+
+{:quote}
+> OSCORE MAY also be used between LwM2M endpoint and non-LwM2M endpoint, e.g., between an Application Server and a LwM2M Client via a LwM2M server. Both the LwM2M endpoint and non-LwM2M endpoint MUST implement OSCORE and be provisioned with an OSCORE Security Context.
 
 In such a case, the LwM2M Server can practically act as forward-proxy between the LwM2M Client and the external Application Server. At the same time, the LwM2M Client and LwM2M Server must continue protecting communications on their leg using their Security Context. Like for the use case in {{ssec-uc1}}, this also allows the LwM2M Server to identify the LwM2M Client, before forwarding its request outside the LwM2M domain and towards the external Application Server.
 
@@ -182,7 +185,7 @@ The specification {{LwM2M-Gateway}} extends the LwM2M architecture by defining t
 
 Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to forward it to an end IoT device. With particular reference to the CoAP protocol and the related transport binding specified in {{LwM2M-Transport}}, the LwM2M Server acting as CoAP client sends its request to the LwM2M Gateway acting as CoAP server.
 
-If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a reverse-proxy (see {{Section 5.7.3 of RFC7252}}). That is, in addition to its own resources, the LwM2M Gateway serves the resources of each end IoT device behind itself, as exposed under a dedicated URI-Path. As per {{LwM2M-Gateway}}, the first URI-Path segment is used as "prefix" to identify the specific IoT device, while the remaining URI-Path segments specify the target resource at the IoT device.
+If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see {{Section 5.7.3 of RFC7252}}). That is, in addition to its own resources, the LwM2M Gateway serves the resources of each end IoT device behind itself, as exposed under a dedicated URI path. As per {{LwM2M-Gateway}}, the first URI path segment is used as "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.
 
 As per Section 7 of {{LwM2M-Gateway}}, message exchanges between the LwM2M Server and the L2M2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end for the targeted end IoT device as well as for the LwM2M Gateway acting as reverse-proxy.
 
@@ -262,11 +265,11 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
 
    Examples of such CoAP options are:
 
-   - The Proxy-Uri, Proxy-Scheme, Uri-Host and Uri-Port Options defined in {{RFC7252}}.
+   - The Proxy-Uri, Proxy-Scheme, Uri-Host, and Uri-Port Options defined in {{RFC7252}}.
 
    - The Listen-To-Multicast-Notifications Option defined in {{I-D.ietf-core-observe-multicast-notifications}}.
 
-   - The Multicast-Timeout, Response-Forwarding and Group-ETag Options defined in {{I-D.tiloca-core-groupcomm-proxy}}.
+   - The Multicast-Timeout, Response-Forwarding, and Group-ETag Options defined in {{I-D.tiloca-core-groupcomm-proxy}}.
 
 * Any CoAP option such that the sender endpoint has not added the option to the message.
 
@@ -312,7 +315,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       In case the authentication check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint consumes the Uri-Path options as per {{Section 5.7.3 of RFC7252}}, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
+      Otherwise, the endpoint consumes the Uri-Path Options as per {{Section 5.7.3 of RFC7252}}, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
 
       If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
 
@@ -330,7 +333,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
    * REQ includes an OSCORE Option.
 
-      If REQ includes any URI-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+      If REQ includes any Uri-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
       Otherwise, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.
 
@@ -346,13 +349,13 @@ The rules from {{general-rules}} apply when processing an outgoing response mess
 
 When an application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
 
-The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one they were removed.
+The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.
 
-In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one they were removed.
+In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.
 
 ## Processing an Incoming Response {#incoming-responses}
 
-The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one they were removed.
+The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which they were removed.
 
 When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the outgoing request. In such a case, the endpoint MUST stop processing the response.
 
@@ -382,7 +385,7 @@ At the same time, the following applies, depending on the two peers using OSCORE
 
 * When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}.
 
-   Assuming the use of OSCORE both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
+   Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
 
    Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
 
@@ -414,9 +417,9 @@ When processing an outgoing CoAP message, a sender endpoint proceeds as follows.
 
 That is, with respect to the SCHC Compression/Decompression processing, the following holds.
 
-* An Inner SCHC Compression is intended to a recipient OSCORE endpoint, which will: first, decrypt an incoming message with the OSCORE Security Context shared with the other OSCORE endpoint; and then, perform the corresponding Inner SCHC Decompression, by relying on the SCHC Rules shared with the other OSCORE endpoint.
+* An Inner SCHC Compression is intended for a recipient OSCORE endpoint, which will: first, decrypt an incoming message with the OSCORE Security Context shared with the other OSCORE endpoint; and then, perform the corresponding Inner SCHC Decompression, by relying on the SCHC Rules shared with the other OSCORE endpoint.
 
-* An Outer SCHC Compression is intended to the (next hop towards the) recipient application endpoint, which will: first, perform a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the (previous hop towards the) recipient application endpoint; then, perform a new Outer SCHC Compression on the result, by relying on the SCHC Rules shared with the (next hop towards the) recipient application endpoint; and, finally, send the result to the (next-hop towards the) recipient application endpoint.
+* An Outer SCHC Compression is intended for the (next hop towards the) recipient application endpoint, which will: first, perform a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the (previous hop towards the) recipient application endpoint; then, perform a new Outer SCHC Compression on the result, by relying on the SCHC Rules shared with the (next hop towards the) recipient application endpoint; and, finally, send the result to the (next-hop towards the) recipient application endpoint.
 
 Note that the generalization above does not alter the core approach, design choices, and features of the SCHC Compression/Decompression applied to CoAP headers.
 
@@ -1230,9 +1233,17 @@ request     +-----------------------------------------------+         |
 ~~~~~~~~~~~
 {: #fig-incoming-request-diagram title="Processing of an incoming request." artwork-align="center"}
 
+# Document Updates # {#sec-document-updates}
+
+RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
+## Version -00 to -01 ## {#sec-00-01}
+
+* Editorial fixes and improvements.
+
 # Acknowledgments # {#acknowledgments}
 {: numbered="no"}
 
-The authors sincerely thank {{{Christian Amsüss}}}, {{{Peter Blomqvist}}}, {{{David Navarro}}} and {{{Göran Selander}}} for their comments and feedback.
+The authors sincerely thank {{{Christian Amsüss}}}, {{{Peter Blomqvist}}}, {{{David Navarro}}}, and {{{Göran Selander}}} for their comments and feedback.
 
 The work on this document has been partly supported by VINNOVA and the Celtic-Next project CRITISEC; and by the H2020 project SIFIS-Home (Grant agreement 952652).
