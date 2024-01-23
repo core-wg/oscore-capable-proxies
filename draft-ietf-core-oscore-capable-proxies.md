@@ -464,7 +464,7 @@ In the example shown in {{fig-example-client-proxy}}, message exchanges are prot
 
 * Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Client  Proxy  Server
   |       |       |
 Encrypt   |       |
@@ -477,10 +477,10 @@ CTX_C_P   |       |
   |       |       |
   +------>|       |     Code: 0.02 (POST)
   | POST  |       |    Token: 0x8c
-  |       |       |   OSCORE: [kid: 0x20, Partial IV: 31]
+  |       |       |   OSCORE: [kid:0x20, Partial IV:31]
   |       |       |     0xff
   |       |       |  Payload: {Code: 0.02,
-  |       |       |            OSCORE: [kid: 0x5f, Partial IV: 42],
+  |       |       |            OSCORE: [kid:0x5f, Partial IV:42],
   |       |       |            Uri-Host: example.com,
   |       |       |            Proxy-Scheme: coap,
   |       |       |            0xff,
@@ -495,7 +495,7 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|     Code: 0.02 (POST)
   |       | POST  |    Token: 0x7b
-  |       |       |   OSCORE: [kid: 0x5f, Partial IV: 42]
+  |       |       |   OSCORE: [kid:0x5f, Partial IV:42]
   |       |       |     0xff
   |       |       |  Payload: {
   |       |       |            Code: 0.01,
@@ -558,7 +558,7 @@ In the example shown in {{fig-example-proxy-server}}, message exchanges are prot
 
 * Between the proxy and the server, using the OSCORE Security Context CTX_P_S. The proxy uses the OSCORE Sender ID 0xd4 when using OSCORE with the server.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Client  Proxy  Server
   |       |       |
 Encrypt   |       |
@@ -569,7 +569,7 @@ CTX_C_S   |       |
   | POST  |       |        Token: 0x8c
   |       |       |     Uri-Host: example.com
   |       |       | Proxy-Scheme: coap
-  |       |       |       OSCORE: [kid: 0x5f, Partial IV: 42]
+  |       |       |       OSCORE: [kid:0x5f, Partial IV:42]
   |       |       |         0xff
   |       |       |      Payload: {Code: 0.01,
   |       |       |                Uri-Path: "alarm_status"
@@ -581,10 +581,10 @@ CTX_C_S   |       |
   |       |       |
   |       +------>|         Code: 0.02 (POST)
   |       | POST  |        Token: 0x7b
-  |       |       |       OSCORE: [kid: 0xd4, Partial IV: 31]
+  |       |       |       OSCORE: [kid:0xd4, Partial IV:31]
   |       |       |         0xff
   |       |       |      Payload: {Code: 0.02,
-  |       |       |                OSCORE: [kid: 0x5f, Partial IV: 42],
+  |       |       |                OSCORE: [kid:0x5f, Partial IV:42],
   |       |       |                0xff,
   |       |       |                {Code: 0.01,
   |       |       |                 Uri-Path: "alarm_status"
@@ -653,7 +653,7 @@ In the example shown in {{fig-example-client-proxy-server}}, message exchanges a
 
 * Between the proxy and the server, using the OSCORE Security Context CTX_P_S. The proxy uses the OSCORE Sender ID 0xd4 when using OSCORE with the server.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Client  Proxy  Server
   |       |       |
 Encrypt   |       |
@@ -666,10 +666,10 @@ CTX_C_P   |       |
   |       |       |
   +------>|       |    Code: 0.02 (POST)
   | POST  |       |   Token: 0x8c
-  |       |       |  OSCORE: [kid: 0x20, Partial IV: 31]
+  |       |       |  OSCORE: [kid:0x20, Partial IV:31]
   |       |       |    0xff
   |       |       | Payload: {Code: 0.02,
-  |       |       |           OSCORE: [kid: 0x5f, Partial IV: 42],
+  |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
   |       |       |           Uri-Host: example.com,
   |       |       |           Proxy-Scheme: coap,
   |       |       |           0xff,
@@ -688,10 +688,10 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|    Code: 0.02 (POST)
   |       | POST  |   Token: 0x7b
-  |       |       |  OSCORE: [kid: 0xd4, Partial IV: 31]
+  |       |       |  OSCORE: [kid:0xd4, Partial IV:31]
   |       |       |    0xff
   |       |       | Payload: {Code: 0.02,
-  |       |       |           OSCORE: [kid: 0x5f, Partial IV: 42],
+  |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
   |       |       |           0xff,
   |       |       |           {Code: 0.01,
   |       |       |            Uri-Path: "alarm_status"
@@ -772,7 +772,7 @@ In the example shown in {{fig-example-edhoc}}, message exchanges are protected o
 
 The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Client  Proxy  Server
   |       |       |
   +------>|       |         Code: 0.02 (POST)
@@ -809,7 +809,7 @@ CTX_C_P   |       |
   |       |       |
   +------>|       |         Code: 0.02 (POST)
   | POST  |       |        Token: 0xbe
-  |       |       |       OSCORE: [kid: 0x20, Partial IV: 00]
+  |       |       |       OSCORE: [kid:0x20, Partial IV:0]
   |       |       |         0xff
   |       |       |      Payload: {Code: 0.02,
   |       |       |                Uri-Host: "example.com",
@@ -858,7 +858,7 @@ CTX_C_P   |       |
   |       |       |
   +------>|       |         Code: 0.02 (POST)
   | POST  |       |        Token: 0xb9
-  |       |       |       OSCORE: [kid: 0x20, Partial IV: 01]
+  |       |       |       OSCORE: [kid:0x20, Partial IV:1]
   |       |       |         0xff
   |       |       |      Payload: {Code: 0.02,
   |       |       |                Uri-Host: "example.com",
@@ -899,10 +899,10 @@ CTX_C_P   |       |
   |       |       |
   +------>|       |    Code: 0.02 (POST)
   | POST  |       |   Token: 0x8c
-  |       |       |  OSCORE: [kid: 0x20, Partial IV: 02]
+  |       |       |  OSCORE: [kid:0x20, Partial IV:2]
   |       |       |    0xff
   |       |       | Payload: {Code: 0.02,
-  |       |       |           OSCORE: [kid: 0x5f, Partial IV: 00],
+  |       |       |           OSCORE: [kid:0x5f, Partial IV:0],
   |       |       |           Uri-Host: "example.com",
   |       |       |           Proxy-Scheme: "coap",
   |       |       |           0xff,
@@ -917,7 +917,7 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|    Code: 0.02 (POST)
   |       | POST  |   Token: 0x7b
-  |       |       |  OSCORE: [kid: 0x5f, Partial IV: 00]
+  |       |       |  OSCORE: [kid:0x5f, Partial IV:0]
   |       |       |    0xff
   |       |       | Payload: {Code: 0.01,
   |       |       |           Uri-Path: "alarm_status"
@@ -984,7 +984,7 @@ The example also shows how the client establishes an OSCORE Security Context CTX
 
 In particular, the client relies on the EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Client  Proxy  Server
   |       |       |
   +------>|       |         Code: 0.02 (POST)
@@ -1013,7 +1013,7 @@ from REQ  |       |
   |       |       |
   +------>|       |         Code: 0.02 (POST)
   | POST  |       |        Token: 0x82
-  |       |       |       OSCORE: [kid: 0x20, Partial IV: 00]
+  |       |       |       OSCORE: [kid:0x20, Partial IV:0]
   |       |       |        EDHOC: -
   |       |       |         0xff
   |       |       |      Payload: EDHOC message_3, // Intended for P
@@ -1084,11 +1084,11 @@ CTX_C_P   |       |
   |       |       |
   +------>|       |         Code: 0.02 (POST)
   | POST  |       |        Token: 0x83
-  |       |       |       OSCORE: [kid: 0x20, Partial IV: 01]
+  |       |       |       OSCORE: [kid:0x20, Partial IV:1]
   |       |       |         0xff
   |       |       |      Payload: {Code: 0.02,
   |       |       |                Uri-Host: "example.com",
-  |       |       |                OSCORE: [kid: 0x5f, Partial IV: 00],
+  |       |       |                OSCORE: [kid:0x5f, Partial IV:0],
   |       |       |                EDHOC: -,
   |       |       |                Proxy-Scheme: "coap",
   |       |       |                0xff,
@@ -1105,7 +1105,7 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|         Code: 0.02 (POST)
   |       | POST  |        Token: 0xa6
-  |       |       |       OSCORE: [kid: 0x5f, Partial IV: 00]
+  |       |       |       OSCORE: [kid:0x5f, Partial IV:0]
   |       |       |        EDHOC: -
   |       |       |         0xff
   |       |       |      Payload: EDHOC message_3 // Intended for S
@@ -1253,6 +1253,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Clarified examples of Class U/I CoAP options that become encrypted.
 
 * Added reference to Onion CoAP as use case.
+
+* Fixes in the examples of message exchange.
 
 * Editorial fixes and improvements.
 
