@@ -206,18 +206,19 @@ Table of Contents
       respect to a certain message.
 
    *  Proxy-related options: either of the following (set of) CoAP
-      options used for proxying a CoAP request.
+      options used for proxying a CoAP request.  These CoAP options are
+      defined in [RFC7252] and [I-D.ietf-core-href].
 
-      -  The Proxy-Uri Option.  This is relevant when using a forward-
-         proxy.
+      -  The Proxy-Uri Option or the Proxy-Cri Option.  These are
+         relevant when using a forward-proxy.
 
-      -  The set of CoAP options comprising the Proxy-Scheme Option
-         together with any of the Uri-* Options.  This is relevant when
-         using a forward-proxy.
+      -  The set of CoAP options comprising the Proxy-Scheme Option or
+         the Proxy-Scheme-Number Option, together with any of the Uri-*
+         Options.  This is relevant when using a forward-proxy.
 
       -  One or more Uri-Path Options, when used not together with the
-         Proxy-Scheme Option.  This is relevant when using a reverse-
-         proxy.
+         Proxy-Scheme Option or the Proxy-Scheme-Number Option.  This is
+         relevant when using a reverse-proxy.
 
    *  OSCORE-in-OSCORE: the process by which a message protected with
       (Group) OSCORE is further protected with (Group) OSCORE.  This
@@ -527,6 +528,9 @@ Table of Contents
       -  The Proxy-Uri, Proxy-Scheme, Uri-Host, and Uri-Port Options
          defined in [RFC7252].
 
+      -  The Proxy-Cri and Proxy-Scheme-Number Options defined in
+         [I-D.ietf-core-href].
+
       -  The Listen-To-Multicast-Notifications Option defined in
          [I-D.ietf-core-observe-multicast-notifications].
 
@@ -566,8 +570,10 @@ Table of Contents
    2.  The endpoint proceeds as defined below, depending on which of the
        two following conditions holds.
 
-       *  REQ includes either the Proxy-Uri Option, or the Proxy-Scheme
-          Option together with any of the Uri-* Options.
+       *  REQ includes either of the following (set) of CoAP options:
+          the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme
+          Option or the Proxy-Scheme-Number Option, together with any of
+          the Uri-* Options.
 
           If the endpoint is not configured to be a forward-proxy, it
           MUST stop processing the request and MUST respond with a 5.05
@@ -604,8 +610,8 @@ Table of Contents
 
           After that, the endpoint does not take any further action.
 
-       *  REQ includes one or more Uri-Path Options but not the Proxy-
-          Scheme Option.
+       *  REQ includes one or more Uri-Path Options, but not the Proxy-
+          Scheme Option or the Proxy-Scheme-Number Option.
 
           If the endpoint is not configured to be a reverse-proxy or its
           resource targeted by the Uri-Path Options is not intended to
@@ -903,6 +909,13 @@ Table of Contents
 9.  References
 
 9.1.  Normative References
+
+   [I-D.ietf-core-href]
+              Bormann, C. and H. Birkholz, "Constrained Resource
+              Identifiers", Work in Progress, Internet-Draft, draft-
+              ietf-core-href-14, 9 January 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              href-14>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
@@ -1944,6 +1957,9 @@ C.1.  Version -00 to -01
 
    *  Clarified examples of Class U/I CoAP options that become
       encrypted.
+
+   *  Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-
+      Number.
 
    *  Added reference to Onion CoAP as use case.
 
