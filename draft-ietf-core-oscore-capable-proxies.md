@@ -68,6 +68,7 @@ informative:
   I-D.ietf-ace-coap-est-oscore:
   I-D.amsuess-core-cachable-oscore:
   I-D.tiloca-schc-8824-update:
+  I-D.amsuess-t2trg-onion-coap:
   LwM2M-Core:
     author:
       org: Open Mobile Alliance
@@ -86,6 +87,12 @@ informative:
     title: Lightweight Machine to Machine Gateway Technical Specification - Approved Version 1.1, OMA-TS-LWM2M_Gateway-V1_1-20210518-A
     date: 2021-05
     target: https://www.openmobilealliance.org/release/LwM2M_Gateway/V1_1-20210518-A/OMA-TS-LWM2M_Gateway-V1_1-20210518-A.pdf
+  TOR-SPEC:
+    author:
+      org: Tor Project
+    date: false
+    title: Tor Specifications
+    target: https://spec.torproject.org/
 
 
 --- abstract
@@ -213,7 +220,11 @@ The approach defined in this document can be useful also in the following use ca
 
 * A proxy may be deployed to act as an entry point to a firewalled network, which only authenticated clients can join. In particular, authentication can rely on the used secure communication association between a client and the proxy. If the proxy could share a dedicated OSCORE Security Context with each client, the proxy can rely on it to identify the client, before forwarding its messages to any other member of the firewalled network.
 
-* The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message. This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request using first the OSCORE Security Context shared with the origin server, and then the dedicated OSCORE Security Context shared with each of the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.
+* The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message.
+
+   This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request first by using the OSCORE Security Context shared with the origin server, and then by using different OSCORE Security Contexts shared with the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.
+
+   Building on that, it is also possible to enable the operation of hidden services and clients through onion routing with CoAP {{I-D.amsuess-t2trg-onion-coap}}, similarly to how Tor (The Onion Router) {{TOR-SPEC}} enables it for TCP-based protocols.
 
 # Message Processing # {#sec-message-processing}
 
@@ -1238,6 +1249,8 @@ request     +-----------------------------------------------+         |
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 ## Version -00 to -01 ## {#sec-00-01}
+
+* Added reference to Onion CoAP as use case.
 
 * Editorial fixes and improvements.
 
