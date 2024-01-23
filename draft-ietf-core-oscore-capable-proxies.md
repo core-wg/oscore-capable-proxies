@@ -50,6 +50,7 @@ normative:
   RFC8824:
   RFC8613:
   I-D.ietf-core-oscore-groupcomm:
+  I-D.ietf-core-href:
 
 informative:
   RFC7030:
@@ -143,13 +144,13 @@ In addition, this document uses the following terms.
 
 * OSCORE endpoint: a source/destination OSCORE endpoint. An OSCORE endpoint is not necessarily also an application endpoint with respect to a certain message.
 
-* Proxy-related options: either of the following (set of) CoAP options used for proxying a CoAP request.
+* Proxy-related options: either of the following (set of) CoAP options used for proxying a CoAP request. These CoAP options are defined in {{RFC7252}} and {{I-D.ietf-core-href}}.
 
-   - The Proxy-Uri Option. This is relevant when using a forward-proxy.
+   - The Proxy-Uri Option or the Proxy-Cri Option. These are relevant when using a forward-proxy.
 
-   - The set of CoAP options comprising the Proxy-Scheme Option together with any of the Uri-* Options. This is relevant when using a forward-proxy.
+   - The set of CoAP options comprising the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* Options. This is relevant when using a forward-proxy.
 
-   - One or more Uri-Path Options, when used not together with the Proxy-Scheme Option. This is relevant when using a reverse-proxy.
+   - One or more Uri-Path Options, when used not together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
 
 * OSCORE-in-OSCORE: the process by which a message protected with (Group) OSCORE is further protected with (Group) OSCORE. This means that, if such a process is used, a successful decryption/verification of an OSCORE-protected message might yield an OSCORE-protected message.
 
@@ -278,6 +279,8 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
 
    - The Proxy-Uri, Proxy-Scheme, Uri-Host, and Uri-Port Options defined in {{RFC7252}}.
 
+   - The Proxy-Cri and Proxy-Scheme-Number Options defined in {{I-D.ietf-core-href}}.
+
    - The Listen-To-Multicast-Notifications Option defined in {{I-D.ietf-core-observe-multicast-notifications}}.
 
    - The Multicast-Timeout, Response-Forwarding, and Group-ETag Options defined in {{I-D.tiloca-core-groupcomm-proxy}}.
@@ -304,7 +307,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
 2. The endpoint proceeds as defined below, depending on which of the two following conditions holds.
 
-   * REQ includes either the Proxy-Uri Option, or the Proxy-Scheme Option together with any of the Uri-* Options.
+   * REQ includes either of the following (set) of CoAP options: the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* Options.
 
       If the endpoint is not configured to be a forward-proxy, it MUST stop processing the request and MUST respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
@@ -318,7 +321,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       After that, the endpoint does not take any further action.
 
-   * REQ includes one or more Uri-Path Options but not the Proxy-Scheme Option.
+   * REQ includes one or more Uri-Path Options, but not the Proxy-Scheme Option or the Proxy-Scheme-Number Option.
 
       If the endpoint is not configured to be a reverse-proxy or its resource targeted by the Uri-Path Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.
 
@@ -1263,6 +1266,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 ## Version -00 to -01 ## {#sec-00-01}
 
 * Clarified examples of Class U/I CoAP options that become encrypted.
+
+* Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-Number.
 
 * Added reference to Onion CoAP as use case.
 
