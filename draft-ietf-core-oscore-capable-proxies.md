@@ -1186,7 +1186,7 @@ Curly brackets { ... } indicate encrypted data.
 
 {{fig-incoming-request-diagram}} overviews the processing of an incoming request, as specified in {{incoming-requests}}. The dotted boxes indicate ending states where the processing terminates.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Original    +-----------------------------------------------+
 incoming -->|        Are there proxy-related options?       |<--------+
 request     +-----------------------------------------------+         |
