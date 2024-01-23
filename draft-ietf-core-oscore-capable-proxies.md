@@ -479,12 +479,12 @@ CTX_C_P   |       |
   | POST  |       |    Token: 0x8c
   |       |       |   OSCORE: [kid:0x20, Partial IV:31]
   |       |       |     0xff
-  |       |       |  Payload: {Code: 0.02,
+  |       |       |  Payload: {Code: 0.02 (POST),
   |       |       |            OSCORE: [kid:0x5f, Partial IV:42],
-  |       |       |            Uri-Host: example.com,
-  |       |       |            Proxy-Scheme: coap,
+  |       |       |            Uri-Host: "example.com",
+  |       |       |            Proxy-Scheme: "coap",
   |       |       |            0xff,
-  |       |       |            {Code: 0.01,
+  |       |       |            {Code: 0.01 (GET),
   |       |       |             Uri-Path: "alarm_status"
   |       |       |            } // Encrypted with CTX_C_S
   |       |       |           } // Encrypted with CTX_C_P
@@ -495,10 +495,11 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|     Code: 0.02 (POST)
   |       | POST  |    Token: 0x7b
+  |       |       | Uri-Host: "example.com"
   |       |       |   OSCORE: [kid:0x5f, Partial IV:42]
   |       |       |     0xff
   |       |       |  Payload: {
-  |       |       |            Code: 0.01,
+  |       |       |            Code: 0.01 (GET),
   |       |       |            Uri-Path: "alarm_status"
   |       |       |           } // Encrypted with CTX_C_S
   |       |       |
@@ -514,7 +515,7 @@ CTX_C_P   |       |
   |       |  2.04 |    Token: 0x7b
   |       |       |   OSCORE: -
   |       |       |     0xff
-  |       |       |  Payload: {Code: 2.05,
+  |       |       |  Payload: {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
   |       |       |           } // Encrypted with CTX_C_S
@@ -527,10 +528,10 @@ CTX_C_P   |       |
   |  2.04 |       |    Token: 0x8c
   |       |       |   OSCORE: -
   |       |       |     0xff
-  |       |       |  Payload: {Code: 2.04,
+  |       |       |  Payload: {Code: 2.04 (Changed),
   |       |       |            OSCORE: -,
   |       |       |            0xff,
-  |       |       |            {Code: 2.05,
+  |       |       |            {Code: 2.05 (Content),
   |       |       |             0xff,
   |       |       |             "0"
   |       |       |            } // Encrypted with CTX_C_S
@@ -567,11 +568,11 @@ CTX_C_S   |       |
   |       |       |
   +------>|       |         Code: 0.02 (POST)
   | POST  |       |        Token: 0x8c
-  |       |       |     Uri-Host: example.com
-  |       |       | Proxy-Scheme: coap
+  |       |       |     Uri-Host: "example.com"
+  |       |       | Proxy-Scheme: "coap"
   |       |       |       OSCORE: [kid:0x5f, Partial IV:42]
   |       |       |         0xff
-  |       |       |      Payload: {Code: 0.01,
+  |       |       |      Payload: {Code: 0.01 (GET),
   |       |       |                Uri-Path: "alarm_status"
   |       |       |               } // Encrypted with CTX_C_S
   |       |       |
@@ -583,10 +584,11 @@ CTX_C_S   |       |
   |       | POST  |        Token: 0x7b
   |       |       |       OSCORE: [kid:0xd4, Partial IV:31]
   |       |       |         0xff
-  |       |       |      Payload: {Code: 0.02,
+  |       |       |      Payload: {Code: 0.02 (POST),
+  |       |       |                Uri-Host: "example.com",
   |       |       |                OSCORE: [kid:0x5f, Partial IV:42],
   |       |       |                0xff,
-  |       |       |                {Code: 0.01,
+  |       |       |                {Code: 0.01 (GET),
   |       |       |                 Uri-Path: "alarm_status"
   |       |       |                } // Encrypted with CTX_C_S
   |       |       |               } // Encrypted with CTX_P_S
@@ -611,10 +613,10 @@ CTX_C_S   |       |
   |       |  2.04 |        Token: 0x7b
   |       |       |       OSCORE: -
   |       |       |         0xff
-  |       |       |      Payload: {Code: 2.04,
+  |       |       |      Payload: {Code: 2.04 (Changed),
   |       |       |                OSCORE: -,
   |       |       |                0xff,
-  |       |       |                {Code: 2.05,
+  |       |       |                {Code: 2.05 (Content),
   |       |       |                 0xff,
   |       |       |                 "0"
   |       |       |                } // Encrypted with CTX_C_S
@@ -628,7 +630,7 @@ CTX_C_S   |       |
   |  2.04 |       |        Token: 0x8c
   |       |       |       OSCORE: -
   |       |       |               0xff
-  |       |       |      Payload: {Code: 2.05,
+  |       |       |      Payload: {Code: 2.05 (Content),
   |       |       |                0xff,
   |       |       |                "0"
   |       |       |               } // Encrypted with CTX_C_S
@@ -668,12 +670,12 @@ CTX_C_P   |       |
   | POST  |       |   Token: 0x8c
   |       |       |  OSCORE: [kid:0x20, Partial IV:31]
   |       |       |    0xff
-  |       |       | Payload: {Code: 0.02,
+  |       |       | Payload: {Code: 0.02 (POST),
   |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
-  |       |       |           Uri-Host: example.com,
-  |       |       |           Proxy-Scheme: coap,
+  |       |       |           Uri-Host: "example.com",
+  |       |       |           Proxy-Scheme: "coap",
   |       |       |           0xff,
-  |       |       |           {Code: 0.01,
+  |       |       |           {Code: 0.01 (GET),
   |       |       |            Uri-Path: "alarm_status"
   |       |       |           } // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_C_P
@@ -690,10 +692,11 @@ CTX_C_P   |       |
   |       | POST  |   Token: 0x7b
   |       |       |  OSCORE: [kid:0xd4, Partial IV:31]
   |       |       |    0xff
-  |       |       | Payload: {Code: 0.02,
+  |       |       | Payload: {Code: 0.02 (POST),
+  |       |       |           Uri-Host: "example.com",
   |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
   |       |       |           0xff,
-  |       |       |           {Code: 0.01,
+  |       |       |           {Code: 0.01 (GET),
   |       |       |            Uri-Path: "alarm_status"
   |       |       |           } // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_P_S
@@ -718,10 +721,10 @@ CTX_C_P   |       |
   |       |  2.04 |   Token: 0x7b
   |       |       |  OSCORE: -
   |       |       |    0xff
-  |       |       | Payload: {Code: 2.04,
+  |       |       | Payload: {Code: 2.04 (Changed),
   |       |       |           OSCORE: -,
   |       |       |           0xff,
-  |       |       |           {Code: 2.05,
+  |       |       |           {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
   |       |       |           } // Encrypted with CTX_C_S
@@ -739,10 +742,10 @@ CTX_C_P   |       |
   |  2.04 |       |   Token: 0x8c
   |       |       |  OSCORE: -
   |       |       |    0xff
-  |       |       | Payload: {Code: 2.04,
+  |       |       | Payload: {Code: 2.04 (Changed),
   |       |       |           OSCORE: -,
   |       |       |           0xff,
-  |       |       |           {Code: 2.05,
+  |       |       |           {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
   |       |       |           } // Encrypted with CTX_C_S
@@ -793,7 +796,7 @@ CTX_C_P   |       |
   +------>|       |         Code: 0.02 (POST)
   | POST  |       |        Token: 0x82
   |       |       |     Uri-Path: ".well-known"
-  |       |       |     Uri-Path: edhoc
+  |       |       |     Uri-Path: "edhoc"
   |       |       |         0xff
   |       |       |      Payload: (C_R, EDHOC message_3)
   |       |       |
@@ -811,7 +814,7 @@ CTX_C_P   |       |
   | POST  |       |        Token: 0xbe
   |       |       |       OSCORE: [kid:0x20, Partial IV:0]
   |       |       |         0xff
-  |       |       |      Payload: {Code: 0.02,
+  |       |       |      Payload: {Code: 0.02 (POST),
   |       |       |                Uri-Host: "example.com",
   |       |       |                Uri-Path: ".well-known",
   |       |       |                Uri-Path: "edhoc",
@@ -826,6 +829,7 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|         Code: 0.02 (POST)
   |       | POST  |        Token: 0xa5
+  |       |       |     Uri-Host: "example.com",
   |       |       |     Uri-Path: ".well-known"
   |       |       |     Uri-Path: "edhoc"
   |       |       |         0xff
@@ -844,7 +848,7 @@ CTX_C_P   |       |
   |  2.04 |       |        Token: 0xbe
   |       |       |       OSCORE: -
   |       |       |         0xff
-  |       |       |      Payload: {Code: 2.04,
+  |       |       |      Payload: {Code: 2.04 (Changed),
   |       |       |                0xff,
   |       |       |                EDHOC message_2
   |       |       |               } // Encrypted with CTX_C_P
@@ -860,7 +864,7 @@ CTX_C_P   |       |
   | POST  |       |        Token: 0xb9
   |       |       |       OSCORE: [kid:0x20, Partial IV:1]
   |       |       |         0xff
-  |       |       |      Payload: {Code: 0.02,
+  |       |       |      Payload: {Code: 0.02 (POST),
   |       |       |                Uri-Host: "example.com",
   |       |       |                Uri-Path: ".well-known",
   |       |       |                Uri-Path: "edhoc",
@@ -875,6 +879,7 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|         Code: 0.02 (POST)
   |       | POST  |        Token: 0xdd
+  |       |       |     Uri-Host: "example.com",
   |       |       |     Uri-Path: ".well-known"
   |       |       |     Uri-Path: "edhoc"
   |       |       |         0xff
@@ -901,12 +906,12 @@ CTX_C_P   |       |
   | POST  |       |   Token: 0x8c
   |       |       |  OSCORE: [kid:0x20, Partial IV:2]
   |       |       |    0xff
-  |       |       | Payload: {Code: 0.02,
+  |       |       | Payload: {Code: 0.02 (POST),
   |       |       |           OSCORE: [kid:0x5f, Partial IV:0],
   |       |       |           Uri-Host: "example.com",
   |       |       |           Proxy-Scheme: "coap",
   |       |       |           0xff,
-  |       |       |           {Code: 0.01,
+  |       |       |           {Code: 0.01 (GET),
   |       |       |            Uri-Path: "alarm_status"
   |       |       |           } // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_C_P
@@ -915,13 +920,14 @@ CTX_C_P   |       |
   |     REQ with  |
   |     CTX_C_P   |
   |       |       |
-  |       +------>|    Code: 0.02 (POST)
-  |       | POST  |   Token: 0x7b
-  |       |       |  OSCORE: [kid:0x5f, Partial IV:0]
-  |       |       |    0xff
-  |       |       | Payload: {Code: 0.01,
-  |       |       |           Uri-Path: "alarm_status"
-  |       |       |          } // Encrypted with CTX_C_S
+  |       +------>|     Code: 0.02 (POST)
+  |       | POST  |    Token: 0x7b
+  |       |       | Uri-Host: "example.com",
+  |       |       |   OSCORE: [kid:0x5f, Partial IV:0]
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 0.01 (GET),
+  |       |       |            Uri-Path: "alarm_status"
+  |       |       |           } // Encrypted with CTX_C_S
   |       |       |
   |       |     Decrypt
   |       |     REQ with
@@ -935,7 +941,7 @@ CTX_C_P   |       |
   |       |  2.04 |   Token: 0x7b
   |       |       |  OSCORE: -
   |       |       |    0xff
-  |       |       | Payload: {Code: 2.05,
+  |       |       | Payload: {Code: 2.05 (Content),
   |       |       |           0xff,
   |       |       |           "0"
   |       |       |          } // Encrypted with CTX_C_S
@@ -948,10 +954,10 @@ CTX_C_P   |       |
   |  2.04 |       |   Token: 0x8c
   |       |       |  OSCORE: -
   |       |       |    0xff
-  |       |       | Payload: {Code: 2.04,
+  |       |       | Payload: {Code: 2.04 (Changed),
   |       |       |           OSCORE: -,
   |       |       |           0xff,
-  |       |       |           {Code: 2.05,
+  |       |       |           {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
   |       |       |           } // Encrypted with CTX_C_S
@@ -968,7 +974,9 @@ CTX_C_S   |       |
 
 Square brackets [ ... ] indicate content of compressed COSE object.
 Curly brackets { ... } indicate encrypted data.
-Round brackets (...) indicate a CBOR sequence [RFC 8742].
+
+(A, B) indicates a CBOR sequence [RFC8742]
+       of two CBOR data items A and B.
 ~~~~~~~~~~~
 {: #fig-example-edhoc title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC"}
 
@@ -1017,7 +1025,7 @@ from REQ  |       |
   |       |       |        EDHOC: -
   |       |       |         0xff
   |       |       |      Payload: EDHOC message_3, // Intended for P
-  |       |       |               {Code: 0.02,
+  |       |       |               {Code: 0.02 (POST),
   |       |       |                Uri-Host: "example.com",
   |       |       |                Uri-Path: ".well-known",
   |       |       |                Uri-Path: "edhoc",
@@ -1039,6 +1047,7 @@ from REQ  |       |
   |       |       |
   |       +------>|         Code: 0.02 (POST)
   |       | POST  |        Token: 0xa5
+  |       |       |     Uri-Host: "example.com",
   |       |       |     Uri-Path: ".well-known"
   |       |       |     Uri-Path: "edhoc"
   |       |       |         0xff
@@ -1057,7 +1066,7 @@ from REQ  |       |
   |  2.04 |       |   Token: 0x82
   |       |       |  OSCORE: -
   |       |       |    0xff
-  |       |       | Payload: {Code: 2.04,
+  |       |       | Payload: {Code: 2.04 (Changed),
   |       |       |           0xff,
   |       |       |           EDHOC message_2
   |       |       |          } // Encrypted with CTX_C_P
@@ -1086,15 +1095,15 @@ CTX_C_P   |       |
   | POST  |       |        Token: 0x83
   |       |       |       OSCORE: [kid:0x20, Partial IV:1]
   |       |       |         0xff
-  |       |       |      Payload: {Code: 0.02,
+  |       |       |      Payload: {Code: 0.02 (POST),
   |       |       |                Uri-Host: "example.com",
   |       |       |                OSCORE: [kid:0x5f, Partial IV:0],
   |       |       |                EDHOC: -,
   |       |       |                Proxy-Scheme: "coap",
   |       |       |                0xff,
-  |       |       |                EDHOC message_3 // Intended for S
+  |       |       |                EDHOC message_3, // Intended for S
   |       |       |                {
-  |       |       |                 Code: 0.01,
+  |       |       |                 Code: 0.01 (GET),
   |       |       |                 Uri-Path:"alarm_status"
   |       |       |                } // Encrypted with CTX_C_S
   |       |       |               } // Encrypted with CTX_C_P
@@ -1105,12 +1114,13 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|         Code: 0.02 (POST)
   |       | POST  |        Token: 0xa6
+  |       |       |     Uri-Host: "example.com",
   |       |       |       OSCORE: [kid:0x5f, Partial IV:0]
   |       |       |        EDHOC: -
   |       |       |         0xff
-  |       |       |      Payload: EDHOC message_3 // Intended for S
+  |       |       |      Payload: EDHOC message_3, // Intended for S
   |       |       |               {
-  |       |       |                Code: 0.01,
+  |       |       |                Code: 0.01 (GET),
   |       |       |                Uri-Path: "alarm_status"
   |       |       |               } // Encrypted with CTX_C_S
   |       |       |
@@ -1133,7 +1143,7 @@ CTX_C_P   |       |
   |       |  2.04 |   Token: 0xa6
   |       |       |  OSCORE: -
   |       |       |    0xff
-  |       |       | Payload: {Code: 2.05,
+  |       |       | Payload: {Code: 2.05 (Content),
   |       |       |           0xff,
   |       |       |           "0"
   |       |       |          } // Encrypted with CTX_C_S
@@ -1146,10 +1156,10 @@ CTX_C_P   |       |
   |  2.04 |       |   Token: 0x83
   |       |       |  OSCORE: -
   |       |       |    0xff
-  |       |       | Payload: {Code: 2.04,
+  |       |       | Payload: {Code: 2.04 (Changed),
   |       |       |           OSCORE: -,
   |       |       |           0xff,
-  |       |       |           {Code: 2.05,
+  |       |       |           {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
   |       |       |           } // Encrypted with CTX_C_S
@@ -1166,7 +1176,9 @@ CTX_C_S   |       |
 
 Square brackets [ ... ] indicate content of compressed COSE object.
 Curly brackets { ... } indicate encrypted data.
-Round brackets (...) indicate a CBOR sequence [RFC 8742].
+
+(A, B) indicates a CBOR sequence [RFC8742]
+       of two CBOR data items A and B.
 ~~~~~~~~~~~
 {: #fig-example-edhoc-comb-req title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC using the EDHOC + OSCORE request"}
 
