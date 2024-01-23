@@ -47,10 +47,10 @@ normative:
   RFC7252:
   RFC8174:
   RFC8724:
-  RFC8824:
   RFC8613:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-core-href:
+  I-D.ietf-schc-8824-update:
 
 informative:
   RFC7030:
@@ -58,7 +58,7 @@ informative:
   RFC8742:
   RFC9200:
   I-D.ietf-core-groupcomm-bis:
-  I-D.tiloca-core-groupcomm-proxy:
+  I-D.ietf-core-groupcomm-proxy:
   I-D.ietf-core-observe-multicast-notifications:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-core-oscore-edhoc:
@@ -68,7 +68,6 @@ informative:
   I-D.ietf-core-coap-pm:
   I-D.ietf-ace-coap-est-oscore:
   I-D.amsuess-core-cachable-oscore:
-  I-D.tiloca-schc-8824-update:
   I-D.amsuess-t2trg-onion-coap:
   LwM2M-Core:
     author:
@@ -106,7 +105,7 @@ Object Security for Constrained RESTful Environments (OSCORE) can be used to pro
 
 The Constrained Application Protocol (CoAP) {{RFC7252}} supports the presence of intermediaries, such as forward-proxies and reverse-proxies, which assist origin clients by performing requests to origin servers on their behalf, and forwarding back the related responses.
 
-CoAP supports also group communication scenarios {{I-D.ietf-core-groupcomm-bis}}, where clients can send a one-to-many request targeting all the servers in the group, e.g., by using IP multicast. Like for one-to-one communication, group settings can also rely on intermediaries {{I-D.tiloca-core-groupcomm-proxy}}.
+CoAP supports also group communication scenarios {{I-D.ietf-core-groupcomm-bis}}, where clients can send a one-to-many request targeting all the servers in the group, e.g., by using IP multicast. Like for one-to-one communication, group settings can also rely on intermediaries {{I-D.ietf-core-groupcomm-proxy}}.
 
 The protocol Object Security for Constrained RESTful Environments (OSCORE) {{RFC8613}} can be used to protect CoAP messages between two endpoints at the application layer, especially achieving end-to-end security in the presence of (non-trusted) intermediaries. When CoAP group communication is used, the same can be achieved by means of the protocol Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
@@ -162,9 +161,9 @@ The approach defined in this document has been motivated by a number of use case
 
 CoAP supports also one-to-many group communication, e.g., over IP multicast {{I-D.ietf-core-groupcomm-bis}}, which can be protected end-to-end between origin client and origin servers by using Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
-This communication model can be assisted by intermediaries such as a CoAP forward-proxy or reverse-proxy, which relays a group request to the origin servers. If Group OSCORE is used, the proxy is intentionally not a member of the OSCORE group. Furthermore, {{I-D.tiloca-core-groupcomm-proxy}} defines a signaling protocol between origin client and proxy, to ensure that responses from the different origin servers are forwarded back to the origin client within a time interval set by the client, and that they can be distinguished from one another.
+This communication model can be assisted by intermediaries such as a CoAP forward-proxy or reverse-proxy, which relays a group request to the origin servers. If Group OSCORE is used, the proxy is intentionally not a member of the OSCORE group. Furthermore, {{I-D.ietf-core-groupcomm-proxy}} defines a signaling protocol between origin client and proxy, to ensure that responses from the different origin servers are forwarded back to the origin client within a time interval set by the client, and that they can be distinguished from one another.
 
-In particular, it is required that the proxy identifies the origin client as allowed-listed, before forwarding a group request to the servers (see {{Section 4 of I-D.tiloca-core-groupcomm-proxy}}). This requires a security association between the origin client and the proxy, which would be convenient to provide with a dedicated OSCORE Security Context between the two, since the client is possibly using also Group OSCORE with the origin servers.
+In particular, it is required that the proxy identifies the origin client as allowed-listed, before forwarding a group request to the servers (see {{Section 4 of I-D.ietf-core-groupcomm-proxy}}). This requires a security association between the origin client and the proxy, which would be convenient to provide with a dedicated OSCORE Security Context between the two, since the client is possibly using also Group OSCORE with the origin servers.
 
 ## CoAP Observe Notifications over Multicast # {#ssec-uc2}
 
@@ -283,7 +282,7 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
 
    - The Listen-To-Multicast-Notifications Option defined in {{I-D.ietf-core-observe-multicast-notifications}}.
 
-   - The Multicast-Timeout, Response-Forwarding, and Group-ETag Options defined in {{I-D.tiloca-core-groupcomm-proxy}}.
+   - The Multicast-Timeout, Response-Forwarding, and Group-ETag Options defined in {{I-D.ietf-core-groupcomm-proxy}}.
 
 * Any CoAP option such that the sender endpoint has not added the option to the message.
 
@@ -389,7 +388,7 @@ When using this approach, the following also applies in addition to what is defi
 
    Then, the proxy stores specifically that resulting response message in its cache. That is, such a message is exactly the one to be forwarded to (the previous hop towards) the origin client.
 
-The specific rules about serving a request with a cached response are defined in {{Section 5.6 of RFC7252}}, as well as in {{Section 7 of I-D.tiloca-core-groupcomm-proxy}} for group communication scenarios.
+The specific rules about serving a request with a cached response are defined in {{Section 5.6 of RFC7252}}, as well as in {{Section 7 of I-D.ietf-core-groupcomm-proxy}} for group communication scenarios.
 
 # Establishment of OSCORE Security Contexts
 
@@ -411,11 +410,11 @@ At the same time, the following applies, depending on the two peers using OSCORE
 
 The method defined in this document enables and results in the possible protection of the same CoAP message with multiple, nested OSCORE layers. Especially when this happens, it is desirable to compress the header of protected CoAP messages, in order to improve performance and ensure that CoAP is usable also in Low-Power Wide-Area Networks (LPWANs).
 
-To this end, it is possible to use the Static Context Header Compression and fragmentation (SCHC) framework {{RFC8724}}. In particular, {{RFC8824}} specifies how to use SCHC for compressing headers of CoAP messages, also when messages are protected with OSCORE. As further clarified in {{I-D.tiloca-schc-8824-update}}, the SCHC Compression/Decompression is applicable also in the presence of CoAP proxies, and especially to the two following cases.
+To this end, it is possible to use the Static Context Header Compression and fragmentation (SCHC) framework {{RFC8724}}. In particular, {{I-D.ietf-schc-8824-update}} specifies how to use SCHC for compressing headers of CoAP messages, also when messages are protected with OSCORE. The SCHC Compression/Decompression is applicable also in the presence of CoAP proxies, and especially to the two following cases.
 
 * In case OSCORE is not used at all, the SCHC processing occurs hop-by-hop, by relying on SCHC Rules that are consistently shared between two adjacent hops.
 
-* In case OSCORE is used only end-to-end between the application endpoints, then an Inner SCHC Compression/Decompression and an Outer SCHC Compression/Decompression are performed (see {{Section 7.2 of RFC8824}}). In particular, the following holds.
+* In case OSCORE is used only end-to-end between the application endpoints, then an Inner SCHC Compression/Decompression and an Outer SCHC Compression/Decompression are performed (see {{Section 8.2 of I-D.ietf-schc-8824-update}}). In particular, the following holds.
 
    The SCHC processing occurs end-to-end as to the Inner SCHC Compression/Decompression. This relies on Inner SCHC Rules that are shared between the two application endpoints, which act as OSCORE endpoints and share the used OSCORE Security Context.
 
@@ -1272,6 +1271,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Added reference to Onion CoAP as use case.
 
 * Fixes in the examples of message exchange.
+
+* Updated references.
 
 * Editorial fixes and improvements.
 
