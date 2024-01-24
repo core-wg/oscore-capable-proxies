@@ -481,13 +481,15 @@ Table of Contents
 
        If its defined limit is reached when processing a CoAP message,
        an OSCORE endpoint MUST NOT perform any further OSCORE processing
-       on that message.  For an outgoing request, this results in
-       aborting the message sending altogether.  For an incoming
-       request, this results in replying with a 4.01 (Unauthorized)
-       error response, which the OSCORE endpoint protects by applying
-       the same OSCORE layers that it successfully removed from the
-       corresponding incoming request, but in the reverse order than the
-       one according to which they were removed (see Section 3.4).
+       on that message.  If the message is an outgoing request and it
+       requires further OSCORE processing beyond the set limit, the
+       endpoint MUST abort the message sending.  If the message is an
+       incoming request and it requires further OSCORE processing beyond
+       the set limit, the endpoint MUST reply with a 4.01 (Unauthorized)
+       error response.  The endpoint protects such a response by
+       applying the same OSCORE layers that it successfully removed from
+       the corresponding incoming request, but in the reverse order than
+       the one according to which they were removed (see Section 3.4).
 
    Appendix A provides a number of examples where the approach defined
    in this document is used to protect message exchanges.
