@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613 (if approved)                                      RISE AB
-Intended status: Standards Track                         23 January 2024
-Expires: 26 July 2024
+Intended status: Standards Track                         24 January 2024
+Expires: 27 July 2024
 
 
                          OSCORE-capable Proxies
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 July 2024.
+   This Internet-Draft will expire on 27 July 2024.
 
 Copyright Notice
 
@@ -90,6 +90,7 @@ Table of Contents
    5.  Establishment of OSCORE Security Contexts
    6.  CoAP Header Compression with SCHC
    7.  Security Considerations
+     7.1.  Preserving Location Anonimity
    8.  IANA Considerations
    9.  References
      9.1.  Normative References
@@ -588,7 +589,7 @@ Table of Contents
           on the specific OSCORE Security Context that the endpoint used
           to decrypt the incoming message, before performing this step.
 
-          In case the authentication check fails, the endpoint MUST stop
+          In case the authorization check fails, the endpoint MUST stop
           processing the request and MUST respond with a 4.01
           (Unauthorized) error response to (the previous hop towards)
           the origin client, as per Section 5.10.2 of [RFC7252].  This
@@ -666,6 +667,23 @@ Table of Contents
           Request) error response to (the previous hop towards) the
           origin client.  This may result in protecting the error
           response over that communication leg, as per Section 3.4.
+
+          Otherwise, the endpoint MUST check whether decrypting the
+          request is an authorized operation, in view of the (previous
+          hop towards the) origin client being the alleged request
+          sender.  This check can be based, for instance, on considering
+          the source addressing information of the request, and then
+          asserting whether the OSCORE Security Context indicated by the
+          OSCORE Option is not only available to use, but also present
+          in a local list of OSCORE Security Contexts that are usable to
+          decrypt a request from the alleged request sender.
+
+          In case the authorization check fails, the endpoint MUST stop
+          processing the request and MUST respond with a 4.01
+          (Unauthorized) error response to (the previous hop towards)
+          the origin client, as per Section 5.10.2 of [RFC7252].  This
+          may result in protecting the error response over that
+          communication leg, as per Section 3.4.
 
           Otherwise, the endpoint decrypts REQ using the OSCORE Security
           Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ).
@@ -902,6 +920,31 @@ Table of Contents
    defined in this document provides them with the same security
    guarantees that OSCORE and Group OSCORE provide in the case where
    such endpoints are specifically application endpoints.
+
+7.1.  Preserving Location Anonimity
+
+   Before decrypting an incoming request (see step 3 in Section 3.3),
+   the recipient endpoint checks whether decryption is authorized, in
+   the light of the alleged request sender and the OSCORE Security
+   Context to use.  This is particularly relevant for an origin server
+   that expects to receive messages protected end-to-end by origin
+   clients, but only if sent by a reverse-proxy as its adjacent hop.
+
+   In that setup, the authorization check prevents a malicious sender
+   endpoint C from associating the addressing information of the origin
+   server S with their shared OSCORE Security Context CTX.  Making such
+   an association would compromise the location anonimity of the origin
+   server, as otherwise afforded by the reverse-proxy.
+
+   That is, if C gains knowledge of some addressing information ADDR,
+   then C might send a request directly addressed to ADDR and protected
+   with CTX.  A response protected with CTX would prove that ADDR is in
+   fact the addressing information of S.
+
+   However, after performing and failing the authorization check on the
+   received request, S replies with a 4.01 (Unauthorized) error response
+   that is not protected with CTX, hence preserving the location
+   anonimity of the origin server.
 
 8.  IANA Considerations
 
@@ -1956,6 +1999,8 @@ C.1.  Version -00 to -01
       Number.
 
    *  Added reference to Onion CoAP as use case.
+
+   *  Added authorization check before decrypting a request.
 
    *  Fixes in the examples of message exchange.
 
