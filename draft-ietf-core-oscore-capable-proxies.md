@@ -230,7 +230,7 @@ The approach defined in this document can be useful also in the following use ca
 
 As mentioned in {{intro}}, this document introduces the following two main deviations from the original OSCORE specification {{RFC8613}}.
 
-1. An "OSCORE endpoint" as a producer/consumer of an OSCORE Option, can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.
+1. An "OSCORE endpoint", as a producer/consumer of an OSCORE Option, can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.
 
    Hence, OSCORE can be used between an origin client/server and a proxy, as well as between two proxies in an intermediary chain.
 
@@ -246,7 +246,7 @@ As mentioned in {{intro}}, this document introduces the following two main devia
 
 {{sec-examples}} provides a number of examples where the approach defined in this document is used to protect message exchanges.
 
-## General Rules on Protecting Options {#general-rules}
+## General Rules on Protecting CoAP Options {#general-rules}
 
 Let us consider a sender endpoint that, when protecting an outgoing message, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.
 
