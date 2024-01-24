@@ -563,7 +563,8 @@ Table of Contents
 3.3.  Processing an Incoming Request
 
    Upon receiving a request REQ, the recipient endpoint performs the
-   actions described in the following steps.
+   actions described in the following steps.  Appendix B provides an
+   overview as a state diagram.
 
    1.  If REQ includes proxy-related options, the endpoint moves to step
        2.  Otherwise, the endpoint moves to step 3.
@@ -596,14 +597,20 @@ Table of Contents
           may result in protecting the error response over that
           communication leg, as per Section 3.4.
 
-          Otherwise, the endpoint consumes the proxy-related options as
-          per Section 5.7.2 of [RFC7252] and forwards REQ to (the next
-          hop towards) the origin server, unless differently indicated
-          in REQ, e.g., by means of any of its CoAP options.  For
-          instance, a forward-proxy does not forward a request that
-          includes proxy-related options together with the Listen-To-
-          Multicast-Notifications Option (see Section 12 of
-          [I-D.ietf-core-observe-multicast-notifications]).
+          Instead, in case the authorization check succeeds, the
+          endpoint consumes the proxy-related options as per
+          Section 5.7.2 of [RFC7252].  In particular, the endpoint
+          checks whether the authority (host and port) of the request
+          URI identifies the endpoint itself.  In such a case, the
+          endpoint moves to step 1.
+
+          Otherwise, the endpoint forwards REQ to (the next hop towards)
+          the origin server according to the request URI, unless
+          differently indicated in REQ, e.g., by means of any of its
+          CoAP options.  For instance, a forward-proxy does not forward
+          a request that includes proxy-related options together with
+          the Listen-To-Multicast-Notifications Option (see Section 12
+          of [I-D.ietf-core-observe-multicast-notifications]).
 
           If the endpoint forwards REQ to (the next hop towards) the
           origin server, this may result in (further) protecting REQ
@@ -685,9 +692,10 @@ Table of Contents
           may result in protecting the error response over that
           communication leg, as per Section 3.4.
 
-          Otherwise, the endpoint decrypts REQ using the OSCORE Security
-          Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ).
-          After that, the possible presence of an OSCORE Option in the
+          Instead, in case the authorization check succeeds, the
+          endpoint decrypts REQ using the OSCORE Security Context
+          indicated by the OSCORE Option, i.e., REQ* = dec(REQ).  After
+          that, the possible presence of an OSCORE Option in the
           decrypted request REQ* is not treated as an error situation.
 
           If the OSCORE processing results in an error, the endpoint
@@ -700,9 +708,6 @@ Table of Contents
           that communication leg, as per Section 3.4.
 
           Otherwise, REQ takes REQ*, and the endpoint moves to step 1.
-
-   Appendix B provides an overview of the process defined above as a
-   state diagram.
 
 3.4.  Processing an Outgoing Response
 
@@ -1999,6 +2004,9 @@ C.1.  Version -00 to -01
       Number.
 
    *  Added reference to Onion CoAP as use case.
+
+   *  A forward-proxy consumes a request when identified by the request
+      URI.
 
    *  Added authorization check before decrypting a request.
 
