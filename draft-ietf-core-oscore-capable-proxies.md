@@ -230,7 +230,7 @@ The approach defined in this document can be useful also in the following use ca
 
 As mentioned in {{intro}}, this document introduces the following two main deviations from the original OSCORE specification {{RFC8613}}.
 
-1. An "OSCORE endpoint", i.e., a producer/consumer of an OSCORE Option can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.
+1. An "OSCORE endpoint" as a producer/consumer of an OSCORE Option, can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.
 
    Hence, OSCORE can be used between an origin client/server and a proxy, as well as between two proxies in an intermediary chain.
 
@@ -238,7 +238,11 @@ As mentioned in {{intro}}, this document introduces the following two main devia
 
    The most common case is expected to consider a message protected with up to two OSCORE layers, i.e.: i) an inner layer, protecting the message end-to-end between the origin client and the origin server acting as application endpoints; and ii) an outer layer, protecting the message between a certain OSCORE endpoint and the other OSCORE endpoint adjacent in the intermediary chain.
 
-   However, a message can also be protected with a higher arbitrary number of nested OSCORE layers, e.g., in scenarios relying on a longer chain of intermediaries. For instance, the origin client can sequentially apply multiple OSCORE layers to a request, each of which to be consumed and removed by one of the intermediaries in the chain, until the origin server is reached and it consumes the innermost OSCORE layer.
+   However, a message can also be protected with a higher, arbitrary number of nested OSCORE layers, e.g., in scenarios relying on a longer chain of intermediaries. For instance, the origin client can sequentially apply multiple OSCORE layers to a request, each of which to be consumed and removed by one of the intermediaries in the chain, until the origin server is reached and it consumes the innermost OSCORE layer.
+
+   An OSCORE endpoint SHOULD define the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message. The defined limit has to appropriately reflect the security requirements of the application. At the same time, it is typically bounded by the maximum number of OSCORE Security Contexts that can be active at the endpoint, and by the number of intermediary OSCORE endpoints that have been explicitly set up by the communicating parties.
+
+   If its defined limit is reached when processing a CoAP message, an OSCORE endpoint MUST NOT perform any further OSCORE processing on that message. For an outgoing request, this results in aborting the message sending altogether. For an incoming request, this results in replying with a 4.01 (Unauthorized) error response, which the OSCORE endpoint protects by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed (see {{outgoing-responses}}).
 
 {{sec-examples}} provides a number of examples where the approach defined in this document is used to protect message exchanges.
 
@@ -1315,6 +1319,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-Number.
 
 * Added reference to Onion CoAP as use case.
+
+* Required to set a limit on OSCORE layers that can be added/removed.
 
 * A forward-proxy consumes a request when identified by the request URI.
 
