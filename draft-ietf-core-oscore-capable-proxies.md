@@ -1203,72 +1203,104 @@ Curly brackets { ... } indicate encrypted data.
 {{fig-incoming-request-diagram}} overviews the processing of an incoming request, as specified in {{incoming-requests}}. The dotted boxes indicate ending states where the processing terminates.
 
 ~~~~~~~~~~~ aasvg
-Original    +-----------------------------------------------+
-incoming -->|        Are there proxy-related options?       |<--------+
-request     +-----------------------------------------------+         |
-             |                                           |            |
-            YES                                          NO           |
-             |                                           |            |
-             v                                           v            |
-+-------------+     +---------+    .......... +------------------+    |
-| Is there a  | YES | Am I a  | NO : Return : | Is there an      |    |
-| Proxy-Uri   |---->| forward |--->: 5.05   : | OSCORE Option?   |    |
-| Option?     |     | proxy?  |    :........: +------------------+    |
-+-------------+     +---------+                ^  |        |          |
-   |                 ^       |     ..........  |  NO      YES         |
-   NO                |      YES    : Return :  |  |        |          |
-   |                 |       |     : 4.01   :  |  |        v          |
-   |                 |       |     :........:  |  |  +------------+   |
-   |                 |       |       ^         |  |  | Are there  |   |
-   |                 |       |       |         |  |  | Uri-Path   |   |
-   |                YES      |       NO        |  |  | Options?   |   |
-   v                 |       v       |         |  |  +------------+   |
- +--------------------+ +---------------+      |  |   |          |    |
- | Is there the       | | Is forwarding |      |  |  YES         NO   |
- | Proxy-Scheme       | | this request  |      |  |   |          |    |
- | option with the    | | an authorized |      |  |   v          |    |
- | Uri-Host/Uri-Port  | | operation?    |      |  | ..........   |    |
- | options?           | +---------------+      |  | : Return :   |    |
- +--------------------+  ^           |         |  | : 4.00   :   |    |
-   |                     |          YES        |  | :........:   |    |
-   NO                    |           |         |  |              v    |
-   |                     |           |         |  |       +---------+ |
-   v                     |           v         |  |       | Decrypt | |
- +--------------+        |  .................  |  |       +---------+ |
- | There are    |        |  : Consume the   :  |  |         |         |
- | Uri-Path     |        |  : proxy-related :  |  |         |         |
- | Options      |        |  : options and   :  |  |         v         |
- | without      |        |  : forward the   :  |  | +----------+      |
- | Proxy-Scheme |        |  : request       :  |  | | Success? |-YES -+
- +--------------+        |  :...............:  |  | +----------+
-   |                     |                     |  |      |
-   |                     |                     |  |      NO
-   |                     |                     |  |      |
-   |                     |                     |  |      v
-   |                     |                     |  | ................
-   |                     |                     |  | : OSCORE error :
-   |                     |                     |  | : handling     :
-   |                     |                     |  | :..............:
-   |                     |                     |  |
-   |                     |                     |  v
-   |                     |                     | +--------------+
-   |                     |                     | | Is there an  |
-   |                     |                     | | application? |
-   |                     |                     | +--------------+
-   |                     |                     |     |        |
-   |                     |                     |    YES       NO
-   |                     |                     |     |        |
-   |                     |                     |     |        v
-   |                     |                     |     |      ..........
-   |                     |                     |     |      : Return :
-   |                     |                     |     |      : 4.00   :
-   |                    YES                    |     |      :........:
-   v                     |                     |     v
- +------------------------+                    |   ...................
- | Am I a reverse proxy   |                    |   : Deliver the     :
- | using the indicated    |--NO----------------+   : request to the  :
- | resource for proxying? |                        : application     :
- +------------------------+                        :.................:
+             +-----------------------------------------------+
+Incoming --->|        Are there proxy-related options?       |<-------+
+request      +-----------------------------------------------+        |
+              |                           ^          |                |
+             YES        ..........        |          NO               |
+              |         : Return :        |          |                |
+              |         : 5.05   :        |          |                |
+              |         :........:        |          |                |
+              |             ^             |          |                |
+              |             |             |          |                |
+              |             NO            |          |                |
+              v             |             |          v                |
++--------------+ YES    +---------+       |  +----------------+       |
+| Is there the |------->| Am I a  |       |  | Is there an    |       |
+| Proxy-Uri or |        | forward |       |  | OSCORE Option? |       |
+| Proxy-Cri    |  +---->| proxy?  |       |  +----------------+       |
+| Option?      |  |     +---------+       |   ^   |       |           |
++--------------+  |       |               |   |   NO     YES          |
+   |              |      YES              |   |   |       |           |
+   NO             |       |               |   |   |       |           |
+   |              |       |               |   |   |       |           |
+   |              |       |               |   |   |       |           |
+   |              |       |  ..........   |   |   |       |           |
+   |              |       |  : Return :   |   |   |       |           |
+   |              |       |  : 4.01   :   |   |   |       v           |
+   |              |       |  :........:   |   |   |    +-----------+  |
+   |              |       |      ^        |   |   |    | Are there |  |
+   |              |       |      |        |   |   |    | Uri-Path  |  |
+   |             YES      |      NO       |   |   |    | Options?  |  |
+   v              |       v      |        |   |   |    +-----------+  |
++---------------------+ +---------------+ |   |   |     |         |   |
+| Is there the        | | Is forwarding | |   |   |    YES        NO  |
+| Proxy-Scheme or     | | the request   | |   |   |     |         |   |
+| Proxy-Scheme-Number | | an authorized | |   |   |     v         |   |
+| Option, together    | | operation?    | |   |   |   ..........  |   |
+| with the Uri-Host   | +---------------+ |   |   |   : Return :  |   |
+| or Uri-Port Option? |           |       |   |   |   : 4.00   :  |   |
++---------------------+          YES      |   |   |   ..........  |   |
+   |                              |       |   |   |               |   |
+   NO                             |       |   |   |               |   |
+   |                              |       |   |   |               |   |
+   |                              v       |   |   |               v   |
+   |                  +---------------+   |   |   | +---------------+ |
+   |                  | Consume the   |   |   |   | | Is decrypting | |
+   |                  | proxy-related |   |   |   | | the request   | |
+   |                  | options       |   |   |   | | an authorized | |
+   |                  +---------------+   |   |   | | operation?    | |
+   |                              |       |   |   | +---------------+ |
+   |                              |       |   |   |    |         |    |
+   |                              |       |   |   |    NO       YES   |
+   |                              |       |   |   |    |         |    |
+   |                              |      YES  |   |    |         |    |
+   |                              v       |   |   |    |         |    |
+   |            +--------------------------+  |   |    |         |    |
+   |            | Does the authority       |  |   |    v         |    |
+   |            | (host and port) of the   |  |   |  ..........  |    |
+   |            | request URI identify me? |  |   |  : Return :  |    |
+   |            +--------------------------+  |   |  : 4.01   :  |    |
+   |                              |           |   |  :........:  |    |
+   |                              NO          |   |              |    |
+   |                              |           |   |              v    |
+   |                              |           |   |     +---------+   |
+   v                              v           |   |     | Decrypt |   |
++---------------------+    ...............    |   |     +---------+   |
+| There are Uri-Path  |    : Forward the :    |   |         |         |
+| Options, without    |    : request     :    |   |         |         |
+| the Proxy-Scheme or |    :.............:    |   |         v         |
+| Proxy-Scheme-Number |           ^           |   | +----------+      |
+| Option              |           |           |   | | Success? |-YES -+
++---------------------+           |           |   | +----------+
+   |                              |           |   |         |
+   |                              |           |   |         NO
+   |                              |           |   |         |
+   |                              |           |   |         v
+   |                              |           |   |    ................
+   |       ..........    +---------------+    |   |    : OSCORE error :
+   |       : Return :    | Consume the   |    |   |    : handling     :
+   |       : 4.01   :    | proxy-related |    |   |    :..............:
+   |       :........:    | options       |    |   |
+   |            ^        +---------------+    |   v
+   |            |                 ^           |  +--------------+
+   |            NO                |           |  | Is there an  |
+   |            |                 |           |  | application? |
+   |       +---------------+      |           |  +--------------+
+   |       | Is forwarding |      |           |        |       |
+   |       | the request   |-YES--+           |       YES      NO
+   |       | an authorized |                  |        |       |
+   |       | operation?    |                  |        |       v
+   |       +---------------+                  |        |     ..........
+   |            ^                             |        |     : Return :
+   |            |                             |        |     : 4.00   :
+   |           YES                            |        |     :........:
+   v            |                             |        v
++------------------------+                    |      ..................
+| Am I a reverse proxy   |                    |      : Deliver the    :
+| using the indicated    |-NO-----------------+      : request to the :
+| resource for proxying? |                           : application    :
++------------------------+                           :................:
 ~~~~~~~~~~~
 {: #fig-incoming-request-diagram title="Processing of an incoming request." artwork-align="center"}
 
@@ -1289,6 +1321,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Added authorization check before decrypting a request.
 
 * Fixes in the examples of message exchange.
+
+* Updated state diagram of the incoming request processing.
 
 * Updated references.
 
