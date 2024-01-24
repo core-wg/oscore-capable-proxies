@@ -312,7 +312,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an authorized operation. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
 
-      In case the authentication check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+      In case the authorization check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
       Otherwise, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}} and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see {{Section 12 of I-D.ietf-core-observe-multicast-notifications}}).
 
@@ -347,6 +347,10 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
    * REQ includes an OSCORE Option.
 
       If REQ includes any Uri-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+
+      Otherwise, the endpoint MUST check whether decrypting the request is an authorized operation, in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request, and then asserting whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.
+
+      In case the authorization check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
       Otherwise, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.
 
@@ -443,6 +447,16 @@ The same security considerations from CoAP {{RFC7252}} apply to this document. T
 Further security considerations to take into account are inherited from the specifically used CoAP options, extensions, and methods employed when relying on OSCORE or Group OSCORE.
 
 This document does not change the security properties of OSCORE and Group OSCORE. That is, given any two OSCORE endpoints, the method defined in this document provides them with the same security guarantees that OSCORE and Group OSCORE provide in the case where such endpoints are specifically application endpoints.
+
+## Preserving Location Anonimity
+
+Before decrypting an incoming request (see step 3 in {{incoming-requests}}), the recipient endpoint checks whether decryption is authorized, in the light of the alleged request sender and the OSCORE Security Context to use. This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
+
+In that setup, the authorization check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with their shared OSCORE Security Context CTX. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.
+
+That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.
+
+However, after performing and failing the authorization check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonimity of the origin server.
 
 # IANA Considerations
 
@@ -1269,6 +1283,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-Number.
 
 * Added reference to Onion CoAP as use case.
+
+* Added authorization check before decrypting a request.
 
 * Fixes in the examples of message exchange.
 
