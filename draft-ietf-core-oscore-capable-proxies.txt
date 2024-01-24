@@ -81,7 +81,7 @@ Table of Contents
      2.4.  LwM2M Gateway
      2.5.  Further Use Cases
    3.  Message Processing
-     3.1.  General Rules on Protecting Options
+     3.1.  General Rules on Protecting CoAP Options
      3.2.  Processing an Outgoing Request
      3.3.  Processing an Incoming Request
      3.4.  Processing an Outgoing Response
@@ -441,7 +441,7 @@ Table of Contents
    As mentioned in Section 1, this document introduces the following two
    main deviations from the original OSCORE specification [RFC8613].
 
-   1.  An "OSCORE endpoint" as a producer/consumer of an OSCORE Option,
+   1.  An "OSCORE endpoint", as a producer/consumer of an OSCORE Option,
        can be not only an application endpoint (i.e., an origin client
        or server), but also an intermediary such as a proxy.
 
@@ -492,7 +492,7 @@ Table of Contents
    Appendix A provides a number of examples where the approach defined
    in this document is used to protect message exchanges.
 
-3.1.  General Rules on Protecting Options
+3.1.  General Rules on Protecting CoAP Options
 
    Let us consider a sender endpoint that, when protecting an outgoing
    message, applies the i-th OSCORE layer in sequence, by using the
