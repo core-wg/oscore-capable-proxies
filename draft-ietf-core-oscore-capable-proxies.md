@@ -300,7 +300,7 @@ When an application endpoint applies multiple OSCORE layers in sequence to prote
 
 ## Processing an Incoming Request {#incoming-requests}
 
-Upon receiving a request REQ, the recipient endpoint performs the actions described in the following steps.
+Upon receiving a request REQ, the recipient endpoint performs the actions described in the following steps. {{sec-incoming-req-diag}} provides an overview as a state diagram.
 
 1. If REQ includes proxy-related options, the endpoint moves to step 2. Otherwise, the endpoint moves to step 3.
 
@@ -314,7 +314,9 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       In case the authorization check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}} and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see {{Section 12 of I-D.ietf-core-observe-multicast-notifications}}).
+      Instead, in case the authorization check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to step 1.
+
+      Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see {{Section 12 of I-D.ietf-core-observe-multicast-notifications}}).
 
       If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
 
@@ -352,13 +354,11 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       In case the authorization check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.
+      Instead, in case the authorization check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.
 
       If the OSCORE processing results in an error, the endpoint MUST stop processing the request and performs error handling as per {{Section 8.2 of RFC8613}} or {{Sections 8.2 and 9.4 of I-D.ietf-core-oscore-groupcomm}}, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
       Otherwise, REQ takes REQ*, and the endpoint moves to step 1.
-
-{{sec-incoming-req-diag}} provides an overview of the process defined above as a state diagram.
 
 ## Processing an Outgoing Response {#outgoing-responses}
 
@@ -1283,6 +1283,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-Number.
 
 * Added reference to Onion CoAP as use case.
+
+* A forward-proxy consumes a request when identified by the request URI.
 
 * Added authorization check before decrypting a request.
 
