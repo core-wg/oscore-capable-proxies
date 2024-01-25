@@ -1224,7 +1224,7 @@ Curly brackets { ... } indicate encrypted data.
 
 # State Diagram: Protection of CoAP Options # {#sec-option-protection-diag}
 
-{{fig-option-protection-diagram}} overviews the rules defined in {{general-rules}}, to determine whether a CoAP option that is originally specified as Class U or I for OSCORE has to be processed like if it was specified as Class E, when protecting an outgoing CoAP request.
+{{fig-option-protection-diagram}} overviews the rules defined in {{general-rules}}, to determine whether a CoAP option that is originally specified as Class U or I for OSCORE has to be processed like if it was specified as Class E, when protecting an outgoing message.
 
 ~~~~~~~~~~~ aasvg
 ..........................
@@ -1286,7 +1286,7 @@ Curly brackets { ... } indicate encrypted data.
                                              | original Class U or I  |
                                              +------------------------+
 ~~~~~~~~~~~
-{: #fig-option-protection-diagram title="Protection of CoAP Options of Class U or I in Outgoing Requests." artwork-align="center"}
+{: #fig-option-protection-diagram title="Protection of CoAP Options of Class U or I in Outgoing Messages." artwork-align="center"}
 
 # State Diagram: Processing of Incoming Requests # {#sec-incoming-req-diag}
 
