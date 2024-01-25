@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613 (if approved)                                      RISE AB
-Intended status: Standards Track                         24 January 2024
-Expires: 27 July 2024
+Intended status: Standards Track                         25 January 2024
+Expires: 28 July 2024
 
 
                          OSCORE-capable Proxies
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 July 2024.
+   This Internet-Draft will expire on 28 July 2024.
 
 Copyright Notice
 
@@ -205,6 +205,9 @@ Table of Contents
    *  OSCORE endpoint: a source/destination OSCORE endpoint.  An OSCORE
       endpoint is not necessarily also an application endpoint with
       respect to a certain message.
+
+   *  Hop: an endpoint in the end-to-end path between two application
+      endpoints included.
 
    *  Proxy-related options: either of the following (set of) CoAP
       options used for proxying a CoAP request.  These CoAP options are
