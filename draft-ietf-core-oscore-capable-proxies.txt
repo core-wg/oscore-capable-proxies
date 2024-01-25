@@ -26,7 +26,7 @@ Abstract
    intermediary or between two intermediaries.  Thus, this document
    updates RFC 8613.  The same approach can be seamlessly used with
    Group OSCORE, for protecting CoAP messages when group communication
-   with intermediaries is used.
+   is used in the presence of intermediaries.
 
 Discussion Venues
 
