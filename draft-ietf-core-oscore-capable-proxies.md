@@ -248,11 +248,11 @@ As mentioned in {{intro}}, this document introduces the following two main devia
 
 {{sec-examples}} provides a number of examples where the approach defined in this document is used to protect message exchanges.
 
-## Protecting CoAP Options {#general-rules}
+## Protection of CoAP Options {#general-rules}
 
 Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.
 
-In addition to the CoAP options specified as class E in {{RFC8613}} or in the document defining them, the sender endpoint MUST encrypt and integrity-protect the following CoAP options. That is, even if they are originally specified as class U or class I for OSCORE, such options are processed like if they were specified as class E.
+In addition to the CoAP options specified as Class E in {{RFC8613}} or in the document defining them, the sender endpoint MUST encrypt and integrity-protect the following CoAP options. That is, even if they are originally specified as Class U or I for OSCORE, such options are processed like if they were specified as Class E.
 
 * Any CoAP option OPT such that all the following conditions hold.
 
@@ -308,19 +308,21 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
 
    - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is not the EDHOC Initiator.
 
+{{sec-option-protection-diag}} provides an overview as a state diagram.
+
 Note that, in a simple scenario where no intermediaries are deployed between two origin endpoints, the rules defined above result in encrypting and integrity-protecting the Uri-Host and Uri-Port Options included in a CoAP request. This is different from what was intended in {{RFC8613}}, according to which the two options were meant to be always unprotected.
 
 However, in the absence of intermediaries, there is no reason for those two options to be unprotected. In fact, at the origin server, they do not play a role in retrieving the OSCORE Security Context to use for decrypting a received request, and the server can still consume them as usual, after the request has been decrypted.
 
 If only one of the two origin endpoints has not implemented this updated behavior, this is not an interoperability issue. That is, if such an endpoint is a client, then the two options remain unprotected in a sent request, and the recipient server processes those as expected in {{RFC8613}}. Instead, if such an endpoint is a server, then it still decrypts the received request according to {{RFC8613}}, after which it has access to the two options.
 
-## Processing an Outgoing Request {#outgoing-requests}
+## Processing of an Outgoing Request {#outgoing-requests}
 
 The rules from {{general-rules}} apply when processing an outgoing request message, with the following addition.
 
 When an application endpoint applies multiple OSCORE layers in sequence to protect an outgoing request, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
 
-## Processing an Incoming Request {#incoming-requests}
+## Processing of an Incoming Request {#incoming-requests}
 
 Upon receiving a request REQ, the recipient endpoint performs the actions described in the following steps. {{sec-incoming-req-diag}} provides an overview as a state diagram.
 
@@ -382,7 +384,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       Otherwise, REQ takes REQ*, and the endpoint moves to step 1.
 
-## Processing an Outgoing Response {#outgoing-responses}
+## Processing of an Outgoing Response {#outgoing-responses}
 
 The rules from {{general-rules}} apply when processing an outgoing response message, with the following additions.
 
@@ -392,7 +394,7 @@ The sender endpoint protects the response by applying the same OSCORE layers tha
 
 In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.
 
-## Processing an Incoming Response {#incoming-responses}
+## Processing of an Incoming Response {#incoming-responses}
 
 The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which they were removed.
 
@@ -486,7 +488,7 @@ This document has no actions for IANA.
 
 --- back
 
-# Examples # {#sec-examples}
+# Examples of Message Exchanges # {#sec-examples}
 
 This section provides a number of examples where the approach defined in this document is used to protect message exchanges.
 
@@ -1220,7 +1222,73 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-edhoc-comb-req title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC using the EDHOC + OSCORE request"}
 
-# State Diagram of the Incoming Request Processing # {#sec-incoming-req-diag}
+# State Diagram: Protection of CoAP Options # {#sec-option-protection-diag}
+
+{{fig-option-protection-diagram}} overviews the rules defined in {{general-rules}}, to determine whether a CoAP option that is originally specified as Class U or I for OSCORE has to be processed like if it was specified as Class E, when protecting an outgoing CoAP request.
+
+~~~~~~~~~~~ aasvg
+..........................
+:                        :
+: Sender OSCORE endpoint :
+:                        :
+:..........o.............:
+           o
+           o
+           o
++----------o----------------------------------------------------------+
+|                                                                     |
+| I must protect an outgoing message M for another OSCORE endpoint X. |
+|                                                                     |
+| M includes a CoAP option OPT of Class U or I for OSCORE.            |
+|                                                                     |
++---------------------------------------------------------------------+
+      |
+      |
+      v
++-----------+      +----------+      +-----------------------+
+| Did I add |-YES->| Is X a   |-YES->| Is X the immediately  |-NO----+
+| OPT to M? |      | consumer |      | next consumer of OPT? |       |
++-----------+      | of OPT?  |      +-----------------------+       |
+      |            +----------+                            |         |
+      NO                    |                             YES        |
+      |                     NO                             |         |
+      |                     |                              |         |
+      v                     v                              v         |
++-------------------+  +-----------------+  +---------------------+  |
+| * X is my         |  | * X is my       |  | Does X need to      |  |
+|   next hop;       |  |   next hop;     |  | access OPT before   |  |
+|                   |  |                 |  | decrypting M or in  |  |
+| OR                |  | OR              |  | order to decrypt M? |  |
+|                   |  |                 |  +---------------------+  |
+| * My next hop     |  | * My next hop   |         |         |       |
+|   is not supposed |  |   is not the    |         NO       YES      |
+|   to be the       |  |   immediately   |         |         |       |
+|   immediately     |  |   next consumer |         |         |       |
+|   next consumer   |  |   of OPT        |         |         |       |
+|   of OPT          |  |                 |         |         |       |
++-------------------+  +-----------------+         |         |       |
+       |        |          |           |           |         |       |
+      YES       NO         NO         YES          |         |       |
+       |        |          |           |           |         |       |
+       |        v          v           |           |         |       |
+       |  +------------------------+   |           |         |       |
+       |  | Process OPT as per its |   |           |         |       |
+       |  | original Class U or I  |   |           |         |       |
+       |  +------------------------+   |           |         |       |
+       |                               |           |         |       |
+       |                               v           v         |       |
+       |                       +------------------------+    |       |
+       +---------------------->| Process OPT as Class E |    |       |
+                               +------------------------+    |       |
+                                                             v       v
+                                             +------------------------+
+                                             | Process OPT as per its |
+                                             | original Class U or I  |
+                                             +------------------------+
+~~~~~~~~~~~
+{: #fig-option-protection-diagram title="Protection of CoAP Options of Class U or I in Outgoing Requests." artwork-align="center"}
+
+# State Diagram: Processing of Incoming Requests # {#sec-incoming-req-diag}
 
 {{fig-incoming-request-diagram}} overviews the processing of an incoming request, as specified in {{incoming-requests}}. The dotted boxes indicate ending states where the processing terminates.
 
@@ -1324,7 +1392,7 @@ request      +-----------------------------------------------+        |
 | resource for proxying? |                           : application    :
 +------------------------+                           :................:
 ~~~~~~~~~~~
-{: #fig-incoming-request-diagram title="Processing of an incoming request." artwork-align="center"}
+{: #fig-incoming-request-diagram title="Processing of an Incoming Request." artwork-align="center"}
 
 # Document Updates # {#sec-document-updates}
 
@@ -1349,6 +1417,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Fixes in the examples of message exchange.
 
 * Updated state diagram of the incoming request processing.
+
+* Added state diagram on the protection of CoAP options of Class U/I.
 
 * Updated references.
 
