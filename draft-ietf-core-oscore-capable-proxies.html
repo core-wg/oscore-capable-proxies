@@ -1161,7 +1161,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-message-processing" class="internal xref">Message Processing</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-general-rules-on-protecting" class="internal xref">General Rules on Protecting CoAP Options</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-protecting-coap-options" class="internal xref">Protecting CoAP Options</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-processing-an-outgoing-requ" class="internal xref">Processing an Outgoing Request</a></p>
@@ -1447,8 +1447,8 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
 <p id="section-3-3"><a href="#sec-examples" class="auto internal xref">Appendix A</a> provides a number of examples where the approach defined in this document is used to protect message exchanges.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="general-rules">
 <section id="section-3.1">
-        <h3 id="name-general-rules-on-protecting">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-general-rules-on-protecting" class="section-name selfRef">General Rules on Protecting CoAP Options</a>
+        <h3 id="name-protecting-coap-options">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-protecting-coap-options" class="section-name selfRef">Protecting CoAP Options</a>
         </h3>
 <p id="section-3.1-1">Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">In addition to the CoAP options specified as class E in <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or in the document defining them, the sender endpoint MUST encrypt and integrity-protect the following CoAP options. That is, even if they are originally specified as class U or class I for OSCORE, such options are processed like if they were specified as class E.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
@@ -1548,6 +1548,9 @@ Examples of such CoAP options are:<a href="#section-3.1-3.3.3" class="pilcrow">�
             </ul>
 </li>
         </ul>
+<p id="section-3.1-4">Note that, in a simple scenario where no intermediaries are deployed between two origin endpoints, the rules defined above result in encrypting and integrity-protecting the Uri-Host and Uri-Port Options included in a CoAP request. This is different from what was intended in <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, according to which the two options were meant to be always unprotected.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">However, in the absence of intermediaries, there is no reason for those two options to be unprotected. In fact, at the origin server, they do not play a role in retrieving the OSCORE Security Context to use for decrypting a received request, and the server can still consume them as usual, after the request has been decrypted.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-6">If only one of the two origin endpoints has not implemented this updated behavior, this is not an interoperability issue. That is, if such an endpoint is a client, then the two options remain unprotected in a sent request, and the recipient server processes those as expected in <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. Instead, if such an endpoint is a server, then it still decrypts the received request according to <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, after which it has access to the two options.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="outgoing-requests">
