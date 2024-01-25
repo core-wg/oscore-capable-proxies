@@ -248,7 +248,7 @@ As mentioned in {{intro}}, this document introduces the following two main devia
 
 {{sec-examples}} provides a number of examples where the approach defined in this document is used to protect message exchanges.
 
-## General Rules on Protecting CoAP Options {#general-rules}
+## Protecting CoAP Options {#general-rules}
 
 Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.
 
@@ -307,6 +307,12 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
    - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.
 
    - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is not the EDHOC Initiator.
+
+Note that, in a simple scenario where no intermediaries are deployed between two origin endpoints, the rules defined above result in encrypting and integrity-protecting the Uri-Host and Uri-Port Options included in a CoAP request. This is different from what was intended in {{RFC8613}}, according to which the two options were meant to be always unprotected.
+
+However, in the absence of intermediaries, there is no reason for those two options to be unprotected. In fact, at the origin server, they do not play a role in retrieving the OSCORE Security Context to use for decrypting a received request, and the server can still consume them as usual, after the request has been decrypted.
+
+If only one of the two origin endpoints has not implemented this updated behavior, this is not an interoperability issue. That is, if such an endpoint is a client, then the two options remain unprotected in a sent request, and the recipient server processes those as expected in {{RFC8613}}. Instead, if such an endpoint is a server, then it still decrypts the received request according to {{RFC8613}}, after which it has access to the two options.
 
 ## Processing an Outgoing Request {#outgoing-requests}
 
