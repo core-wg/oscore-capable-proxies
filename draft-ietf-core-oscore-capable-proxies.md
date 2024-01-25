@@ -1396,6 +1396,7 @@ request      +-----------------------------------------------+        |
 | resource for proxying? |                           : application    :
 +------------------------+                           :................:
 
+
 (*) This is determined according to the endpoint's configuration
     and a possible authorization enforcement.
 ~~~~~~~~~~~
