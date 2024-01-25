@@ -1245,15 +1245,15 @@ Curly brackets { ... } indicate encrypted data.
       |
       |
       v
-+-----------+      +----------+      +-----------------------+
-| Did I add |-YES->| Is X a   |-YES->| Is X the immediately  |-NO----+
-| OPT to M? |      | consumer |      | next consumer of OPT? |       |
-+-----------+      | of OPT?  |      +-----------------------+       |
-      |            +----------+                            |         |
-      NO                    |                             YES        |
-      |                     NO                             |         |
-      |                     |                              |         |
-      v                     v                              v         |
++-----------+       +----------+       +-----------------------+
+| Did I add |-YES-->| Is X a   |-YES-->| Is X the immediately  |-NO--+
+| OPT to M? |       | consumer |       | next consumer of OPT? |     |
++-----------+       | of OPT?  |       +-----------------------+     |
+      |             +----------+                            |        |
+      NO                    |                              YES       |
+      |                     NO                              |        |
+      |                     |                               |        |
+      v                     v                               v        |
 +-------------------+  +-----------------+  +---------------------+  |
 | * X is my         |  | * X is my       |  | Does X need to      |  |
 |   next hop;       |  |   next hop;     |  | access OPT before   |  |
