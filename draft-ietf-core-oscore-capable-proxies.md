@@ -1252,10 +1252,10 @@ Curly brackets { ... } indicate encrypted data.
 | OPT to M? |       | consumer |       | next consumer of OPT? |     |
 +-----------+       | of OPT?  |       +-----------------------+     |
       |             +----------+                             |       |
-      NO                    |                               YES      |
-      |                     NO                               |       |
-      |                     |                                |       |
-      v                     v                                v       |
+      NO                   |                                YES      |
+      |                    NO                                |       |
+      |                    |                                 |       |
+      v                    v                                 v       |
 +-------------------+  +-----------------+  +---------------------+  |
 | * X is my         |  | * X is my       |  | Does X need to      |  |
 |   next hop;       |  |   next hop;     |  | access OPT before   |  |
@@ -1269,18 +1269,18 @@ Curly brackets { ... } indicate encrypted data.
 |   next consumer   |  |   of OPT        |         |         |       |
 |   of OPT          |  |                 |         |         |       |
 +-------------------+  +-----------------+         |         |       |
-       |        |          |           |           |         |       |
-      YES       NO         NO         YES          |         |       |
-       |        |          |           |           |         |       |
-       |        v          v           |           |         |       |
-       |  +------------------------+   |           |         |       |
-       |  | Process OPT as per its |   |           |         |       |
-       |  | original Class U or I  |   |           |         |       |
-       |  +------------------------+   |           |         |       |
-       |                               |           |         |       |
-       |                               v           v         |       |
-       |                       +------------------------+    |       |
-       +---------------------->| Process OPT as Class E |    |       |
+      |         |          |           |           |         |       |
+     YES        NO         NO         YES          |         |       |
+      |         |          |           |           |         |       |
+      |         v          v           |           |         |       |
+      |   +------------------------+   |           |         |       |
+      |   | Process OPT as per its |   |           |         |       |
+      |   | original Class U or I  |   |           |         |       |
+      |   +------------------------+   |           |         |       |
+      |                                |           |         |       |
+      |                                v           v         |       |
+      |                        +------------------------+    |       |
+      +----------------------->| Process OPT as Class E |    |       |
                                +------------------------+    |       |
                                                              v       v
                                              +------------------------+
