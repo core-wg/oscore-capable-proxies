@@ -336,11 +336,11 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       If the endpoint is not configured to be a forward-proxy, it MUST stop processing the request and MUST respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an authorized operation. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
+      Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
 
-      In case the authorization check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+      In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Instead, in case the authorization check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to step 1.
+      Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to step 1.
 
       Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see {{Section 12 of I-D.ietf-core-observe-multicast-notifications}}).
 
@@ -352,9 +352,9 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       If the endpoint is not configured to be a reverse-proxy or its resource targeted by the Uri-Path Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.
 
-      Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an authorized operation. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
+      Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
 
-      In case the authentication check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+      In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
       Otherwise, the endpoint consumes the Uri-Path Options as per {{Section 5.7.3 of RFC7252}}, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
 
@@ -376,11 +376,11 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       If REQ includes any Uri-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint MUST check whether decrypting the request is an authorized operation, in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request, and then asserting whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.
+      Otherwise, the endpoint MUST check whether decrypting the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request, and then asserting whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.
 
-      In case the authorization check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+      In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Instead, in case the authorization check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.
+      Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.
 
       If the OSCORE processing results in an error, the endpoint MUST stop processing the request and performs error handling as per {{Section 8.2 of RFC8613}} or {{Sections 8.2 and 9.4 of I-D.ietf-core-oscore-groupcomm}}, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
@@ -476,13 +476,15 @@ This document does not change the security properties of OSCORE and Group OSCORE
 
 ## Preserving Location Anonimity
 
-Before decrypting an incoming request (see step 3 in {{incoming-requests}}), the recipient endpoint checks whether decryption is authorized, in the light of the alleged request sender and the OSCORE Security Context to use. This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
+Before decrypting an incoming request (see step 3 in {{incoming-requests}}), the recipient endpoint checks whether decryption the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in the light of the alleged request sender and the OSCORE Security Context to use.
 
-In that setup, the authorization check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with their shared OSCORE Security Context CTX. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.
+This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
+
+In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with their shared OSCORE Security Context CTX. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.
 
 That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.
 
-However, after performing and failing the authorization check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonimity of the origin server.
+However, after performing and failing the check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonimity of the origin server.
 
 # IANA Considerations
 
@@ -1326,10 +1328,10 @@ request      +-----------------------------------------------+        |
    |             YES      |      NO       |   |   |    | Options?  |  |
    v              |       v      |        |   |   |    +-----------+  |
 +---------------------+ +---------------+ |   |   |     |         |   |
-| Is there the        | | Is forwarding | |   |   |    YES        NO  |
-| Proxy-Scheme or     | | the request   | |   |   |     |         |   |
-| Proxy-Scheme-Number | | an authorized | |   |   |     v         |   |
-| Option, together    | | operation?    | |   |   |   ..........  |   |
+| Is there the        | | Is it         | |   |   |    YES        NO  |
+| Proxy-Scheme or     | | acceptable to | |   |   |     |         |   |
+| Proxy-Scheme-Number | | forward the   | |   |   |     v         |   |
+| Option, together    | | request? (*)  | |   |   |   ..........  |   |
 | with the Uri-Host   | +---------------+ |   |   |   : Return :  |   |
 | or Uri-Port Option? |           |       |   |   |   : 4.00   :  |   |
 +---------------------+          YES      |   |   |   ..........  |   |
@@ -1338,10 +1340,10 @@ request      +-----------------------------------------------+        |
    |                              |       |   |   |               |   |
    |                              v       |   |   |               v   |
    |                  +---------------+   |   |   | +---------------+ |
-   |                  | Consume the   |   |   |   | | Is decrypting | |
-   |                  | proxy-related |   |   |   | | the request   | |
-   |                  | options       |   |   |   | | an authorized | |
-   |                  +---------------+   |   |   | | operation?    | |
+   |                  | Consume the   |   |   |   | | Is it         | |
+   |                  | proxy-related |   |   |   | | acceptable to | |
+   |                  | options       |   |   |   | | decrypt the   | |
+   |                  +---------------+   |   |   | | request? (*)  | |
    |                              |       |   |   | +---------------+ |
    |                              |       |   |   |    |         |    |
    |                              |       |   |   |    NO       YES   |
@@ -1379,10 +1381,10 @@ request      +-----------------------------------------------+        |
    |            NO                |           |  | Is there an  |
    |            |                 |           |  | application? |
    |       +---------------+      |           |  +--------------+
-   |       | Is forwarding |      |           |        |       |
-   |       | the request   |-YES--+           |       YES      NO
-   |       | an authorized |                  |        |       |
-   |       | operation?    |                  |        |       v
+   |       | Is it         |      |           |        |       |
+   |       | acceptable to |-YES--+           |       YES      NO
+   |       | forward the   |                  |        |       |
+   |       | request? (*)  |                  |        |       v
    |       +---------------+                  |        |     ..........
    |            ^                             |        |     : Return :
    |            |                             |        |     : 4.00   :
@@ -1393,6 +1395,8 @@ request      +-----------------------------------------------+        |
 | using the indicated    |-NO-----------------+      : request to the :
 | resource for proxying? |                           : application    :
 +------------------------+                           :................:
+
+(*) This is determined according to the endpoint's configuration and a possible authorization enforcement.
 ~~~~~~~~~~~
 {: #fig-incoming-request-diagram title="Processing of an Incoming Request." artwork-align="center"}
 
@@ -1416,7 +1420,9 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 * A forward-proxy consumes a request when identified by the request URI.
 
-* Added authorization check before decrypting a request.
+* Generalized authorization checks as acceptability checks.
+
+* Added acceptability check before decrypting a request.
 
 * Fixes in the examples of message exchange.
 
