@@ -1587,11 +1587,11 @@ Examples of such CoAP options are:<a href="#section-3.1-3.3.3" class="pilcrow">�
 <p id="section-3.3-2.2.2.1.2">
 If the endpoint is not configured to be a forward-proxy, it MUST stop processing the request and MUST respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.2.2.1.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.1.3">
-Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an authorized operation. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.<a href="#section-3.3-2.2.2.1.3" class="pilcrow">¶</a></p>
+Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.<a href="#section-3.3-2.2.2.1.3" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.1.4">
-In case the authorization check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.2.2.1.4" class="pilcrow">¶</a></p>
+In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.2.2.1.4" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.1.5">
-Instead, in case the authorization check succeeds, the endpoint consumes the proxy-related options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.2" class="relref">Section 5.7.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to step 1.<a href="#section-3.3-2.2.2.1.5" class="pilcrow">¶</a></p>
+Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.2" class="relref">Section 5.7.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to step 1.<a href="#section-3.3-2.2.2.1.5" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.1.6">
 Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-07#section-12" class="relref">Section 12</a> of [<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>).<a href="#section-3.3-2.2.2.1.6" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.1.7">
@@ -1604,9 +1604,9 @@ After that, the endpoint does not take any further action.<a href="#section-3.3-
 <p id="section-3.3-2.2.2.2.2">
 If the endpoint is not configured to be a reverse-proxy or its resource targeted by the Uri-Path Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.<a href="#section-3.3-2.2.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.2.3">
-Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an authorized operation. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.<a href="#section-3.3-2.2.2.2.3" class="pilcrow">¶</a></p>
+Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.<a href="#section-3.3-2.2.2.2.3" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.2.4">
-In case the authentication check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.2.2.2.4" class="pilcrow">¶</a></p>
+In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.2.2.2.4" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.2.5">
 Otherwise, the endpoint consumes the Uri-Path Options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.3" class="relref">Section 5.7.3</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-3.3-2.2.2.2.5" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.2.2.2.6">
@@ -1633,11 +1633,11 @@ Otherwise, the endpoint delivers REQ to the application.<a href="#section-3.3-2.
 <p id="section-3.3-2.3.2.2.2">
 If REQ includes any Uri-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.3.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.3">
-Otherwise, the endpoint MUST check whether decrypting the request is an authorized operation, in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request, and then asserting whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.<a href="#section-3.3-2.3.2.2.3" class="pilcrow">¶</a></p>
+Otherwise, the endpoint MUST check whether decrypting the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request, and then asserting whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.<a href="#section-3.3-2.3.2.2.3" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.4">
-In case the authorization check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.3.2.2.4" class="pilcrow">¶</a></p>
+In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.3.2.2.4" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.5">
-Instead, in case the authorization check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.<a href="#section-3.3-2.3.2.2.5" class="pilcrow">¶</a></p>
+Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.<a href="#section-3.3-2.3.2.2.5" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.6">
 If the OSCORE processing results in an error, the endpoint MUST stop processing the request and performs error handling as per <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-20#section-8.2" class="relref">8.2</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-20#section-9.4" class="relref">9.4</a> of <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.3.2.2.6" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.7">
@@ -1770,10 +1770,11 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
         <h3 id="name-preserving-location-anonimi">
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-preserving-location-anonimi" class="section-name selfRef">Preserving Location Anonimity</a>
         </h3>
-<p id="section-7.1-1">Before decrypting an incoming request (see step 3 in <a href="#incoming-requests" class="auto internal xref">Section 3.3</a>), the recipient endpoint checks whether decryption is authorized, in the light of the alleged request sender and the OSCORE Security Context to use. This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.1-2">In that setup, the authorization check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with their shared OSCORE Security Context CTX. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.1-3">That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.1-4">However, after performing and failing the authorization check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonimity of the origin server.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.1-1">Before decrypting an incoming request (see step 3 in <a href="#incoming-requests" class="auto internal xref">Section 3.3</a>), the recipient endpoint checks whether decryption the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in the light of the alleged request sender and the OSCORE Security Context to use.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-2">This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.1-3">In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with their shared OSCORE Security Context CTX. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1-4">That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.1-5">However, after performing and failing the check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonimity of the origin server.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3794,7 +3795,7 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
 <figure id="figure-7">
         <div id="appendix-C-2.1">
           <div class="alignCenter art-svg artwork" id="appendix-C-2.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1600" width="576" viewBox="0 0 576 1600" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1632" width="856" viewBox="0 0 856 1632" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
               <path d="M 8,224 L 8,304" fill="none" stroke="black"></path>
               <path d="M 8,512 L 8,624" fill="none" stroke="black"></path>
               <path d="M 8,1040 L 8,1136" fill="none" stroke="black"></path>
@@ -3929,6 +3930,7 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
               <polygon class="arrowhead" points="40,1512 28,1506.4 28,1517.6" fill="black" transform="rotate(90,32,1512)"></polygon>
               <polygon class="arrowhead" points="40,1032 28,1026.4 28,1037.6" fill="black" transform="rotate(90,32,1032)"></polygon>
               <polygon class="arrowhead" points="40,504 28,498.4 28,509.6" fill="black" transform="rotate(90,32,504)"></polygon>
+              <circle cx="16" cy="1616" r="6" class="closeddot" fill="black"></circle>
               <g class="text">
                 <text x="36" y="52">Incoming</text>
                 <text x="192" y="52">Are</text>
@@ -3998,19 +4000,20 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
                 <text x="64" y="532">there</text>
                 <text x="104" y="532">the</text>
                 <text x="220" y="532">Is</text>
-                <text x="276" y="532">forwarding</text>
+                <text x="244" y="532">it</text>
                 <text x="456" y="532">YES</text>
                 <text x="540" y="532">NO</text>
                 <text x="68" y="548">Proxy-Scheme</text>
                 <text x="132" y="548">or</text>
-                <text x="224" y="548">the</text>
-                <text x="272" y="548">request</text>
+                <text x="252" y="548">acceptable</text>
+                <text x="308" y="548">to</text>
                 <text x="96" y="564">Proxy-Scheme-Number</text>
-                <text x="220" y="564">an</text>
-                <text x="276" y="564">authorized</text>
+                <text x="240" y="564">forward</text>
+                <text x="288" y="564">the</text>
                 <text x="48" y="580">Option,</text>
                 <text x="116" y="580">together</text>
-                <text x="252" y="580">operation?</text>
+                <text x="244" y="580">request?</text>
+                <text x="296" y="580">(*)</text>
                 <text x="476" y="580">..........</text>
                 <text x="36" y="596">with</text>
                 <text x="72" y="596">the</text>
@@ -4032,14 +4035,15 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
                 <text x="224" y="724">Consume</text>
                 <text x="272" y="724">the</text>
                 <text x="444" y="724">Is</text>
-                <text x="500" y="724">decrypting</text>
+                <text x="468" y="724">it</text>
                 <text x="248" y="740">proxy-related</text>
-                <text x="448" y="740">the</text>
-                <text x="496" y="740">request</text>
+                <text x="476" y="740">acceptable</text>
+                <text x="532" y="740">to</text>
                 <text x="224" y="756">options</text>
-                <text x="444" y="756">an</text>
-                <text x="500" y="756">authorized</text>
-                <text x="476" y="772">operation?</text>
+                <text x="464" y="756">decrypt</text>
+                <text x="512" y="756">the</text>
+                <text x="468" y="772">request?</text>
+                <text x="520" y="772">(*)</text>
                 <text x="448" y="804">|</text>
                 <text x="528" y="804">|</text>
                 <text x="452" y="820">NO</text>
@@ -4121,17 +4125,18 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
                 <text x="136" y="1348">|</text>
                 <text x="460" y="1348">application?</text>
                 <text x="116" y="1380">Is</text>
-                <text x="172" y="1380">forwarding</text>
+                <text x="140" y="1380">it</text>
                 <text x="448" y="1380">|</text>
                 <text x="512" y="1380">|</text>
-                <text x="120" y="1396">the</text>
-                <text x="168" y="1396">request</text>
+                <text x="148" y="1396">acceptable</text>
+                <text x="204" y="1396">to</text>
                 <text x="244" y="1396">-YES</text>
                 <text x="448" y="1396">YES</text>
                 <text x="516" y="1396">NO</text>
-                <text x="116" y="1412">an</text>
-                <text x="172" y="1412">authorized</text>
-                <text x="148" y="1428">operation?</text>
+                <text x="136" y="1412">forward</text>
+                <text x="184" y="1412">the</text>
+                <text x="140" y="1428">request?</text>
+                <text x="192" y="1428">(*)</text>
                 <text x="532" y="1444">..........</text>
                 <text x="496" y="1460">:</text>
                 <text x="532" y="1460">Return</text>
@@ -4168,6 +4173,21 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
                 <text x="488" y="1572">application</text>
                 <text x="568" y="1572">:</text>
                 <text x="500" y="1588">:................:</text>
+                <text x="8" y="1620">(</text>
+                <text x="24" y="1620">)</text>
+                <text x="52" y="1620">This</text>
+                <text x="84" y="1620">is</text>
+                <text x="140" y="1620">determined</text>
+                <text x="224" y="1620">according</text>
+                <text x="276" y="1620">to</text>
+                <text x="304" y="1620">the</text>
+                <text x="364" y="1620">endpoint's</text>
+                <text x="464" y="1620">configuration</text>
+                <text x="536" y="1620">and</text>
+                <text x="560" y="1620">a</text>
+                <text x="604" y="1620">possible</text>
+                <text x="696" y="1620">authorization</text>
+                <text x="804" y="1620">enforcement.</text>
               </g>
             </svg><a href="#appendix-C-2.1.1" class="pilcrow">¶</a>
 </div>
@@ -4212,22 +4232,25 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
             <p id="appendix-D.1-1.7.1">A forward-proxy consumes a request when identified by the request URI.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.8">
-            <p id="appendix-D.1-1.8.1">Added authorization check before decrypting a request.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.8.1">Generalized authorization checks as acceptability checks.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.9">
-            <p id="appendix-D.1-1.9.1">Fixes in the examples of message exchange.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.9.1">Added acceptability check before decrypting a request.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.10">
-            <p id="appendix-D.1-1.10.1">Updated state diagram of the incoming request processing.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.10.1">Fixes in the examples of message exchange.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.11">
-            <p id="appendix-D.1-1.11.1">Added state diagram on the protection of CoAP options of Class U/I.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.11.1">Updated state diagram of the incoming request processing.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.12">
-            <p id="appendix-D.1-1.12.1">Updated references.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.12.1">Added state diagram on the protection of CoAP options of Class U/I.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.13">
-            <p id="appendix-D.1-1.13.1">Editorial fixes and improvements.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.13.1">Updated references.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.14">
+            <p id="appendix-D.1-1.14.1">Editorial fixes and improvements.<a href="#appendix-D.1-1.14.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
