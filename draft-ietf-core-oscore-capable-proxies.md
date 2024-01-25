@@ -143,6 +143,8 @@ In addition, this document uses the following terms.
 
 * OSCORE endpoint: a source/destination OSCORE endpoint. An OSCORE endpoint is not necessarily also an application endpoint with respect to a certain message.
 
+* Hop: an endpoint in the end-to-end path between two application endpoints included.
+
 * Proxy-related options: either of the following (set of) CoAP options used for proxying a CoAP request. These CoAP options are defined in {{RFC7252}} and {{I-D.ietf-core-href}}.
 
    - The Proxy-Uri Option or the Proxy-Cri Option. These are relevant when using a forward-proxy.
