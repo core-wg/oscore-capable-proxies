@@ -250,19 +250,21 @@ As mentioned in {{intro}}, this document introduces the following two main devia
 
 ## General Rules on Protecting CoAP Options {#general-rules}
 
-Let us consider a sender endpoint that, when protecting an outgoing message, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.
+Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.
 
 In addition to the CoAP options specified as class E in {{RFC8613}} or in the document defining them, the sender endpoint MUST encrypt and integrity-protect the following CoAP options. That is, even if they are originally specified as class U or class I for OSCORE, such options are processed like if they were specified as class E.
 
-* Any CoAP option such that both the following conditions hold.
+* Any CoAP option OPT such that all the following conditions hold.
 
-   1. The sender endpoint has added the option to the message either:
+   1. The sender endpoint has added OPT to the message M.
 
-      * Following a message protection previously performed for an OSCORE endpoint different than X; or
+   2. The other OSCORE endpoint X is not a consumer of OPT.
 
-      * Before a message protection previously performed for an OSCORE endpoint different than X, where the option was treated as Class U or I.
+   3. Any of the following applies:
 
-   2. The option is not intended to be consumed by the other OSCORE endpoint X.
+      - X is the next hop for the sender endpoint; or
+
+      - The next hop is not the immediately next consumer of OPT.
 
    Examples of such CoAP options are:
 
@@ -270,15 +272,15 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
 
    - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is the EDHOC Initiator.
 
-   - The Request-Hash Option defined in {{I-D.amsuess-core-cachable-oscore}}, when X is not an origin endpoint).
+   - The Request-Hash Option defined in {{I-D.amsuess-core-cachable-oscore}}, when X is not an origin endpoint.
 
-* Any CoAP option such that all the following conditions hold.
+* Any CoAP option OPT such that all the following conditions hold.
 
-   1. The sender endpoint has added the option to the message.
+   1. The sender endpoint has added OPT to the message M.
 
-   2. The option is intended to be consumed by the other OSCORE endpoint X.
+   2. The other OSCORE endpoint X is the immediately next consumer of OPT.
 
-   3. At the other OSCORE endpoint X, the option does not play a role in processing the message before having removed the i-th OSCORE layer or in removing the i-th OSCORE layer altogether.
+   3. At the other OSCORE endpoint X, OPT does not play a role in processing M before having removed the i-th OSCORE layer or in removing the i-th OSCORE layer altogether.
 
    Examples of such CoAP options are:
 
@@ -290,7 +292,15 @@ In addition to the CoAP options specified as class E in {{RFC8613}} or in the do
 
    - The Multicast-Timeout, Response-Forwarding, and Group-ETag Options defined in {{I-D.ietf-core-groupcomm-proxy}}.
 
-* Any CoAP option such that the sender endpoint has not added the option to the message.
+* Any CoAP option OPT such that all the following conditions hold.
+
+   1. The sender endpoint has not added OPT to the message M.
+
+   2. Any of the following applies:
+
+      - X is the next hop for the sender endpoint; or
+
+      - The next hop is not supposed to be the immediately next consumer of OPT.
 
    Examples of such CoAP options are:
 
@@ -1323,6 +1333,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Added reference to Onion CoAP as use case.
 
 * Required to set a limit on OSCORE layers that can be added/removed.
+
+* Revised general rules on protecting CoAP options.
 
 * A forward-proxy consumes a request when identified by the request URI.
 
