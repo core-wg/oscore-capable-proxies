@@ -2160,8 +2160,8 @@ Appendix C.  State Diagram: Processing of Incoming Requests
  +------------------------+                           :................:
 
 
- (*) This is determined according to the endpoint's configuration
-     and a possible authorization enforcement.
+   (*) This is determined according to the endpoint's configuration
+       and a possible authorization enforcement.
 
               Figure 7: Processing of an Incoming Request.
 
