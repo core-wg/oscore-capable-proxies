@@ -1974,7 +1974,7 @@ Appendix B.  State Diagram: Protection of CoAP Options
    Figure 6 overviews the rules defined in Section 3.1, to determine
    whether a CoAP option that is originally specified as Class U or I
    for OSCORE has to be processed like if it was specified as Class E,
-   when protecting an outgoing CoAP request.
+   when protecting an outgoing message.
 
  ..........................
  :                        :
@@ -2036,7 +2036,7 @@ Appendix B.  State Diagram: Protection of CoAP Options
                                               +------------------------+
 
     Figure 6: Protection of CoAP Options of Class U or I in Outgoing
-                               Requests.
+                               Messages.
 
 Appendix C.  State Diagram: Processing of Incoming Requests
 
