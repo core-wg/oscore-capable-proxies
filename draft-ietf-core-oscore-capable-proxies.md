@@ -1331,7 +1331,7 @@ request      +-----------------------------------------------+        |
 | Is there the        | | Is it         | |   |   |    YES        NO  |
 | Proxy-Scheme or     | | acceptable to | |   |   |     |         |   |
 | Proxy-Scheme-Number | | forward the   | |   |   |     v         |   |
-| Option, together    | | request? (*)  | |   |   |   ..........  |   |
+| Option, together    | | request? (#)  | |   |   |   ..........  |   |
 | with the Uri-Host   | +---------------+ |   |   |   : Return :  |   |
 | or Uri-Port Option? |           |       |   |   |   : 4.00   :  |   |
 +---------------------+          YES      |   |   |   ..........  |   |
@@ -1343,7 +1343,7 @@ request      +-----------------------------------------------+        |
    |                  | Consume the   |   |   |   | | Is it         | |
    |                  | proxy-related |   |   |   | | acceptable to | |
    |                  | options       |   |   |   | | decrypt the   | |
-   |                  +---------------+   |   |   | | request? (*)  | |
+   |                  +---------------+   |   |   | | request? (#)  | |
    |                              |       |   |   | +---------------+ |
    |                              |       |   |   |    |         |    |
    |                              |       |   |   |    NO       YES   |
@@ -1384,7 +1384,7 @@ request      +-----------------------------------------------+        |
    |       | Is it         |      |           |        |       |
    |       | acceptable to |-YES--+           |       YES      NO
    |       | forward the   |                  |        |       |
-   |       | request? (*)  |                  |        |       v
+   |       | request? (#)  |                  |        |       v
    |       +---------------+                  |        |     ..........
    |            ^                             |        |     : Return :
    |            |                             |        |     : 4.00   :
@@ -1397,8 +1397,8 @@ request      +-----------------------------------------------+        |
 +------------------------+                           :................:
 
 
-* This is determined according to the endpoint's configuration
-  and a possible authorization enforcement.
+(#) This is determined according to the endpoint's configuration
+    and a possible authorization enforcement.
 
 ~~~~~~~~~~~
 {: #fig-incoming-request-diagram title="Processing of an Incoming Request." artwork-align="center"}
