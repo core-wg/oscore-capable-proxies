@@ -1397,8 +1397,9 @@ request      +-----------------------------------------------+        |
 +------------------------+                           :................:
 
 
-(*) This is determined according to the endpoint's configuration
-    and a possible authorization enforcement.
+  (*) This is determined according to the endpoint's configuration
+      and a possible authorization enforcement.
+
 ~~~~~~~~~~~
 {: #fig-incoming-request-diagram title="Processing of an Incoming Request." artwork-align="center"}
 
