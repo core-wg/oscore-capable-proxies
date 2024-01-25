@@ -1450,25 +1450,28 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
         <h3 id="name-general-rules-on-protecting">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-general-rules-on-protecting" class="section-name selfRef">General Rules on Protecting CoAP Options</a>
         </h3>
-<p id="section-3.1-1">Let us consider a sender endpoint that, when protecting an outgoing message, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">In addition to the CoAP options specified as class E in <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or in the document defining them, the sender endpoint MUST encrypt and integrity-protect the following CoAP options. That is, even if they are originally specified as class U or class I for OSCORE, such options are processed like if they were specified as class E.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.1">
-            <p id="section-3.1-3.1.1">Any CoAP option such that both the following conditions hold.<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.1.1">Any CoAP option OPT such that all the following conditions hold.<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.1-3.1.2">
 <li id="section-3.1-3.1.2.1">
-                <p id="section-3.1-3.1.2.1.1">The sender endpoint has added the option to the message either:<a href="#section-3.1-3.1.2.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.1-3.1.2.1.2.1">
-                    <p id="section-3.1-3.1.2.1.2.1.1">Following a message protection previously performed for an OSCORE endpoint different than X; or<a href="#section-3.1-3.1.2.1.2.1.1" class="pilcrow">¶</a></p>
-</li>
-                  <li class="normal" id="section-3.1-3.1.2.1.2.2">
-                    <p id="section-3.1-3.1.2.1.2.2.1">Before a message protection previously performed for an OSCORE endpoint different than X, where the option was treated as Class U or I.<a href="#section-3.1-3.1.2.1.2.2.1" class="pilcrow">¶</a></p>
-</li>
-                </ul>
+                <p id="section-3.1-3.1.2.1.1">The sender endpoint has added OPT to the message M.<a href="#section-3.1-3.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li id="section-3.1-3.1.2.2">
-                <p id="section-3.1-3.1.2.2.1">The option is not intended to be consumed by the other OSCORE endpoint X.<a href="#section-3.1-3.1.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.1.2.2.1">The other OSCORE endpoint X is not a consumer of OPT.<a href="#section-3.1-3.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-3.1-3.1.2.3">
+                <p id="section-3.1-3.1.2.3.1">Any of the following applies:<a href="#section-3.1-3.1.2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-3.1.2.3.2.1">
+                    <p id="section-3.1-3.1.2.3.2.1.1">X is the next hop for the sender endpoint; or<a href="#section-3.1-3.1.2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                  <li class="normal" id="section-3.1-3.1.2.3.2.2">
+                    <p id="section-3.1-3.1.2.3.2.2.1">The next hop is not the immediately next consumer of OPT.<a href="#section-3.1-3.1.2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                </ul>
 </li>
             </ol>
 <p id="section-3.1-3.1.3">
@@ -1481,21 +1484,21 @@ Examples of such CoAP options are:<a href="#section-3.1-3.1.3" class="pilcrow">�
                 <p id="section-3.1-3.1.4.2.1">The EDHOC Option defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, when the sender endpoint is the EDHOC Initiator.<a href="#section-3.1-3.1.4.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.1-3.1.4.3">
-                <p id="section-3.1-3.1.4.3.1">The Request-Hash Option defined in <span>[<a href="#I-D.amsuess-core-cachable-oscore" class="cite xref">I-D.amsuess-core-cachable-oscore</a>]</span>, when X is not an origin endpoint).<a href="#section-3.1-3.1.4.3.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.1.4.3.1">The Request-Hash Option defined in <span>[<a href="#I-D.amsuess-core-cachable-oscore" class="cite xref">I-D.amsuess-core-cachable-oscore</a>]</span>, when X is not an origin endpoint.<a href="#section-3.1-3.1.4.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
           <li class="normal" id="section-3.1-3.2">
-            <p id="section-3.1-3.2.1">Any CoAP option such that all the following conditions hold.<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.2.1">Any CoAP option OPT such that all the following conditions hold.<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.1-3.2.2">
 <li id="section-3.1-3.2.2.1">
-                <p id="section-3.1-3.2.2.1.1">The sender endpoint has added the option to the message.<a href="#section-3.1-3.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.2.2.1.1">The sender endpoint has added OPT to the message M.<a href="#section-3.1-3.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li id="section-3.1-3.2.2.2">
-                <p id="section-3.1-3.2.2.2.1">The option is intended to be consumed by the other OSCORE endpoint X.<a href="#section-3.1-3.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.2.2.2.1">The other OSCORE endpoint X is the immediately next consumer of OPT.<a href="#section-3.1-3.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li id="section-3.1-3.2.2.3">
-                <p id="section-3.1-3.2.2.3.1">At the other OSCORE endpoint X, the option does not play a role in processing the message before having removed the i-th OSCORE layer or in removing the i-th OSCORE layer altogether.<a href="#section-3.1-3.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.2.2.3.1">At the other OSCORE endpoint X, OPT does not play a role in processing M before having removed the i-th OSCORE layer or in removing the i-th OSCORE layer altogether.<a href="#section-3.1-3.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ol>
 <p id="section-3.1-3.2.3">
@@ -1516,15 +1519,31 @@ Examples of such CoAP options are:<a href="#section-3.1-3.2.3" class="pilcrow">�
             </ul>
 </li>
           <li class="normal" id="section-3.1-3.3">
-            <p id="section-3.1-3.3.1">Any CoAP option such that the sender endpoint has not added the option to the message.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
-<p id="section-3.1-3.3.2">
-Examples of such CoAP options are:<a href="#section-3.1-3.3.2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.1-3.3.3.1">
-                <p id="section-3.1-3.3.3.1.1">The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.<a href="#section-3.1-3.3.3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.3.1">Any CoAP option OPT such that all the following conditions hold.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.1-3.3.2">
+<li id="section-3.1-3.3.2.1">
+                <p id="section-3.1-3.3.2.1.1">The sender endpoint has not added OPT to the message M.<a href="#section-3.1-3.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1-3.3.3.2">
-                <p id="section-3.1-3.3.3.2.1">The EDHOC Option defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, when the sender endpoint is not the EDHOC Initiator.<a href="#section-3.1-3.3.3.2.1" class="pilcrow">¶</a></p>
+              <li id="section-3.1-3.3.2.2">
+                <p id="section-3.1-3.3.2.2.1">Any of the following applies:<a href="#section-3.1-3.3.2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-3.3.2.2.2.1">
+                    <p id="section-3.1-3.3.2.2.2.1.1">X is the next hop for the sender endpoint; or<a href="#section-3.1-3.3.2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                  <li class="normal" id="section-3.1-3.3.2.2.2.2">
+                    <p id="section-3.1-3.3.2.2.2.2.1">The next hop is not supposed to be the immediately next consumer of OPT.<a href="#section-3.1-3.3.2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                </ul>
+</li>
+            </ol>
+<p id="section-3.1-3.3.3">
+Examples of such CoAP options are:<a href="#section-3.1-3.3.3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-3.3.4.1">
+                <p id="section-3.1-3.3.4.1.1">The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.<a href="#section-3.1-3.3.4.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.1-3.3.4.2">
+                <p id="section-3.1-3.3.4.2.1">The EDHOC Option defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, when the sender endpoint is not the EDHOC Initiator.<a href="#section-3.1-3.3.4.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -3919,22 +3938,25 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
             <p id="appendix-C.1-1.4.1">Required to set a limit on OSCORE layers that can be added/removed.<a href="#appendix-C.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-C.1-1.5">
-            <p id="appendix-C.1-1.5.1">A forward-proxy consumes a request when identified by the request URI.<a href="#appendix-C.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-C.1-1.5.1">Revised general rules on protecting CoAP options.<a href="#appendix-C.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-C.1-1.6">
-            <p id="appendix-C.1-1.6.1">Added authorization check before decrypting a request.<a href="#appendix-C.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-C.1-1.6.1">A forward-proxy consumes a request when identified by the request URI.<a href="#appendix-C.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-C.1-1.7">
-            <p id="appendix-C.1-1.7.1">Fixes in the examples of message exchange.<a href="#appendix-C.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-C.1-1.7.1">Added authorization check before decrypting a request.<a href="#appendix-C.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-C.1-1.8">
-            <p id="appendix-C.1-1.8.1">Updated state diagram of the incoming request processing.<a href="#appendix-C.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-C.1-1.8.1">Fixes in the examples of message exchange.<a href="#appendix-C.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-C.1-1.9">
-            <p id="appendix-C.1-1.9.1">Updated references.<a href="#appendix-C.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-C.1-1.9.1">Updated state diagram of the incoming request processing.<a href="#appendix-C.1-1.9.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-C.1-1.10">
-            <p id="appendix-C.1-1.10.1">Editorial fixes and improvements.<a href="#appendix-C.1-1.10.1" class="pilcrow">¶</a></p>
+            <p id="appendix-C.1-1.10.1">Updated references.<a href="#appendix-C.1-1.10.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-C.1-1.11">
+            <p id="appendix-C.1-1.11.1">Editorial fixes and improvements.<a href="#appendix-C.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
