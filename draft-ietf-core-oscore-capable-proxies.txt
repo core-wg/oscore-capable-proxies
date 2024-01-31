@@ -218,8 +218,9 @@ Table of Contents
       endpoints included.
 
    *  Proxy-related options: either of the following (set of) CoAP
-      options used for proxying a CoAP request.  These CoAP options are
-      defined in [RFC7252] and [I-D.ietf-core-href].
+      options that a proxy can use to understand where to forward a CoAP
+      request.  These CoAP options are defined in [RFC7252] and
+      [I-D.ietf-core-href].
 
       -  The Proxy-Uri Option or the Proxy-Cri Option.  These are
          relevant when using a forward-proxy.
@@ -228,7 +229,8 @@ Table of Contents
          the Proxy-Scheme-Number Option, together with any of the Uri-*
          Options.  This is relevant when using a forward-proxy.
 
-      -  One or more Uri-Path Options, when used not together with the
+      -  The set of CoAP options comprising any of the Uri-Host, Uri-
+         Port, and Uri-Path Options, when used not together with the
          Proxy-Scheme Option or the Proxy-Scheme-Number Option.  This is
          relevant when using a reverse-proxy.
 
@@ -679,11 +681,14 @@ Table of Contents
 
           After that, the endpoint does not take any further action.
 
-       *  REQ includes one or more Uri-Path Options, but not the Proxy-
-          Scheme Option or the Proxy-Scheme-Number Option.
+       *  REQ does not include the Proxy-Scheme Option or the Proxy-
+          Scheme-Number Option, but it includes one or more Uri-Path
+          Options, and/or the Uri-Host Option, and/or the Uri-Port
+          Option.
 
-          If the endpoint is not configured to be a reverse-proxy or its
-          resource targeted by the Uri-Path Options is not intended to
+          If the endpoint is not configured to be a reverse-proxy, or
+          what is targeted by the virtual addressing information in the
+          Uri-Path, Uri-Host, or Uri-Port Options is not intended to
           support reverse-proxy functionalities, then the endpoint
           proceeds to step 3.
 
@@ -702,10 +707,10 @@ Table of Contents
           protecting the error response over that communication leg, as
           per Section 3.4.
 
-          Otherwise, the endpoint consumes the Uri-Path Options as per
-          Section 5.7.3 of [RFC7252], and forwards REQ to (the next hop
+          Otherwise, the endpoint consumes the present Uri-Path, Uri-
+          Host, and Uri-Port Options, and forwards REQ to (the next hop
           towards) the origin server, unless differently indicated in
-          REQ, e.g., by means of any of its CoAP options.
+          REQ (e.g., by means of any of its CoAP options).
 
           If the endpoint forwards REQ to (the next hop towards) the
           origin server, this may result in (further) protecting REQ
@@ -2123,13 +2128,13 @@ Appendix C.  State Diagram: Processing of Incoming Requests
     |                              |           |   |              v    |
     |                              |           |   |     +---------+   |
     v                              v           |   |     | Decrypt |   |
- +---------------------+    ...............    |   |     +---------+   |
- | There are Uri-Path  |    : Forward the :    |   |         |         |
- | Options, without    |    : request     :    |   |         |         |
- | the Proxy-Scheme or |    :.............:    |   |         v         |
- | Proxy-Scheme-Number |           ^           |   | +----------+      |
- | Option              |           |           |   | | Success? |-YES -+
- +---------------------+           |           |   | +----------+
+ +--------------------------+   ...........    |   |     +---------+   |
+ | There is no Proxy-Scheme |   : Forward :    |   |         |         |
+ | or Proxy-Scheme-Number   |   : the     :    |   |         |         |
+ | Option, but there are    |   : request :    |   |         v         |
+ | Uri-Path and/or Uri-Host |   :.........:    |   | +----------+      |
+ | and/or Uri-Port Options  |      ^           |   | | Success? |-YES -+
+ +--------------------------+      |           |   | +----------+
     |                              |           |   |         |
     |                              |           |   |         NO
     |                              |           |   |         |
@@ -2153,11 +2158,11 @@ Appendix C.  State Diagram: Processing of Incoming Requests
     |            |                             |        |     : 4.00   :
     |           YES                            |        |     :........:
     v            |                             |        v
- +------------------------+                    |      ..................
- | Am I a reverse proxy   |                    |      : Deliver the    :
- | using the indicated    |-NO-----------------+      : request to the :
- | resource for proxying? |                           : application    :
- +------------------------+                           :................:
+ +--------------------------------+            |      ..................
+ | Am I a reverse-proxy using the |            |      : Deliver the    :
+ | indicated virtual addressing   |-NO---------+      : request to the :
+ | information for proxying?      |                   : application    :
+ +--------------------------------+                   :................:
 
 
  (#) This is determined according to the endpoint's configuration
@@ -2189,6 +2194,9 @@ D.1.  Version -00 to -01
 
    *  A forward-proxy consumes a request when the request URI identifies
       the proxy itself.
+
+   *  Consistency fix: a reverse-proxy can forward based on Uri-Host,
+      Uri-Port or Uri-Path.
 
    *  Generalized authorization checks as acceptability checks.
 
