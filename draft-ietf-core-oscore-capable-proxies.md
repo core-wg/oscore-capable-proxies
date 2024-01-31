@@ -1421,7 +1421,7 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 * Revised general rules on protecting CoAP options.
 
-* A forward-proxy consumes a request when identified by the request URI.
+* A forward-proxy consumes a request when the request URI identifies the proxy itself.
 
 * Generalized authorization checks as acceptability checks.
 
