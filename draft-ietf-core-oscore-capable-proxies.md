@@ -147,13 +147,13 @@ In addition, this document uses the following terms.
 
 * Hop: an endpoint in the end-to-end path between two application endpoints included.
 
-* Proxy-related options: either of the following (set of) CoAP options used for proxying a CoAP request. These CoAP options are defined in {{RFC7252}} and {{I-D.ietf-core-href}}.
+* Proxy-related options: either of the following (set of) CoAP options that a proxy can use to understand where to forward a CoAP request. These CoAP options are defined in {{RFC7252}} and {{I-D.ietf-core-href}}.
 
    - The Proxy-Uri Option or the Proxy-Cri Option. These are relevant when using a forward-proxy.
 
    - The set of CoAP options comprising the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* Options. This is relevant when using a forward-proxy.
 
-   - One or more Uri-Path Options, when used not together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
+   - The set of CoAP options comprising any of the Uri-Host, Uri-Port, and Uri-Path Options, when used not together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
 
 * OSCORE-in-OSCORE: the process by which a message protected with (Group) OSCORE is further protected with (Group) OSCORE. This means that, if such a process is used, a successful decryption/verification of an OSCORE-protected message might yield an OSCORE-protected message.
 
@@ -348,15 +348,15 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
       After that, the endpoint does not take any further action.
 
-   * REQ includes one or more Uri-Path Options, but not the Proxy-Scheme Option or the Proxy-Scheme-Number Option.
+   * REQ does not include the Proxy-Scheme Option or the Proxy-Scheme-Number Option, but it includes one or more Uri-Path Options, and/or the Uri-Host Option, and/or the Uri-Port Option.
 
-      If the endpoint is not configured to be a reverse-proxy or its resource targeted by the Uri-Path Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.
+      If the endpoint is not configured to be a reverse-proxy, or what is targeted by the virtual addressing information in the Uri-Path, Uri-Host, or Uri-Port Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.
 
       Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
 
       In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint consumes the Uri-Path Options as per {{Section 5.7.3 of RFC7252}}, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
+      Otherwise, the endpoint consumes the present Uri-Path, Uri-Host, and Uri-Port Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ (e.g., by means of any of its CoAP options).
 
       If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
 
@@ -1360,13 +1360,13 @@ request      +-----------------------------------------------+        |
    |                              |           |   |              v    |
    |                              |           |   |     +---------+   |
    v                              v           |   |     | Decrypt |   |
-+---------------------+    ...............    |   |     +---------+   |
-| There are Uri-Path  |    : Forward the :    |   |         |         |
-| Options, without    |    : request     :    |   |         |         |
-| the Proxy-Scheme or |    :.............:    |   |         v         |
-| Proxy-Scheme-Number |           ^           |   | +----------+      |
-| Option              |           |           |   | | Success? |-YES -+
-+---------------------+           |           |   | +----------+
++--------------------------+   ...........    |   |     +---------+   |
+| There is no Proxy-Scheme |   : Forward :    |   |         |         |
+| or Proxy-Scheme-Number   |   : the     :    |   |         |         |
+| Option, but there are    |   : request :    |   |         v         |
+| Uri-Path and/or Uri-Host |   :.........:    |   | +----------+      |
+| and/or Uri-Port Options  |      ^           |   | | Success? |-YES -+
++--------------------------+      |           |   | +----------+
    |                              |           |   |         |
    |                              |           |   |         NO
    |                              |           |   |         |
@@ -1390,11 +1390,11 @@ request      +-----------------------------------------------+        |
    |            |                             |        |     : 4.00   :
    |           YES                            |        |     :........:
    v            |                             |        v
-+------------------------+                    |      ..................
-| Am I a reverse proxy   |                    |      : Deliver the    :
-| using the indicated    |-NO-----------------+      : request to the :
-| resource for proxying? |                           : application    :
-+------------------------+                           :................:
++--------------------------------+            |      ..................
+| Am I a reverse-proxy using the |            |      : Deliver the    :
+| indicated virtual addressing   |-NO---------+      : request to the :
+| information for proxying?      |                   : application    :
++--------------------------------+                   :................:
 
 
 (#) This is determined according to the endpoint's configuration
@@ -1422,6 +1422,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Revised general rules on protecting CoAP options.
 
 * A forward-proxy consumes a request when the request URI identifies the proxy itself.
+
+* Consistency fix: a reverse-proxy can forward based on Uri-Host, Uri-Port or Uri-Path.
 
 * Generalized authorization checks as acceptability checks.
 
