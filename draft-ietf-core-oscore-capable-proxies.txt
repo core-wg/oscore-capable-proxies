@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613 (if approved)                                      RISE AB
-Intended status: Standards Track                         25 January 2024
-Expires: 28 July 2024
+Intended status: Standards Track                         31 January 2024
+Expires: 3 August 2024
 
 
                          OSCORE-capable Proxies
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 July 2024.
+   This Internet-Draft will expire on 3 August 2024.
 
 Copyright Notice
 
@@ -2187,8 +2187,8 @@ D.1.  Version -00 to -01
 
    *  Revised general rules on protecting CoAP options.
 
-   *  A forward-proxy consumes a request when identified by the request
-      URI.
+   *  A forward-proxy consumes a request when the request URI identifies
+      the proxy itself.
 
    *  Generalized authorization checks as acceptability checks.
 
