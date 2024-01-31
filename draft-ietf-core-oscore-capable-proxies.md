@@ -350,7 +350,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
    * REQ does not include the Proxy-Scheme Option or the Proxy-Scheme-Number Option, but it includes one or more Uri-Path Options, and/or the Uri-Host Option, and/or the Uri-Port Option.
 
-      If the endpoint is not configured to be a reverse-proxy, or what is targeted by the virtual addressing information in the Uri-Path, Uri-Host, or Uri-Port Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.
+      If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the Uri-Path, Uri-Host, and Uri-Port Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.
 
       Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
 
@@ -1392,9 +1392,10 @@ request      +-----------------------------------------------+        |
    v            |                             |        v
 +--------------------------------+            |      ..................
 | Am I a reverse-proxy using the |            |      : Deliver the    :
-| indicated virtual addressing   |-NO---------+      : request to the :
-| information for proxying?      |                   : application    :
-+--------------------------------+                   :................:
+| exact value of these Uri-Path, |-NO---------+      : request to the :
+| Uri-Host, and Uri-Port Options |                   : application    :
+| for proxying?                  |                   :................:
++--------------------------------+
 
 
 (#) This is determined according to the endpoint's configuration
