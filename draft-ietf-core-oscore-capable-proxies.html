@@ -1459,107 +1459,47 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-protection-of-coap-options" class="section-name selfRef">Protection of CoAP Options</a>
         </h3>
 <p id="section-3.1-1">Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">In addition to the CoAP options specified as Class E in <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or in the document defining them, the sender endpoint <span class="bcp14">MUST</span> encrypt and integrity-protect the following CoAP options. That is, even if they are originally specified as Class U or I for OSCORE, such options are processed like if they were specified as Class E.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">As usual, the sender endpoint encrypts and integrity-protects the CoAP options included in M that are specified as Class E for OSCORE <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">In addition to that, the sender endpoint <span class="bcp14">MUST</span> perform the procedure defined below for each CoAP option OPT that is included in M and that is originally specified as Class U or I for OSCORE. Depending on the outcome of such a procedure, the sender endpoint processes OPT as per its original Class U or I, or instead as if it was specified as Class E.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">When protecting M by using the OSCORE Security Context shared with another OSCORE endpoint X and applying the i-th OSCORE layer in sequence, the sender endpoint performs the following steps, for each CoAP option OPT included in M and originally defined as Class U or I for OSCORE. <a href="#sec-option-protection-diag" class="auto internal xref">Appendix B</a> provides an overview as a state diagram.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">Note that the sender endpoint can assess some conditions only "to the best of its knowledge". This is due to the possible presence of a reverse-proxy standing for X and whose presence as reverse-proxy is, by definition, expected to be unknown to the sender endpoint.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.1-6">
+<li id="section-3.1-6.1">
+            <p id="section-3.1-6.1.1">If the sender endpoint has added OPT to M, then this algorithm moves to step 2. Otherwise, this algorithm moves to step 4.<a href="#section-3.1-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-3.1-6.2">
+            <p id="section-3.1-6.2.1">If, to the best of the sender endpoint's knowledge, X is a consumer of OPT, then this algorithm moves to step 3. Otherwise, this algorithm moves to step 4.<a href="#section-3.1-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-3.1-6.3">
+            <p id="section-3.1-6.3.1">If, to the best of the sender endpoint's knowledge, X is the immediately next consumer of OPT, then this algorithm moves to step 5. Otherwise, this algorithm moves to step 9.<a href="#section-3.1-6.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-3.1-6.4">
+            <p id="section-3.1-6.4.1">If any of the following conditions hold, then this algorithm moves to step 6. Otherwise, this algorithm moves to step 9.<a href="#section-3.1-6.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1-3.1">
-            <p id="section-3.1-3.1.1">Any CoAP option OPT such that all the following conditions hold.<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.1-3.1.2">
-<li id="section-3.1-3.1.2.1">
-                <p id="section-3.1-3.1.2.1.1">The sender endpoint has added OPT to the message M.<a href="#section-3.1-3.1.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.1-6.4.2.1">
+                <p id="section-3.1-6.4.2.1.1">To the best of the sender endpoint's knowledge, X is the next hop for the sender endpoint; or<a href="#section-3.1-6.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li id="section-3.1-3.1.2.2">
-                <p id="section-3.1-3.1.2.2.1">The other OSCORE endpoint X is not a consumer of OPT.<a href="#section-3.1-3.1.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li id="section-3.1-3.1.2.3">
-                <p id="section-3.1-3.1.2.3.1">Any of the following applies:<a href="#section-3.1-3.1.2.3.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.1-3.1.2.3.2.1">
-                    <p id="section-3.1-3.1.2.3.2.1.1">X is the next hop for the sender endpoint; or<a href="#section-3.1-3.1.2.3.2.1.1" class="pilcrow">¶</a></p>
-</li>
-                  <li class="normal" id="section-3.1-3.1.2.3.2.2">
-                    <p id="section-3.1-3.1.2.3.2.2.1">The next hop is not the immediately next consumer of OPT.<a href="#section-3.1-3.1.2.3.2.2.1" class="pilcrow">¶</a></p>
-</li>
-                </ul>
-</li>
-            </ol>
-<p id="section-3.1-3.1.3">
-Examples of such CoAP options are:<a href="#section-3.1-3.1.3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.1-3.1.4.1">
-                <p id="section-3.1-3.1.4.1.1">The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is an origin endpoint.<a href="#section-3.1-3.1.4.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-3.1-3.1.4.2">
-                <p id="section-3.1-3.1.4.2.1">The EDHOC Option defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, when the sender endpoint is the EDHOC Initiator.<a href="#section-3.1-3.1.4.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-3.1-3.1.4.3">
-                <p id="section-3.1-3.1.4.3.1">The Request-Hash Option defined in <span>[<a href="#I-D.amsuess-core-cachable-oscore" class="cite xref">I-D.amsuess-core-cachable-oscore</a>]</span>, when X is not an origin endpoint.<a href="#section-3.1-3.1.4.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.1-6.4.2.2">
+                <p id="section-3.1-6.4.2.2.1">To the best of the sender endpoint's knowledge, the next hop for the sender endpoint is not the immediately next consumer of OPT.<a href="#section-3.1-6.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-3.1-3.2">
-            <p id="section-3.1-3.2.1">Any CoAP option OPT such that all the following conditions hold.<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.1-3.2.2">
-<li id="section-3.1-3.2.2.1">
-                <p id="section-3.1-3.2.2.1.1">The sender endpoint has added OPT to the message M.<a href="#section-3.1-3.2.2.1.1" class="pilcrow">¶</a></p>
+          <li id="section-3.1-6.5">
+            <p id="section-3.1-6.5.1">If X needs to access OPT before having removed the i-th OSCORE layer or in order to remove the i-th OSCORE layer, then this algorithm moves to step 9. Otherwise, this algorithm moves to step 6.<a href="#section-3.1-6.5.1" class="pilcrow">¶</a></p>
 </li>
-              <li id="section-3.1-3.2.2.2">
-                <p id="section-3.1-3.2.2.2.1">The other OSCORE endpoint X is the immediately next consumer of OPT.<a href="#section-3.1-3.2.2.2.1" class="pilcrow">¶</a></p>
+          <li id="section-3.1-6.6">
+            <p id="section-3.1-6.6.1">If OPT is the Uri-Host or Uri-Port option, then this algorithm moves to step 7. Otherwise, this algorithm moves to step 8.<a href="#section-3.1-6.6.1" class="pilcrow">¶</a></p>
 </li>
-              <li id="section-3.1-3.2.2.3">
-                <p id="section-3.1-3.2.2.3.1">At the other OSCORE endpoint X, OPT does not play a role in processing M before having removed the i-th OSCORE layer or in removing the i-th OSCORE layer altogether.<a href="#section-3.1-3.2.2.3.1" class="pilcrow">¶</a></p>
+          <li id="section-3.1-6.7">
+            <p id="section-3.1-6.7.1">If M includes the Proxy-Scheme or Proxy-Scheme-Number option, then this algorithm moves to step 8. Otherwise, this algorithm moves to step 9.<a href="#section-3.1-6.7.1" class="pilcrow">¶</a></p>
 </li>
-            </ol>
-<p id="section-3.1-3.2.3">
-Examples of such CoAP options are:<a href="#section-3.1-3.2.3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.1-3.2.4.1">
-                <p id="section-3.1-3.2.4.1.1">The Proxy-Uri, Proxy-Scheme, Uri-Host, and Uri-Port Options defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-3.1-3.2.4.1.1" class="pilcrow">¶</a></p>
+          <li id="section-3.1-6.8">
+            <p id="section-3.1-6.8.1">The sender endpoint determines that OPT will be processed as if it was specified as Class E for OSCORE, i.e., to be both encrypted and integrity-protected. Then, the sender enpoint terminates this algorithm.<a href="#section-3.1-6.8.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1-3.2.4.2">
-                <p id="section-3.1-3.2.4.2.1">The Proxy-Cri and Proxy-Scheme-Number Options defined in <span>[<a href="#I-D.ietf-core-href" class="cite xref">I-D.ietf-core-href</a>]</span>.<a href="#section-3.1-3.2.4.2.1" class="pilcrow">¶</a></p>
+          <li id="section-3.1-6.9">
+            <p id="section-3.1-6.9.1">The sender endpoint determines that OPT will be processed as per its original Class U or I. Then, the sender enpoint terminates this algorithm.<a href="#section-3.1-6.9.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1-3.2.4.3">
-                <p id="section-3.1-3.2.4.3.1">The Listen-To-Multicast-Notifications Option defined in <span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>.<a href="#section-3.1-3.2.4.3.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-3.1-3.2.4.4">
-                <p id="section-3.1-3.2.4.4.1">The Multicast-Timeout, Response-Forwarding, and Group-ETag Options defined in <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>.<a href="#section-3.1-3.2.4.4.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-          <li class="normal" id="section-3.1-3.3">
-            <p id="section-3.1-3.3.1">Any CoAP option OPT such that all the following conditions hold.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.1-3.3.2">
-<li id="section-3.1-3.3.2.1">
-                <p id="section-3.1-3.3.2.1.1">The sender endpoint has not added OPT to the message M.<a href="#section-3.1-3.3.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li id="section-3.1-3.3.2.2">
-                <p id="section-3.1-3.3.2.2.1">Any of the following applies:<a href="#section-3.1-3.3.2.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.1-3.3.2.2.2.1">
-                    <p id="section-3.1-3.3.2.2.2.1.1">X is the next hop for the sender endpoint; or<a href="#section-3.1-3.3.2.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-                  <li class="normal" id="section-3.1-3.3.2.2.2.2">
-                    <p id="section-3.1-3.3.2.2.2.2.1">The next hop is not supposed to be the immediately next consumer of OPT.<a href="#section-3.1-3.3.2.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-                </ul>
-</li>
-            </ol>
-<p id="section-3.1-3.3.3">
-Examples of such CoAP options are:<a href="#section-3.1-3.3.3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.1-3.3.4.1">
-                <p id="section-3.1-3.3.4.1.1">The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.<a href="#section-3.1-3.3.4.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-3.1-3.3.4.2">
-                <p id="section-3.1-3.3.4.2.1">The EDHOC Option defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, when the sender endpoint is not the EDHOC Initiator.<a href="#section-3.1-3.3.4.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-        </ul>
-<p id="section-3.1-4"><a href="#sec-option-protection-diag" class="auto internal xref">Appendix B</a> provides an overview as a state diagram.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.1-5">Note that, in a simple scenario where no intermediaries are deployed between two origin endpoints, the rules defined above result in encrypting and integrity-protecting the Uri-Host and Uri-Port Options included in a CoAP request. This is different from what was intended in <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, according to which the two options were meant to be always unprotected.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1-6">However, in the absence of intermediaries, there is no reason for those two options to be unprotected. In fact, at the origin server, they do not play a role in retrieving the OSCORE Security Context to use for decrypting a received request, and the server can still consume them as usual, after the request has been decrypted.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.1-7">If only one of the two origin endpoints has not implemented this updated behavior, this is not an interoperability issue. That is, if such an endpoint is a client, then the two options remain unprotected in a sent request, and the recipient server processes those as expected in <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. Instead, if such an endpoint is a server, then it still decrypts the received request according to <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, after which it has access to the two options.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
+        </ol>
 </section>
 </div>
 <div id="outgoing-requests">
@@ -3542,85 +3482,91 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
 <figure id="figure-6">
         <div id="appendix-B-2.1">
           <div class="alignCenter art-svg artwork" id="appendix-B-2.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="960" width="576" viewBox="0 0 576 960" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1120" width="576" viewBox="0 0 576 1120" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
               <path d="M 8,160 L 8,256" fill="none" stroke="black"></path>
               <path d="M 8,320 L 8,368" fill="none" stroke="black"></path>
-              <path d="M 8,464 L 8,656" fill="none" stroke="black"></path>
-              <path d="M 56,264 L 56,312" fill="none" stroke="black"></path>
-              <path d="M 56,416 L 56,456" fill="none" stroke="black"></path>
-              <path d="M 56,704 L 56,848" fill="none" stroke="black"></path>
-              <path d="M 88,736 L 88,784" fill="none" stroke="black"></path>
+              <path d="M 24,480 L 24,640" fill="none" stroke="black"></path>
+              <path d="M 48,264 L 48,312" fill="none" stroke="black"></path>
+              <path d="M 48,376 L 48,416" fill="none" stroke="black"></path>
+              <path d="M 48,448 L 48,472" fill="none" stroke="black"></path>
+              <path d="M 48,688 L 48,1088" fill="none" stroke="black"></path>
+              <path d="M 80,736 L 80,768" fill="none" stroke="black"></path>
               <path d="M 104,320 L 104,368" fill="none" stroke="black"></path>
-              <path d="M 136,704 L 136,728" fill="none" stroke="black"></path>
-              <path d="M 168,320 L 168,384" fill="none" stroke="black"></path>
-              <path d="M 168,464 L 168,656" fill="none" stroke="black"></path>
-              <path d="M 192,464 L 192,656" fill="none" stroke="black"></path>
-              <path d="M 224,432 L 224,456" fill="none" stroke="black"></path>
-              <path d="M 224,704 L 224,728" fill="none" stroke="black"></path>
-              <path d="M 256,320 L 256,384" fill="none" stroke="black"></path>
-              <path d="M 256,832 L 256,864" fill="none" stroke="black"></path>
-              <path d="M 288,736 L 288,784" fill="none" stroke="black"></path>
-              <path d="M 320,320 L 320,368" fill="none" stroke="black"></path>
-              <path d="M 320,704 L 320,824" fill="none" stroke="black"></path>
-              <path d="M 336,464 L 336,656" fill="none" stroke="black"></path>
-              <path d="M 360,464 L 360,544" fill="none" stroke="black"></path>
-              <path d="M 368,896 L 368,944" fill="none" stroke="black"></path>
-              <path d="M 416,592 L 416,824" fill="none" stroke="black"></path>
-              <path d="M 456,832 L 456,864" fill="none" stroke="black"></path>
-              <path d="M 496,416 L 496,456" fill="none" stroke="black"></path>
-              <path d="M 496,592 L 496,888" fill="none" stroke="black"></path>
-              <path d="M 512,320 L 512,368" fill="none" stroke="black"></path>
-              <path d="M 536,464 L 536,544" fill="none" stroke="black"></path>
-              <path d="M 560,336 L 560,888" fill="none" stroke="black"></path>
+              <path d="M 104,992 L 104,1024" fill="none" stroke="black"></path>
+              <path d="M 104,1072 L 104,1104" fill="none" stroke="black"></path>
+              <path d="M 120,816 L 120,984" fill="none" stroke="black"></path>
+              <path d="M 144,864 L 144,912" fill="none" stroke="black"></path>
+              <path d="M 184,320 L 184,384" fill="none" stroke="black"></path>
+              <path d="M 208,392 L 208,416" fill="none" stroke="black"></path>
+              <path d="M 208,448 L 208,472" fill="none" stroke="black"></path>
+              <path d="M 208,688 L 208,728" fill="none" stroke="black"></path>
+              <path d="M 208,960 L 208,984" fill="none" stroke="black"></path>
+              <path d="M 232,480 L 232,640" fill="none" stroke="black"></path>
+              <path d="M 304,992 L 304,1024" fill="none" stroke="black"></path>
+              <path d="M 320,480 L 320,560" fill="none" stroke="black"></path>
+              <path d="M 336,320 L 336,384" fill="none" stroke="black"></path>
+              <path d="M 352,608 L 352,728" fill="none" stroke="black"></path>
+              <path d="M 352,816 L 352,856" fill="none" stroke="black"></path>
+              <path d="M 352,960 L 352,1064" fill="none" stroke="black"></path>
+              <path d="M 416,320 L 416,400" fill="none" stroke="black"></path>
+              <path d="M 416,736 L 416,768" fill="none" stroke="black"></path>
+              <path d="M 416,864 L 416,912" fill="none" stroke="black"></path>
+              <path d="M 456,448 L 456,472" fill="none" stroke="black"></path>
+              <path d="M 456,608 L 456,1064" fill="none" stroke="black"></path>
+              <path d="M 480,1072 L 480,1104" fill="none" stroke="black"></path>
+              <path d="M 496,480 L 496,560" fill="none" stroke="black"></path>
+              <path d="M 536,448 L 536,1088" fill="none" stroke="black"></path>
               <path d="M 568,160 L 568,256" fill="none" stroke="black"></path>
-              <path d="M 568,896 L 568,944" fill="none" stroke="black"></path>
+              <path d="M 568,320 L 568,400" fill="none" stroke="black"></path>
               <path d="M 8,160 L 88,160" fill="none" stroke="black"></path>
               <path d="M 104,160 L 568,160" fill="none" stroke="black"></path>
               <path d="M 8,256 L 568,256" fill="none" stroke="black"></path>
               <path d="M 8,320 L 104,320" fill="none" stroke="black"></path>
-              <path d="M 168,320 L 256,320" fill="none" stroke="black"></path>
-              <path d="M 320,320 L 512,320" fill="none" stroke="black"></path>
-              <path d="M 144,336 L 160,336" fill="none" stroke="black"></path>
-              <path d="M 296,336 L 312,336" fill="none" stroke="black"></path>
-              <path d="M 544,336 L 560,336" fill="none" stroke="black"></path>
+              <path d="M 184,320 L 336,320" fill="none" stroke="black"></path>
+              <path d="M 416,320 L 568,320" fill="none" stroke="black"></path>
+              <path d="M 112,336 L 128,336" fill="none" stroke="black"></path>
+              <path d="M 160,336 L 176,336" fill="none" stroke="black"></path>
+              <path d="M 344,336 L 360,336" fill="none" stroke="black"></path>
+              <path d="M 392,336 L 408,336" fill="none" stroke="black"></path>
               <path d="M 8,368 L 104,368" fill="none" stroke="black"></path>
-              <path d="M 320,368 L 512,368" fill="none" stroke="black"></path>
-              <path d="M 168,384 L 256,384" fill="none" stroke="black"></path>
-              <path d="M 8,464 L 168,464" fill="none" stroke="black"></path>
-              <path d="M 192,464 L 336,464" fill="none" stroke="black"></path>
-              <path d="M 360,464 L 536,464" fill="none" stroke="black"></path>
-              <path d="M 360,544 L 536,544" fill="none" stroke="black"></path>
-              <path d="M 8,656 L 168,656" fill="none" stroke="black"></path>
-              <path d="M 192,656 L 336,656" fill="none" stroke="black"></path>
-              <path d="M 88,736 L 288,736" fill="none" stroke="black"></path>
-              <path d="M 88,784 L 288,784" fill="none" stroke="black"></path>
-              <path d="M 256,832 L 456,832" fill="none" stroke="black"></path>
-              <path d="M 56,848 L 248,848" fill="none" stroke="black"></path>
-              <path d="M 256,864 L 456,864" fill="none" stroke="black"></path>
-              <path d="M 368,896 L 568,896" fill="none" stroke="black"></path>
-              <path d="M 368,944 L 568,944" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="568,888 556,882.4 556,893.6" fill="black" transform="rotate(90,560,888)"></polygon>
-              <polygon class="arrowhead" points="504,888 492,882.4 492,893.6" fill="black" transform="rotate(90,496,888)"></polygon>
-              <polygon class="arrowhead" points="504,456 492,450.4 492,461.6" fill="black" transform="rotate(90,496,456)"></polygon>
-              <polygon class="arrowhead" points="424,824 412,818.4 412,829.6" fill="black" transform="rotate(90,416,824)"></polygon>
-              <polygon class="arrowhead" points="328,824 316,818.4 316,829.6" fill="black" transform="rotate(90,320,824)"></polygon>
-              <polygon class="arrowhead" points="320,336 308,330.4 308,341.6" fill="black" transform="rotate(0,312,336)"></polygon>
-              <polygon class="arrowhead" points="256,848 244,842.4 244,853.6" fill="black" transform="rotate(0,248,848)"></polygon>
-              <polygon class="arrowhead" points="232,728 220,722.4 220,733.6" fill="black" transform="rotate(90,224,728)"></polygon>
-              <polygon class="arrowhead" points="232,456 220,450.4 220,461.6" fill="black" transform="rotate(90,224,456)"></polygon>
-              <polygon class="arrowhead" points="168,336 156,330.4 156,341.6" fill="black" transform="rotate(0,160,336)"></polygon>
-              <polygon class="arrowhead" points="144,728 132,722.4 132,733.6" fill="black" transform="rotate(90,136,728)"></polygon>
-              <polygon class="arrowhead" points="64,456 52,450.4 52,461.6" fill="black" transform="rotate(90,56,456)"></polygon>
-              <polygon class="arrowhead" points="64,312 52,306.4 52,317.6" fill="black" transform="rotate(90,56,312)"></polygon>
-              <circle cx="24" cy="480" r="6" class="closeddot" fill="black"></circle>
-              <circle cx="24" cy="560" r="6" class="closeddot" fill="black"></circle>
+              <path d="M 184,384 L 336,384" fill="none" stroke="black"></path>
+              <path d="M 416,400 L 568,400" fill="none" stroke="black"></path>
+              <path d="M 24,480 L 232,480" fill="none" stroke="black"></path>
+              <path d="M 320,480 L 496,480" fill="none" stroke="black"></path>
+              <path d="M 320,560 L 496,560" fill="none" stroke="black"></path>
+              <path d="M 24,640 L 232,640" fill="none" stroke="black"></path>
+              <path d="M 80,736 L 416,736" fill="none" stroke="black"></path>
+              <path d="M 80,768 L 416,768" fill="none" stroke="black"></path>
+              <path d="M 144,864 L 416,864" fill="none" stroke="black"></path>
+              <path d="M 144,912 L 416,912" fill="none" stroke="black"></path>
+              <path d="M 104,992 L 304,992" fill="none" stroke="black"></path>
+              <path d="M 104,1024 L 304,1024" fill="none" stroke="black"></path>
+              <path d="M 104,1072 L 480,1072" fill="none" stroke="black"></path>
+              <path d="M 48,1088 L 96,1088" fill="none" stroke="black"></path>
+              <path d="M 488,1088 L 536,1088" fill="none" stroke="black"></path>
+              <path d="M 104,1104 L 480,1104" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="496,1088 484,1082.4 484,1093.6" fill="black" transform="rotate(180,488,1088)"></polygon>
+              <polygon class="arrowhead" points="464,1064 452,1058.4 452,1069.6" fill="black" transform="rotate(90,456,1064)"></polygon>
+              <polygon class="arrowhead" points="464,472 452,466.4 452,477.6" fill="black" transform="rotate(90,456,472)"></polygon>
+              <polygon class="arrowhead" points="416,336 404,330.4 404,341.6" fill="black" transform="rotate(0,408,336)"></polygon>
+              <polygon class="arrowhead" points="360,1064 348,1058.4 348,1069.6" fill="black" transform="rotate(90,352,1064)"></polygon>
+              <polygon class="arrowhead" points="360,856 348,850.4 348,861.6" fill="black" transform="rotate(90,352,856)"></polygon>
+              <polygon class="arrowhead" points="360,728 348,722.4 348,733.6" fill="black" transform="rotate(90,352,728)"></polygon>
+              <polygon class="arrowhead" points="216,984 204,978.4 204,989.6" fill="black" transform="rotate(90,208,984)"></polygon>
+              <polygon class="arrowhead" points="216,728 204,722.4 204,733.6" fill="black" transform="rotate(90,208,728)"></polygon>
+              <polygon class="arrowhead" points="216,472 204,466.4 204,477.6" fill="black" transform="rotate(90,208,472)"></polygon>
+              <polygon class="arrowhead" points="184,336 172,330.4 172,341.6" fill="black" transform="rotate(0,176,336)"></polygon>
+              <polygon class="arrowhead" points="128,984 116,978.4 116,989.6" fill="black" transform="rotate(90,120,984)"></polygon>
+              <polygon class="arrowhead" points="104,1088 92,1082.4 92,1093.6" fill="black" transform="rotate(0,96,1088)"></polygon>
+              <polygon class="arrowhead" points="56,472 44,466.4 44,477.6" fill="black" transform="rotate(90,48,472)"></polygon>
+              <polygon class="arrowhead" points="56,312 44,306.4 44,317.6" fill="black" transform="rotate(90,48,312)"></polygon>
+              <circle cx="40" cy="496" r="6" class="closeddot" fill="black"></circle>
+              <circle cx="40" cy="576" r="6" class="closeddot" fill="black"></circle>
               <circle cx="96" cy="96" r="6" class="opendot" fill="white" stroke="black"></circle>
               <circle cx="96" cy="112" r="6" class="opendot" fill="white" stroke="black"></circle>
               <circle cx="96" cy="128" r="6" class="opendot" fill="white" stroke="black"></circle>
               <circle cx="96" cy="144" r="6" class="opendot" fill="white" stroke="black"></circle>
               <circle cx="96" cy="160" r="6" class="opendot" fill="white" stroke="black"></circle>
-              <circle cx="208" cy="480" r="6" class="closeddot" fill="black"></circle>
-              <circle cx="208" cy="560" r="6" class="closeddot" fill="black"></circle>
               <g class="text">
                 <text x="108" y="36">..........................</text>
                 <text x="8" y="52">:</text>
@@ -3662,121 +3608,133 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
                 <text x="32" y="340">Did</text>
                 <text x="56" y="340">I</text>
                 <text x="80" y="340">add</text>
-                <text x="124" y="340">-YES</text>
-                <text x="188" y="340">Is</text>
-                <text x="208" y="340">X</text>
-                <text x="224" y="340">a</text>
-                <text x="276" y="340">-YES</text>
-                <text x="340" y="340">Is</text>
-                <text x="360" y="340">X</text>
-                <text x="384" y="340">the</text>
-                <text x="448" y="340">immediately</text>
-                <text x="528" y="340">-NO</text>
+                <text x="144" y="340">YES</text>
+                <text x="204" y="340">As</text>
+                <text x="232" y="340">far</text>
+                <text x="260" y="340">as</text>
+                <text x="280" y="340">I</text>
+                <text x="304" y="340">can</text>
+                <text x="376" y="340">YES</text>
+                <text x="436" y="340">As</text>
+                <text x="464" y="340">far</text>
+                <text x="492" y="340">as</text>
+                <text x="512" y="340">I</text>
+                <text x="536" y="340">can</text>
                 <text x="32" y="356">OPT</text>
                 <text x="60" y="356">to</text>
                 <text x="84" y="356">M?</text>
-                <text x="212" y="356">consumer</text>
-                <text x="348" y="356">next</text>
-                <text x="404" y="356">consumer</text>
-                <text x="452" y="356">of</text>
-                <text x="484" y="356">OPT?</text>
-                <text x="188" y="372">of</text>
-                <text x="220" y="372">OPT?</text>
-                <text x="56" y="388">|</text>
-                <text x="496" y="388">|</text>
-                <text x="60" y="404">NO</text>
-                <text x="224" y="404">|</text>
-                <text x="496" y="404">YES</text>
-                <text x="228" y="420">NO</text>
-                <text x="40" y="484">X</text>
-                <text x="60" y="484">is</text>
-                <text x="84" y="484">my</text>
-                <text x="224" y="484">X</text>
-                <text x="244" y="484">is</text>
-                <text x="268" y="484">my</text>
-                <text x="388" y="484">Does</text>
-                <text x="416" y="484">X</text>
-                <text x="444" y="484">need</text>
-                <text x="476" y="484">to</text>
-                <text x="52" y="500">next</text>
-                <text x="92" y="500">hop;</text>
-                <text x="236" y="500">next</text>
-                <text x="276" y="500">hop;</text>
-                <text x="396" y="500">access</text>
-                <text x="440" y="500">OPT</text>
-                <text x="484" y="500">before</text>
-                <text x="412" y="516">decrypting</text>
-                <text x="464" y="516">M</text>
-                <text x="484" y="516">or</text>
-                <text x="508" y="516">in</text>
-                <text x="28" y="532">OR</text>
-                <text x="212" y="532">OR</text>
-                <text x="392" y="532">order</text>
-                <text x="428" y="532">to</text>
-                <text x="472" y="532">decrypt</text>
-                <text x="516" y="532">M?</text>
-                <text x="44" y="564">My</text>
-                <text x="76" y="564">next</text>
-                <text x="112" y="564">hop</text>
-                <text x="228" y="564">My</text>
-                <text x="260" y="564">next</text>
-                <text x="296" y="564">hop</text>
-                <text x="416" y="564">|</text>
-                <text x="496" y="564">|</text>
-                <text x="44" y="580">is</text>
-                <text x="72" y="580">not</text>
-                <text x="124" y="580">supposed</text>
-                <text x="228" y="580">is</text>
-                <text x="256" y="580">not</text>
-                <text x="288" y="580">the</text>
-                <text x="420" y="580">NO</text>
-                <text x="496" y="580">YES</text>
-                <text x="44" y="596">to</text>
-                <text x="68" y="596">be</text>
-                <text x="96" y="596">the</text>
-                <text x="264" y="596">immediately</text>
-                <text x="80" y="612">immediately</text>
-                <text x="236" y="612">next</text>
-                <text x="292" y="612">consumer</text>
-                <text x="52" y="628">next</text>
-                <text x="108" y="628">consumer</text>
-                <text x="228" y="628">of</text>
-                <text x="256" y="628">OPT</text>
-                <text x="44" y="644">of</text>
-                <text x="72" y="644">OPT</text>
-                <text x="56" y="676">|</text>
-                <text x="136" y="676">|</text>
-                <text x="224" y="676">|</text>
-                <text x="320" y="676">|</text>
-                <text x="56" y="692">YES</text>
-                <text x="140" y="692">NO</text>
-                <text x="228" y="692">NO</text>
-                <text x="320" y="692">YES</text>
-                <text x="128" y="756">Process</text>
-                <text x="176" y="756">OPT</text>
-                <text x="204" y="756">as</text>
-                <text x="232" y="756">per</text>
-                <text x="264" y="756">its</text>
-                <text x="132" y="772">original</text>
-                <text x="192" y="772">Class</text>
-                <text x="224" y="772">U</text>
-                <text x="244" y="772">or</text>
-                <text x="264" y="772">I</text>
-                <text x="296" y="852">Process</text>
-                <text x="344" y="852">OPT</text>
-                <text x="372" y="852">as</text>
-                <text x="408" y="852">Class</text>
-                <text x="440" y="852">E</text>
-                <text x="408" y="916">Process</text>
-                <text x="456" y="916">OPT</text>
-                <text x="484" y="916">as</text>
-                <text x="512" y="916">per</text>
-                <text x="544" y="916">its</text>
-                <text x="412" y="932">original</text>
-                <text x="472" y="932">Class</text>
-                <text x="504" y="932">U</text>
-                <text x="524" y="932">or</text>
-                <text x="544" y="932">I</text>
+                <text x="216" y="356">tell,</text>
+                <text x="252" y="356">is</text>
+                <text x="272" y="356">X</text>
+                <text x="288" y="356">a</text>
+                <text x="448" y="356">tell,</text>
+                <text x="484" y="356">is</text>
+                <text x="504" y="356">X</text>
+                <text x="528" y="356">the</text>
+                <text x="228" y="372">consumer</text>
+                <text x="276" y="372">of</text>
+                <text x="308" y="372">OPT?</text>
+                <text x="472" y="372">immediately</text>
+                <text x="540" y="372">next</text>
+                <text x="460" y="388">consumer</text>
+                <text x="508" y="388">of</text>
+                <text x="540" y="388">OPT?</text>
+                <text x="456" y="420">|</text>
+                <text x="536" y="420">|</text>
+                <text x="52" y="436">NO</text>
+                <text x="212" y="436">NO</text>
+                <text x="456" y="436">YES</text>
+                <text x="540" y="436">NO</text>
+                <text x="60" y="500">As</text>
+                <text x="88" y="500">far</text>
+                <text x="116" y="500">as</text>
+                <text x="136" y="500">I</text>
+                <text x="160" y="500">can</text>
+                <text x="200" y="500">tell,</text>
+                <text x="348" y="500">Does</text>
+                <text x="376" y="500">X</text>
+                <text x="404" y="500">need</text>
+                <text x="436" y="500">to</text>
+                <text x="56" y="516">X</text>
+                <text x="76" y="516">is</text>
+                <text x="100" y="516">my</text>
+                <text x="132" y="516">next</text>
+                <text x="172" y="516">hop;</text>
+                <text x="356" y="516">access</text>
+                <text x="400" y="516">OPT</text>
+                <text x="444" y="516">before</text>
+                <text x="372" y="532">decrypting</text>
+                <text x="424" y="532">M</text>
+                <text x="444" y="532">or</text>
+                <text x="468" y="532">in</text>
+                <text x="44" y="548">OR</text>
+                <text x="352" y="548">order</text>
+                <text x="388" y="548">to</text>
+                <text x="432" y="548">decrypt</text>
+                <text x="476" y="548">M?</text>
+                <text x="60" y="580">As</text>
+                <text x="88" y="580">far</text>
+                <text x="116" y="580">as</text>
+                <text x="136" y="580">I</text>
+                <text x="160" y="580">can</text>
+                <text x="200" y="580">tell,</text>
+                <text x="352" y="580">|</text>
+                <text x="456" y="580">|</text>
+                <text x="60" y="596">my</text>
+                <text x="92" y="596">next</text>
+                <text x="128" y="596">hop</text>
+                <text x="156" y="596">is</text>
+                <text x="184" y="596">not</text>
+                <text x="356" y="596">NO</text>
+                <text x="456" y="596">YES</text>
+                <text x="64" y="612">the</text>
+                <text x="128" y="612">immediately</text>
+                <text x="196" y="612">next</text>
+                <text x="84" y="628">consumer</text>
+                <text x="132" y="628">of</text>
+                <text x="160" y="628">OPT</text>
+                <text x="48" y="660">|</text>
+                <text x="208" y="660">|</text>
+                <text x="52" y="676">NO</text>
+                <text x="208" y="676">YES</text>
+                <text x="100" y="756">Is</text>
+                <text x="128" y="756">OPT</text>
+                <text x="160" y="756">the</text>
+                <text x="212" y="756">Uri-Host</text>
+                <text x="260" y="756">or</text>
+                <text x="308" y="756">Uri-Port</text>
+                <text x="376" y="756">Option?</text>
+                <text x="120" y="788">|</text>
+                <text x="352" y="788">|</text>
+                <text x="124" y="804">NO</text>
+                <text x="352" y="804">YES</text>
+                <text x="172" y="884">Does</text>
+                <text x="200" y="884">M</text>
+                <text x="240" y="884">include</text>
+                <text x="288" y="884">the</text>
+                <text x="356" y="884">Proxy-Scheme</text>
+                <text x="164" y="900">or</text>
+                <text x="256" y="900">Proxy-Scheme-Number</text>
+                <text x="368" y="900">Option?</text>
+                <text x="208" y="932">|</text>
+                <text x="352" y="932">|</text>
+                <text x="208" y="948">YES</text>
+                <text x="356" y="948">NO</text>
+                <text x="144" y="1012">Process</text>
+                <text x="192" y="1012">OPT</text>
+                <text x="220" y="1012">as</text>
+                <text x="256" y="1012">Class</text>
+                <text x="288" y="1012">E</text>
+                <text x="144" y="1092">Process</text>
+                <text x="192" y="1092">OPT</text>
+                <text x="220" y="1092">as</text>
+                <text x="248" y="1092">per</text>
+                <text x="280" y="1092">its</text>
+                <text x="332" y="1092">original</text>
+                <text x="392" y="1092">Class</text>
+                <text x="424" y="1092">U</text>
+                <text x="444" y="1092">or</text>
+                <text x="464" y="1092">I</text>
               </g>
             </svg><a href="#appendix-B-2.1.1" class="pilcrow">¶</a>
 </div>
@@ -4225,7 +4183,10 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-D.1-1.1">
-            <p id="appendix-D.1-1.1.1">Editorial improvements.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.1.1">Revised escalation of CoAP option protection.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.2">
+            <p id="appendix-D.1-1.2.1">Editorial improvements.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
