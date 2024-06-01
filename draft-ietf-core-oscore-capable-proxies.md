@@ -249,69 +249,35 @@ As mentioned in {{intro}}, this document introduces the following two main devia
 
 Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.
 
-In addition to the CoAP options specified as Class E in {{RFC8613}} or in the document defining them, the sender endpoint MUST encrypt and integrity-protect the following CoAP options. That is, even if they are originally specified as Class U or I for OSCORE, such options are processed like if they were specified as Class E.
+As usual, the sender endpoint encrypts and integrity-protects the CoAP options included in M that are specified as Class E for OSCORE {{RFC8613}}.
 
-* Any CoAP option OPT such that all the following conditions hold.
+In addition to that, the sender endpoint MUST perform the procedure defined below for each CoAP option OPT that is included in M and that is originally specified as Class U or I for OSCORE. Depending on the outcome of such a procedure, the sender endpoint processes OPT as per its original Class U or I, or instead as if it was specified as Class E.
 
-   1. The sender endpoint has added OPT to the message M.
+When protecting M by using the OSCORE Security Context shared with another OSCORE endpoint X and applying the i-th OSCORE layer in sequence, the sender endpoint performs the following steps, for each CoAP option OPT included in M and originally defined as Class U or I for OSCORE. {{sec-option-protection-diag}} provides an overview as a state diagram.
 
-   2. The other OSCORE endpoint X is not a consumer of OPT.
+Note that the sender endpoint can assess some conditions only "to the best of its knowledge". This is due to the possible presence of a reverse-proxy standing for X and whose presence as reverse-proxy is, by definition, expected to be unknown to the sender endpoint.
 
-   3. Any of the following applies:
+1. If the sender endpoint has added OPT to M, then this algorithm moves to step 2. Otherwise, this algorithm moves to step 4.
 
-      - X is the next hop for the sender endpoint; or
+2. If, to the best of the sender endpoint's knowledge, X is a consumer of OPT, then this algorithm moves to step 3. Otherwise, this algorithm moves to step 4.
 
-      - The next hop is not the immediately next consumer of OPT.
+3. If, to the best of the sender endpoint's knowledge, X is the immediately next consumer of OPT, then this algorithm moves to step 5. Otherwise, this algorithm moves to step 9.
 
-   Examples of such CoAP options are:
+4. If any of the following conditions hold, then this algorithm moves to step 6. Otherwise, this algorithm moves to step 9.
 
-   - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is an origin endpoint.
+   - To the best of the sender endpoint's knowledge, X is the next hop for the sender endpoint; or
 
-   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is the EDHOC Initiator.
+   - To the best of the sender endpoint's knowledge, the next hop for the sender endpoint is not the immediately next consumer of OPT.
 
-   - The Request-Hash Option defined in {{I-D.amsuess-core-cachable-oscore}}, when X is not an origin endpoint.
+5. If X needs to access OPT before having removed the i-th OSCORE layer or in order to remove the i-th OSCORE layer, then this algorithm moves to step 9. Otherwise, this algorithm moves to step 6.
 
-* Any CoAP option OPT such that all the following conditions hold.
+6. If OPT is the Uri-Host or Uri-Port option, then this algorithm moves to step 7. Otherwise, this algorithm moves to step 8.
 
-   1. The sender endpoint has added OPT to the message M.
+7. If M includes the Proxy-Scheme or Proxy-Scheme-Number option, then this algorithm moves to step 8. Otherwise, this algorithm moves to step 9.
 
-   2. The other OSCORE endpoint X is the immediately next consumer of OPT.
+8. The sender endpoint determines that OPT will be processed as if it was specified as Class E for OSCORE, i.e., to be both encrypted and integrity-protected. Then, the sender enpoint terminates this algorithm.
 
-   3. At the other OSCORE endpoint X, OPT does not play a role in processing M before having removed the i-th OSCORE layer or in removing the i-th OSCORE layer altogether.
-
-   Examples of such CoAP options are:
-
-   - The Proxy-Uri, Proxy-Scheme, Uri-Host, and Uri-Port Options defined in {{RFC7252}}.
-
-   - The Proxy-Cri and Proxy-Scheme-Number Options defined in {{I-D.ietf-core-href}}.
-
-   - The Listen-To-Multicast-Notifications Option defined in {{I-D.ietf-core-observe-multicast-notifications}}.
-
-   - The Multicast-Timeout, Response-Forwarding, and Group-ETag Options defined in {{I-D.ietf-core-groupcomm-proxy}}.
-
-* Any CoAP option OPT such that all the following conditions hold.
-
-   1. The sender endpoint has not added OPT to the message M.
-
-   2. Any of the following applies:
-
-      - X is the next hop for the sender endpoint; or
-
-      - The next hop is not supposed to be the immediately next consumer of OPT.
-
-   Examples of such CoAP options are:
-
-   - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.
-
-   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is not the EDHOC Initiator.
-
-{{sec-option-protection-diag}} provides an overview as a state diagram.
-
-Note that, in a simple scenario where no intermediaries are deployed between two origin endpoints, the rules defined above result in encrypting and integrity-protecting the Uri-Host and Uri-Port Options included in a CoAP request. This is different from what was intended in {{RFC8613}}, according to which the two options were meant to be always unprotected.
-
-However, in the absence of intermediaries, there is no reason for those two options to be unprotected. In fact, at the origin server, they do not play a role in retrieving the OSCORE Security Context to use for decrypting a received request, and the server can still consume them as usual, after the request has been decrypted.
-
-If only one of the two origin endpoints has not implemented this updated behavior, this is not an interoperability issue. That is, if such an endpoint is a client, then the two options remain unprotected in a sent request, and the recipient server processes those as expected in {{RFC8613}}. Instead, if such an endpoint is a server, then it still decrypts the received request according to {{RFC8613}}, after which it has access to the two options.
+9. The sender endpoint determines that OPT will be processed as per its original Class U or I. Then, the sender enpoint terminates this algorithm.
 
 ## Processing of an Outgoing Request {#outgoing-requests}
 
@@ -1241,49 +1207,59 @@ Curly brackets { ... } indicate encrypted data.
 | M includes a CoAP option OPT of Class U or I for OSCORE.            |
 |                                                                     |
 +---------------------------------------------------------------------+
-      |
-      |
-      v
-+-----------+       +----------+       +-----------------------+
-| Did I add |-YES-->| Is X a   |-YES-->| Is X the immediately  |-NO--+
-| OPT to M? |       | consumer |       | next consumer of OPT? |     |
-+-----------+       | of OPT?  |       +-----------------------+     |
-      |             +----------+                             |       |
-      NO                   |                                YES      |
-      |                    NO                                |       |
-      |                    |                                 |       |
-      v                    v                                 v       |
-+-------------------+  +-----------------+  +---------------------+  |
-| * X is my         |  | * X is my       |  | Does X need to      |  |
-|   next hop;       |  |   next hop;     |  | access OPT before   |  |
-|                   |  |                 |  | decrypting M or in  |  |
-| OR                |  | OR              |  | order to decrypt M? |  |
-|                   |  |                 |  +---------------------+  |
-| * My next hop     |  | * My next hop   |         |         |       |
-|   is not supposed |  |   is not the    |         NO       YES      |
-|   to be the       |  |   immediately   |         |         |       |
-|   immediately     |  |   next consumer |         |         |       |
-|   next consumer   |  |   of OPT        |         |         |       |
-|   of OPT          |  |                 |         |         |       |
-+-------------------+  +-----------------+         |         |       |
-      |         |          |           |           |         |       |
-     YES        NO         NO         YES          |         |       |
-      |         |          |           |           |         |       |
-      |         v          v           |           |         |       |
-      |   +------------------------+   |           |         |       |
-      |   | Process OPT as per its |   |           |         |       |
-      |   | original Class U or I  |   |           |         |       |
-      |   +------------------------+   |           |         |       |
-      |                                |           |         |       |
-      |                                v           v         |       |
-      |                        +------------------------+    |       |
-      +----------------------->| Process OPT as Class E |    |       |
-                               +------------------------+    |       |
-                                                             v       v
-                                             +------------------------+
-                                             | Process OPT as per its |
-                                             | original Class U or I  |
-                                             +------------------------+
+     |
+     |
+     v
++-----------+         +------------------+         +------------------+
+| Did I add |---YES-->| As far as I can  |---YES-->| As far as I can  |
+| OPT to M? |         | tell, is X a     |         | tell, is X the   |
++-----------+         | consumer of OPT? |         | immediately next |
+     |                +------------------+         | consumer of OPT? |
+     |                   |                         +------------------+
+     |                   |                              |         |
+     NO                  NO                            YES        NO
+     |                   |                              |         |
+     v                   v                              v         |
+  +-------------------------+          +---------------------+    |
+  | * As far as I can tell, |          | Does X need to      |    |
+  |   X is my next hop;     |          | access OPT before   |    |
+  |                         |          | decrypting M or in  |    |
+  | OR                      |          | order to decrypt M? |    |
+  |                         |          +---------------------+    |
+  | * As far as I can tell, |              |            |         |
+  |   my next hop is not    |              NO          YES        |
+  |   the immediately next  |              |            |         |
+  |   consumer of OPT       |              |            |         |
+  +-------------------------+              |            |         |
+     |                   |                 |            |         |
+     NO                 YES                |            |         |
+     |                   |                 |            |         |
+     |                   |                 |            |         |
+     |                   v                 v            |         |
+     |   +-----------------------------------------+    |         |
+     |   | Is OPT the Uri-Host or Uri-Port Option? |    |         |
+     |   +-----------------------------------------+    |         |
+     |        |                            |            |         |
+     |        NO                          YES           |         |
+     |        |                            |            |         |
+     |        |                            |            |         |
+     |        |                            v            |         |
+     |        |  +---------------------------------+    |         |
+     |        |  | Does M include the Proxy-Scheme |    |         |
+     |        |  | or Proxy-Scheme-Number Option?  |    |         |
+     |        |  +---------------------------------+    |         |
+     |        |          |                 |            |         |
+     |        |         YES                NO           |         |
+     |        |          |                 |            |         |
+     |        v          v                 |            |         |
+     |      +------------------------+     |            |         |
+     |      | Process OPT as Class E |     |            |         |
+     |      +------------------------+     |            |         |
+     |                                     |            |         |
+     |                                     v            v         |
+     |      +----------------------------------------------+      |
+     +----->| Process OPT as per its original Class U or I |<-----+
+            +----------------------------------------------+
 ~~~~~~~~~~~
 {: #fig-option-protection-diagram title="Protection of CoAP Options of Class U or I in Outgoing Messages." artwork-align="center"}
 
@@ -1402,6 +1378,8 @@ request      +-----------------------------------------------+        |
 {:removeinrfc}
 
 ## Version -01 to -02 ## {#sec-01-02}
+
+* Revised escalation of CoAP option protection.
 
 * Editorial improvements.
 
