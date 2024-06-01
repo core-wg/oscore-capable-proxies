@@ -1332,40 +1332,42 @@ request      +-----------------------------------------------+        |
    |                              |           |   |     +---------+   |
    v                              v           |   |     | Decrypt |   |
 +--------------------------+   ...........    |   |     +---------+   |
-| There is no Proxy-Scheme |   : Forward :    |   |         |         |
-| or Proxy-Scheme-Number   |   : the     :    |   |         |         |
-| Option, but there are    |   : request :    |   |         v         |
-| Uri-Path and/or Uri-Host |   :.........:    |   | +----------+      |
-| and/or Uri-Port Options  |      ^           |   | | Success? |-YES -+
-+--------------------------+      |           |   | +----------+
-   |                              |           |   |         |
-   |                              |           |   |         NO
-   |                              |           |   |         |
-   |                              |           |   |         v
-   |                              |           |   |    ................
-   |       ..........    +---------------+    |   |    : OSCORE error :
-   |       : Return :    | Consume the   |    |   |    : handling     :
-   |       : 4.01   :    | proxy-related |    |   |    :..............:
-   |       :........:    | options       |    |   |
-   |            ^        +---------------+    |   v
-   |            |                 ^           |  +--------------+
+| There is no Proxy-Scheme |   : Forward :    |   |          |        |
+| or Proxy-Scheme-Number   |   : the     :    |   |          |        |
+| Option, but there are    |   : request :    |   |          v        |
+| Uri-Path and/or Uri-Host |   :.........:    |   |    +----------+   |
+| and/or Uri-Port Options  |      ^           |   |    | Success? |   |
++--------------------------+      |           |   |    +----------+   |
+   |                              |           |   |     |    |        |
+   |                              |           |   |     NO   |        |
+   |                              |           |   |     |    |        |
+   |                              |           |   |     |    +---YES--+
+   |                              |           |   |     |
+   |                              |           |   |     v
+   |       ..........    +---------------+    |   |   ................
+   |       : Return :    | Consume the   |    |   |   : OSCORE error :
+   |       : 4.01   :    | proxy-related |    |   |   : handling     :
+   |       :........:    | options       |    |   |   :..............:
+   |            ^        +---------------+    |   |
+   |            |                 ^           |   v
+   |            |                 |           |  +--------------+
    |            NO                |           |  | Is there an  |
    |            |                 |           |  | application? |
-   |       +---------------+      |           |  +--------------+
-   |       | Is it         |      |           |        |       |
-   |       | acceptable to |-YES--+           |       YES      NO
-   |       | forward the   |                  |        |       |
-   |       | request? (#)  |                  |        |       v
-   |       +---------------+                  |        |     ..........
-   |            ^                             |        |     : Return :
-   |            |                             |        |     : 4.00   :
-   |           YES                            |        |     :........:
-   v            |                             |        v
-+--------------------------------+            |      ..................
-| Am I a reverse-proxy using the |            |      : Deliver the    :
-| exact value of these Uri-Path, |-NO---------+      : request to the :
-| Uri-Host, and Uri-Port Options |                   : application    :
-| for proxying?                  |                   :................:
+   |     +---------------+        |           |  +--------------+
+   |     | Is it         |        |           |     |        |
+   |     | acceptable to |---YES--+           |    YES       NO
+   |     | forward the   |                    |     |        |
+   |     | request? (#)  |                    |     |        v
+   |     +---------------+                    |     |    ..........
+   |            ^                             |     |    : Return :
+   |            |                             |     |    : 4.00   :
+   |           YES                            |     |    :........:
+   v            |                             |     v
++--------------------------------+            |  ..................
+| Am I a reverse-proxy using the |            |  : Deliver the    :
+| exact value of these Uri-Path, |---NO-------+  : request to the :
+| Uri-Host, and Uri-Port Options |               : application    :
+| for proxying?                  |               :................:
 +--------------------------------+
 
 
