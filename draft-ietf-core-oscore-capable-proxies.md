@@ -16,11 +16,6 @@ submissiontype: IETF
 updates: 8613
 
 coding: utf-8
-pi:    # can use array (if all yes) or hash here
-
-  toc: yes
-  sortrefs:   # defaults to yes
-  symrefs: yes
 
 author:
       -
@@ -57,11 +52,11 @@ informative:
   RFC7641:
   RFC8742:
   RFC9200:
+  RFC9528:
   I-D.ietf-core-groupcomm-bis:
   I-D.ietf-core-groupcomm-proxy:
   I-D.ietf-core-observe-multicast-notifications:
   I-D.ietf-core-coap-pubsub:
-  I-D.ietf-core-oscore-edhoc:
   I-D.ietf-lake-edhoc:
   I-D.ietf-core-transport-indication:
   I-D.ietf-ace-key-groupcomm-oscore:
@@ -127,7 +122,7 @@ The approach defined in this document can be seamlessly adopted also when Group 
 
 ## Terminology ## {#terminology}
 
-{::boilerplate bcp14}
+{::boilerplate bcp14-tagged}
 
 Readers are expected to be familiar with the terms and concepts related to CoAP {{RFC7252}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. This document especially builds on concepts and mechanics related to intermediaries such as CoAP forward-proxies and reverse-proxies.
 
@@ -194,7 +189,7 @@ In such a case, the LwM2M Server can practically act as forward-proxy between th
 
 The specification {{LwM2M-Gateway}} extends the LwM2M architecture by defining the LwM2M Gateway functionality. That is, a LwM2M Server can manage end IoT devices "behind" the LwM2M Gateway. While it is outside the scope of such specification, it is possible for the LwM2M Gateway to use any suitable protocol with its connected end IoT devices, as well as to carry out any required protocol translation.
 
-Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to forward it to an end IoT device. With particular reference to the CoAP protocol and the related transport binding specified in {{LwM2M-Transport}}, the LwM2M Server acting as CoAP client sends its request to the LwM2M Gateway acting as CoAP server.
+Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to forward it to an end IoT device. With particular reference to CoAP and the related transport binding specified in {{LwM2M-Transport}}, the LwM2M Server acting as CoAP client sends its request to the LwM2M Gateway acting as CoAP server.
 
 If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see {{Section 5.7.3 of RFC7252}}). That is, in addition to its own resources, the LwM2M Gateway serves the resources of each end IoT device behind itself, as exposed under a dedicated URI path. As per {{LwM2M-Gateway}}, the first URI path segment is used as "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.
 
@@ -272,7 +267,7 @@ In addition to the CoAP options specified as Class E in {{RFC8613}} or in the do
 
    - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is an origin endpoint.
 
-   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is the EDHOC Initiator.
+   - The EDHOC Option defined in {{RFC9528}}, when the sender endpoint is the EDHOC Initiator.
 
    - The Request-Hash Option defined in {{I-D.amsuess-core-cachable-oscore}}, when X is not an origin endpoint.
 
@@ -308,7 +303,7 @@ In addition to the CoAP options specified as Class E in {{RFC8613}} or in the do
 
    - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.
 
-   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is not the EDHOC Initiator.
+   - The EDHOC Option defined in {{RFC9528}}, when the sender endpoint is not the EDHOC Initiator.
 
 {{sec-option-protection-diag}} provides an overview as a state diagram.
 
@@ -430,7 +425,7 @@ At the same time, the following applies, depending on the two peers using OSCORE
 
    Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
 
-   Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
+   Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{RFC9528}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
 
 * The use of Group OSCORE is expected to be limited between the origin applications endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework for authentication and authorization in constrained environments {{RFC9200}}.
 
@@ -476,7 +471,7 @@ This document does not change the security properties of OSCORE and Group OSCORE
 
 ## Preserving Location Anonimity
 
-Before decrypting an incoming request (see step 3 in {{incoming-requests}}), the recipient endpoint checks whether decryption the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in the light of the alleged request sender and the OSCORE Security Context to use.
+Before decrypting an incoming request (see step 3 in {{incoming-requests}}), the recipient endpoint checks whether decrypting the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in the light of the alleged request sender and the OSCORE Security Context to use.
 
 This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
 
@@ -1034,7 +1029,7 @@ In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are pr
 
 The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}.
 
-In particular, the client relies on the EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
+In particular, the client relies on the EDHOC + OSCORE request defined in {{RFC9528}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
@@ -1400,13 +1395,15 @@ request      +-----------------------------------------------+        |
 
 (#) This is determined according to the endpoint's configuration
     and a possible authorization enforcement.
-
 ~~~~~~~~~~~
 {: #fig-incoming-request-diagram title="Processing of an Incoming Request." artwork-align="center"}
 
 # Document Updates # {#sec-document-updates}
+{:removeinrfc}
 
-RFC EDITOR: PLEASE REMOVE THIS SECTION.
+## Version -01 to -02 ## {#sec-01-02}
+
+* Editorial improvements.
 
 ## Version -00 to -01 ## {#sec-00-01}
 
@@ -1441,7 +1438,7 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Editorial fixes and improvements.
 
 # Acknowledgments # {#acknowledgments}
-{: numbered="no"}
+{:numbered="false"}
 
 The authors sincerely thank {{{Christian Amsüss}}}, {{{Peter Blomqvist}}}, {{{David Navarro}}}, and {{{Göran Selander}}} for their comments and feedback.
 
