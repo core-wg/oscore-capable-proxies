@@ -1489,7 +1489,7 @@ Examples of such CoAP options are:<a href="#section-3.1-3.1.3" class="pilcrow">�
                 <p id="section-3.1-3.1.4.1.1">The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is an origin endpoint.<a href="#section-3.1-3.1.4.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.1-3.1.4.2">
-                <p id="section-3.1-3.1.4.2.1">The EDHOC Option defined in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, when the sender endpoint is the EDHOC Initiator.<a href="#section-3.1-3.1.4.2.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.1.4.2.1">The EDHOC Option defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, when the sender endpoint is the EDHOC Initiator.<a href="#section-3.1-3.1.4.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.1-3.1.4.3">
                 <p id="section-3.1-3.1.4.3.1">The Request-Hash Option defined in <span>[<a href="#I-D.amsuess-core-cachable-oscore" class="cite xref">I-D.amsuess-core-cachable-oscore</a>]</span>, when X is not an origin endpoint.<a href="#section-3.1-3.1.4.3.1" class="pilcrow">¶</a></p>
@@ -1551,7 +1551,7 @@ Examples of such CoAP options are:<a href="#section-3.1-3.3.3" class="pilcrow">�
                 <p id="section-3.1-3.3.4.1.1">The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.<a href="#section-3.1-3.3.4.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-3.1-3.3.4.2">
-                <p id="section-3.1-3.3.4.2.1">The EDHOC Option defined in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, when the sender endpoint is not the EDHOC Initiator.<a href="#section-3.1-3.3.4.2.1" class="pilcrow">¶</a></p>
+                <p id="section-3.1-3.3.4.2.1">The EDHOC Option defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, when the sender endpoint is not the EDHOC Initiator.<a href="#section-3.1-3.3.4.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1704,11 +1704,11 @@ Then, the proxy stores specifically that resulting response message in its cache
 <p id="section-5-2">At the same time, the following applies, depending on the two peers using OSCORE or Group OSCORE <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span> to protect their communications.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5-3.1">
-          <p id="section-5-3.1.1">When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key establishment protocol EDHOC <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>.<a href="#section-5-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-5-3.1.1">When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key establishment protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-5-3.1.1" class="pilcrow">¶</a></p>
 <p id="section-5-3.1.2">
 Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in <a href="#sec-example-edhoc" class="auto internal xref">Appendix A.4</a>).<a href="#section-5-3.1.2" class="pilcrow">¶</a></p>
 <p id="section-5-3.1.3">
-Furthermore, the additional use of the combined EDHOC + OSCORE request defined in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span> is particularly beneficial in this case (see the example in <a href="#sec-example-edhoc-comb-req" class="auto internal xref">Appendix A.5</a>), and especially when relying on a long chain of proxies.<a href="#section-5-3.1.3" class="pilcrow">¶</a></p>
+Furthermore, the additional use of the combined EDHOC + OSCORE request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span> is particularly beneficial in this case (see the example in <a href="#sec-example-edhoc-comb-req" class="auto internal xref">Appendix A.5</a>), and especially when relying on a long chain of proxies.<a href="#section-5-3.1.3" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-5-3.2">
           <p id="section-5-3.2.1">The use of Group OSCORE is expected to be limited between the origin applications endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in <span>[<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span> and based on the ACE framework for authentication and authorization in constrained environments <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-5-3.2.1" class="pilcrow">¶</a></p>
@@ -1876,13 +1876,13 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
         <dd>
 <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-08</span>, <time datetime="2024-03-04" class="refDate">4 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-08">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="I-D.ietf-core-oscore-edhoc">[I-D.ietf-core-oscore-edhoc]</dt>
+        <dd>
+<span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Hristozov, S.</span>, and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Using Ephemeral Diffie-Hellman Over COSE (EDHOC) with the Constrained Application Protocol (CoAP) and Object Security for Constrained RESTful Environments (OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-edhoc-11</span>, <time datetime="2024-04-09" class="refDate">9 April 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-edhoc-11">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-edhoc-11</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-core-transport-indication">[I-D.ietf-core-transport-indication]</dt>
         <dd>
 <span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. S. Lenders</span>, <span class="refTitle">"CoAP Transport Indication"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-transport-indication-05</span>, <time datetime="2024-03-18" class="refDate">18 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-05">https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-05</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="I-D.ietf-lake-edhoc">[I-D.ietf-lake-edhoc]</dt>
-        <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-edhoc-23</span>, <time datetime="2024-01-22" class="refDate">22 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23">https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="LwM2M-Core">[LwM2M-Core]</dt>
         <dd>
@@ -2645,7 +2645,7 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
             <p id="appendix-A.4-2.2.1">Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-A.4-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="appendix-A.4-3">The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>.<a href="#appendix-A.4-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.4-3">The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-A.4-3" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-s"></span><div id="fig-example-edhoc">
 <figure id="figure-4">
           <div id="appendix-A.4-4.1">
@@ -3112,8 +3112,8 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
             <p id="appendix-A.5-2.2.1">Between the client and the proxy. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-A.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="appendix-A.5-3">The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>.<a href="#appendix-A.5-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-4">In particular, the client relies on the EDHOC + OSCORE request defined in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span> and denoted as COMB_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-A.5-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.5-3">The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-A.5-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.5-4">In particular, the client relies on the EDHOC + OSCORE request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span> and denoted as COMB_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-A.5-4" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-se"></span><div id="fig-example-edhoc-comb-req">
 <figure id="figure-5">
           <div id="appendix-A.5-5.1">

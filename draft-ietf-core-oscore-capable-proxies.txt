@@ -538,8 +538,8 @@ Table of Contents
          immediately previously applied for an OSCORE endpoint different
          than X, when the sender endpoint is an origin endpoint.
 
-      -  The EDHOC Option defined in [RFC9528], when the sender endpoint
-         is the EDHOC Initiator.
+      -  The EDHOC Option defined in [I-D.ietf-core-oscore-edhoc], when
+         the sender endpoint is the EDHOC Initiator.
 
       -  The Request-Hash Option defined in
          [I-D.amsuess-core-cachable-oscore], when X is not an origin
@@ -587,8 +587,8 @@ Table of Contents
          immediately previously applied for an OSCORE endpoint different
          than X, when the sender endpoint is not an origin endpoint.
 
-      -  The EDHOC Option defined in [RFC9528], when the sender endpoint
-         is not the EDHOC Initiator.
+      -  The EDHOC Option defined in [I-D.ietf-core-oscore-edhoc], when
+         the sender endpoint is not the EDHOC Initiator.
 
    Appendix B provides an overview as a state diagram.
 
@@ -873,7 +873,7 @@ Table of Contents
 
    *  When using OSCORE, the establishment of the OSCORE Security
       Context can rely on the authenticated key establishment protocol
-      EDHOC [I-D.ietf-lake-edhoc].
+      EDHOC [RFC9528].
 
       Assuming that OSCORE has to be used both between the two origin
       application endpoints as well as between the origin client and the
@@ -883,9 +883,9 @@ Table of Contents
       Appendix A.4).
 
       Furthermore, the additional use of the combined EDHOC + OSCORE
-      request defined in [RFC9528] is particularly beneficial in this
-      case (see the example in Appendix A.5), and especially when
-      relying on a long chain of proxies.
+      request defined in [I-D.ietf-core-oscore-edhoc] is particularly
+      beneficial in this case (see the example in Appendix A.5), and
+      especially when relying on a long chain of proxies.
 
    *  The use of Group OSCORE is expected to be limited between the
       origin applications endpoints, e.g., between the origin client and
@@ -1149,19 +1149,22 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               observe-multicast-notifications-08>.
 
+   [I-D.ietf-core-oscore-edhoc]
+              Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
+              G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
+              (EDHOC) with the Constrained Application Protocol (CoAP)
+              and Object Security for Constrained RESTful Environments
+              (OSCORE)", Work in Progress, Internet-Draft, draft-ietf-
+              core-oscore-edhoc-11, 9 April 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              oscore-edhoc-11>.
+
    [I-D.ietf-core-transport-indication]
               Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
               Work in Progress, Internet-Draft, draft-ietf-core-
               transport-indication-05, 18 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               transport-indication-05>.
-
-   [I-D.ietf-lake-edhoc]
-              Selander, G., Mattsson, J. P., and F. Palombini,
-              "Ephemeral Diffie-Hellman Over COSE (EDHOC)", Work in
-              Progress, Internet-Draft, draft-ietf-lake-edhoc-23, 22
-              January 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lake-edhoc-23>.
 
    [LwM2M-Core]
               Open Mobile Alliance, "Lightweight Machine to Machine
@@ -1566,7 +1569,7 @@ A.4.  Example 4
 
    The example also shows how the client establishes an OSCORE Security
    Context CTX_C_P with the proxy and CTX_C_S with the server, by using
-   the key establishment protocol EDHOC [I-D.ietf-lake-edhoc].
+   the key establishment protocol EDHOC [RFC9528].
 
    Client  Proxy  Server
      |       |       |
@@ -1786,12 +1789,12 @@ A.5.  Example 5
 
    The example also shows how the client establishes an OSCORE Security
    Context CTX_C_P with the proxy and CTX_C_S with the server, by using
-   the key establishment protocol EDHOC [I-D.ietf-lake-edhoc].
+   the key establishment protocol EDHOC [RFC9528].
 
    In particular, the client relies on the EDHOC + OSCORE request
-   defined in [RFC9528] and denoted as COMB_REQ, in order to transport
-   the last EDHOC message_3 and the first OSCORE-protected application
-   CoAP request combined together.
+   defined in [I-D.ietf-core-oscore-edhoc] and denoted as COMB_REQ, in
+   order to transport the last EDHOC message_3 and the first OSCORE-
+   protected application CoAP request combined together.
 
    Client  Proxy  Server
      |       |       |
