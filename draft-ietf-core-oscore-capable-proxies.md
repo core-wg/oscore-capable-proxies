@@ -56,8 +56,8 @@ informative:
   I-D.ietf-core-groupcomm-bis:
   I-D.ietf-core-groupcomm-proxy:
   I-D.ietf-core-observe-multicast-notifications:
+  I-D.ietf-core-oscore-edhoc:
   I-D.ietf-core-coap-pubsub:
-  I-D.ietf-lake-edhoc:
   I-D.ietf-core-transport-indication:
   I-D.ietf-ace-key-groupcomm-oscore:
   I-D.ietf-core-coap-pm:
@@ -267,7 +267,7 @@ In addition to the CoAP options specified as Class E in {{RFC8613}} or in the do
 
    - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is an origin endpoint.
 
-   - The EDHOC Option defined in {{RFC9528}}, when the sender endpoint is the EDHOC Initiator.
+   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is the EDHOC Initiator.
 
    - The Request-Hash Option defined in {{I-D.amsuess-core-cachable-oscore}}, when X is not an origin endpoint.
 
@@ -303,7 +303,7 @@ In addition to the CoAP options specified as Class E in {{RFC8613}} or in the do
 
    - The OSCORE Option present as the result of the OSCORE layer immediately previously applied for an OSCORE endpoint different than X, when the sender endpoint is not an origin endpoint.
 
-   - The EDHOC Option defined in {{RFC9528}}, when the sender endpoint is not the EDHOC Initiator.
+   - The EDHOC Option defined in {{I-D.ietf-core-oscore-edhoc}}, when the sender endpoint is not the EDHOC Initiator.
 
 {{sec-option-protection-diag}} provides an overview as a state diagram.
 
@@ -421,11 +421,11 @@ Like the original OSCORE specification {{RFC8613}}, this document is not devoted
 
 At the same time, the following applies, depending on the two peers using OSCORE or Group OSCORE {{I-D.ietf-core-oscore-groupcomm}} to protect their communications.
 
-* When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}.
+* When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key establishment protocol EDHOC {{RFC9528}}.
 
    Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
 
-   Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{RFC9528}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
+   Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
 
 * The use of Group OSCORE is expected to be limited between the origin applications endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework for authentication and authorization in constrained environments {{RFC9200}}.
 
@@ -812,7 +812,7 @@ In the example shown in {{fig-example-edhoc}}, message exchanges are protected o
 
 * Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
-The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}.
+The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC {{RFC9528}}.
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
@@ -1027,9 +1027,9 @@ In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are pr
 
 * Between the client and the proxy. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
-The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}.
+The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC {{RFC9528}}.
 
-In particular, the client relies on the EDHOC + OSCORE request defined in {{RFC9528}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
+In particular, the client relies on the EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
