@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613 (if approved)                                      RISE AB
-Intended status: Standards Track                         31 January 2024
-Expires: 3 August 2024
+Intended status: Standards Track                             1 June 2024
+Expires: 3 December 2024
 
 
                          OSCORE-capable Proxies
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 August 2024.
+   This Internet-Draft will expire on 3 December 2024.
 
 Copyright Notice
 
@@ -1035,25 +1035,25 @@ Table of Contents
    [I-D.ietf-core-href]
               Bormann, C. and H. Birkholz, "Constrained Resource
               Identifiers", Work in Progress, Internet-Draft, draft-
-              ietf-core-href-14, 9 January 2024,
+              ietf-core-href-15, 21 April 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              href-14>.
+              href-15>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
-              and J. Park, "Group Object Security for Constrained
+              and R. Höglund, "Group Object Security for Constrained
               RESTful Environments (Group OSCORE)", Work in Progress,
-              Internet-Draft, draft-ietf-core-oscore-groupcomm-20, 2
-              September 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-oscore-groupcomm-20>.
+              Internet-Draft, draft-ietf-core-oscore-groupcomm-21, 4
+              March 2024, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-core-oscore-groupcomm-21>.
 
    [I-D.ietf-schc-8824-update]
               Tiloca, M., Toutain, L., Martinez, I., and A. Minaburo,
               "Static Context Header Compression (SCHC) for the
               Constrained Application Protocol (CoAP)", Work in
-              Progress, Internet-Draft, draft-ietf-schc-8824-update-00,
-              5 December 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-schc-8824-update-00>.
+              Progress, Internet-Draft, draft-ietf-schc-8824-update-01,
+              4 March 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-schc-8824-update-01>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1092,17 +1092,16 @@ Table of Contents
    [I-D.amsuess-t2trg-onion-coap]
               Amsüss, C., Tiloca, M., and R. Höglund, "Using onion
               routing with CoAP", Work in Progress, Internet-Draft,
-              draft-amsuess-t2trg-onion-coap-01, 4 July 2023,
+              draft-amsuess-t2trg-onion-coap-02, 17 May 2024,
               <https://datatracker.ietf.org/doc/html/draft-amsuess-
-              t2trg-onion-coap-01>.
+              t2trg-onion-coap-02>.
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              03, 23 October 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              coap-est-oscore-03>.
+              04, 4 March 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-coap-est-oscore-04>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M., Park, J., and F. Palombini, "Key Management
@@ -1115,40 +1114,39 @@ Table of Contents
               Fioccola, G., Zhou, T., Nilo, M., Milan, F., and F.
               Bulgarella, "Constrained Application Protocol (CoAP)
               Performance Measurement Option", Work in Progress,
-              Internet-Draft, draft-ietf-core-coap-pm-01, 19 October
-              2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              core-coap-pm-01>.
+              Internet-Draft, draft-ietf-core-coap-pm-02, 19 April 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              coap-pm-02>.
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-13, 20 October 2023,
+              ietf-core-coap-pubsub-14, 18 April 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-13>.
+              coap-pubsub-14>.
 
    [I-D.ietf-core-groupcomm-bis]
               Dijk, E., Wang, C., and M. Tiloca, "Group Communication
               for the Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              10, 23 October 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-bis-10>.
+              11, 24 April 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-groupcomm-bis-11>.
 
    [I-D.ietf-core-groupcomm-proxy]
               Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
               Communication", Work in Progress, Internet-Draft, draft-
-              ietf-core-groupcomm-proxy-00, 19 December 2023,
+              ietf-core-groupcomm-proxy-01, 4 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-proxy-00>.
+              groupcomm-proxy-01>.
 
    [I-D.ietf-core-observe-multicast-notifications]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Observe Notifications as CoAP Multicast Responses", Work
               in Progress, Internet-Draft, draft-ietf-core-observe-
-              multicast-notifications-07, 23 October 2023,
+              multicast-notifications-08, 4 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              observe-multicast-notifications-07>.
+              observe-multicast-notifications-08>.
 
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
@@ -1156,15 +1154,16 @@ Table of Contents
               (EDHOC) with the Constrained Application Protocol (CoAP)
               and Object Security for Constrained RESTful Environments
               (OSCORE)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-edhoc-10, 29 November 2023,
+              core-oscore-edhoc-11, 9 April 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-edhoc-10>.
+              oscore-edhoc-11>.
 
    [I-D.ietf-core-transport-indication]
-              Amsüss, C., "CoAP Protocol Indication", Work in Progress,
-              Internet-Draft, draft-ietf-core-transport-indication-03,
-              23 October 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-transport-indication-03>.
+              Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
+              Work in Progress, Internet-Draft, draft-ietf-core-
+              transport-indication-05, 18 March 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              transport-indication-05>.
 
    [I-D.ietf-lake-edhoc]
               Selander, G., Mattsson, J. P., and F. Palombini,
@@ -2218,9 +2217,10 @@ Acknowledgments
    The authors sincerely thank Christian Amsüss, Peter Blomqvist, David
    Navarro, and Göran Selander for their comments and feedback.
 
-   The work on this document has been partly supported by VINNOVA and
-   the Celtic-Next project CRITISEC; and by the H2020 project SIFIS-Home
-   (Grant agreement 952652).
+   The work on this document has been partly supported by the Sweden's
+   Innovation Agency VINNOVA and the Celtic-Next projects CRITISEC and
+   CYPRESS; and by the H2020 project SIFIS-Home (Grant agreement
+   952652).
 
 Authors' Addresses
 
