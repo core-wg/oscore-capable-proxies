@@ -106,7 +106,8 @@ Table of Contents
    Appendix B.  State Diagram: Protection of CoAP Options
    Appendix C.  State Diagram: Processing of Incoming Requests
    Appendix D.  Document Updates
-     D.1.  Version -00 to -01
+     D.1.  Version -01 to -02
+     D.2.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -338,9 +339,9 @@ Table of Contents
 
    Practically, the LwM2M Server can send a request to the LwM2M
    Gateway, asking to forward it to an end IoT device.  With particular
-   reference to the CoAP protocol and the related transport binding
-   specified in [LwM2M-Transport], the LwM2M Server acting as CoAP
-   client sends its request to the LwM2M Gateway acting as CoAP server.
+   reference to CoAP and the related transport binding specified in
+   [LwM2M-Transport], the LwM2M Server acting as CoAP client sends its
+   request to the LwM2M Gateway acting as CoAP server.
 
    If CoAP is used in the communication leg between the LwM2M Gateway
    and the end IoT devices, then the LwM2M Gateway fundamentally acts as
@@ -537,8 +538,8 @@ Table of Contents
          immediately previously applied for an OSCORE endpoint different
          than X, when the sender endpoint is an origin endpoint.
 
-      -  The EDHOC Option defined in [I-D.ietf-core-oscore-edhoc], when
-         the sender endpoint is the EDHOC Initiator.
+      -  The EDHOC Option defined in [RFC9528], when the sender endpoint
+         is the EDHOC Initiator.
 
       -  The Request-Hash Option defined in
          [I-D.amsuess-core-cachable-oscore], when X is not an origin
@@ -586,8 +587,8 @@ Table of Contents
          immediately previously applied for an OSCORE endpoint different
          than X, when the sender endpoint is not an origin endpoint.
 
-      -  The EDHOC Option defined in [I-D.ietf-core-oscore-edhoc], when
-         the sender endpoint is not the EDHOC Initiator.
+      -  The EDHOC Option defined in [RFC9528], when the sender endpoint
+         is not the EDHOC Initiator.
 
    Appendix B provides an overview as a state diagram.
 
@@ -882,9 +883,9 @@ Table of Contents
       Appendix A.4).
 
       Furthermore, the additional use of the combined EDHOC + OSCORE
-      request defined in [I-D.ietf-core-oscore-edhoc] is particularly
-      beneficial in this case (see the example in Appendix A.5), and
-      especially when relying on a long chain of proxies.
+      request defined in [RFC9528] is particularly beneficial in this
+      case (see the example in Appendix A.5), and especially when
+      relying on a long chain of proxies.
 
    *  The use of Group OSCORE is expected to be limited between the
       origin applications endpoints, e.g., between the origin client and
@@ -998,7 +999,7 @@ Table of Contents
 7.1.  Preserving Location Anonimity
 
    Before decrypting an incoming request (see step 3 in Section 3.3),
-   the recipient endpoint checks whether decryption the request is an
+   the recipient endpoint checks whether decrypting the request is an
    acceptable operation to perform, according to the endpoint's
    configuration and a possible authorization enforcement, and in the
    light of the alleged request sender and the OSCORE Security Context
@@ -1148,16 +1149,6 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               observe-multicast-notifications-08>.
 
-   [I-D.ietf-core-oscore-edhoc]
-              Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
-              G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
-              (EDHOC) with the Constrained Application Protocol (CoAP)
-              and Object Security for Constrained RESTful Environments
-              (OSCORE)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-edhoc-11, 9 April 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-edhoc-11>.
-
    [I-D.ietf-core-transport-indication]
               Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
               Work in Progress, Internet-Draft, draft-ietf-core-
@@ -1215,6 +1206,11 @@ Table of Contents
               Constrained Environments Using the OAuth 2.0 Framework
               (ACE-OAuth)", RFC 9200, DOI 10.17487/RFC9200, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9200>.
+
+   [RFC9528]  Selander, G., Preuß Mattsson, J., and F. Palombini,
+              "Ephemeral Diffie-Hellman Over COSE (EDHOC)", RFC 9528,
+              DOI 10.17487/RFC9528, March 2024,
+              <https://www.rfc-editor.org/rfc/rfc9528>.
 
    [TOR-SPEC] Tor Project, "Tor Specifications",
               <https://spec.torproject.org/>.
@@ -1793,9 +1789,9 @@ A.5.  Example 5
    the key establishment protocol EDHOC [I-D.ietf-lake-edhoc].
 
    In particular, the client relies on the EDHOC + OSCORE request
-   defined in [I-D.ietf-core-oscore-edhoc] and denoted as COMB_REQ, in
-   order to transport the last EDHOC message_3 and the first OSCORE-
-   protected application CoAP request combined together.
+   defined in [RFC9528] and denoted as COMB_REQ, in order to transport
+   the last EDHOC message_3 and the first OSCORE-protected application
+   CoAP request combined together.
 
    Client  Proxy  Server
      |       |       |
@@ -2171,9 +2167,13 @@ Appendix C.  State Diagram: Processing of Incoming Requests
 
 Appendix D.  Document Updates
 
-   RFC EDITOR: PLEASE REMOVE THIS SECTION.
+   This section is to be removed before publishing as an RFC.
 
-D.1.  Version -00 to -01
+D.1.  Version -01 to -02
+
+   *  Editorial improvements.
+
+D.2.  Version -00 to -01
 
    *  Escalation of option protection as explicit update point to RFC
       8613.
