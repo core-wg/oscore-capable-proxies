@@ -92,13 +92,13 @@ informative:
 
 --- abstract
 
-Object Security for Constrained RESTful Environments (OSCORE) can be used to protect CoAP messages end-to-end between two endpoints at the application layer, also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines rules to escalate the protection of a CoAP option, in order to encrypt and integrity-protect it whenever possible. Finally, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints, as well as between an application endpoint and an intermediary or between two intermediaries. Thus, this document updates RFC 8613. The same approach can be seamlessly used with Group OSCORE, for protecting CoAP messages when group communication is used in the presence of intermediaries.
+Object Security for Constrained RESTful Environments (OSCORE) can be used to protect CoAP messages end-to-end between two endpoints at the application layer, also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines rules to escalate the protection of a CoAP option, in order to encrypt and integrity-protect it whenever possible. Finally, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints, and between an application endpoint and an intermediary or between two intermediaries. Therefore, this document updates RFC 8613. The same approach can be seamlessly used with Group OSCORE, for protecting CoAP messages when group communication is used in the presence of intermediaries.
 
 --- middle
 
 # Introduction # {#intro}
 
-The Constrained Application Protocol (CoAP) {{RFC7252}} supports the presence of intermediaries, such as forward-proxies and reverse-proxies, which assist origin clients by performing requests to origin servers on their behalf, and forwarding back the related responses.
+The Constrained Application Protocol (CoAP) {{RFC7252}} supports the presence of intermediaries, such as forward-proxies and reverse-proxies, which assist origin clients by performing requests to origin servers on their behalf, and forwarding back the corresponding responses.
 
 CoAP supports also group communication scenarios {{I-D.ietf-core-groupcomm-bis}}, where clients can send a one-to-many request targeting all the servers in the group, e.g., by using IP multicast. Like for one-to-one communication, group settings can also rely on intermediaries {{I-D.ietf-core-groupcomm-proxy}}.
 
@@ -106,17 +106,19 @@ The protocol Object Security for Constrained RESTful Environments (OSCORE) {{RFC
 
 For a number of use cases (see {{sec-use-cases}}), it is required and/or beneficial that communications are secured also between an application endpoint (i.e., a CoAP origin client/server) and an intermediary, as well as between two adjacent intermediaries in a chain. This especially applies to the communication leg between the CoAP origin client and the adjacent intermediary acting as next hop towards the CoAP origin server.
 
-In such cases, and especially if the origin client already uses OSCORE to achieve end-to-end security with the origin server, it would be convenient that OSCORE is used also to secure communications between the origin client and its next hop. However, the original specification {{RFC8613}} does not define how OSCORE can be used to protect CoAP messages in such communication leg, which would require to consider also the intermediary as an "OSCORE endpoint".
+In such cases, and especially if the origin client already uses OSCORE to achieve end-to-end security with the origin server, it would be convenient that OSCORE is used also to secure communications between the origin client and its next hop.
+
+However, the original specification {{RFC8613}} does not define how OSCORE can be used to protect CoAP messages in such communication leg, or how to generally process CoAP messages with OSCORE at an intermediary. In fact, this would require to consider also an intermediary as an "OSCORE endpoint".
 
 This document fills this gap, and updates {{RFC8613}} as follows.
 
-* It defines how to use OSCORE for protecting a CoAP message in the communication leg between: i) an origin client/server and an intermediary; or ii) two adjacent intermediaries in an intermediary chain. That is, besides origin clients/servers, it allows also intermediaries to be possible "OSCORE endpoints".
+* It defines how to use OSCORE for protecting a CoAP message in the communication leg between: i) an origin client/server and an intermediary; or ii) two adjacent intermediaries in an intermediary chain. That is, besides origin clients/servers, it allows also intermediaries to be "OSCORE endpoints".
 
-* It defines rules to escalate the protection of a CoAP option that is originally meant to be unprotected or only integrity-protected by OSCORE. This results in encrypting and integrity-protecting a CoAP option whenever it is possible.
+* It defines rules to escalate the protection of a CoAP option that is originally meant to be unprotected or only integrity-protected by OSCORE. This results in both encrypting and integrity-protecting a CoAP option whenever it is possible.
 
 * It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence, as an "OSCORE-in-OSCORE" process. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).
 
-This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message depending on the presence of the OSCORE Option, as exclusively included or instead combined together with CoAP options intended for an intermediary.
+This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message, depending on the presence of the OSCORE Option and of other CoAP options intended for an intermediary.
 
 The approach defined in this document can be seamlessly adopted also when Group OSCORE is used, for protecting CoAP messages in group communication scenarios that rely on intermediaries.
 
@@ -138,7 +140,7 @@ In addition, this document uses the following terms.
 
 * Destination OSCORE endpoint: an endpoint unprotecting a message with OSCORE or Group OSCORE.
 
-* OSCORE endpoint: a source/destination OSCORE endpoint. An OSCORE endpoint is not necessarily also an application endpoint with respect to a certain message.
+* OSCORE endpoint: a source or destination OSCORE endpoint. An OSCORE endpoint is not necessarily also an application endpoint with respect to a certain message.
 
 * Hop: an endpoint in the end-to-end path between two application endpoints included.
 
@@ -148,9 +150,9 @@ In addition, this document uses the following terms.
 
    - The set of CoAP options comprising the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* Options. This is relevant when using a forward-proxy.
 
-   - The set of CoAP options comprising any of the Uri-Host, Uri-Port, and Uri-Path Options, when used not together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
+   - The set of CoAP options comprising any of the Uri-Host, Uri-Port, and Uri-Path Options, when those are not used together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
 
-* OSCORE-in-OSCORE: the process by which a message protected with (Group) OSCORE is further protected with (Group) OSCORE. This means that, if such a process is used, a successful decryption/verification of an OSCORE-protected message might yield an OSCORE-protected message.
+* OSCORE-in-OSCORE: the process by which a message protected with (Group) OSCORE is further protected with (Group) OSCORE. This means that, if such a process is used, a successful decryption and verification of an OSCORE-protected message might yield an OSCORE-protected message.
 
 # Use Cases # {#sec-use-cases}
 
@@ -183,47 +185,47 @@ Furthermore, Section 5.5.1 of {{LwM2M-Transport}} specifies that:
 {:quote}
 > OSCORE MAY also be used between LwM2M endpoint and non-LwM2M endpoint, e.g., between an Application Server and a LwM2M Client via a LwM2M server. Both the LwM2M endpoint and non-LwM2M endpoint MUST implement OSCORE and be provisioned with an OSCORE Security Context.
 
-In such a case, the LwM2M Server can practically act as forward-proxy between the LwM2M Client and the external Application Server. At the same time, the LwM2M Client and LwM2M Server must continue protecting communications on their leg using their Security Context. Like for the use case in {{ssec-uc1}}, this also allows the LwM2M Server to identify the LwM2M Client, before forwarding its request outside the LwM2M domain and towards the external Application Server.
+In such a case, the LwM2M Server can practically act as forward-proxy between the LwM2M Client and the external Application Server. At the same time, the LwM2M Client and LwM2M Server must continue protecting communications on their leg using their OSCORE Security Context. Like for the use case in {{ssec-uc1}}, this also allows the LwM2M Server to identify the LwM2M Client, before forwarding its request outside the LwM2M domain and towards the external Application Server.
 
 ## LwM2M Gateway # {#ssec-uc4}
 
-The specification {{LwM2M-Gateway}} extends the LwM2M architecture by defining the LwM2M Gateway functionality. That is, a LwM2M Server can manage end IoT devices "behind" the LwM2M Gateway. While it is outside the scope of such specification, it is possible for the LwM2M Gateway to use any suitable protocol with its connected end IoT devices, as well as to carry out any required protocol translation.
+The specification {{LwM2M-Gateway}} extends the LwM2M architecture by defining the LwM2M Gateway functionality. That is, a LwM2M Server can manage end IoT devices that are deployed "behind" the LwM2M Gateway. While it is outside the scope of that specification, it is possible for the LwM2M Gateway to use any suitable protocol with its connected end IoT devices, as well as to carry out any required protocol translation.
 
 Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to forward it to an end IoT device. With particular reference to CoAP and the related transport binding specified in {{LwM2M-Transport}}, the LwM2M Server acting as CoAP client sends its request to the LwM2M Gateway acting as CoAP server.
 
-If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see {{Section 5.7.3 of RFC7252}}). That is, in addition to its own resources, the LwM2M Gateway serves the resources of each end IoT device behind itself, as exposed under a dedicated URI path. As per {{LwM2M-Gateway}}, the first URI path segment is used as "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.
+If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see {{Section 5.7.3 of RFC7252}}). That is, in addition to its own resources, the LwM2M Gateway serves the resources hosted by each end IoT device standing behind it, as exposed by the LwM2M Gateway under a dedicated URI path. As per {{LwM2M-Gateway}}, the first URI path segment is used as "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.
 
-As per Section 7 of {{LwM2M-Gateway}}, message exchanges between the LwM2M Server and the L2M2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end for the targeted end IoT device as well as for the LwM2M Gateway acting as reverse-proxy.
+As per Section 7 of {{LwM2M-Gateway}}, message exchanges between the LwM2M Server and the L2M2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as reverse-proxy.
 
 ## Further Use Cases
 
 The approach defined in this document can be useful also in the following use cases relying on a proxy.
 
-* A server aware of a suitable cross proxy can rely on it as a third-party service, in order to indicate transports for CoAP available to that server (see {{Section 4 of I-D.ietf-core-transport-indication}}).
+* A server aware of a suitable cross-proxy can rely on it as a third-party service, in order to indicate transports for CoAP available to that server (see {{Section 4 of I-D.ietf-core-transport-indication}}).
 
-   From a security point of view, it would be convenient if the proxy could provide suitable credentials to the client, as a general trusted proxy for the system. At the same time, it can be desirable to limit the use of such a proxy to a set of clients which have permission to use it, and that the proxy can identify through a secure communication association.
+  From a security point of view, it would be convenient if the proxy could provide suitable credentials to the client, as a general trusted proxy for the system. At the same time, it can be desirable to limit the use of such a proxy to a set of clients which have permission to use it, and that the proxy can identify through a secure communication association.
 
-   However, in order for OSCORE to be an applicable security mechanism for this scenario, OSCORE has to be terminated at the proxy. That is, it would be required for a client and the proxy to share a dedicated OSCORE Security Context and to use it for protecting their communication leg.
+  However, in order for OSCORE to be an applicable security mechanism for this scenario, OSCORE has to be terminated at the proxy. That is, it would be required for a client and the proxy to share a dedicated OSCORE Security Context and to use it for protecting their communication leg.
 
 * The method specified in {{I-D.ietf-core-coap-pm}} relies on the Performance Measurement Option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.
 
-   When OSCORE is used in deployments including on-path probes, an inner Performance Measurement Option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement Option allows also hop-by-hop measurements to be performed by reying on an on-path probe.
+  When OSCORE is used in deployments including on-path probes, an inner Performance Measurement Option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement Option allows also hop-by-hop measurements to be performed by reying on an on-path probe.
 
-   Therefore, it is preferable to have a secure association with an on-path probe, in order to also ensure the integrity of the hop-by-hop measurements exchanged with the probe.
+  Therefore, it is preferable to have a secure association with an on-path probe, in order to also ensure the integrity of the hop-by-hop measurements exchanged with the probe.
 
 * The method specified in {{I-D.ietf-ace-coap-est-oscore}} enables public-key certificate enrollment for Internet of Things deployments. This leverages payload formats defined in Enrollment over Secure Transport (EST) {{RFC7030}}, while relying on CoAP for message transfer and on OSCORE for message protection.
 
-   In real-world deployments, an EST server issuing public-key certificates may reside outside a constrained network that includes devices acting as EST clients. In particular, the EST clients are expected to support only CoAP, while the EST server in a non-constrained network is expected to support only HTTP. This requires a CoAP-to-HTTP proxy to be deployed between the EST clients and the EST server, in order to map CoAP messages with HTTP messages across the two networks.
+  In real-world deployments, an EST server issuing public-key certificates may reside outside a constrained network that includes devices acting as EST clients. In particular, the EST clients are expected to support only CoAP, while the EST server in a non-constrained network is expected to support only HTTP. This requires a CoAP-to-HTTP proxy to be deployed between the EST clients and the EST server, in order to map CoAP messages with HTTP messages across the two networks.
 
-   Even in such a scenario, the EST server and every EST client can still effectively use OSCORE to protect their communications end-to-end. At the same time, it is desirable to have an additional secure association between the EST client and the CoAP-to-HTTP proxy, especially in order for the proxy to identify the EST client before forwarding EST messages out of the CoAP boundary of the constrained network and towards the EST server.
+  Even in such a scenario, the EST server and every EST client can still effectively use OSCORE to protect their communications end-to-end. At the same time, it is desirable to have an additional secure association between the EST client and the CoAP-to-HTTP proxy, especially in order for the proxy to identify the EST client before forwarding EST messages out of the CoAP boundary of the constrained network and towards the EST server.
 
 * A proxy may be deployed to act as an entry point to a firewalled network, which only authenticated clients can join. In particular, authentication can rely on the used secure communication association between a client and the proxy. If the proxy could share a dedicated OSCORE Security Context with each client, the proxy can rely on it to identify the client, before forwarding its messages to any other member of the firewalled network.
 
 * The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message.
 
-   This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request first by using the OSCORE Security Context shared with the origin server, and then by using different OSCORE Security Contexts shared with the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.
+  This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request first by using the OSCORE Security Context shared with the origin server, and then by using different OSCORE Security Contexts shared with the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.
 
-   Building on that, it is also possible to enable the operation of hidden services and clients through onion routing with CoAP {{I-D.amsuess-t2trg-onion-coap}}, similarly to how Tor (The Onion Router) {{TOR-SPEC}} enables it for TCP-based protocols.
+  Building on that, it is also possible to enable the operation of hidden services and clients through onion routing with CoAP {{I-D.amsuess-t2trg-onion-coap}}, similarly to how Tor (The Onion Router) {{TOR-SPEC}} enables it for TCP-based protocols.
 
 # Message Processing # {#sec-message-processing}
 
@@ -233,13 +235,13 @@ As mentioned in {{intro}}, this document introduces the following two main devia
 
    Hence, OSCORE can be used between an origin client/server and a proxy, as well as between two proxies in an intermediary chain.
 
-2. A CoAP message can be secured by multiple OSCORE protections applied in sequence. Therefore, the final result is a message with nested OSCORE protections, as the output of an "OSCORE-in-OSCORE" process. Hence, following a decryption, the resulting message might legitimately include an OSCORE Option, and thus have in turn to be decrypted.
+2. A CoAP message can be secured by multiple OSCORE protections applied in sequence. In such a case, the final result is a message with nested OSCORE protections, as the output of an "OSCORE-in-OSCORE" process. Hence, following a decryption, the resulting message might legitimately include an OSCORE Option, and thus have in turn to be decrypted.
 
    The most common case is expected to consider a message protected with up to two OSCORE layers, i.e.: i) an inner layer, protecting the message end-to-end between the origin client and the origin server acting as application endpoints; and ii) an outer layer, protecting the message between a certain OSCORE endpoint and the other OSCORE endpoint adjacent in the intermediary chain.
 
    However, a message can also be protected with a higher, arbitrary number of nested OSCORE layers, e.g., in scenarios relying on a longer chain of intermediaries. For instance, the origin client can sequentially apply multiple OSCORE layers to a request, each of which to be consumed and removed by one of the intermediaries in the chain, until the origin server is reached and it consumes the innermost OSCORE layer.
 
-   An OSCORE endpoint SHOULD define the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message. The defined limit has to appropriately reflect the security requirements of the application. At the same time, it is typically bounded by the maximum number of OSCORE Security Contexts that can be active at the endpoint, and by the number of intermediary OSCORE endpoints that have been explicitly set up by the communicating parties.
+   An OSCORE endpoint SHOULD define the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message. The defined limit has to appropriately reflect the security requirements of the application. At the same time, such a limit is typically bounded by the maximum number of OSCORE Security Contexts that can be active at the endpoint, and by the number of intermediary OSCORE endpoints that have been explicitly set up by the communicating parties.
 
    If its defined limit is reached when processing a CoAP message, an OSCORE endpoint MUST NOT perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint MUST abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint MUST reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed (see {{outgoing-responses}}).
 
@@ -263,7 +265,7 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
 3. If, to the best of the sender endpoint's knowledge, X is the immediately next consumer of OPT, then this algorithm moves to step 5. Otherwise, this algorithm moves to step 9.
 
-4. If any of the following conditions hold, then this algorithm moves to step 6. Otherwise, this algorithm moves to step 9.
+4. If any of the following conditions holds, then this algorithm moves to step 6. Otherwise, this algorithm moves to step 9.
 
    - To the best of the sender endpoint's knowledge, X is the next hop for the sender endpoint; or
 
@@ -271,19 +273,19 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
 5. If X needs to access OPT before having removed the i-th OSCORE layer or in order to remove the i-th OSCORE layer, then this algorithm moves to step 9. Otherwise, this algorithm moves to step 6.
 
-6. If OPT is the Uri-Host or Uri-Port option, then this algorithm moves to step 7. Otherwise, this algorithm moves to step 8.
+6. If OPT is the Uri-Host or Uri-Port Option, then this algorithm moves to step 7. Otherwise, this algorithm moves to step 8.
 
-7. If M includes the Proxy-Scheme or Proxy-Scheme-Number option, then this algorithm moves to step 8. Otherwise, this algorithm moves to step 9.
+7. If M includes the Proxy-Scheme or Proxy-Scheme-Number Option, then this algorithm moves to step 8. Otherwise, this algorithm moves to step 9.
 
 8. The sender endpoint determines that OPT will be processed as if it was specified as Class E for OSCORE, i.e., to be both encrypted and integrity-protected. Then, the sender enpoint terminates this algorithm.
 
-9. The sender endpoint determines that OPT will be processed as per its original Class U or I. Then, the sender enpoint terminates this algorithm.
+9. The sender endpoint determines that OPT will be processed as per its original Class U or I for OSCORE. Then, the sender enpoint terminates this algorithm.
 
 ## Processing of an Outgoing Request {#outgoing-requests}
 
 The rules from {{general-rules}} apply when processing an outgoing request message, with the following addition.
 
-When an application endpoint applies multiple OSCORE layers in sequence to protect an outgoing request, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
+When a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing request, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
 
 ## Processing of an Incoming Request {#incoming-requests}
 
@@ -295,63 +297,63 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
    * REQ includes either of the following (set) of CoAP options: the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* Options.
 
-      If the endpoint is not configured to be a forward-proxy, it MUST stop processing the request and MUST respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If the endpoint is not configured to be a forward-proxy, it MUST stop processing the request and MUST respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
+     Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
 
-      In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to step 1.
+     Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to step 1.
 
-      Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see {{Section 12 of I-D.ietf-core-observe-multicast-notifications}}).
+     Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications Option (see {{Section 12 of I-D.ietf-core-observe-multicast-notifications}}).
 
-      If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
+     If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
 
-      After that, the endpoint does not take any further action.
+     After that, the endpoint does not take any further action.
 
    * REQ does not include the Proxy-Scheme Option or the Proxy-Scheme-Number Option, but it includes one or more Uri-Path Options, and/or the Uri-Host Option, and/or the Uri-Port Option.
 
-      If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the Uri-Path, Uri-Host, and Uri-Port Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.
+     If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the Uri-Path, Uri-Host, and Uri-Port Options is not intended to support reverse-proxy functionalities, then the endpoint proceeds to step 3.
 
-      Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
+     Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message, before performing this step.
 
-      In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint consumes the present Uri-Path, Uri-Host, and Uri-Port Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ (e.g., by means of any of its CoAP options).
+     Otherwise, the endpoint consumes the present Uri-Path, Uri-Host, and Uri-Port Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ (e.g., by means of any of its CoAP options).
 
-      If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
+     If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
 
-      After that, the endpoint does not take any further action.
+     After that, the endpoint does not take any further action.
 
-      Note that, when forwarding REQ, the endpoint might not remove all the Uri-Path Options originally present, e.g., in case the next hop towards the origin server is a further reverse-proxy.
+     Note that, when forwarding REQ, the endpoint might not remove all the Uri-Path Options originally present, e.g., in case the next hop towards the origin server is a further reverse-proxy.
 
 3. The endpoint proceeds as defined below, depending on which of the two following conditions holds.
 
    * REQ does not include an OSCORE Option.
 
-      If the endpoint does not have an application to handle REQ, it MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If the endpoint does not have an application to handle REQ, it MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint delivers REQ to the application.
+     Otherwise, the endpoint delivers REQ to the application.
 
    * REQ includes an OSCORE Option.
 
-      If REQ includes any Uri-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If REQ includes any Uri-Path Options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, the endpoint MUST check whether decrypting the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request, and then asserting whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.
+     Otherwise, the endpoint MUST check whether decrypting the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request, and then asserting whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.
 
-      In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.
+     Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE Option in the decrypted request REQ* is not treated as an error situation.
 
-      If the OSCORE processing results in an error, the endpoint MUST stop processing the request and performs error handling as per {{Section 8.2 of RFC8613}} or {{Sections 8.2 and 9.4 of I-D.ietf-core-oscore-groupcomm}}, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If the OSCORE processing results in an error, the endpoint MUST stop processing the request and performs error handling as per {{Section 8.2 of RFC8613}} or {{Sections 8.2 and 9.4 of I-D.ietf-core-oscore-groupcomm}}, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-      Otherwise, REQ takes REQ*, and the endpoint moves to step 1.
+     Otherwise, REQ takes REQ*, and the endpoint moves to step 1.
 
 ## Processing of an Outgoing Response {#outgoing-responses}
 
 The rules from {{general-rules}} apply when processing an outgoing response message, with the following additions.
 
-When an application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
+When a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
 
 The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.
 
@@ -365,7 +367,7 @@ When doing so, the possible presence of an OSCORE Option in the decrypted respon
 
 # Caching of OSCORE-Protected Responses # {#sec-response-caching}
 
-Although not possible as per the original OSCORE specification {{RFC8613}}, cacheability of OSCORE-protected responses at proxies can be achieved. To this end, the approach defined in {{I-D.amsuess-core-cachable-oscore}} can be used, as based on Deterministic Requests protected with the pairwise mode of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}} used end-to-end between an origin client and an origin server. The applicability of this approach is limited to requests that are safe (in the RESTful sense) to process and do not yield side effects at the origin server.
+Although it is not possible as per the original OSCORE specification {{RFC8613}}, effective cacheability of OSCORE-protected responses at proxies can be achieved. To this end, the approach defined in {{I-D.amsuess-core-cachable-oscore}} can be used, as based on Deterministic Requests protected with the pairwise mode of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}} used end-to-end between an origin client and an origin server. The applicability of this approach is limited to requests that are safe (in the RESTful sense) to process and do not yield side effects at the origin server.
 
 In particular, this approach requires both the origin client and the origin server to have already joined the correct OSCORE group. Then, starting from the same plain CoAP request, different clients in the OSCORE group are able to deterministically generate a same request protected with Group OSCORE, which is sent to a proxy for being forwarded to the origin server. The proxy can effectively cache the resulting OSCORE-protected response from the server, since the same plain CoAP request will result again in the same Deterministic Request and thus will produce a cache hit.
 
@@ -373,11 +375,11 @@ When using this approach, the following also applies in addition to what is defi
 
 * Upon receiving a request from (the previous hop towards) the origin client, the proxy checks if specifically the message available during the execution of step 2 in {{incoming-requests}} produces a cache hit.
 
-   That is, such a message: i) is exactly the one to be forwarded to (the next hop towards) the origin server, if no cache hit has occurred; and ii) is the result of an OSCORE decryption at the proxy, if OSCORE is used on the communication leg between the proxy and (the previous hop towards) the origin client.
+  That is, such a message: i) is exactly the one to be forwarded to (the next hop towards) the origin server, if no cache hit has occurred; and ii) is the result of an OSCORE decryption at the proxy, if OSCORE is used on the communication leg between the proxy and (the previous hop towards) the origin client.
 
 * Upon receiving a response from (the next hop towards) the origin server, the proxy first removes the same OSCORE layers that it added when protecting the corresponding outgoing request, as defined in {{incoming-responses}}.
 
-   Then, the proxy stores specifically that resulting response message in its cache. That is, such a message is exactly the one to be forwarded to (the previous hop towards) the origin client.
+  Then, the proxy stores specifically that resulting response message in its cache. That is, such a message is exactly the one to be forwarded to (the previous hop towards) the origin client.
 
 The specific rules about serving a request with a cached response are defined in {{Section 5.6 of RFC7252}}, as well as in {{Section 7 of I-D.ietf-core-groupcomm-proxy}} for group communication scenarios.
 
@@ -387,13 +389,13 @@ Like the original OSCORE specification {{RFC8613}}, this document is not devoted
 
 At the same time, the following applies, depending on the two peers using OSCORE or Group OSCORE {{I-D.ietf-core-oscore-groupcomm}} to protect their communications.
 
-* When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key establishment protocol EDHOC {{RFC9528}}.
+* When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key exchange protocol EDHOC {{RFC9528}}.
 
-   Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
+  Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
 
-   Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
+  Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
 
-* The use of Group OSCORE is expected to be limited between the origin applications endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework for authentication and authorization in constrained environments {{RFC9200}}.
+* The use of Group OSCORE is expected to be limited between the origin applications endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework for Authentication and Authorization in constrained environments {{RFC9200}}.
 
   For the purposes of this document, there is no need for a proxy to also be a member of the OSCORE group whose Group OSCORE Security Context is used by the origin application endpoints for protecting communications end-to-end.
 
@@ -407,23 +409,35 @@ To this end, it is possible to use the Static Context Header Compression and fra
 
 * In case OSCORE is used only end-to-end between the application endpoints, then an Inner SCHC Compression/Decompression and an Outer SCHC Compression/Decompression are performed (see {{Section 8.2 of I-D.ietf-schc-8824-update}}). In particular, the following holds.
 
-   The SCHC processing occurs end-to-end as to the Inner SCHC Compression/Decompression. This relies on Inner SCHC Rules that are shared between the two application endpoints, which act as OSCORE endpoints and share the used OSCORE Security Context.
+  The SCHC processing occurs end-to-end as to the Inner SCHC Compression/Decompression. This relies on Inner SCHC Rules that are shared between the two application endpoints, which act as OSCORE endpoints and share the used OSCORE Security Context.
 
-   The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompression. This relies on Outer SCHC Rules that are shared between two adjacent hops.
+  The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompression. This relies on Outer SCHC Rules that are shared between two adjacent hops.
 
 When using the method defined in this document, and thus enabling also an intermediary proxy to be an OSCORE endpoint, the SCHC processing above is generalized as specified below.
 
 When processing an outgoing CoAP message, a sender endpoint proceeds as follows.
 
-* The sender endpoint performs one Inner SCHC Compression for each OSCORE layer applied to the outgoing message. Each Inner SCHC Compression occurs before protecting the message with that OSCORE layer, and relies on the SCHC Rules that are shared with the other OSCORE endpoint.
+* The sender endpoint performs one Inner SCHC Compression for each OSCORE layer applied to the outgoing message.
 
-* The sender endpoint performs exactly one Outer SCHC Compression. This occurs after having performed all the intended OSCORE protections of the outgoing message, and relies on the SCHC Rules that are shared with the (next hop towards the) recipient application endpoint.
+  Each Inner SCHC Compression occurs before protecting the message with that OSCORE layer, and relies on the SCHC Rules that are shared with the other OSCORE endpoint.
+
+* The sender endpoint performs exactly one Outer SCHC Compression.
+
+  This occurs after having performed all the intended OSCORE protections of the outgoing message, and relies on the SCHC Rules that are shared with the (next hop towards the) destination application endpoint.
 
 That is, with respect to the SCHC Compression/Decompression processing, the following holds.
 
-* An Inner SCHC Compression is intended for a recipient OSCORE endpoint, which will: first, decrypt an incoming message with the OSCORE Security Context shared with the other OSCORE endpoint; and then, perform the corresponding Inner SCHC Decompression, by relying on the SCHC Rules shared with the other OSCORE endpoint.
+An Inner SCHC Compression is intended for a destination OSCORE endpoint, which performs the following steps.
 
-* An Outer SCHC Compression is intended for the (next hop towards the) recipient application endpoint, which will: first, perform a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the (previous hop towards the) recipient application endpoint; then, perform a new Outer SCHC Compression on the result, by relying on the SCHC Rules shared with the (next hop towards the) recipient application endpoint; and, finally, send the result to the (next-hop towards the) recipient application endpoint.
+1. It decrypts an incoming message with the OSCORE Security Context shared with the other OSCORE endpoint.
+
+2. It performs the corresponding Inner SCHC Decompression, by relying on the SCHC Rules shared with the other OSCORE endpoint.
+
+An Outer SCHC Compression is intended for the (next hop towards the) destination application endpoint, which performs the following steps.
+
+1. It performs a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the previous hop towards the destination application endpoint.
+
+2. Unless it is exactly the destination application endpoint, it performs a new Outer SCHC Compression on the result from the previous step, by relying on the SCHC Rules shared with the (next hop towards the) destination application endpoint. Then, it sends the result to the (next-hop towards the) destination application endpoint.
 
 Note that the generalization above does not alter the core approach, design choices, and features of the SCHC Compression/Decompression applied to CoAP headers.
 
@@ -1194,7 +1208,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~ aasvg
 ..........................
 :                        :
-: Sender OSCORE endpoint :
+: Source OSCORE endpoint :
 :                        :
 :..........o.............:
            o
@@ -1383,7 +1397,7 @@ request      +-----------------------------------------------+        |
 
 * Revised escalation of CoAP option protection.
 
-* Editorial improvements.
+* Clarifications and editorial improvements.
 
 ## Version -00 to -01 ## {#sec-00-01}
 
