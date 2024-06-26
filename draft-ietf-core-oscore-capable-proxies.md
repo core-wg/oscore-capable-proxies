@@ -1203,6 +1203,223 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-edhoc-comb-req title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC using the EDHOC + OSCORE request"}
 
+## Example 6
+
+In the example shown in {{fig-example-reverse-proxy-without-end-to-end}}, message exchanges are protected with OSCORE over the following legs.
+
+* Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
+
+* Between the proxy and the server, using the OSCORE Security Context CTX_P_S. The proxy uses the OSCORE Sender ID 0xd4 when using OSCORE with the server.
+
+In this example, the proxy is specifically a reverse-proxy. Like typically expected in such a case, the client is not aware of that, and believes to communicate with an origin server.
+
+In order to determine where it has to forward an incoming request to, the proxy relies on the hostname that clients specify in the Uri-Host Option of their sent requests. In particular, upon receiving a request that includes the Uri-Host Option with value "dev.example", the proxy forwards the request to the origin server shown in the example.
+
+Furthermore, this example assumes that, in the URI identifying the target resource at the server, the host component represents the destination IP address of the request as an IP-literal. Therefore, the request from the proxy to the server does not include a Uri-Host Option (see {{Section 6.4 of RFC7252}}).
+
+~~~~~~~~~~~ aasvg
+Client  Proxy  Server
+  |       |       |
+Encrypt   |       |
+REQ with  |       |
+CTX_C_P   |       |
+  |       |       |
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0x8c
+  |       |       | Uri-Host: "dev.example"
+  |       |       |   OSCORE: [kid:0x20, Partial IV:31]
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 0.01 (GET),
+  |       |       |            Uri-Path: "alarm_status"
+  |       |       |           } // Encrypted with CTX_C_P
+  |       |       |
+  |     Decrypt   |
+  |     REQ with  |
+  |     CTX_C_P   |
+  |       |       |
+  |     Encrypt   |
+  |     REQ with  |
+  |     CTX_P_S   |
+  |       |       |
+  |       +------>|     Code: 0.02 (POST)
+  |       | POST  |    Token: 0x7b
+  |       |       |   OSCORE: [kid:0xd4, Partial IV:42]
+  |       |       |     0xff
+  |       |       |  Payload: {
+  |       |       |            Code: 0.01 (GET),
+  |       |       |            Uri-Path: "alarm_status"
+  |       |       |           } // Encrypted with CTX_P_S
+  |       |       |
+  |       |     Decrypt
+  |       |     REQ with
+  |       |     CTX_P_S
+  |       |       |
+  |       |     Encrypt
+  |       |     RESP with
+  |       |     CTX_P_S
+  |       |       |
+  |       |<------+     Code: 2.04 (Changed)
+  |       |  2.04 |    Token: 0x7b
+  |       |       |   OSCORE: -
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 2.05 (Content),
+  |       |       |            0xff,
+  |       |       |            "0"
+  |       |       |           } // Encrypted with CTX_P_S
+  |       |       |
+  |     Decrypt   |
+  |     RESP with |
+  |     CTX_P_S   |
+  |       |       |
+  |     Encrypt   |
+  |     RESP with |
+  |     CTX_C_P   |
+  |       |       |
+  |<------+       |     Code: 2.04 (Changed)
+  |  2.04 |       |    Token: 0x8c
+  |       |       |   OSCORE: -
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 2.05 (Content),
+  |       |       |            0xff,
+  |       |       |            "0"
+  |       |       |           } // Encrypted with CTX_C_P
+  |       |       |
+Decrypt   |       |
+RESP with |       |
+CTX_C_P   |       |
+  |       |       |
+
+Square brackets [ ... ] indicate content of compressed COSE object.
+Curly brackets { ... } indicate encrypted data.
+~~~~~~~~~~~
+{: #fig-example-reverse-proxy-without-end-to-end title="Use of OSCORE between Client-Proxy and Proxy-Server (the proxy is a reverse-proxy)"}
+
+## Example 7
+
+In the example shown in {{fig-example-reverse-proxy-with-end-to-end}}, message exchanges are protected with OSCORE over the following legs.
+
+* End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
+
+* Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
+
+* Between the proxy and the server, using the OSCORE Security Context CTX_P_S. The proxy uses the OSCORE Sender ID 0xd4 when using OSCORE with the server.
+
+In this example, the proxy is specifically a reverse-proxy. However, unlike typically expected, the client is aware to communicate with a reverse-proxy. This is the case, e.g., in the LwM2M scenario considered in {{ssec-uc4}}, where the LwM2M Server acts as CoAP client, and it uses a LwM2M Gateway acting as a CoAP-to-CoAP reverse-proxy in order to reach an end IoT device.
+
+In order to determine where it has to forward an incoming request to, the proxy relies on the URI path components that are specified as value of the Uri-Path options included in the request. In particular, the proxy relies on the first URI path segment to identify the specific IoT device where to forward the request to, while the remaining URI path segments specify the target resource at the IoT device.
+
+However, as shown in the example, the URI path segments that specify the target resource are hidden from the proxy, since they are protected by the additional use of OSCORE end-to-end between the client and the server.
+
+Furthermore, this example assumes that, in the URIs identifying the target resource at the proxy as well as in the URI identifying the target resource at the server, the host component represents the destination IP address of the request as an IP-literal. Therefore, both the request from the client to the proxy and the request from the proxy to the server do not include a Uri-Host Option (see {{Section 6.4 of RFC7252}}).
+
+~~~~~~~~~~~ aasvg
+Client  Proxy  Server
+  |       |       |
+Encrypt   |       |
+REQ with  |       |
+CTX_C_S   |       |
+  |       |       |
+Encrypt   |       |
+REQ with  |       |
+CTX_C_P   |       |
+  |       |       |
+  +------>|       |    Code: 0.02 (POST)
+  | POST  |       |   Token: 0x8c
+  |       |       |  OSCORE: [kid:0x20, Partial IV:31]
+  |       |       |    0xff
+  |       |       | Payload: {Code: 0.02 (POST),
+  |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
+  |       |       |           Uri-Path: "dev1",
+  |       |       |           0xff,
+  |       |       |           {Code: 0.01 (GET),
+  |       |       |            Uri-Path: "alarm_status"
+  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |          } // Encrypted with CTX_C_P
+  |       |       |
+  |     Decrypt   |
+  |     REQ with  |
+  |     CTX_C_P   |
+  |       |       |
+  |     Encrypt   |
+  |     REQ with  |
+  |     CTX_P_S   |
+  |       |       |
+  |       +------>|    Code: 0.02 (POST)
+  |       | POST  |   Token: 0x7b
+  |       |       |  OSCORE: [kid:0xd4, Partial IV:31]
+  |       |       |    0xff
+  |       |       | Payload: {Code: 0.02 (POST),
+  |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
+  |       |       |           0xff,
+  |       |       |           {Code: 0.01 (GET),
+  |       |       |            Uri-Path: "alarm_status"
+  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |          } // Encrypted with CTX_P_S
+  |       |       |
+  |       |     Decrypt
+  |       |     REQ with
+  |       |     CTX_P_S
+  |       |       |
+  |       |     Decrypt
+  |       |     REQ with
+  |       |     CTX_C_S
+  |       |       |
+  |       |     Encrypt
+  |       |     RESP with
+  |       |     CTX_C_S
+  |       |       |
+  |       |     Encrypt
+  |       |     RESP with
+  |       |     CTX_P_S
+  |       |       |
+  |       |<------+    Code: 2.04 (Changed)
+  |       |  2.04 |   Token: 0x7b
+  |       |       |  OSCORE: -
+  |       |       |    0xff
+  |       |       | Payload: {Code: 2.04 (Changed),
+  |       |       |           OSCORE: -,
+  |       |       |           0xff,
+  |       |       |           {Code: 2.05 (Content),
+  |       |       |            0xff,
+  |       |       |            "0"
+  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |          } // Encrypted with CTX_P_S
+  |       |       |
+  |     Decrypt   |
+  |     RESP with |
+  |     CTX_P_S   |
+  |       |       |
+  |     Encrypt   |
+  |     ERSP with |
+  |     CTX_C_P   |
+  |       |       |
+  |<------+       |    Code: 2.04 (Changed)
+  |  2.04 |       |   Token: 0x8c
+  |       |       |  OSCORE: -
+  |       |       |    0xff
+  |       |       | Payload: {Code: 2.04 (Changed),
+  |       |       |           OSCORE: -,
+  |       |       |           0xff,
+  |       |       |           {Code: 2.05 (Content),
+  |       |       |            0xff,
+  |       |       |            "0"
+  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |          } // Encrypted with CTX_C_P
+  |       |       |
+Decrypt   |       |
+RESP with |       |
+CTX_C_P   |       |
+  |       |       |
+Decrypt   |       |
+RESP with |       |
+CTX_C_S   |       |
+  |       |       |
+
+Square brackets [ ... ] indicate content of compressed COSE object.
+Curly brackets { ... } indicate encrypted data.
+~~~~~~~~~~~
+{: #fig-example-reverse-proxy-with-end-to-end title="Use of OSCORE between Client-Proxy and Proxy-Server (the proxy is a reverse-proxy)"}
+
 # State Diagram: Protection of CoAP Options # {#sec-option-protection-diag}
 
 {{fig-option-protection-diagram}} overviews the rules defined in {{general-rules}}, to determine whether a CoAP option that is originally specified as Class U or I for OSCORE has to be processed like if it was specified as Class E, when protecting an outgoing message.
@@ -1400,6 +1617,8 @@ request      +-----------------------------------------------+        |
 * Revised escalation of CoAP option protection.
 
 * Specified general ordering for protecting outgoing requests.
+
+* Added examples of message exchange with a reverse-proxy.
 
 * Clarifications and editorial improvements.
 
