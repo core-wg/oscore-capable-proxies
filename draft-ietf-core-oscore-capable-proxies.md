@@ -455,7 +455,7 @@ Before decrypting an incoming request (see step 3 in {{incoming-requests}}), the
 
 This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
 
-In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C is sharing with S. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.
+In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C and S are sharing. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.
 
 That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.
 
