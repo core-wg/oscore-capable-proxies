@@ -443,7 +443,7 @@ Note that the generalization above does not alter the core approach, design choi
 
 # Security Considerations
 
-The same security considerations from CoAP {{RFC7252}} apply to this document. The same security considerations from {{RFC8613}} and {{I-D.ietf-core-oscore-groupcomm}} apply to this document, when using OSCORE or Group OSCORE to protect exchanged messages.
+The same security considerations about CoAP {{RFC7252}} and group communication for CoAP {{I-D.ietf-core-groupcomm-bis}} apply to this document. The same security considerations from {{RFC8613}} and {{I-D.ietf-core-oscore-groupcomm}} apply to this document, when using OSCORE or Group OSCORE to protect exchanged messages.
 
 Further security considerations to take into account are inherited from the specifically used CoAP options, extensions, and methods employed when relying on OSCORE or Group OSCORE.
 
@@ -455,7 +455,7 @@ Before decrypting an incoming request (see step 3 in {{incoming-requests}}), the
 
 This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
 
-In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with their shared OSCORE Security Context CTX. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.
+In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C is sharing with S. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.
 
 That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.
 
@@ -792,7 +792,7 @@ In the example shown in {{fig-example-edhoc}}, message exchanges are protected o
 
 * Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
-The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC {{RFC9528}}.
+The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC {{RFC9528}}.
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
@@ -1007,7 +1007,7 @@ In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are pr
 
 * Between the client and the proxy. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
-The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key establishment protocol EDHOC {{RFC9528}}.
+The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC {{RFC9528}}.
 
 In particular, the client relies on the EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
 
