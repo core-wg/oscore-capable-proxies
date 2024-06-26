@@ -1226,6 +1226,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.5">
                 <p id="section-toc.1-1.10.2.5.1"><a href="#appendix-A.5" class="auto internal xref">A.5</a>.  <a href="#name-example-5" class="internal xref">Example 5</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.6">
+                <p id="section-toc.1-1.10.2.6.1"><a href="#appendix-A.6" class="auto internal xref">A.6</a>.  <a href="#name-example-6" class="internal xref">Example 6</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.7">
+                <p id="section-toc.1-1.10.2.7.1"><a href="#appendix-A.7" class="auto internal xref">A.7</a>.  <a href="#name-example-7" class="internal xref">Example 7</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
@@ -3486,6 +3492,463 @@ This occurs after having performed all the intended OSCORE protections of the ou
 </div>
 </section>
 </div>
+<div id="example-6">
+<section id="appendix-A.6">
+        <h3 id="name-example-6">
+<a href="#appendix-A.6" class="section-number selfRef">A.6. </a><a href="#name-example-6" class="section-name selfRef">Example 6</a>
+        </h3>
+<p id="appendix-A.6-1">In the example shown in <a href="#fig-example-reverse-proxy-without-end-to-end" class="auto internal xref">Figure 6</a>, message exchanges are protected with OSCORE over the following legs.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.6-2.1">
+            <p id="appendix-A.6-2.1.1">Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-A.6-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.6-2.2">
+            <p id="appendix-A.6-2.2.1">Between the proxy and the server, using the OSCORE Security Context CTX_P_S. The proxy uses the OSCORE Sender ID 0xd4 when using OSCORE with the server.<a href="#appendix-A.6-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.6-3">In this example, the proxy is specifically a reverse-proxy. Like typically expected in such a case, the client is not aware of that, and believes to communicate with an origin server.<a href="#appendix-A.6-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-4">In order to determine where it has to forward an incoming request to, the proxy relies on the hostname that clients specify in the Uri-Host Option of their sent requests. In particular, upon receiving a request that includes the Uri-Host Option with value "dev.example", the proxy forwards the request to the origin server shown in the example.<a href="#appendix-A.6-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-5">Furthermore, this example assumes that, in the URI identifying the target resource at the server, the host component represents the destination IP address of the request as an IP-literal. Therefore, the request from the proxy to the server does not include a Uri-Host Option (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-6.4" class="relref">Section 6.4</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#appendix-A.6-5" class="pilcrow">¶</a></p>
+<span id="name-use-of-oscore-between-client-p"></span><div id="fig-example-reverse-proxy-without-end-to-end">
+<figure id="figure-6">
+          <div id="appendix-A.6-6.1">
+            <div class="alignLeft art-svg artwork" id="appendix-A.6-6.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1200" width="544" viewBox="0 0 544 1200" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 24,104 L 24,1072" fill="none" stroke="black"></path>
+                <path d="M 24,1128 L 24,1136" fill="none" stroke="black"></path>
+                <path d="M 88,48 L 88,256" fill="none" stroke="black"></path>
+                <path d="M 88,312 L 88,320" fill="none" stroke="black"></path>
+                <path d="M 88,376 L 88,800" fill="none" stroke="black"></path>
+                <path d="M 88,856 L 88,864" fill="none" stroke="black"></path>
+                <path d="M 88,920 L 88,1136" fill="none" stroke="black"></path>
+                <path d="M 152,48 L 152,528" fill="none" stroke="black"></path>
+                <path d="M 152,584 L 152,592" fill="none" stroke="black"></path>
+                <path d="M 152,648 L 152,1136" fill="none" stroke="black"></path>
+                <path d="M 24,128 L 80,128" fill="none" stroke="black"></path>
+                <path d="M 88,400 L 144,400" fill="none" stroke="black"></path>
+                <path d="M 96,672 L 152,672" fill="none" stroke="black"></path>
+                <path d="M 32,944 L 88,944" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="152,400 140,394.4 140,405.6" fill="black" transform="rotate(0,144,400)"></polygon>
+                <polygon class="arrowhead" points="104,672 92,666.4 92,677.6" fill="black" transform="rotate(180,96,672)"></polygon>
+                <polygon class="arrowhead" points="88,128 76,122.4 76,133.6" fill="black" transform="rotate(0,80,128)"></polygon>
+                <polygon class="arrowhead" points="40,944 28,938.4 28,949.6" fill="black" transform="rotate(180,32,944)"></polygon>
+                <g class="text">
+                  <text x="28" y="36">Client</text>
+                  <text x="88" y="36">Proxy</text>
+                  <text x="148" y="36">Server</text>
+                  <text x="24" y="52">|</text>
+                  <text x="32" y="68">Encrypt</text>
+                  <text x="16" y="84">REQ</text>
+                  <text x="52" y="84">with</text>
+                  <text x="32" y="100">CTX_C_P</text>
+                  <text x="216" y="132">Code:</text>
+                  <text x="260" y="132">0.02</text>
+                  <text x="308" y="132">(POST)</text>
+                  <text x="52" y="148">POST</text>
+                  <text x="212" y="148">Token:</text>
+                  <text x="260" y="148">0x8c</text>
+                  <text x="200" y="164">Uri-Host:</text>
+                  <text x="296" y="164">"dev.example"</text>
+                  <text x="208" y="180">OSCORE:</text>
+                  <text x="284" y="180">[kid:0x20,</text>
+                  <text x="360" y="180">Partial</text>
+                  <text x="420" y="180">IV:31]</text>
+                  <text x="212" y="196">0xff</text>
+                  <text x="204" y="212">Payload:</text>
+                  <text x="268" y="212">{Code:</text>
+                  <text x="316" y="212">0.01</text>
+                  <text x="364" y="212">(GET),</text>
+                  <text x="288" y="228">Uri-Path:</text>
+                  <text x="388" y="228">"alarm_status"</text>
+                  <text x="248" y="244">}</text>
+                  <text x="268" y="244">//</text>
+                  <text x="320" y="244">Encrypted</text>
+                  <text x="380" y="244">with</text>
+                  <text x="432" y="244">CTX_C_P</text>
+                  <text x="96" y="276">Decrypt</text>
+                  <text x="80" y="292">REQ</text>
+                  <text x="116" y="292">with</text>
+                  <text x="96" y="308">CTX_C_P</text>
+                  <text x="96" y="340">Encrypt</text>
+                  <text x="80" y="356">REQ</text>
+                  <text x="116" y="356">with</text>
+                  <text x="96" y="372">CTX_P_S</text>
+                  <text x="216" y="404">Code:</text>
+                  <text x="260" y="404">0.02</text>
+                  <text x="308" y="404">(POST)</text>
+                  <text x="116" y="420">POST</text>
+                  <text x="212" y="420">Token:</text>
+                  <text x="260" y="420">0x7b</text>
+                  <text x="208" y="436">OSCORE:</text>
+                  <text x="284" y="436">[kid:0xd4,</text>
+                  <text x="360" y="436">Partial</text>
+                  <text x="420" y="436">IV:42]</text>
+                  <text x="212" y="452">0xff</text>
+                  <text x="204" y="468">Payload:</text>
+                  <text x="248" y="468">{</text>
+                  <text x="272" y="484">Code:</text>
+                  <text x="316" y="484">0.01</text>
+                  <text x="364" y="484">(GET),</text>
+                  <text x="288" y="500">Uri-Path:</text>
+                  <text x="388" y="500">"alarm_status"</text>
+                  <text x="248" y="516">}</text>
+                  <text x="268" y="516">//</text>
+                  <text x="320" y="516">Encrypted</text>
+                  <text x="380" y="516">with</text>
+                  <text x="432" y="516">CTX_P_S</text>
+                  <text x="160" y="548">Decrypt</text>
+                  <text x="144" y="564">REQ</text>
+                  <text x="180" y="564">with</text>
+                  <text x="160" y="580">CTX_P_S</text>
+                  <text x="160" y="612">Encrypt</text>
+                  <text x="148" y="628">RESP</text>
+                  <text x="188" y="628">with</text>
+                  <text x="160" y="644">CTX_P_S</text>
+                  <text x="216" y="676">Code:</text>
+                  <text x="260" y="676">2.04</text>
+                  <text x="320" y="676">(Changed)</text>
+                  <text x="124" y="692">2.04</text>
+                  <text x="212" y="692">Token:</text>
+                  <text x="260" y="692">0x7b</text>
+                  <text x="208" y="708">OSCORE:</text>
+                  <text x="248" y="708">-</text>
+                  <text x="212" y="724">0xff</text>
+                  <text x="204" y="740">Payload:</text>
+                  <text x="268" y="740">{Code:</text>
+                  <text x="316" y="740">2.05</text>
+                  <text x="380" y="740">(Content),</text>
+                  <text x="272" y="756">0xff,</text>
+                  <text x="264" y="772">"0"</text>
+                  <text x="248" y="788">}</text>
+                  <text x="268" y="788">//</text>
+                  <text x="320" y="788">Encrypted</text>
+                  <text x="380" y="788">with</text>
+                  <text x="432" y="788">CTX_P_S</text>
+                  <text x="96" y="820">Decrypt</text>
+                  <text x="84" y="836">RESP</text>
+                  <text x="124" y="836">with</text>
+                  <text x="96" y="852">CTX_P_S</text>
+                  <text x="96" y="884">Encrypt</text>
+                  <text x="84" y="900">RESP</text>
+                  <text x="124" y="900">with</text>
+                  <text x="96" y="916">CTX_C_P</text>
+                  <text x="216" y="948">Code:</text>
+                  <text x="260" y="948">2.04</text>
+                  <text x="320" y="948">(Changed)</text>
+                  <text x="60" y="964">2.04</text>
+                  <text x="212" y="964">Token:</text>
+                  <text x="260" y="964">0x8c</text>
+                  <text x="208" y="980">OSCORE:</text>
+                  <text x="248" y="980">-</text>
+                  <text x="212" y="996">0xff</text>
+                  <text x="204" y="1012">Payload:</text>
+                  <text x="268" y="1012">{Code:</text>
+                  <text x="316" y="1012">2.05</text>
+                  <text x="380" y="1012">(Content),</text>
+                  <text x="272" y="1028">0xff,</text>
+                  <text x="264" y="1044">"0"</text>
+                  <text x="248" y="1060">}</text>
+                  <text x="268" y="1060">//</text>
+                  <text x="320" y="1060">Encrypted</text>
+                  <text x="380" y="1060">with</text>
+                  <text x="432" y="1060">CTX_C_P</text>
+                  <text x="32" y="1092">Decrypt</text>
+                  <text x="20" y="1108">RESP</text>
+                  <text x="60" y="1108">with</text>
+                  <text x="32" y="1124">CTX_C_P</text>
+                  <text x="28" y="1172">Square</text>
+                  <text x="92" y="1172">brackets</text>
+                  <text x="136" y="1172">[</text>
+                  <text x="160" y="1172">...</text>
+                  <text x="184" y="1172">]</text>
+                  <text x="228" y="1172">indicate</text>
+                  <text x="296" y="1172">content</text>
+                  <text x="340" y="1172">of</text>
+                  <text x="396" y="1172">compressed</text>
+                  <text x="460" y="1172">COSE</text>
+                  <text x="512" y="1172">object.</text>
+                  <text x="24" y="1188">Curly</text>
+                  <text x="84" y="1188">brackets</text>
+                  <text x="128" y="1188">{</text>
+                  <text x="152" y="1188">...</text>
+                  <text x="176" y="1188">}</text>
+                  <text x="220" y="1188">indicate</text>
+                  <text x="296" y="1188">encrypted</text>
+                  <text x="360" y="1188">data.</text>
+                </g>
+              </svg><a href="#appendix-A.6-6.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-use-of-oscore-between-client-p" class="selfRef">Use of OSCORE between Client-Proxy and Proxy-Server (the proxy is a reverse-proxy)</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="example-7">
+<section id="appendix-A.7">
+        <h3 id="name-example-7">
+<a href="#appendix-A.7" class="section-number selfRef">A.7. </a><a href="#name-example-7" class="section-name selfRef">Example 7</a>
+        </h3>
+<p id="appendix-A.7-1">In the example shown in <a href="#fig-example-reverse-proxy-with-end-to-end" class="auto internal xref">Figure 7</a>, message exchanges are protected with OSCORE over the following legs.<a href="#appendix-A.7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.7-2.1">
+            <p id="appendix-A.7-2.1.1">End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.7-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.7-2.2">
+            <p id="appendix-A.7-2.2.1">Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-A.7-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.7-2.3">
+            <p id="appendix-A.7-2.3.1">Between the proxy and the server, using the OSCORE Security Context CTX_P_S. The proxy uses the OSCORE Sender ID 0xd4 when using OSCORE with the server.<a href="#appendix-A.7-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.7-3">In this example, the proxy is specifically a reverse-proxy. However, unlike typically expected, the client is aware to communicate with a reverse-proxy. This is the case, e.g., in the LwM2M scenario considered in <a href="#ssec-uc4" class="auto internal xref">Section 2.4</a>, where the LwM2M Server acts as CoAP client, and it uses a LwM2M Gateway acting as a CoAP-to-CoAP reverse-proxy in order to reach an end IoT device.<a href="#appendix-A.7-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-4">In order to determine where it has to forward an incoming request to, the proxy relies on the URI path components that are specified as value of the Uri-Path options included in the request. In particular, the proxy relies on the first URI path segment to identify the specific IoT device where to forward the request to, while the remaining URI path segments specify the target resource at the IoT device.<a href="#appendix-A.7-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-5">However, as shown in the example, the URI path segments that specify the target resource are hidden from the proxy, since they are protected by the additional use of OSCORE end-to-end between the client and the server.<a href="#appendix-A.7-5" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-6">Furthermore, this example assumes that, in the URIs identifying the target resource at the proxy as well as in the URI identifying the target resource at the server, the host component represents the destination IP address of the request as an IP-literal. Therefore, both the request from the client to the proxy and the request from the proxy to the server do not include a Uri-Host Option (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-6.4" class="relref">Section 6.4</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#appendix-A.7-6" class="pilcrow">¶</a></p>
+<span id="name-use-of-oscore-between-client-pr"></span><div id="fig-example-reverse-proxy-with-end-to-end">
+<figure id="figure-7">
+          <div id="appendix-A.7-7.1">
+            <div class="alignLeft art-svg artwork" id="appendix-A.7-7.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1696" width="544" viewBox="0 0 544 1696" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 24,104 L 24,112" fill="none" stroke="black"></path>
+                <path d="M 24,168 L 24,1504" fill="none" stroke="black"></path>
+                <path d="M 24,1560 L 24,1568" fill="none" stroke="black"></path>
+                <path d="M 24,1624 L 24,1632" fill="none" stroke="black"></path>
+                <path d="M 88,48 L 88,384" fill="none" stroke="black"></path>
+                <path d="M 88,440 L 88,448" fill="none" stroke="black"></path>
+                <path d="M 88,504 L 88,1168" fill="none" stroke="black"></path>
+                <path d="M 88,1224 L 88,1232" fill="none" stroke="black"></path>
+                <path d="M 88,1288 L 88,1632" fill="none" stroke="black"></path>
+                <path d="M 152,48 L 152,704" fill="none" stroke="black"></path>
+                <path d="M 152,760 L 152,768" fill="none" stroke="black"></path>
+                <path d="M 152,824 L 152,832" fill="none" stroke="black"></path>
+                <path d="M 152,888 L 152,896" fill="none" stroke="black"></path>
+                <path d="M 152,952 L 152,1632" fill="none" stroke="black"></path>
+                <path d="M 24,192 L 80,192" fill="none" stroke="black"></path>
+                <path d="M 88,528 L 144,528" fill="none" stroke="black"></path>
+                <path d="M 96,976 L 152,976" fill="none" stroke="black"></path>
+                <path d="M 32,1312 L 88,1312" fill="none" stroke="black"></path>
+                <path d="M 256,368 L 264,352" fill="none" stroke="black"></path>
+                <path d="M 264,368 L 276,344" fill="none" stroke="black"></path>
+                <path d="M 256,688 L 264,672" fill="none" stroke="black"></path>
+                <path d="M 264,688 L 276,664" fill="none" stroke="black"></path>
+                <path d="M 256,1152 L 264,1136" fill="none" stroke="black"></path>
+                <path d="M 264,1152 L 272,1136" fill="none" stroke="black"></path>
+                <path d="M 256,1488 L 264,1472" fill="none" stroke="black"></path>
+                <path d="M 264,1488 L 272,1472" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="152,528 140,522.4 140,533.6" fill="black" transform="rotate(0,144,528)"></polygon>
+                <polygon class="arrowhead" points="104,976 92,970.4 92,981.6" fill="black" transform="rotate(180,96,976)"></polygon>
+                <polygon class="arrowhead" points="88,192 76,186.4 76,197.6" fill="black" transform="rotate(0,80,192)"></polygon>
+                <polygon class="arrowhead" points="40,1312 28,1306.4 28,1317.6" fill="black" transform="rotate(180,32,1312)"></polygon>
+                <g class="text">
+                  <text x="28" y="36">Client</text>
+                  <text x="88" y="36">Proxy</text>
+                  <text x="148" y="36">Server</text>
+                  <text x="24" y="52">|</text>
+                  <text x="32" y="68">Encrypt</text>
+                  <text x="16" y="84">REQ</text>
+                  <text x="52" y="84">with</text>
+                  <text x="32" y="100">CTX_C_S</text>
+                  <text x="32" y="132">Encrypt</text>
+                  <text x="16" y="148">REQ</text>
+                  <text x="52" y="148">with</text>
+                  <text x="32" y="164">CTX_C_P</text>
+                  <text x="208" y="196">Code:</text>
+                  <text x="252" y="196">0.02</text>
+                  <text x="300" y="196">(POST)</text>
+                  <text x="52" y="212">POST</text>
+                  <text x="204" y="212">Token:</text>
+                  <text x="252" y="212">0x8c</text>
+                  <text x="200" y="228">OSCORE:</text>
+                  <text x="276" y="228">[kid:0x20,</text>
+                  <text x="352" y="228">Partial</text>
+                  <text x="412" y="228">IV:31]</text>
+                  <text x="204" y="244">0xff</text>
+                  <text x="196" y="260">Payload:</text>
+                  <text x="260" y="260">{Code:</text>
+                  <text x="308" y="260">0.02</text>
+                  <text x="360" y="260">(POST),</text>
+                  <text x="272" y="276">OSCORE:</text>
+                  <text x="348" y="276">[kid:0x5f,</text>
+                  <text x="424" y="276">Partial</text>
+                  <text x="488" y="276">IV:42],</text>
+                  <text x="280" y="292">Uri-Path:</text>
+                  <text x="352" y="292">"dev1",</text>
+                  <text x="264" y="308">0xff,</text>
+                  <text x="268" y="324">{Code:</text>
+                  <text x="316" y="324">0.01</text>
+                  <text x="364" y="324">(GET),</text>
+                  <text x="288" y="340">Uri-Path:</text>
+                  <text x="388" y="340">"alarm_status"</text>
+                  <text x="248" y="356">}</text>
+                  <text x="320" y="356">Encrypted</text>
+                  <text x="380" y="356">with</text>
+                  <text x="432" y="356">CTX_C_S</text>
+                  <text x="240" y="372">}</text>
+                  <text x="312" y="372">Encrypted</text>
+                  <text x="372" y="372">with</text>
+                  <text x="424" y="372">CTX_C_P</text>
+                  <text x="96" y="404">Decrypt</text>
+                  <text x="80" y="420">REQ</text>
+                  <text x="116" y="420">with</text>
+                  <text x="96" y="436">CTX_C_P</text>
+                  <text x="96" y="468">Encrypt</text>
+                  <text x="80" y="484">REQ</text>
+                  <text x="116" y="484">with</text>
+                  <text x="96" y="500">CTX_P_S</text>
+                  <text x="208" y="532">Code:</text>
+                  <text x="252" y="532">0.02</text>
+                  <text x="300" y="532">(POST)</text>
+                  <text x="116" y="548">POST</text>
+                  <text x="204" y="548">Token:</text>
+                  <text x="252" y="548">0x7b</text>
+                  <text x="200" y="564">OSCORE:</text>
+                  <text x="276" y="564">[kid:0xd4,</text>
+                  <text x="352" y="564">Partial</text>
+                  <text x="412" y="564">IV:31]</text>
+                  <text x="204" y="580">0xff</text>
+                  <text x="196" y="596">Payload:</text>
+                  <text x="260" y="596">{Code:</text>
+                  <text x="308" y="596">0.02</text>
+                  <text x="360" y="596">(POST),</text>
+                  <text x="272" y="612">OSCORE:</text>
+                  <text x="348" y="612">[kid:0x5f,</text>
+                  <text x="424" y="612">Partial</text>
+                  <text x="488" y="612">IV:42],</text>
+                  <text x="264" y="628">0xff,</text>
+                  <text x="268" y="644">{Code:</text>
+                  <text x="316" y="644">0.01</text>
+                  <text x="364" y="644">(GET),</text>
+                  <text x="288" y="660">Uri-Path:</text>
+                  <text x="388" y="660">"alarm_status"</text>
+                  <text x="248" y="676">}</text>
+                  <text x="320" y="676">Encrypted</text>
+                  <text x="380" y="676">with</text>
+                  <text x="432" y="676">CTX_C_S</text>
+                  <text x="240" y="692">}</text>
+                  <text x="312" y="692">Encrypted</text>
+                  <text x="372" y="692">with</text>
+                  <text x="424" y="692">CTX_P_S</text>
+                  <text x="160" y="724">Decrypt</text>
+                  <text x="144" y="740">REQ</text>
+                  <text x="180" y="740">with</text>
+                  <text x="160" y="756">CTX_P_S</text>
+                  <text x="160" y="788">Decrypt</text>
+                  <text x="144" y="804">REQ</text>
+                  <text x="180" y="804">with</text>
+                  <text x="160" y="820">CTX_C_S</text>
+                  <text x="160" y="852">Encrypt</text>
+                  <text x="148" y="868">RESP</text>
+                  <text x="188" y="868">with</text>
+                  <text x="160" y="884">CTX_C_S</text>
+                  <text x="160" y="916">Encrypt</text>
+                  <text x="148" y="932">RESP</text>
+                  <text x="188" y="932">with</text>
+                  <text x="160" y="948">CTX_P_S</text>
+                  <text x="208" y="980">Code:</text>
+                  <text x="252" y="980">2.04</text>
+                  <text x="312" y="980">(Changed)</text>
+                  <text x="124" y="996">2.04</text>
+                  <text x="204" y="996">Token:</text>
+                  <text x="252" y="996">0x7b</text>
+                  <text x="200" y="1012">OSCORE:</text>
+                  <text x="240" y="1012">-</text>
+                  <text x="204" y="1028">0xff</text>
+                  <text x="196" y="1044">Payload:</text>
+                  <text x="260" y="1044">{Code:</text>
+                  <text x="308" y="1044">2.04</text>
+                  <text x="372" y="1044">(Changed),</text>
+                  <text x="272" y="1060">OSCORE:</text>
+                  <text x="316" y="1060">-,</text>
+                  <text x="264" y="1076">0xff,</text>
+                  <text x="268" y="1092">{Code:</text>
+                  <text x="316" y="1092">2.05</text>
+                  <text x="380" y="1092">(Content),</text>
+                  <text x="272" y="1108">0xff,</text>
+                  <text x="264" y="1124">"0"</text>
+                  <text x="248" y="1140">}</text>
+                  <text x="320" y="1140">Encrypted</text>
+                  <text x="380" y="1140">with</text>
+                  <text x="432" y="1140">CTX_C_S</text>
+                  <text x="240" y="1156">}</text>
+                  <text x="312" y="1156">Encrypted</text>
+                  <text x="372" y="1156">with</text>
+                  <text x="424" y="1156">CTX_P_S</text>
+                  <text x="96" y="1188">Decrypt</text>
+                  <text x="84" y="1204">RESP</text>
+                  <text x="124" y="1204">with</text>
+                  <text x="96" y="1220">CTX_P_S</text>
+                  <text x="96" y="1252">Encrypt</text>
+                  <text x="84" y="1268">ERSP</text>
+                  <text x="124" y="1268">with</text>
+                  <text x="96" y="1284">CTX_C_P</text>
+                  <text x="208" y="1316">Code:</text>
+                  <text x="252" y="1316">2.04</text>
+                  <text x="312" y="1316">(Changed)</text>
+                  <text x="60" y="1332">2.04</text>
+                  <text x="204" y="1332">Token:</text>
+                  <text x="252" y="1332">0x8c</text>
+                  <text x="200" y="1348">OSCORE:</text>
+                  <text x="240" y="1348">-</text>
+                  <text x="204" y="1364">0xff</text>
+                  <text x="196" y="1380">Payload:</text>
+                  <text x="260" y="1380">{Code:</text>
+                  <text x="308" y="1380">2.04</text>
+                  <text x="372" y="1380">(Changed),</text>
+                  <text x="272" y="1396">OSCORE:</text>
+                  <text x="316" y="1396">-,</text>
+                  <text x="264" y="1412">0xff,</text>
+                  <text x="268" y="1428">{Code:</text>
+                  <text x="316" y="1428">2.05</text>
+                  <text x="380" y="1428">(Content),</text>
+                  <text x="272" y="1444">0xff,</text>
+                  <text x="264" y="1460">"0"</text>
+                  <text x="248" y="1476">}</text>
+                  <text x="320" y="1476">Encrypted</text>
+                  <text x="380" y="1476">with</text>
+                  <text x="432" y="1476">CTX_C_S</text>
+                  <text x="240" y="1492">}</text>
+                  <text x="312" y="1492">Encrypted</text>
+                  <text x="372" y="1492">with</text>
+                  <text x="424" y="1492">CTX_C_P</text>
+                  <text x="32" y="1524">Decrypt</text>
+                  <text x="20" y="1540">RESP</text>
+                  <text x="60" y="1540">with</text>
+                  <text x="32" y="1556">CTX_C_P</text>
+                  <text x="32" y="1588">Decrypt</text>
+                  <text x="20" y="1604">RESP</text>
+                  <text x="60" y="1604">with</text>
+                  <text x="32" y="1620">CTX_C_S</text>
+                  <text x="28" y="1668">Square</text>
+                  <text x="92" y="1668">brackets</text>
+                  <text x="136" y="1668">[</text>
+                  <text x="160" y="1668">...</text>
+                  <text x="184" y="1668">]</text>
+                  <text x="228" y="1668">indicate</text>
+                  <text x="296" y="1668">content</text>
+                  <text x="340" y="1668">of</text>
+                  <text x="396" y="1668">compressed</text>
+                  <text x="460" y="1668">COSE</text>
+                  <text x="512" y="1668">object.</text>
+                  <text x="24" y="1684">Curly</text>
+                  <text x="84" y="1684">brackets</text>
+                  <text x="128" y="1684">{</text>
+                  <text x="152" y="1684">...</text>
+                  <text x="176" y="1684">}</text>
+                  <text x="220" y="1684">indicate</text>
+                  <text x="296" y="1684">encrypted</text>
+                  <text x="360" y="1684">data.</text>
+                </g>
+              </svg><a href="#appendix-A.7-7.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-use-of-oscore-between-client-pr" class="selfRef">Use of OSCORE between Client-Proxy and Proxy-Server (the proxy is a reverse-proxy)</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="sec-option-protection-diag">
@@ -3493,9 +3956,9 @@ This occurs after having performed all the intended OSCORE protections of the ou
       <h2 id="name-state-diagram-protection-of">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-state-diagram-protection-of" class="section-name selfRef">State Diagram: Protection of CoAP Options</a>
       </h2>
-<p id="appendix-B-1"><a href="#fig-option-protection-diagram" class="auto internal xref">Figure 6</a> overviews the rules defined in <a href="#general-rules" class="auto internal xref">Section 3.1</a>, to determine whether a CoAP option that is originally specified as Class U or I for OSCORE has to be processed like if it was specified as Class E, when protecting an outgoing message.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1"><a href="#fig-option-protection-diagram" class="auto internal xref">Figure 8</a> overviews the rules defined in <a href="#general-rules" class="auto internal xref">Section 3.1</a>, to determine whether a CoAP option that is originally specified as Class U or I for OSCORE has to be processed like if it was specified as Class E, when protecting an outgoing message.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <span id="name-protection-of-coap-options-"></span><div id="fig-option-protection-diagram">
-<figure id="figure-6">
+<figure id="figure-8">
         <div id="appendix-B-2.1">
           <div class="alignCenter art-svg artwork" id="appendix-B-2.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1120" width="576" viewBox="0 0 576 1120" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -3755,7 +4218,7 @@ This occurs after having performed all the intended OSCORE protections of the ou
             </svg><a href="#appendix-B-2.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-protection-of-coap-options-" class="selfRef">Protection of CoAP Options of Class U or I in Outgoing Messages.</a>
         </figcaption></figure>
 </div>
@@ -3766,9 +4229,9 @@ This occurs after having performed all the intended OSCORE protections of the ou
       <h2 id="name-state-diagram-processing-of">
 <a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-state-diagram-processing-of" class="section-name selfRef">State Diagram: Processing of Incoming Requests</a>
       </h2>
-<p id="appendix-C-1"><a href="#fig-incoming-request-diagram" class="auto internal xref">Figure 7</a> overviews the processing of an incoming request, as specified in <a href="#incoming-requests" class="auto internal xref">Section 3.3</a>. The dotted boxes indicate ending states where the processing terminates.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-1"><a href="#fig-incoming-request-diagram" class="auto internal xref">Figure 9</a> overviews the processing of an incoming request, as specified in <a href="#incoming-requests" class="auto internal xref">Section 3.3</a>. The dotted boxes indicate ending states where the processing terminates.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <span id="name-processing-of-an-incoming-req"></span><div id="fig-incoming-request-diagram">
-<figure id="figure-7">
+<figure id="figure-9">
         <div id="appendix-C-2.1">
           <div class="alignCenter art-svg artwork" id="appendix-C-2.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1712" width="576" viewBox="0 0 576 1712" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -4184,7 +4647,7 @@ This occurs after having performed all the intended OSCORE protections of the ou
             </svg><a href="#appendix-C-2.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-processing-of-an-incoming-req" class="selfRef">Processing of an Incoming Request.</a>
         </figcaption></figure>
 </div>
@@ -4209,7 +4672,10 @@ This occurs after having performed all the intended OSCORE protections of the ou
             <p id="appendix-D.1-1.2.1">Specified general ordering for protecting outgoing requests.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.3">
-            <p id="appendix-D.1-1.3.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.3.1">Added examples of message exchange with a reverse-proxy.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.4">
+            <p id="appendix-D.1-1.4.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
