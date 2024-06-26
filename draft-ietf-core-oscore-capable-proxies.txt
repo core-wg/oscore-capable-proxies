@@ -1541,7 +1541,7 @@ A.3.  Example 3
    Square brackets [ ... ] indicate content of compressed COSE object.
    Curly brackets { ... } indicate encrypted data.
 
-      Figure 3: Use of OSCORE between Client-Server, Client-Proxy and
+      Figure 3: Use of OSCORE between Client-Server, Client-Proxy, and
                                 Proxy-Server
 
 A.4.  Example 4
