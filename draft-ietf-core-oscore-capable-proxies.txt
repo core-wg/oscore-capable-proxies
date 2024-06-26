@@ -992,7 +992,7 @@ Table of Contents
 
    In such a setup, that check prevents a malicious sender endpoint C
    from associating the addressing information of the origin server S
-   with the OSCORE Security Context CTX that C is sharing with S.
+   with the OSCORE Security Context CTX that C and S are sharing.
    Making such an association would compromise the location anonimity of
    the origin server, as otherwise afforded by the reverse-proxy.
 
