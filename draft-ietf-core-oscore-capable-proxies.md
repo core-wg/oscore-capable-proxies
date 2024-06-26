@@ -283,9 +283,11 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
 ## Processing of an Outgoing Request {#outgoing-requests}
 
-The rules from {{general-rules}} apply when processing an outgoing request message, with the following addition.
+The rules from {{general-rules}} apply when processing an outgoing request message, with the following additions.
 
 When a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing request, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
+
+After that, the source application endpoint further protects the outgoing request, by applying one OSCORE layer for each intermediary with which it shares an OSCORE Security Context. When doing so, the source application endpoint applies those OSCORE layers in the same order according to which those intermediaries are positioned in the chain, starting from the one closest to the other application endpoint and moving backwards towards the one closest to the source application endpoint.
 
 ## Processing of an Incoming Request {#incoming-requests}
 
@@ -1396,6 +1398,8 @@ request      +-----------------------------------------------+        |
 ## Version -01 to -02 ## {#sec-01-02}
 
 * Revised escalation of CoAP option protection.
+
+* Specified general ordering for protecting outgoing requests.
 
 * Clarifications and editorial improvements.
 
