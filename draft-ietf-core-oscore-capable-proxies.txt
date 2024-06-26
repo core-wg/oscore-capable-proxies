@@ -587,12 +587,21 @@ Table of Contents
 3.2.  Processing of an Outgoing Request
 
    The rules from Section 3.1 apply when processing an outgoing request
-   message, with the following addition.
+   message, with the following additions.
 
    When a source application endpoint applies multiple OSCORE layers in
    sequence to protect an outgoing request, and it uses an OSCORE
    Security Context shared with the other application endpoint, then the
    first OSCORE layer MUST be applied by using that Security Context.
+
+   After that, the source application endpoint further protects the
+   outgoing request, by applying one OSCORE layer for each intermediary
+   with which it shares an OSCORE Security Context.  When doing so, the
+   source application endpoint applies those OSCORE layers in the same
+   order according to which those intermediaries are positioned in the
+   chain, starting from the one closest to the other application
+   endpoint and moving backwards towards the one closest to the source
+   application endpoint.
 
 3.3.  Processing of an Incoming Request
 
@@ -2168,6 +2177,8 @@ Appendix D.  Document Updates
 D.1.  Version -01 to -02
 
    *  Revised escalation of CoAP option protection.
+
+   *  Specified general ordering for protecting outgoing requests.
 
    *  Clarifications and editorial improvements.
 

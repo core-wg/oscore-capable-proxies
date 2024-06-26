@@ -1508,8 +1508,9 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
         <h3 id="name-processing-of-an-outgoing-r">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-processing-of-an-outgoing-r" class="section-name selfRef">Processing of an Outgoing Request</a>
         </h3>
-<p id="section-3.2-1">The rules from <a href="#general-rules" class="auto internal xref">Section 3.1</a> apply when processing an outgoing request message, with the following addition.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">The rules from <a href="#general-rules" class="auto internal xref">Section 3.1</a> apply when processing an outgoing request message, with the following additions.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">When a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing request, and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer <span class="bcp14">MUST</span> be applied by using that Security Context.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">After that, the source application endpoint further protects the outgoing request, by applying one OSCORE layer for each intermediary with which it shares an OSCORE Security Context. When doing so, the source application endpoint applies those OSCORE layers in the same order according to which those intermediaries are positioned in the chain, starting from the one closest to the other application endpoint and moving backwards towards the one closest to the source application endpoint.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="incoming-requests">
@@ -4205,7 +4206,10 @@ This occurs after having performed all the intended OSCORE protections of the ou
             <p id="appendix-D.1-1.1.1">Revised escalation of CoAP option protection.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.2">
-            <p id="appendix-D.1-1.2.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.2.1">Specified general ordering for protecting outgoing requests.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.3">
+            <p id="appendix-D.1-1.3.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
