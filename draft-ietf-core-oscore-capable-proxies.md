@@ -784,7 +784,7 @@ CTX_C_S   |       |
 Square brackets [ ... ] indicate content of compressed COSE object.
 Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
-{: #fig-example-client-proxy-server title="Use of OSCORE between Client-Server, Client-Proxy and Proxy-Server"}
+{: #fig-example-client-proxy-server title="Use of OSCORE between Client-Server, Client-Proxy, and Proxy-Server"}
 
 ## Example 4 # {#sec-example-edhoc}
 
