@@ -756,7 +756,7 @@ CTX_C_P   |       |
   |     CTX_P_S   |
   |       |       |
   |     Encrypt   |
-  |     ERSP with |
+  |     RESP with |
   |     CTX_C_P   |
   |       |       |
   |<------+       |    Code: 2.04 (Changed)
@@ -1390,7 +1390,7 @@ CTX_C_P   |       |
   |     CTX_P_S   |
   |       |       |
   |     Encrypt   |
-  |     ERSP with |
+  |     RESP with |
   |     CTX_C_P   |
   |       |       |
   |<------+       |    Code: 2.04 (Changed)
