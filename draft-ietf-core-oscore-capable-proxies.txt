@@ -1515,7 +1515,7 @@ A.3.  Example 3
      |     CTX_P_S   |
      |       |       |
      |     Encrypt   |
-     |     ERSP with |
+     |     RESP with |
      |     CTX_C_P   |
      |       |       |
      |<------+       |    Code: 2.04 (Changed)
@@ -2208,7 +2208,7 @@ A.7.  Example 7
      |     CTX_P_S   |
      |       |       |
      |     Encrypt   |
-     |     ERSP with |
+     |     RESP with |
      |     CTX_C_P   |
      |       |       |
      |<------+       |    Code: 2.04 (Changed)
