@@ -13,7 +13,7 @@ wg: CoRE Working Group
 kw: Internet-Draft
 cat: std
 submissiontype: IETF
-updates: 8613
+updates: 8613, 8768
 
 coding: utf-8
 
@@ -41,8 +41,9 @@ normative:
   RFC2119:
   RFC7252:
   RFC8174:
-  RFC8724:
   RFC8613:
+  RFC8724:
+  RFC8768:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-core-href:
   I-D.ietf-schc-8824-update:
@@ -92,7 +93,7 @@ informative:
 
 --- abstract
 
-Object Security for Constrained RESTful Environments (OSCORE) can be used to protect CoAP messages end-to-end between two endpoints at the application layer, also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines rules to escalate the protection of a CoAP option, in order to encrypt and integrity-protect it whenever possible. Finally, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints, and between an application endpoint and an intermediary or between two intermediaries. Therefore, this document updates RFC 8613. The same approach can be seamlessly used with Group OSCORE, for protecting CoAP messages when group communication is used in the presence of intermediaries.
+Object Security for Constrained RESTful Environments (OSCORE) can be used to protect CoAP messages end-to-end between two endpoints at the application layer, also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines rules to escalate the protection of a CoAP option, in order to encrypt and integrity-protect it whenever possible. Finally, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints, and between an application endpoint and an intermediary or between two intermediaries. Therefore, this document updates RFC 8613. Furthermore, this document updates RFC 8768, by explicitly defining the processing with OSCORE for the CoAP option Hop-Limit. The approach defined in this document can be seamlessly used with Group OSCORE, for protecting CoAP messages when group communication is used in the presence of intermediaries.
 
 --- middle
 
@@ -117,6 +118,8 @@ This document fills this gap, and updates {{RFC8613}} as follows.
 * It defines rules to escalate the protection of a CoAP option that is originally meant to be unprotected or only integrity-protected by OSCORE. This results in both encrypting and integrity-protecting a CoAP option whenever it is possible.
 
 * It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence, as an "OSCORE-in-OSCORE" process. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).
+
+Furthermore, this document updates {{RFC8768}}, as it explicitly defines the CoAP option Hop-Limit to be of Class E for OSCORE (see {{sec-hop-limit}}). This prevents undesired message size overhead, in case the Hop-Limit option is first added to a request by an origin client instead of an intermediary.
 
 This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message, depending on the presence of the OSCORE Option and of other CoAP options intended for an intermediary.
 
@@ -366,6 +369,22 @@ In case the response is an error response, the sender endpoint protects it by ap
 The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which they were removed.
 
 When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the outgoing request. In such a case, the endpoint MUST stop processing the response.
+
+# OSCORE Processing of the Hop-Limit Option # {#sec-hop-limit}
+
+The CoAP option Hop-Limit is defined in {{RFC8768}} and can be used to detect forwarding loops through a chain of proxies. The first proxy in the chain that understands the option can include it in a received request (if not present already), then sets a proper integer value specifying the desired maximum number of hops, and finally forward the request to the next hop. Any following proxy that understands the option decrements the option value and forwards the request if the new value is different from zero, or returns a 5.08 (Hop Limit Reached) error response otherwise.
+
+{{RFC8768}} does not define how the Hop-Limit Option is processed by OSCORE. As a consequence, the default behavior specified in {{Section 4.1 of RFC8613}} applies, i.e., the Hop-Limit Option has to be processed as Class E for OSCORE.
+
+However, this results in additionally and unjustifiably increasing the size of OSCORE-protected CoAP messages, in case the origin client is the first endpoint to add the Hop-Limit Option in a CoAP request. In the typical scenario where the origin client and the origin server share an OSCORE Security Context, the origin client including the Hop-Limit Option in a request will also protect that option when protecting the request end-to-end for the origin server, per the default processing mentioned above. After that, the origin client sends the request to its adjacent proxy in the chain, which will add an outer Hop-Limit Option to be effectively considered from then on as the message is forwarded towards the origin server.
+
+This prevents the first proxy in the chain from building on the intent from the origin client, which was presumably in the position to specify a better initial value for the Hop-Limit Option. While this does not fundamentally prevent the detection of forwarding loops, it is conducive to deviations from the intention of the origin client. Moreover, it results in undesired overhead due to the presence of the inner Hop-Limit Option included by the client. That inner option will not be visible by the proxies in the chain and therefore will serve no practical purpose, but it will still be conveyed within the request as this traverses each hop towards the origin server.
+
+In order to prevent that by construction, this section updates {{RFC8768}} by explicitly defining the Hop-Limit Option to be of Class U for OSCORE.
+
+Therefore, with reference to the scenario discussed above, the origin client does not protect the Hop-Limit Option when protecting the request end-to-end for the origin server, thus allowing the first proxy in the chain to see and process the Hop-Limit Option as expected.
+
+When OSCORE is used at proxies like defined in this document, the process defined in {{general-rules}} seamlessly applies also to the Hop-Limit Option. Therefore, in a scenario where the origin client also shares an OSCORE Security Context with the first proxy in the chain, the origin client does not protect the Hop-Limit Option end-to-end for the origin server, but it does protect it when protecting the request for that proxy by means of their shared OSCORE Security Context.
 
 # Caching of OSCORE-Protected Responses # {#sec-response-caching}
 
@@ -1617,6 +1636,8 @@ request      +-----------------------------------------------+        |
 * Revised escalation of CoAP option protection.
 
 * Specified general ordering for protecting outgoing requests.
+
+* Explicit definition of OSCORE processing for the Hop-Limit option (update to RFC 8768).
 
 * Added examples of message exchange with a reverse-proxy.
 
