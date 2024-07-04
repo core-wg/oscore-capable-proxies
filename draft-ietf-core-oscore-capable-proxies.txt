@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                            27 June 2024
-Expires: 29 December 2024
+Intended status: Standards Track                             4 July 2024
+Expires: 5 January 2025
 
 
                          OSCORE-capable Proxies
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 December 2024.
+   This Internet-Draft will expire on 5 January 2025.
 
 Copyright Notice
 
@@ -97,6 +97,7 @@ Table of Contents
    8.  Security Considerations
      8.1.  Preserving Location Anonimity
    9.  IANA Considerations
+     9.1.  CoAP Option Numbers Registry
    10. References
      10.1.  Normative References
      10.2.  Informative References
@@ -1088,7 +1089,13 @@ Table of Contents
 
 9.  IANA Considerations
 
-   This document has no actions for IANA.
+   This document has the following actions for IANA.
+
+9.1.  CoAP Option Numbers Registry
+
+   IANA is asked to add this document as an additional reference for the
+   Hop-Limit Option in the "CoAP Option Numbers" registry within the
+   "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
 10.  References
 
