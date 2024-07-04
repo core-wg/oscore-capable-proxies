@@ -484,7 +484,11 @@ However, after performing and failing the check on the received request, S repli
 
 # IANA Considerations
 
-This document has no actions for IANA.
+This document has the following actions for IANA.
+
+## CoAP Option Numbers Registry ## {#iana-coap-options}
+
+IANA is asked to add this document as an additional reference for the Hop-Limit Option in the "CoAP Option Numbers" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
 --- back
 
