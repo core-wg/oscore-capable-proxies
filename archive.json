@@ -1,0 +1,71 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-07-21T01:22:17.635163+00:00",
+  "repo": "core-wg/oscore-capable-proxies",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOKiCoBM6I_dez",
+      "title": "Side effect is problematic",
+      "url": "https://github.com/core-wg/oscore-capable-proxies/issues/1",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "> Note that, in a simple scenario where no intermediaries are deployed between two origin endpoints, the rules defined above result in encrypting and integrity-protecting the Uri-Host and Uri-Port Options included in a CoAP request. This is different from what was intended in [[RFC8613](https://www.ietf.org/archive/id/draft-ietf-core-oscore-capable-proxies-01.html#RFC8613)], according to which the two options were meant to be always unprotected.\r\n\r\nThis side effect is problematic in a scenario we often have during plug tests:\r\n\r\nAssume there is a machine somewhere running half a dozen independent CoAP services. On IPv6, they all have their own IP addresses, so they don't even need their Uri-Host sent, but there is only one IPv4 address among them, so there is a reverse proxy taking care of legacy clients. (Alternatively, think of any other reverse proxy -- any kind of DoS countermeasures, whatever).\r\n\r\nIf a connection upgrades to OSCORE (say, after running EDHOC), and the client applies these new rules, all of a sudden the reverse proxy will not know any more where to forward it.\r\n\r\nThe client can not know that there is a reverse proxy in use. The server (or its operator) needs to know, because there are certain CoAP applications that introduce special rules on CoAP proxies, but OSCORE has not been one of the applications that need special rules, and even if it did, we would still not have a way for the server to tell the client that there is a proxy involved (also, that would be a very non-REST thing to do).\r\n\r\nI think that if the state machine's outcome is that Uri-Host becomes inner, the state machine needs to be revised so that it is.\r\n\r\n---\r\n\r\nI've talked a bit with @marco-tiloca-sics about how to do that revision. I have no concrete proposal for updating the state machine, but have two comments:\r\n* If this document updates option classes so that an option's class can be elevated, it may be easier to not talk of classes any more at all and just talk of buckets (possibly still named E, U, I, but explicitly not classes) that an option gets put into by some operation, instead of making classes even more complex. (To be honest, I now think this should have been done back when OSCORE was specified already, but hindsight).\r\n* The way I prefer to think of options being added is not only only by \"the endpoint adds the option\", but differentiating the roles within the endpoint. There is a *transport* (a concrete CoAP-over-something, or a CoAP library) that is tasked with delivering a request, and that transport gets told some properties (eg. the scheme, authority, and whether there is an expectation of non-traditional responses). Then the *application* places options on a message following some suitable pattern (which may be similar to the classes, but finally up to the application). In a typical REST operation these would be the Uri-Path options, any ETag, Content-Format, Observe etc. When the application is done, the transport takes the message and augments it -- if the transport is OSCORE, it encrypts that based on the buckets the options were placed in. If the transport is CoAP-over-TLS, a connection is established and the message is sent as-is (because Uri-Host doesn't need to be sent as it is implied), if the transport is CoAP-over-UDP the Uri-Host option is added, but those happen on a different layer than what the application placed. Phrased differently, the application starts an envelope, and puts a request message in there, and when the CoAP library combines the envelope into a message on the wire, it may add options. (Of course, for efficiency reasons things may happen at different times, so that options are written in the right sequence, but we're talking conceptual here).\r\n  I don't know whether that can help simplify the state machine -- it sure helps me simplify implementations that don't need to think in those terms. (Because the proxy is an application, and creates an envelope to the next hop, and unprotects and protects what it received before placing it in the envelope again).",
+      "createdAt": "2024-05-15T16:16:21Z",
+      "updatedAt": "2024-06-01T14:26:18Z",
+      "closedAt": "2024-06-01T14:26:18Z",
+      "comments": []
+    }
+  ],
+  "pulls": []
+}
