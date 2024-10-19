@@ -1194,6 +1194,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
                 <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-preserving-location-anonimi" class="internal xref">Preserving Location Anonimity</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-hop-limit-option" class="internal xref">Hop-Limit Option</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
@@ -1775,6 +1778,38 @@ This occurs after having performed all the intended OSCORE protections of the ou
 <p id="section-8.1-3">In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C and S are sharing. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.<a href="#section-8.1-3" class="pilcrow">¶</a></p>
 <p id="section-8.1-4">That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.<a href="#section-8.1-4" class="pilcrow">¶</a></p>
 <p id="section-8.1-5">However, after performing and failing the check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonimity of the origin server.<a href="#section-8.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-security-considerations-hop-limit">
+<section id="section-8.2">
+        <h3 id="name-hop-limit-option">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-hop-limit-option" class="section-name selfRef">Hop-Limit Option</a>
+        </h3>
+<p id="section-8.2-1"><a href="#sec-hop-limit" class="auto internal xref">Section 4</a> of this document defines that the Hop-Limit option <span>[<a href="#RFC8768" class="cite xref">RFC8768</a>]</span> is of Class U for OSCORE. This overrides the default behavior specified in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, according to which the option would be processed as if it was of Class E for OSCORE.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-2">As discussed in <a href="#sec-hop-limit" class="auto internal xref">Section 4</a>, applying the default behavior would result in the Hop-Limit option added by the origin client being protected end-to-end for the origin server. That is, the intention of the client about performing a detection of forwarding loops would be hidden even from the first proxy in chain, which in turn adds an outer Hop-Limit option and thus further contributes to increasing the message size (see <a href="#sec-hop-limit" class="auto internal xref">Section 4</a>).<a href="#section-8.2-2" class="pilcrow">¶</a></p>
+<p id="section-8.2-3">Instead, having defined the Hop-Limit option as Class U for OSCORE, the following holds by virtue of the procedure defined in <a href="#general-rules" class="auto internal xref">Section 3.1</a>.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-4.1">
+            <p id="section-8.2-4.1.1">If the origin client and the origin server share an OSCORE Security Context, the client protects the option end-to-end for the server only when sending a request to the server directly (i.e., not via a proxy).<a href="#section-8.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-4.2">
+            <p id="section-8.2-4.2.1">If the origin client and the first proxy in the chain share an OSCORE Security Context, then the client protects the option for the proxy, while also avoiding the downsides resulting from the default behavior mentioned above.<a href="#section-8.2-4.2.1" class="pilcrow">¶</a></p>
+<p id="section-8.2-4.2.2">
+Otherwise, unless the communication leg between the origin client and the first proxy in the chain relies on another secure association (e.g., a DTLS connection), the Hop-Limit option included in a request sent to the proxy will be unprotected.<a href="#section-8.2-4.2.2" class="pilcrow">¶</a></p>
+<p id="section-8.2-4.2.3">
+Fundamentally, this is not worse then when applying the default behavior mentioned above. In that case, the origin client would not be able to provide the proxy with its intention as to detecting forwarding loops, while an active on-path adversary would be able to tamper with the request and add an outer Hop-Limit option with a fraudulent value for the proxy to use.<a href="#section-8.2-4.2.3" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-8.2-5">More generally, if any two adjacent hops share an OSCORE Security Context, then the Hop-Limit option will be protected with OSCORE in the communication leg between those two hops.<a href="#section-8.2-5" class="pilcrow">¶</a></p>
+<p id="section-8.2-6">If the Hop-Limit option is transported unprotected over the communication leg between two hops, then the following applies.<a href="#section-8.2-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-7.1">
+            <p id="section-8.2-7.1.1">A passive on-path adversary can read the option value. By possibly relying on other information such as the option value read in other communication legs, the adversary might be able to infer the topology of the network and the path used for delivering requests from the origin client.<a href="#section-8.2-7.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-7.2">
+            <p id="section-8.2-7.2.1">An active on-path adversary can add or remove the option, or alter its value. Adding the option allows the adversary to trigger an otherwise undesired process for detecting forwarding loops, e.g., as an attempt to probe the topology of the network. Removing the option results in undetectably interrupting the ongoing process for detecting forwarding loops, whlie altering the option value undetectably interferes with the natural unfolding of such an ongoing process.<a href="#section-8.2-7.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 </section>
@@ -4722,13 +4757,16 @@ This occurs after having performed all the intended OSCORE protections of the ou
             <p id="appendix-D.1-1.2.1">Explained that OSCORE-capable proxies have to recognize CoAP options included in outgoing messages to protect.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.3">
-            <p id="appendix-D.1-1.3.1">Fixed intended class of Hop-Limit option for OSCORE.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.3.1">Fixed typo about the intended class of Hop-Limit option for OSCORE.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.4">
             <p id="appendix-D.1-1.4.1">Fixed protection of the Uri-Host option in examples.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.5">
-            <p id="appendix-D.1-1.5.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.5.1">Added security considerations about the Hop-Limit option.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.6">
+            <p id="appendix-D.1-1.6.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
