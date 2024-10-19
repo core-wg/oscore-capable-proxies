@@ -759,9 +759,9 @@ Table of Contents
 
           Instead, in case the check succeeds, the endpoint decrypts REQ
           using the OSCORE Security Context indicated by the OSCORE
-          option, i.e., REQ* = dec(REQ).  After that, the possible
-          presence of an OSCORE option in the decrypted request REQ* is
-          not treated as an error situation.
+          option, which results in the decrypted request REQ*. The
+          possible presence of an OSCORE option in REQ* is not treated
+          as an error situation.
 
           If the OSCORE processing results in an error, the endpoint
           MUST stop processing the request and performs error handling
