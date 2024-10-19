@@ -117,7 +117,7 @@ This document fills this gap, and updates {{RFC8613}} as follows.
 
 * It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence, as an "OSCORE-in-OSCORE" process. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).
 
-Furthermore, this document updates {{RFC8768}}, as it explicitly defines the CoAP option Hop-Limit to be of Class U for OSCORE (see {{sec-hop-limit}}). This prevents undesired message size overhead, in case the Hop-Limit option is first added to a request by an origin client instead of an intermediary.
+Furthermore, this document updates {{RFC8768}}, as it explicitly defines the CoAP option Hop-Limit to be of Class U for OSCORE (see {{sec-hop-limit}}). In the case where the Hop-Limit option is first added to a request by an origin client instead of an intermediary, this update avoids undesired overhead in terms of message size and ensures that the first intermediary in the chain enforces the intentent of the origin client in detecting forwarding loops.
 
 This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message, depending on the presence of the OSCORE option and of other CoAP options intended for an intermediary.
 
@@ -376,7 +376,7 @@ The CoAP option Hop-Limit is defined in {{RFC8768}} and can be used to detect fo
 
 However, this results in additionally and unjustifiably increasing the size of OSCORE-protected CoAP messages, in case the origin client is the first endpoint to add the Hop-Limit option in a CoAP request. In the typical scenario where the origin client and the origin server share an OSCORE Security Context, the origin client including the Hop-Limit option in a request will also protect that option when protecting the request end-to-end for the origin server, per the default processing mentioned above. After that, the origin client sends the request to its adjacent proxy in the chain, which will add an outer Hop-Limit option to be effectively considered from then on as the message is forwarded towards the origin server.
 
-This undesirably prevents the first proxy in the chain from building on the intent of the origin client, which was presumably in the position to specify a better initial value for the Hop-Limit option. While this does not fundamentally prevent the detection of forwarding loops, it is conducive to deviations from the intention of the origin client. Moreover, it results in undesired overhead due to the presence of the inner Hop-Limit option included by the client. That inner option will not be visible by the proxies in the chain and therefore will serve no practical purpose, but it will still be conveyed within the request as this traverses each hop towards the origin server.
+This undesirably prevents the first proxy in the chain from enforcing the intent of the origin client, which was presumably in the position to specify a better initial value for the Hop-Limit option. While this does not fundamentally prevent the detection of forwarding loops, it is conducive to deviations from the intention of the origin client. Moreover, it results in undesired overhead due to the presence of the inner Hop-Limit option included by the client. That inner option will not be visible by the proxies in the chain and therefore will serve no practical purpose, but it will still be conveyed within the request as this traverses each hop towards the origin server.
 
 In order to prevent that by construction, this section updates {{RFC8768}} by explicitly defining the Hop-Limit option to be of Class U for OSCORE.
 
@@ -1634,6 +1634,8 @@ request      +-----------------------------------------------+        |
 {:removeinrfc}
 
 ## Version -02 to -03 ## {#sec-02-03}
+
+* Clarified motivation for updating RFC 8768 in the introduction.
 
 * Fixed intended class of Hop-Limit option for OSCORE.
 
