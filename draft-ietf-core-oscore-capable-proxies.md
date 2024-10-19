@@ -624,10 +624,10 @@ CTX_C_S   |       |
   |       |       |
   |       +------>|         Code: 0.02 (POST)
   |       | POST  |        Token: 0x7b
+  |       |       |     Uri-Host: "example.com"
   |       |       |       OSCORE: [kid:0xd4, Partial IV:31]
   |       |       |         0xff
   |       |       |      Payload: {Code: 0.02 (POST),
-  |       |       |                Uri-Host: "example.com",
   |       |       |                OSCORE: [kid:0x5f, Partial IV:42],
   |       |       |                0xff,
   |       |       |                {Code: 0.01 (GET),
@@ -708,19 +708,19 @@ Encrypt   |       |
 REQ with  |       |
 CTX_C_P   |       |
   |       |       |
-  +------>|       |    Code: 0.02 (POST)
-  | POST  |       |   Token: 0x8c
-  |       |       |  OSCORE: [kid:0x20, Partial IV:31]
-  |       |       |    0xff
-  |       |       | Payload: {Code: 0.02 (POST),
-  |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
-  |       |       |           Uri-Host: "example.com",
-  |       |       |           Proxy-Scheme: "coap",
-  |       |       |           0xff,
-  |       |       |           {Code: 0.01 (GET),
-  |       |       |            Uri-Path: "alarm_status"
-  |       |       |           } // Encrypted with CTX_C_S
-  |       |       |          } // Encrypted with CTX_C_P
+  +------>|       |     Code: 0.02 (POST)
+  | POST  |       |    Token: 0x8c
+  |       |       | Uri-Host: "example.com",
+  |       |       |   OSCORE: [kid:0x20, Partial IV:31]
+  |       |       |     0xff
+  |       |       |  Payload: {Code: 0.02 (POST),
+  |       |       |            OSCORE: [kid:0x5f, Partial IV:42],
+  |       |       |            Proxy-Scheme: "coap",
+  |       |       |            0xff,
+  |       |       |            {Code: 0.01 (GET),
+  |       |       |             Uri-Path: "alarm_status"
+  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
   |     REQ with  |
@@ -1636,6 +1636,8 @@ request      +-----------------------------------------------+        |
 ## Version -02 to -03 ## {#sec-02-03}
 
 * Fixed intended class of Hop-Limit option for OSCORE.
+
+* Fixed protection of the Uri-Host option in examples.
 
 * Clarifications and editorial improvements.
 
