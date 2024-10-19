@@ -282,6 +282,16 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
 9. The sender endpoint determines that OPT will be processed as per its original Class U or I for OSCORE. Then, the sender enpoint terminates this algorithm.
 
+Compared to what is defined in {{Section 5.7.1 of RFC7252}}, a new requirement is introduced for a proxy that acts as OSCORE endpoint. That is, for each CoAP option OPT included in an outgoing message M that the proxy protects with OSCORE, the proxy has to be able to recognize OPT and thus be aware of the original Class of OPT for OSCORE.
+
+If a proxy does not recognize a CoAP option included in M, then the proxy MUST stop processing M and performs the following actions.
+
+* If M is a request, then the proxy MUST respond with a 4.02 (Bad Option) error response to (the previous hop towards) the origin client.
+
+* If M is a response, then the proxy MUST send a 5.02 (Bad Gateway) error response to (the previous hop towards) the origin client.
+
+In either case, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+
 ## Processing of an Outgoing Request {#outgoing-requests}
 
 The rules from {{general-rules}} apply when processing an outgoing request message, with the following additions.
@@ -1636,6 +1646,8 @@ request      +-----------------------------------------------+        |
 ## Version -02 to -03 ## {#sec-02-03}
 
 * Clarified motivation for updating RFC 8768 in the introduction.
+
+* Explained that OSCORE-capable proxies have to recognize CoAP options included in outgoing messages to protect.
 
 * Fixed intended class of Hop-Limit option for OSCORE.
 
