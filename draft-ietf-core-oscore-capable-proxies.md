@@ -210,7 +210,7 @@ The approach defined in this document can be useful also in the following use ca
 
 * The method specified in {{I-D.ietf-core-coap-pm}} relies on the Performance Measurement option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.
 
-  When OSCORE is used in deployments including on-path probes, an inner Performance Measurement option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement option allows also hop-by-hop measurements to be performed by reying on an on-path probe.
+  When OSCORE is used in deployments including on-path probes, an inner Performance Measurement option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement option allows also hop-by-hop measurements to be performed by relying on an on-path probe.
 
   Therefore, it is preferable to have a secure association with an on-path probe, in order to also ensure the integrity of the hop-by-hop measurements exchanged with the probe.
 
@@ -278,9 +278,9 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
 7. If M includes the Proxy-Scheme or Proxy-Scheme-Number option, then this algorithm moves to Step 8. Otherwise, this algorithm moves to Step 9.
 
-8. The sender endpoint determines that OPT will be processed as if it was specified as Class E for OSCORE, i.e., to be both encrypted and integrity-protected. Then, the sender enpoint terminates this algorithm.
+8. The sender endpoint determines that OPT will be processed as if it was specified as Class E for OSCORE, i.e., to be both encrypted and integrity-protected. Then, the sender endpoint terminates this algorithm.
 
-9. The sender endpoint determines that OPT will be processed as per its original Class U or I for OSCORE. Then, the sender enpoint terminates this algorithm.
+9. The sender endpoint determines that OPT will be processed as per its original Class U or I for OSCORE. Then, the sender endpoint terminates this algorithm.
 
 Compared to what is defined in {{Section 5.7.1 of RFC7252}}, a new requirement is introduced for a proxy that acts as OSCORE endpoint. That is, for each CoAP option OPT included in an outgoing message M that the proxy protects with OSCORE, the proxy has to be able to recognize OPT and thus be aware of the original Class of OPT for OSCORE.
 
@@ -478,17 +478,17 @@ Further security considerations to take into account are inherited from the spec
 
 This document does not change the security properties of OSCORE and Group OSCORE. That is, given any two OSCORE endpoints, the method defined in this document provides them with the same security guarantees that OSCORE and Group OSCORE provide in the case where such endpoints are specifically application endpoints.
 
-## Preserving Location Anonimity
+## Preserving Location Anonymity
 
 Before decrypting an incoming request (see Step 3 in {{incoming-requests}}), the recipient endpoint checks whether decrypting the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in the light of the alleged request sender and the OSCORE Security Context to use.
 
 This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
 
-In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C and S are sharing. Making such an association would compromise the location anonimity of the origin server, as otherwise afforded by the reverse-proxy.
+In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C and S are sharing. Making such an association would compromise the location anonymity of the origin server, as otherwise afforded by the reverse-proxy.
 
 That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.
 
-However, after performing and failing the check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonimity of the origin server.
+However, after performing and failing the check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonymity of the origin server.
 
 ## Hop-Limit Option ## {#sec-security-considerations-hop-limit}
 
@@ -512,7 +512,7 @@ If the Hop-Limit option is transported unprotected over the communication leg be
 
 * A passive on-path adversary can read the option value. By possibly relying on other information such as the option value read in other communication legs, the adversary might be able to infer the topology of the network and the path used for delivering requests from the origin client.
 
-* An active on-path adversary can add or remove the option, or alter its value. Adding the option allows the adversary to trigger an otherwise undesired process for detecting forwarding loops, e.g., as an attempt to probe the topology of the network. Removing the option results in undetectably interrupting the ongoing process for detecting forwarding loops, whlie altering the option value undetectably interferes with the natural unfolding of such an ongoing process.
+* An active on-path adversary can add or remove the option, or alter its value. Adding the option allows the adversary to trigger an otherwise undesired process for detecting forwarding loops, e.g., as an attempt to probe the topology of the network. Removing the option results in undetectably interrupting the ongoing process for detecting forwarding loops, while altering the option value undetectably interferes with the natural unfolding of such an ongoing process.
 
 # IANA Considerations
 
