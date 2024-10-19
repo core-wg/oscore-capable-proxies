@@ -181,7 +181,7 @@ Table of Contents
       intermediary acting as next hop towards the origin server).
 
    Furthermore, this document updates [RFC8768], as it explicitly
-   defines the CoAP option Hop-Limit to be of Class E for OSCORE (see
+   defines the CoAP option Hop-Limit to be of Class U for OSCORE (see
    Section 4).  This prevents undesired message size overhead, in case
    the Hop-Limit option is first added to a request by an origin client
    instead of an intermediary.
@@ -2524,6 +2524,8 @@ Appendix D.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 D.1.  Version -02 to -03
+
+   *  Fixed intended class of Hop-Limit option for OSCORE.
 
    *  Clarifications and editorial improvements.
 

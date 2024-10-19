@@ -1294,7 +1294,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <p id="section-1-8.3.1">It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence, as an "OSCORE-in-OSCORE" process. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).<a href="#section-1-8.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-9">Furthermore, this document updates <span>[<a href="#RFC8768" class="cite xref">RFC8768</a>]</span>, as it explicitly defines the CoAP option Hop-Limit to be of Class E for OSCORE (see <a href="#sec-hop-limit" class="auto internal xref">Section 4</a>). This prevents undesired message size overhead, in case the Hop-Limit option is first added to a request by an origin client instead of an intermediary.<a href="#section-1-9" class="pilcrow">¶</a></p>
+<p id="section-1-9">Furthermore, this document updates <span>[<a href="#RFC8768" class="cite xref">RFC8768</a>]</span>, as it explicitly defines the CoAP option Hop-Limit to be of Class U for OSCORE (see <a href="#sec-hop-limit" class="auto internal xref">Section 4</a>). This prevents undesired message size overhead, in case the Hop-Limit option is first added to a request by an origin client instead of an intermediary.<a href="#section-1-9" class="pilcrow">¶</a></p>
 <p id="section-1-10">This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message, depending on the presence of the OSCORE option and of other CoAP options intended for an intermediary.<a href="#section-1-10" class="pilcrow">¶</a></p>
 <p id="section-1-11">The approach defined in this document can be seamlessly adopted also when Group OSCORE is used, for protecting CoAP messages in group communication scenarios that rely on intermediaries.<a href="#section-1-11" class="pilcrow">¶</a></p>
 <div id="terminology">
@@ -4705,7 +4705,10 @@ This occurs after having performed all the intended OSCORE protections of the ou
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-D.1-1.1">
-            <p id="appendix-D.1-1.1.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.1.1">Fixed intended class of Hop-Limit option for OSCORE.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.2">
+            <p id="appendix-D.1-1.2.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
