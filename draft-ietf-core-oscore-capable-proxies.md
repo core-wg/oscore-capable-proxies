@@ -117,7 +117,7 @@ This document fills this gap, and updates {{RFC8613}} as follows.
 
 * It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence, as an "OSCORE-in-OSCORE" process. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).
 
-Furthermore, this document updates {{RFC8768}}, as it explicitly defines the CoAP option Hop-Limit to be of Class U for OSCORE (see {{sec-hop-limit}}). In the case where the Hop-Limit option is first added to a request by an origin client instead of an intermediary, this update avoids undesired overhead in terms of message size and ensures that the first intermediary in the chain enforces the intentent of the origin client in detecting forwarding loops.
+Furthermore, this document updates {{RFC8768}}, as it explicitly defines the CoAP option Hop-Limit to be of Class U for OSCORE (see {{sec-hop-limit}}). In the case where the Hop-Limit option is first added to a request by an origin client instead of an intermediary, this update avoids undesired overhead in terms of message size and ensures that the first intermediary in the chain enforces the intent of the origin client in detecting forwarding loops.
 
 This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message, depending on the presence of the OSCORE option and of other CoAP options intended for an intermediary.
 
