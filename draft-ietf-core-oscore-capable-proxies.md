@@ -346,11 +346,11 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
      In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-     Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE option, i.e., REQ* = dec(REQ). After that, the possible presence of an OSCORE option in the decrypted request REQ* is not treated as an error situation.
+     Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE option, which results in the decrypted request REQ\*. The possible presence of an OSCORE option in REQ\* is not treated as an error situation.
 
      If the OSCORE processing results in an error, the endpoint MUST stop processing the request and performs error handling as per {{Section 8.2 of RFC8613}} or {{Sections 7.2 and 8.4 of I-D.ietf-core-oscore-groupcomm}}, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-     Otherwise, REQ takes REQ*, and the endpoint moves to Step 1.
+     Otherwise, REQ takes REQ\*, and the endpoint moves to Step 1.
 
 ## Processing of an Outgoing Response {#outgoing-responses}
 
