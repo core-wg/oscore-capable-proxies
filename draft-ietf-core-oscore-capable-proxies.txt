@@ -182,9 +182,11 @@ Table of Contents
 
    Furthermore, this document updates [RFC8768], as it explicitly
    defines the CoAP option Hop-Limit to be of Class U for OSCORE (see
-   Section 4).  This prevents undesired message size overhead, in case
-   the Hop-Limit option is first added to a request by an origin client
-   instead of an intermediary.
+   Section 4).  In the case where the Hop-Limit option is first added to
+   a request by an origin client instead of an intermediary, this update
+   avoids undesired overhead in terms of message size and ensures that
+   the first intermediary in the chain enforces the intentent of the
+   origin client in detecting forwarding loops.
 
    This document does not specify any new signaling method to guide the
    message processing on the different endpoints.  In particular, every
@@ -836,10 +838,10 @@ Table of Contents
    an outer Hop-Limit option to be effectively considered from then on
    as the message is forwarded towards the origin server.
 
-   This undesirably prevents the first proxy in the chain from building
-   on the intent of the origin client, which was presumably in the
-   position to specify a better initial value for the Hop-Limit option.
-   While this does not fundamentally prevent the detection of forwarding
+   This undesirably prevents the first proxy in the chain from enforcing
+   the intent of the origin client, which was presumably in the position
+   to specify a better initial value for the Hop-Limit option.  While
+   this does not fundamentally prevent the detection of forwarding
    loops, it is conducive to deviations from the intention of the origin
    client.  Moreover, it results in undesired overhead due to the
    presence of the inner Hop-Limit option included by the client.  That
@@ -2524,6 +2526,8 @@ Appendix D.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 D.1.  Version -02 to -03
+
+   *  Clarified motivation for updating RFC 8768 in the introduction.
 
    *  Fixed intended class of Hop-Limit option for OSCORE.
 
