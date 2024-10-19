@@ -490,6 +490,30 @@ That is, if C gains knowledge of some addressing information ADDR, then C might 
 
 However, after performing and failing the check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonimity of the origin server.
 
+## Hop-Limit Option ## {#sec-security-considerations-hop-limit}
+
+{{sec-hop-limit}} of this document defines that the Hop-Limit option {{RFC8768}} is of Class U for OSCORE. This overrides the default behavior specified in {{Section 4.1 of RFC8613}}, according to which the option would be processed as if it was of Class E for OSCORE.
+
+As discussed in {{sec-hop-limit}}, applying the default behavior would result in the Hop-Limit option added by the origin client being protected end-to-end for the origin server. That is, the intention of the client about performing a detection of forwarding loops would be hidden even from the first proxy in chain, which in turn adds an outer Hop-Limit option and thus further contributes to increasing the message size (see {{sec-hop-limit}}).
+
+Instead, having defined the Hop-Limit option as Class U for OSCORE, the following holds by virtue of the procedure defined in {{general-rules}}.
+
+* If the origin client and the origin server share an OSCORE Security Context, the client protects the option end-to-end for the server only when sending a request to the server directly (i.e., not via a proxy).
+
+* If the origin client and the first proxy in the chain share an OSCORE Security Context, then the client protects the option for the proxy, while also avoiding the downsides resulting from the default behavior mentioned above.
+
+  Otherwise, unless the communication leg between the origin client and the first proxy in the chain relies on another secure association (e.g., a DTLS connection), the Hop-Limit option included in a request sent to the proxy will be unprotected.
+
+  Fundamentally, this is not worse then when applying the default behavior mentioned above. In that case, the origin client would not be able to provide the proxy with its intention as to detecting forwarding loops, while an active on-path adversary would be able to tamper with the request and add an outer Hop-Limit option with a fraudulent value for the proxy to use.
+
+More generally, if any two adjacent hops share an OSCORE Security Context, then the Hop-Limit option will be protected with OSCORE in the communication leg between those two hops.
+
+If the Hop-Limit option is transported unprotected over the communication leg between two hops, then the following applies.
+
+* A passive on-path adversary can read the option value. By possibly relying on other information such as the option value read in other communication legs, the adversary might be able to infer the topology of the network and the path used for delivering requests from the origin client.
+
+* An active on-path adversary can add or remove the option, or alter its value. Adding the option allows the adversary to trigger an otherwise undesired process for detecting forwarding loops, e.g., as an attempt to probe the topology of the network. Removing the option results in undetectably interrupting the ongoing process for detecting forwarding loops, whlie altering the option value undetectably interferes with the natural unfolding of such an ongoing process.
+
 # IANA Considerations
 
 This document has the following actions for IANA.
@@ -1649,9 +1673,11 @@ request      +-----------------------------------------------+        |
 
 * Explained that OSCORE-capable proxies have to recognize CoAP options included in outgoing messages to protect.
 
-* Fixed intended class of Hop-Limit option for OSCORE.
+* Fixed typo about the intended class of Hop-Limit option for OSCORE.
 
 * Fixed protection of the Uri-Host option in examples.
+
+* Added security considerations about the Hop-Limit option.
 
 * Clarifications and editorial improvements.
 
