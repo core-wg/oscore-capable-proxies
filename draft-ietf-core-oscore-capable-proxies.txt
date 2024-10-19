@@ -185,8 +185,8 @@ Table of Contents
    Section 4).  In the case where the Hop-Limit option is first added to
    a request by an origin client instead of an intermediary, this update
    avoids undesired overhead in terms of message size and ensures that
-   the first intermediary in the chain enforces the intentent of the
-   origin client in detecting forwarding loops.
+   the first intermediary in the chain enforces the intent of the origin
+   client in detecting forwarding loops.
 
    This document does not specify any new signaling method to guide the
    message processing on the different endpoints.  In particular, every
