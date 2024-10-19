@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                             4 July 2024
-Expires: 5 January 2025
+Intended status: Standards Track                         19 October 2024
+Expires: 22 April 2025
 
 
                          OSCORE-capable Proxies
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2025.
+   This Internet-Draft will expire on 22 April 2025.
 
 Copyright Notice
 
@@ -112,8 +112,9 @@ Table of Contents
    Appendix B.  State Diagram: Protection of CoAP Options
    Appendix C.  State Diagram: Processing of Incoming Requests
    Appendix D.  Document Updates
-     D.1.  Version -01 to -02
-     D.2.  Version -00 to -01
+     D.1.  Version -02 to -03
+     D.2.  Version -01 to -02
+     D.3.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -131,12 +132,13 @@ Table of Contents
    multicast.  Like for one-to-one communication, group settings can
    also rely on intermediaries [I-D.ietf-core-groupcomm-proxy].
 
-   The protocol Object Security for Constrained RESTful Environments
-   (OSCORE) [RFC8613] can be used to protect CoAP messages between two
-   endpoints at the application layer, especially achieving end-to-end
-   security in the presence of (non-trusted) intermediaries.  When CoAP
-   group communication is used, the same can be achieved by means of the
-   protocol Group OSCORE [I-D.ietf-core-oscore-groupcomm].
+   The security protocol Object Security for Constrained RESTful
+   Environments (OSCORE) [RFC8613] can be used to protect CoAP messages
+   between two endpoints at the application layer, especially achieving
+   end-to-end security in the presence of (non-trusted) intermediaries.
+   When CoAP group communication is used, the same can be achieved by
+   means of the security protocol Group OSCORE
+   [I-D.ietf-core-oscore-groupcomm].
 
    For a number of use cases (see Section 2), it is required and/or
    beneficial that communications are secured also between an
@@ -152,7 +154,7 @@ Table of Contents
    between the origin client and its next hop.
 
    However, the original specification [RFC8613] does not define how
-   OSCORE can be used to protect CoAP messages in such communication
+   OSCORE can be used to protect CoAP messages in that communication
    leg, or how to generally process CoAP messages with OSCORE at an
    intermediary.  In fact, this would require to consider also an
    intermediary as an "OSCORE endpoint".
@@ -187,7 +189,7 @@ Table of Contents
    This document does not specify any new signaling method to guide the
    message processing on the different endpoints.  In particular, every
    endpoint is always able to understand what steps to take on an
-   incoming message, depending on the presence of the OSCORE Option and
+   incoming message, depending on the presence of the OSCORE option and
    of other CoAP options intended for an intermediary.
 
    The approach defined in this document can be seamlessly adopted also
@@ -238,16 +240,16 @@ Table of Contents
       request.  These CoAP options are defined in [RFC7252] and
       [I-D.ietf-core-href].
 
-      -  The Proxy-Uri Option or the Proxy-Cri Option.  These are
+      -  The Proxy-Uri option or the Proxy-Cri option.  These are
          relevant when using a forward-proxy.
 
-      -  The set of CoAP options comprising the Proxy-Scheme Option or
-         the Proxy-Scheme-Number Option, together with any of the Uri-*
-         Options.  This is relevant when using a forward-proxy.
+      -  The set of CoAP options comprising the Proxy-Scheme option or
+         the Proxy-Scheme-Number option, together with any of the Uri-*
+         options.  This is relevant when using a forward-proxy.
 
       -  The set of CoAP options comprising any of the Uri-Host, Uri-
-         Port, and Uri-Path Options, when those are not used together
-         with the Proxy-Scheme Option or the Proxy-Scheme-Number Option.
+         Port, and Uri-Path options, when those are not used together
+         with the Proxy-Scheme option or the Proxy-Scheme-Number option.
          This is relevant when using a reverse-proxy.
 
    *  OSCORE-in-OSCORE: the process by which a message protected with
@@ -290,11 +292,11 @@ Table of Contents
 
    The Observe extension for CoAP [RFC7641] allows a client to register
    its interest in "observing" a resource at a server.  The server can
-   then send back notification responses upon changes to the resource
+   then send back notification responses upon changes in the resource
    representation, all matching with the original observation request.
 
    In some applications, such as pub-sub [I-D.ietf-core-coap-pubsub],
-   multiple clients are interested to observe the same resource at the
+   multiple clients are interested in observing the same resource at the
    same server.  Hence, [I-D.ietf-core-observe-multicast-notifications]
    defines a method that allows the server to send a multicast
    notification to all the observer clients at once, e.g., over IP
@@ -310,7 +312,7 @@ Table of Contents
    receive the multicast notifications from the server.
 
    Therefore, it is preferable to have a security association also
-   between each client and the proxy, to especially ensure the integrity
+   between each client and the proxy, in order to ensure the integrity
    of that information provided to the proxy (see Section 15.3 of
    [I-D.ietf-core-observe-multicast-notifications]).  Like for the use
    case in Section 2.1, this would be conveniently achieved with a
@@ -402,17 +404,17 @@ Table of Contents
       protecting their communication leg.
 
    *  The method specified in [I-D.ietf-core-coap-pm] relies on the
-      Performance Measurement Option to enable network telemetry for
+      Performance Measurement option to enable network telemetry for
       CoAP communications.  This makes it possible to efficiently
       measure Round-Trip Time and message losses, both end-to-end and
       hop-by-hop.  In particular, on-path probes such as intermediary
       proxies can be deployed to perform measurements hop-by-hop.
 
       When OSCORE is used in deployments including on-path probes, an
-      inner Performance Measurement Option is protected end-to-end
+      inner Performance Measurement option is protected end-to-end
       between the two application endpoints and enables end-to-end
       measurements between those.  At the same time, an outer
-      Performance Measurement Option allows also hop-by-hop measurements
+      Performance Measurement option allows also hop-by-hop measurements
       to be performed by reying on an on-path probe.
 
       Therefore, it is preferable to have a secure association with an
@@ -443,13 +445,13 @@ Table of Contents
       the constrained network and towards the EST server.
 
    *  A proxy may be deployed to act as an entry point to a firewalled
-      network, which only authenticated clients can join.  In
-      particular, authentication can rely on the used secure
-      communication association between a client and the proxy.  If the
-      proxy could share a dedicated OSCORE Security Context with each
-      client, the proxy can rely on it to identify the client, before
-      forwarding its messages to any other member of the firewalled
-      network.
+      network that only authenticated clients can join.  In particular,
+      authentication can rely on the used secure communication
+      association between a client and the proxy.  If the proxy could
+      share a different OSCORE Security Context with each different
+      client, then the proxy can rely on it to identify a client before
+      forwarding messages from that client to other members of the
+      firewalled network.
 
    *  The approach defined in this document does not pose a limit to the
       number of OSCORE protections applied to the same CoAP message.
@@ -472,7 +474,7 @@ Table of Contents
    As mentioned in Section 1, this document introduces the following two
    main deviations from the original OSCORE specification [RFC8613].
 
-   1.  An "OSCORE endpoint", as a producer/consumer of an OSCORE Option,
+   1.  An "OSCORE endpoint", as a producer/consumer of an OSCORE option,
        can be not only an application endpoint (i.e., an origin client
        or server), but also an intermediary such as a proxy.
 
@@ -483,7 +485,7 @@ Table of Contents
        applied in sequence.  In such a case, the final result is a
        message with nested OSCORE protections, as the output of an
        "OSCORE-in-OSCORE" process.  Hence, following a decryption, the
-       resulting message might legitimately include an OSCORE Option,
+       resulting message might legitimately include an OSCORE option,
        and thus have in turn to be decrypted.
 
        The most common case is expected to consider a message protected
@@ -507,9 +509,9 @@ Table of Contents
        appropriately reflect the security requirements of the
        application.  At the same time, such a limit is typically bounded
        by the maximum number of OSCORE Security Contexts that can be
-       active at the endpoint, and by the number of intermediary OSCORE
-       endpoints that have been explicitly set up by the communicating
-       parties.
+       active at the endpoint, and also by the number of intermediary
+       OSCORE endpoints that have been explicitly set up by the
+       communicating parties.
 
        If its defined limit is reached when processing a CoAP message,
        an OSCORE endpoint MUST NOT perform any further OSCORE processing
@@ -547,7 +549,8 @@ Table of Contents
    another OSCORE endpoint X and applying the i-th OSCORE layer in
    sequence, the sender endpoint performs the following steps, for each
    CoAP option OPT included in M and originally defined as Class U or I
-   for OSCORE.  Appendix B provides an overview as a state diagram.
+   for OSCORE.  Appendix B provides an overview of these steps through a
+   state diagram.
 
    Note that the sender endpoint can assess some conditions only "to the
    best of its knowledge".  This is due to the possible presence of a
@@ -555,18 +558,18 @@ Table of Contents
    by definition, expected to be unknown to the sender endpoint.
 
    1.  If the sender endpoint has added OPT to M, then this algorithm
-       moves to step 2.  Otherwise, this algorithm moves to step 4.
+       moves to Step 2.  Otherwise, this algorithm moves to Step 4.
 
    2.  If, to the best of the sender endpoint's knowledge, X is a
-       consumer of OPT, then this algorithm moves to step 3.  Otherwise,
-       this algorithm moves to step 4.
+       consumer of OPT, then this algorithm moves to Step 3.  Otherwise,
+       this algorithm moves to Step 4.
 
    3.  If, to the best of the sender endpoint's knowledge, X is the
        immediately next consumer of OPT, then this algorithm moves to
-       step 5.  Otherwise, this algorithm moves to step 9.
+       Step 5.  Otherwise, this algorithm moves to Step 9.
 
    4.  If any of the following conditions holds, then this algorithm
-       moves to step 6.  Otherwise, this algorithm moves to step 9.
+       moves to Step 6.  Otherwise, this algorithm moves to Step 9.
 
        *  To the best of the sender endpoint's knowledge, X is the next
           hop for the sender endpoint; or
@@ -577,15 +580,15 @@ Table of Contents
 
    5.  If X needs to access OPT before having removed the i-th OSCORE
        layer or in order to remove the i-th OSCORE layer, then this
-       algorithm moves to step 9.  Otherwise, this algorithm moves to
-       step 6.
+       algorithm moves to Step 9.  Otherwise, this algorithm moves to
+       Step 6.
 
-   6.  If OPT is the Uri-Host or Uri-Port Option, then this algorithm
-       moves to step 7.  Otherwise, this algorithm moves to step 8.
+   6.  If OPT is the Uri-Host or Uri-Port option, then this algorithm
+       moves to Step 7.  Otherwise, this algorithm moves to Step 8.
 
-   7.  If M includes the Proxy-Scheme or Proxy-Scheme-Number Option,
-       then this algorithm moves to step 8.  Otherwise, this algorithm
-       moves to step 9.
+   7.  If M includes the Proxy-Scheme or Proxy-Scheme-Number option,
+       then this algorithm moves to Step 8.  Otherwise, this algorithm
+       moves to Step 9.
 
    8.  The sender endpoint determines that OPT will be processed as if
        it was specified as Class E for OSCORE, i.e., to be both
@@ -619,18 +622,18 @@ Table of Contents
 
    Upon receiving a request REQ, the recipient endpoint performs the
    actions described in the following steps.  Appendix C provides an
-   overview as a state diagram.
+   overview of these steps through a state diagram.
 
-   1.  If REQ includes proxy-related options, the endpoint moves to step
-       2.  Otherwise, the endpoint moves to step 3.
+   1.  If REQ includes proxy-related options, the endpoint moves to Step
+       2.  Otherwise, the endpoint moves to Step 3.
 
    2.  The endpoint proceeds as defined below, depending on which of the
        two following conditions holds.
 
        *  REQ includes either of the following (set) of CoAP options:
-          the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme
-          Option or the Proxy-Scheme-Number Option, together with any of
-          the Uri-* Options.
+          the Proxy-Uri option; the Proxy-Cri option; the Proxy-Scheme
+          option or the Proxy-Scheme-Number option, together with any of
+          the Uri-* options.
 
           If the endpoint is not configured to be a forward-proxy, it
           MUST stop processing the request and MUST respond with a 5.05
@@ -658,14 +661,14 @@ Table of Contents
           proxy-related options as per Section 5.7.2 of [RFC7252].  In
           particular, the endpoint checks whether the authority (host
           and port) of the request URI identifies the endpoint itself.
-          In such a case, the endpoint moves to step 1.
+          In such a case, the endpoint moves to Step 1.
 
           Otherwise, the endpoint forwards REQ to (the next hop towards)
           the origin server according to the request URI, unless
           differently indicated in REQ, e.g., by means of any of its
           CoAP options.  For instance, a forward-proxy does not forward
           a request that includes proxy-related options together with
-          the Listen-To-Multicast-Notifications Option (see Section 12
+          the Listen-To-Multicast-Notifications option (see Section 12
           of [I-D.ietf-core-observe-multicast-notifications]).
 
           If the endpoint forwards REQ to (the next hop towards) the
@@ -674,15 +677,15 @@ Table of Contents
 
           After that, the endpoint does not take any further action.
 
-       *  REQ does not include the Proxy-Scheme Option or the Proxy-
-          Scheme-Number Option, but it includes one or more Uri-Path
-          Options, and/or the Uri-Host Option, and/or the Uri-Port
-          Option.
+       *  REQ does not include the Proxy-Scheme option or the Proxy-
+          Scheme-Number option, but it includes one or more Uri-Path
+          options, and/or the Uri-Host option, and/or the Uri-Port
+          option.
 
           If the endpoint is not configured to be a reverse-proxy, or
           what is targeted by the value of the Uri-Path, Uri-Host, and
-          Uri-Port Options is not intended to support reverse-proxy
-          functionalities, then the endpoint proceeds to step 3.
+          Uri-Port options is not intended to support reverse-proxy
+          functionalities, then the endpoint proceeds to Step 3.
 
           Otherwise, the endpoint MUST check whether forwarding this
           request to (the next hop towards) the origin server is an
@@ -700,9 +703,9 @@ Table of Contents
           per Section 3.4.
 
           Otherwise, the endpoint consumes the present Uri-Path, Uri-
-          Host, and Uri-Port Options, and forwards REQ to (the next hop
+          Host, and Uri-Port options, and forwards REQ to (the next hop
           towards) the origin server, unless differently indicated in
-          REQ (e.g., by means of any of its CoAP options).
+          REQ, e.g., by means of any of its CoAP options.
 
           If the endpoint forwards REQ to (the next hop towards) the
           origin server, this may result in (further) protecting REQ
@@ -711,13 +714,13 @@ Table of Contents
           After that, the endpoint does not take any further action.
 
           Note that, when forwarding REQ, the endpoint might not remove
-          all the Uri-Path Options originally present, e.g., in case the
-          next hop towards the origin server is a further reverse-proxy.
+          all the Uri-Path options originally present, e.g., in case the
+          next hop towards the origin server is a reverse-proxy.
 
    3.  The endpoint proceeds as defined below, depending on which of the
        two following conditions holds.
 
-       *  REQ does not include an OSCORE Option.
+       *  REQ does not include an OSCORE option.
 
           If the endpoint does not have an application to handle REQ, it
           MUST stop processing the request and MAY respond with a 4.00
@@ -727,9 +730,9 @@ Table of Contents
 
           Otherwise, the endpoint delivers REQ to the application.
 
-       *  REQ includes an OSCORE Option.
+       *  REQ includes an OSCORE option.
 
-          If REQ includes any Uri-Path Options, the endpoint MUST stop
+          If REQ includes any Uri-Path options, the endpoint MUST stop
           processing the request and MAY respond with a 4.00 (Bad
           Request) error response to (the previous hop towards) the
           origin client.  This may result in protecting the error
@@ -743,7 +746,7 @@ Table of Contents
           can be based, for instance, on considering the source
           addressing information of the request, and then asserting
           whether the OSCORE Security Context indicated by the OSCORE
-          Option is not only available to use, but also present in a
+          option is not only available to use, but also present in a
           local list of OSCORE Security Contexts that are usable to
           decrypt a request from the alleged request sender.
 
@@ -756,8 +759,8 @@ Table of Contents
 
           Instead, in case the check succeeds, the endpoint decrypts REQ
           using the OSCORE Security Context indicated by the OSCORE
-          Option, i.e., REQ* = dec(REQ).  After that, the possible
-          presence of an OSCORE Option in the decrypted request REQ* is
+          option, i.e., REQ* = dec(REQ).  After that, the possible
+          presence of an OSCORE option in the decrypted request REQ* is
           not treated as an error situation.
 
           If the OSCORE processing results in an error, the endpoint
@@ -769,7 +772,7 @@ Table of Contents
           client, this may result in protecting the error response over
           that communication leg, as per Section 3.4.
 
-          Otherwise, REQ takes REQ*, and the endpoint moves to step 1.
+          Otherwise, REQ takes REQ*, and the endpoint moves to Step 1.
 
 3.4.  Processing of an Outgoing Response
 
@@ -795,13 +798,14 @@ Table of Contents
 
    The recipient endpoint removes the same OSCORE layers that it added
    when protecting the corresponding outgoing request, but in the
-   reverse order than the one according to which they were removed.
+   reverse order than the one according to which they were added.
 
-   When doing so, the possible presence of an OSCORE Option in the
+   When doing so, the possible presence of an OSCORE option in the
    decrypted response following the removal of an OSCORE layer is not
    treated as an error situation, unless it occurs after having removed
-   as many OSCORE layers as were added in the outgoing request.  In such
-   a case, the endpoint MUST stop processing the response.
+   as many OSCORE layers as were added in the corresponding outgoing
+   request.  In such a case, the endpoint MUST stop processing the
+   response.
 
 4.  OSCORE Processing of the Hop-Limit Option
 
@@ -815,52 +819,52 @@ Table of Contents
    the new value is different from zero, or returns a 5.08 (Hop Limit
    Reached) error response otherwise.
 
-   [RFC8768] does not define how the Hop-Limit Option is processed by
+   [RFC8768] does not define how the Hop-Limit option is processed by
    OSCORE.  As a consequence, the default behavior specified in
-   Section 4.1 of [RFC8613] applies, i.e., the Hop-Limit Option has to
+   Section 4.1 of [RFC8613] applies, i.e., the Hop-Limit option has to
    be processed as Class E for OSCORE.
 
    However, this results in additionally and unjustifiably increasing
    the size of OSCORE-protected CoAP messages, in case the origin client
-   is the first endpoint to add the Hop-Limit Option in a CoAP request.
+   is the first endpoint to add the Hop-Limit option in a CoAP request.
    In the typical scenario where the origin client and the origin server
    share an OSCORE Security Context, the origin client including the
-   Hop-Limit Option in a request will also protect that option when
+   Hop-Limit option in a request will also protect that option when
    protecting the request end-to-end for the origin server, per the
    default processing mentioned above.  After that, the origin client
    sends the request to its adjacent proxy in the chain, which will add
-   an outer Hop-Limit Option to be effectively considered from then on
+   an outer Hop-Limit option to be effectively considered from then on
    as the message is forwarded towards the origin server.
 
-   This prevents the first proxy in the chain from building on the
-   intent from the origin client, which was presumably in the position
-   to specify a better initial value for the Hop-Limit Option.  While
-   this does not fundamentally prevent the detection of forwarding
+   This undesirably prevents the first proxy in the chain from building
+   on the intent of the origin client, which was presumably in the
+   position to specify a better initial value for the Hop-Limit option.
+   While this does not fundamentally prevent the detection of forwarding
    loops, it is conducive to deviations from the intention of the origin
    client.  Moreover, it results in undesired overhead due to the
-   presence of the inner Hop-Limit Option included by the client.  That
+   presence of the inner Hop-Limit option included by the client.  That
    inner option will not be visible by the proxies in the chain and
    therefore will serve no practical purpose, but it will still be
    conveyed within the request as this traverses each hop towards the
    origin server.
 
    In order to prevent that by construction, this section updates
-   [RFC8768] by explicitly defining the Hop-Limit Option to be of Class
+   [RFC8768] by explicitly defining the Hop-Limit option to be of Class
    U for OSCORE.
 
    Therefore, with reference to the scenario discussed above, the origin
-   client does not protect the Hop-Limit Option when protecting the
+   client does not protect the Hop-Limit option when protecting the
    request end-to-end for the origin server, thus allowing the first
-   proxy in the chain to see and process the Hop-Limit Option as
+   proxy in the chain to see and process the Hop-Limit option as
    expected.
 
    When OSCORE is used at proxies like defined in this document, the
    process defined in Section 3.1 seamlessly applies also to the Hop-
-   Limit Option.  Therefore, in a scenario where the origin client also
+   Limit option.  Therefore, in a scenario where the origin client also
    shares an OSCORE Security Context with the first proxy in the chain,
-   the origin client does not protect the Hop-Limit Option end-to-end
-   for the origin server, but it does protect it when protecting the
-   request for that proxy by means of their shared OSCORE Security
+   the origin client does not protect the Hop-Limit option end-to-end
+   for the origin server, but it does protect the option when protecting
+   the request for that proxy by means of their shared OSCORE Security
    Context.
 
 5.  Caching of OSCORE-Protected Responses
@@ -872,18 +876,19 @@ Table of Contents
    Deterministic Requests protected with the pairwise mode of Group
    OSCORE [I-D.ietf-core-oscore-groupcomm] used end-to-end between an
    origin client and an origin server.  The applicability of this
-   approach is limited to requests that are safe (in the RESTful sense)
-   to process and do not yield side effects at the origin server.
+   approach is limited to requests that are safe (in the REST sense) to
+   process and do not yield side effects at the origin server.
 
    In particular, this approach requires both the origin client and the
    origin server to have already joined the correct OSCORE group.  Then,
    starting from the same plain CoAP request, different clients in the
-   OSCORE group are able to deterministically generate a same request
-   protected with Group OSCORE, which is sent to a proxy for being
-   forwarded to the origin server.  The proxy can effectively cache the
-   resulting OSCORE-protected response from the server, since the same
-   plain CoAP request will result again in the same Deterministic
-   Request and thus will produce a cache hit.
+   OSCORE group are able to deterministically generate a same
+   Deterministic Request protected with Group OSCORE, which is sent to a
+   proxy for being forwarded to the origin server.  The proxy can
+   effectively cache the resulting OSCORE-protected response from the
+   server, since the same plain CoAP request will result again in the
+   same Deterministic Request and thus will produce a cache hit at the
+   proxy.
 
    When using this approach, the following also applies in addition to
    what is defined in Section 3, when processing incoming messages at a
@@ -891,13 +896,13 @@ Table of Contents
 
    *  Upon receiving a request from (the previous hop towards) the
       origin client, the proxy checks if specifically the message
-      available during the execution of step 2 in Section 3.3 produces a
+      available during the execution of Step 2 in Section 3.3 produces a
       cache hit.
 
       That is, such a message: i) is exactly the one to be forwarded to
-      (the next hop towards) the origin server, if no cache hit has
-      occurred; and ii) is the result of an OSCORE decryption at the
-      proxy, if OSCORE is used on the communication leg between the
+      (the next hop towards) the origin server, in case no cache hit
+      occurs; and ii) is the result of an OSCORE decryption at the
+      proxy, in case OSCORE is used on the communication leg between the
       proxy and (the previous hop towards) the origin client.
 
    *  Upon receiving a response from (the next hop towards) the origin
@@ -906,8 +911,9 @@ Table of Contents
       defined in Section 3.5.
 
       Then, the proxy stores specifically that resulting response
-      message in its cache.  That is, such a message is exactly the one
-      to be forwarded to (the previous hop towards) the origin client.
+      message in its cache.  That is, such a stored message is exactly
+      the one to be forwarded to (the previous hop towards) the origin
+      client.
 
    The specific rules about serving a request with a cached response are
    defined in Section 5.6 of [RFC7252], as well as in Section 7 of
@@ -924,8 +930,8 @@ Table of Contents
    protect their communications.
 
    *  When using OSCORE, the establishment of the OSCORE Security
-      Context can rely on the authenticated key exchange protocol EDHOC
-      [RFC9528].
+      Context can rely on the authenticated key exchange protocol
+      Ephemeral Diffie-Hellman Over COSE (EDHOC) [RFC9528].
 
       Assuming that OSCORE has to be used both between the two origin
       application endpoints as well as between the origin client and the
@@ -940,7 +946,7 @@ Table of Contents
       especially when relying on a long chain of proxies.
 
    *  The use of Group OSCORE is expected to be limited between the
-      origin applications endpoints, e.g., between the origin client and
+      origin application endpoints, e.g., between the origin client and
       multiple origin servers.  In order to join the same OSCORE group
       and obtain the corresponding Group OSCORE Security Context, those
       endpoints can use the approach defined in
@@ -1060,7 +1066,7 @@ Table of Contents
 
 8.1.  Preserving Location Anonimity
 
-   Before decrypting an incoming request (see step 3 in Section 3.3),
+   Before decrypting an incoming request (see Step 3 in Section 3.3),
    the recipient endpoint checks whether decrypting the request is an
    acceptable operation to perform, according to the endpoint's
    configuration and a possible authorization enforcement, and in the
@@ -1094,7 +1100,7 @@ Table of Contents
 9.1.  CoAP Option Numbers Registry
 
    IANA is asked to add this document as an additional reference for the
-   Hop-Limit Option in the "CoAP Option Numbers" registry within the
+   Hop-Limit option in the "CoAP Option Numbers" registry within the
    "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
 10.  References
@@ -1104,25 +1110,25 @@ Table of Contents
    [I-D.ietf-core-href]
               Bormann, C. and H. Birkholz, "Constrained Resource
               Identifiers", Work in Progress, Internet-Draft, draft-
-              ietf-core-href-15, 21 April 2024,
+              ietf-core-href-16, 24 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              href-15>.
+              href-16>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
               and R. Höglund, "Group Object Security for Constrained
               RESTful Environments (Group OSCORE)", Work in Progress,
-              Internet-Draft, draft-ietf-core-oscore-groupcomm-21, 4
-              March 2024, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-core-oscore-groupcomm-21>.
+              Internet-Draft, draft-ietf-core-oscore-groupcomm-23, 26
+              September 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-oscore-groupcomm-23>.
 
    [I-D.ietf-schc-8824-update]
               Tiloca, M., Toutain, L., Martinez, I., and A. Minaburo,
               "Static Context Header Compression (SCHC) for the
               Constrained Application Protocol (CoAP)", Work in
-              Progress, Internet-Draft, draft-ietf-schc-8824-update-01,
-              4 March 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-schc-8824-update-01>.
+              Progress, Internet-Draft, draft-ietf-schc-8824-update-02,
+              8 July 2024, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-schc-8824-update-02>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1159,9 +1165,9 @@ Table of Contents
    [I-D.amsuess-core-cachable-oscore]
               Amsüss, C. and M. Tiloca, "Cacheable OSCORE", Work in
               Progress, Internet-Draft, draft-amsuess-core-cachable-
-              oscore-08, 10 January 2024,
+              oscore-09, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-amsuess-core-
-              cachable-oscore-08>.
+              cachable-oscore-09>.
 
    [I-D.amsuess-t2trg-onion-coap]
               Amsüss, C., Tiloca, M., and R. Höglund, "Using onion
@@ -1174,8 +1180,8 @@ Table of Contents
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              04, 4 March 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-est-oscore-04>.
+              05, 8 July 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-coap-est-oscore-05>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M., Park, J., and F. Palombini, "Key Management
@@ -1185,12 +1191,12 @@ Table of Contents
               ace-key-groupcomm-oscore-16>.
 
    [I-D.ietf-core-coap-pm]
-              Fioccola, G., Zhou, T., Nilo, M., Milan, F., and F.
-              Bulgarella, "Constrained Application Protocol (CoAP)
-              Performance Measurement Option", Work in Progress,
-              Internet-Draft, draft-ietf-core-coap-pm-02, 19 April 2024,
+              Fioccola, G., Zhou, T., Nilo, M., and F. Bulgarella,
+              "Constrained Application Protocol (CoAP) Performance
+              Measurement Option", Work in Progress, Internet-Draft,
+              draft-ietf-core-coap-pm-03, 3 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pm-02>.
+              coap-pm-03>.
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
@@ -1210,17 +1216,17 @@ Table of Contents
    [I-D.ietf-core-groupcomm-proxy]
               Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
               Communication", Work in Progress, Internet-Draft, draft-
-              ietf-core-groupcomm-proxy-01, 4 March 2024,
+              ietf-core-groupcomm-proxy-02, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-proxy-01>.
+              groupcomm-proxy-02>.
 
    [I-D.ietf-core-observe-multicast-notifications]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Observe Notifications as CoAP Multicast Responses", Work
               in Progress, Internet-Draft, draft-ietf-core-observe-
-              multicast-notifications-08, 4 March 2024,
+              multicast-notifications-09, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              observe-multicast-notifications-08>.
+              observe-multicast-notifications-09>.
 
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
@@ -1235,9 +1241,9 @@ Table of Contents
    [I-D.ietf-core-transport-indication]
               Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
               Work in Progress, Internet-Draft, draft-ietf-core-
-              transport-indication-05, 18 March 2024,
+              transport-indication-06, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              transport-indication-05>.
+              transport-indication-06>.
 
    [LwM2M-Core]
               Open Mobile Alliance, "Lightweight Machine to Machine
@@ -1297,8 +1303,8 @@ Appendix A.  Examples of Message Exchanges
    in this document is used to protect message exchanges.
 
    The presented examples build on the example shown in Appendix A.1 of
-   [RFC8613], and illustrate an origin client requesting the alarm
-   status from an origin server, through a forward-proxy.
+   [RFC8613], which illustrates an origin client requesting the alarm
+   status from an origin server through a forward-proxy.
 
    The abbreviations "REQ" and "RESP" are used to denote a request
    message and a response message, respectively.
@@ -2079,8 +2085,8 @@ A.6.  Example 6
 
    In order to determine where it has to forward an incoming request to,
    the proxy relies on the hostname that clients specify in the Uri-Host
-   Option of their sent requests.  In particular, upon receiving a
-   request that includes the Uri-Host Option with value "dev.example",
+   option of their sent requests.  In particular, upon receiving a
+   request that includes the Uri-Host option with value "dev.example",
    the proxy forwards the request to the origin server shown in the
    example.
 
@@ -2088,7 +2094,7 @@ A.6.  Example 6
    target resource at the server, the host component represents the
    destination IP address of the request as an IP-literal.  Therefore,
    the request from the proxy to the server does not include a Uri-Host
-   Option (see Section 6.4 of [RFC7252]).
+   option (see Section 6.4 of [RFC7252]).
 
    Client  Proxy  Server
      |       |       |
@@ -2209,7 +2215,7 @@ A.7.  Example 7
    target resource at the server, the host component represents the
    destination IP address of the request as an IP-literal.  Therefore,
    both the request from the client to the proxy and the request from
-   the proxy to the server do not include a Uri-Host Option (see
+   the proxy to the server do not include a Uri-Host option (see
    Section 6.4 of [RFC7252]).
 
    Client  Proxy  Server
@@ -2372,7 +2378,7 @@ Appendix B.  State Diagram: Protection of CoAP Options
       |                   |                 |            |         |
       |                   v                 v            |         |
       |   +-----------------------------------------+    |         |
-      |   | Is OPT the Uri-Host or Uri-Port Option? |    |         |
+      |   | Is OPT the Uri-Host or Uri-Port option? |    |         |
       |   +-----------------------------------------+    |         |
       |        |                            |            |         |
       |        NO                          YES           |         |
@@ -2381,7 +2387,7 @@ Appendix B.  State Diagram: Protection of CoAP Options
       |        |                            v            |         |
       |        |  +---------------------------------+    |         |
       |        |  | Does M include the Proxy-Scheme |    |         |
-      |        |  | or Proxy-Scheme-Number Option?  |    |         |
+      |        |  | or Proxy-Scheme-Number option?  |    |         |
       |        |  +---------------------------------+    |         |
       |        |          |                 |            |         |
       |        |         YES                NO           |         |
@@ -2419,9 +2425,9 @@ Appendix C.  State Diagram: Processing of Incoming Requests
                v             |             |          v                |
  +--------------+ YES    +---------+       |  +----------------+       |
  | Is there the |------->| Am I a  |       |  | Is there an    |       |
- | Proxy-Uri or |        | forward |       |  | OSCORE Option? |       |
+ | Proxy-Uri or |        | forward |       |  | OSCORE option? |       |
  | Proxy-Cri    |  +---->| proxy?  |       |  +----------------+       |
- | Option?      |  |     +---------+       |   ^   |       |           |
+ | option?      |  |     +---------+       |   ^   |       |           |
  +--------------+  |       |               |   |   NO     YES          |
     |              |      YES              |   |   |       |           |
     NO             |       |               |   |   |       |           |
@@ -2433,15 +2439,15 @@ Appendix C.  State Diagram: Processing of Incoming Requests
     |              |       |  :........:   |   |   |    +-----------+  |
     |              |       |      ^        |   |   |    | Are there |  |
     |              |       |      |        |   |   |    | Uri-Path  |  |
-    |             YES      |      NO       |   |   |    | Options?  |  |
+    |             YES      |      NO       |   |   |    | options?  |  |
     v              |       v      |        |   |   |    +-----------+  |
  +---------------------+ +---------------+ |   |   |     |         |   |
  | Is there the        | | Is it         | |   |   |    YES        NO  |
  | Proxy-Scheme or     | | acceptable to | |   |   |     |         |   |
  | Proxy-Scheme-Number | | forward the   | |   |   |     v         |   |
- | Option, together    | | request? (#)  | |   |   |   ..........  |   |
+ | option, together    | | request? (#)  | |   |   |   ..........  |   |
  | with the Uri-Host   | +---------------+ |   |   |   : Return :  |   |
- | or Uri-Port Option? |           |       |   |   |   : 4.00   :  |   |
+ | or Uri-Port option? |           |       |   |   |   : 4.00   :  |   |
  +---------------------+          YES      |   |   |   ..........  |   |
     |                              |       |   |   |               |   |
     NO                             |       |   |   |               |   |
@@ -2471,9 +2477,9 @@ Appendix C.  State Diagram: Processing of Incoming Requests
  +--------------------------+   ...........    |   |     +---------+   |
  | There is no Proxy-Scheme |   : Forward :    |   |          |        |
  | or Proxy-Scheme-Number   |   : the     :    |   |          |        |
- | Option, but there are    |   : request :    |   |          v        |
+ | option, but there are    |   : request :    |   |          v        |
  | Uri-Path and/or Uri-Host |   :.........:    |   |    +----------+   |
- | and/or Uri-Port Options  |      ^           |   |    | Success? |   |
+ | and/or Uri-Port options  |      ^           |   |    | Success? |   |
  +--------------------------+      |           |   |    +----------+   |
     |                              |           |   |     |    |        |
     |                              |           |   |     NO   |        |
@@ -2503,7 +2509,7 @@ Appendix C.  State Diagram: Processing of Incoming Requests
  +--------------------------------+            |  ..................
  | Am I a reverse-proxy using the |            |  : Deliver the    :
  | exact value of these Uri-Path, |---NO-------+  : request to the :
- | Uri-Host, and Uri-Port Options |               : application    :
+ | Uri-Host, and Uri-Port options |               : application    :
  | for proxying?                  |               :................:
  +--------------------------------+
 
@@ -2517,7 +2523,11 @@ Appendix D.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-D.1.  Version -01 to -02
+D.1.  Version -02 to -03
+
+   *  Clarifications and editorial improvements.
+
+D.2.  Version -01 to -02
 
    *  Revised escalation of CoAP option protection.
 
@@ -2530,7 +2540,7 @@ D.1.  Version -01 to -02
 
    *  Clarifications and editorial improvements.
 
-D.2.  Version -00 to -01
+D.3.  Version -00 to -01
 
    *  Escalation of option protection as explicit update point to RFC
       8613.
