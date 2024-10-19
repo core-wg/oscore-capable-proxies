@@ -765,7 +765,7 @@ Table of Contents
 
           If the OSCORE processing results in an error, the endpoint
           MUST stop processing the request and performs error handling
-          as per Section 8.2 of [RFC8613] or Sections 8.2 and 9.4 of
+          as per Section 8.2 of [RFC8613] or Sections 7.2 and 8.4 of
           [I-D.ietf-core-oscore-groupcomm], in case OSCORE or Group
           OSCORE is used, respectively.  In case the endpoint sends an
           error response to (the previous hop towards) the origin
