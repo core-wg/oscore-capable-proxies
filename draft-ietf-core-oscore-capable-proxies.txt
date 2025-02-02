@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                         19 October 2024
-Expires: 22 April 2025
+Intended status: Standards Track                         2 February 2025
+Expires: 6 August 2025
 
 
                          OSCORE-capable Proxies
@@ -58,11 +58,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 April 2025.
+   This Internet-Draft will expire on 6 August 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1196,9 +1196,9 @@ Table of Contents
    [I-D.ietf-core-href]
               Bormann, C. and H. Birkholz, "Constrained Resource
               Identifiers", Work in Progress, Internet-Draft, draft-
-              ietf-core-href-16, 24 July 2024,
+              ietf-core-href-17, 24 January 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              href-16>.
+              href-17>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
@@ -1212,9 +1212,9 @@ Table of Contents
               Tiloca, M., Toutain, L., Martinez, I., and A. Minaburo,
               "Static Context Header Compression (SCHC) for the
               Constrained Application Protocol (CoAP)", Work in
-              Progress, Internet-Draft, draft-ietf-schc-8824-update-02,
-              8 July 2024, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-schc-8824-update-02>.
+              Progress, Internet-Draft, draft-ietf-schc-8824-update-03,
+              21 October 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-schc-8824-update-03>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1251,23 +1251,24 @@ Table of Contents
    [I-D.amsuess-core-cachable-oscore]
               Amsüss, C. and M. Tiloca, "Cacheable OSCORE", Work in
               Progress, Internet-Draft, draft-amsuess-core-cachable-
-              oscore-09, 8 July 2024,
+              oscore-10, 8 January 2025,
               <https://datatracker.ietf.org/doc/html/draft-amsuess-core-
-              cachable-oscore-09>.
+              cachable-oscore-10>.
 
    [I-D.amsuess-t2trg-onion-coap]
               Amsüss, C., Tiloca, M., and R. Höglund, "Using onion
               routing with CoAP", Work in Progress, Internet-Draft,
-              draft-amsuess-t2trg-onion-coap-02, 17 May 2024,
+              draft-amsuess-t2trg-onion-coap-03, 17 November 2024,
               <https://datatracker.ietf.org/doc/html/draft-amsuess-
-              t2trg-onion-coap-02>.
+              t2trg-onion-coap-03>.
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              05, 8 July 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-est-oscore-05>.
+              06, 21 October 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
+              coap-est-oscore-06>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M., Park, J., and F. Palombini, "Key Management
@@ -1288,31 +1289,32 @@ Table of Contents
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-14, 18 April 2024,
+              ietf-core-coap-pubsub-16, 28 January 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-14>.
+              coap-pubsub-16>.
 
    [I-D.ietf-core-groupcomm-bis]
               Dijk, E., Wang, C., and M. Tiloca, "Group Communication
               for the Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              11, 24 April 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-groupcomm-bis-11>.
+              12, 21 October 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              groupcomm-bis-12>.
 
    [I-D.ietf-core-groupcomm-proxy]
               Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
               Communication", Work in Progress, Internet-Draft, draft-
-              ietf-core-groupcomm-proxy-02, 8 July 2024,
+              ietf-core-groupcomm-proxy-03, 21 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-proxy-02>.
+              groupcomm-proxy-03>.
 
    [I-D.ietf-core-observe-multicast-notifications]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Observe Notifications as CoAP Multicast Responses", Work
               in Progress, Internet-Draft, draft-ietf-core-observe-
-              multicast-notifications-09, 8 July 2024,
+              multicast-notifications-10, 21 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              observe-multicast-notifications-09>.
+              observe-multicast-notifications-10>.
 
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
@@ -1327,9 +1329,9 @@ Table of Contents
    [I-D.ietf-core-transport-indication]
               Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
               Work in Progress, Internet-Draft, draft-ietf-core-
-              transport-indication-06, 8 July 2024,
+              transport-indication-07, 21 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              transport-indication-06>.
+              transport-indication-07>.
 
    [LwM2M-Core]
               Open Mobile Alliance, "Lightweight Machine to Machine
