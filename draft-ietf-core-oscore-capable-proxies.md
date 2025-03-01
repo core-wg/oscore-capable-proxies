@@ -1550,7 +1550,8 @@ Curly brackets { ... } indicate encrypted data.
      +----->| Process OPT as per its original Class U or I |<-----+
             +----------------------------------------------+
 ~~~~~~~~~~~
-{: #fig-option-protection-diagram title="Protection of CoAP Options of Class U or I in Outgoing Messages." artwork-align="center"}
+{: #fig-option-protection-diagram title="Protection of CoAP Options Originally Specified only as Outer Options (Class U or I) for OSCORE." artwork-align="center"}
+
 
 # State Diagram: Processing of Incoming Requests # {#sec-incoming-req-diag}
 
