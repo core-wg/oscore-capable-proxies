@@ -534,22 +534,23 @@ Table of Contents
    OSCORE Security Context shared with another OSCORE endpoint X.
 
    As usual, the sender endpoint encrypts and integrity-protects the
-   CoAP options included in M that are specified as Class E for OSCORE
-   [RFC8613].
+   CoAP options included in M that are processed as Class E for OSCORE,
+   as per Sections 4.1.1 and 4.1.3 of [RFC8613].
 
-   In addition to that, the sender endpoint MUST perform the procedure
-   defined below for each CoAP option OPT that is included in M and that
-   is originally specified as Class U or I for OSCORE.  Depending on the
-   outcome of such a procedure, the sender endpoint processes OPT as per
-   its original Class U or I, or instead as if it was specified as Class
-   E.
+   Per the update made by this document, the sender endpoint MUST
+   perform the procedure defined below for each CoAP option OPT that is
+   included in M and is originally specified only as an outer option
+   (Class U or I) for OSCORE.  This procedure does not apply to options
+   that are specificed (also) as class E.  Depending on the outcome of
+   this procedure, the sender endpoint processes OPT as per its original
+   Class U or I, or instead as Class E.
 
-   When protecting M by using the OSCORE Security Context shared with
+   Before protecting M by using the OSCORE Security Context shared with
    another OSCORE endpoint X and applying the i-th OSCORE layer in
    sequence, the sender endpoint performs the following steps, for each
-   CoAP option OPT included in M and originally defined as Class U or I
-   for OSCORE.  Appendix B provides an overview of these steps through a
-   state diagram.
+   CoAP option OPT that is included in M and is originally specified
+   only as an outer option (Class U or I) for OSCORE.  Appendix B
+   provides an overview of these steps through a state diagram.
 
    Note that the sender endpoint can assess some conditions only "to the
    best of its knowledge".  This is due to the possible presence of a
@@ -589,10 +590,9 @@ Table of Contents
        then this algorithm moves to Step 8.  Otherwise, this algorithm
        moves to Step 9.
 
-   8.  The sender endpoint determines that OPT will be processed as if
-       it was specified as Class E for OSCORE, i.e., to be both
-       encrypted and integrity-protected.  Then, the sender endpoint
-       terminates this algorithm.
+   8.  The sender endpoint determines that OPT will be processed as
+       Class E for OSCORE, i.e., both encrypted and integrity-protected.
+       Then, the sender endpoint terminates this algorithm.
 
    9.  The sender endpoint determines that OPT will be processed as per
        its original Class U or I for OSCORE.  Then, the sender endpoint
@@ -1125,7 +1125,7 @@ Table of Contents
    Section 4 of this document defines that the Hop-Limit option
    [RFC8768] is of Class U for OSCORE.  This overrides the default
    behavior specified in Section 4.1 of [RFC8613], according to which
-   the option would be processed as if it was of Class E for OSCORE.
+   the option would be processed as Class E for OSCORE.
 
    As discussed in Section 4, applying the default behavior would result
    in the Hop-Limit option added by the origin client being protected
@@ -2418,9 +2418,9 @@ A.7.  Example 7
 Appendix B.  State Diagram: Protection of CoAP Options
 
    Figure 8 overviews the rules defined in Section 3.1, to determine
-   whether a CoAP option that is originally specified as Class U or I
-   for OSCORE has to be processed like if it was specified as Class E,
-   when protecting an outgoing message.
+   whether a CoAP option that is originally specified only as an outer
+   option (Class U or I) for OSCORE has to be processed as Class E, when
+   protecting an outgoing message.
 
  ..........................
  :                        :
@@ -2615,6 +2615,8 @@ Appendix D.  Document Updates
 D.1.  Version -03 to -04
 
    *  Removed definition and use of "OSCORE-in-OSCORE".
+
+   *  More precise indication of outer or inner CoAP options.
 
    *  Added security consideration on membership of OSCORE groups.
 

@@ -1501,9 +1501,9 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-protection-of-coap-options" class="section-name selfRef">Protection of CoAP Options</a>
         </h3>
 <p id="section-3.1-1">Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">As usual, the sender endpoint encrypts and integrity-protects the CoAP options included in M that are specified as Class E for OSCORE <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">In addition to that, the sender endpoint <span class="bcp14">MUST</span> perform the procedure defined below for each CoAP option OPT that is included in M and that is originally specified as Class U or I for OSCORE. Depending on the outcome of such a procedure, the sender endpoint processes OPT as per its original Class U or I, or instead as if it was specified as Class E.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1-4">When protecting M by using the OSCORE Security Context shared with another OSCORE endpoint X and applying the i-th OSCORE layer in sequence, the sender endpoint performs the following steps, for each CoAP option OPT included in M and originally defined as Class U or I for OSCORE. <a href="#sec-option-protection-diag" class="auto internal xref">Appendix B</a> provides an overview of these steps through a state diagram.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">As usual, the sender endpoint encrypts and integrity-protects the CoAP options included in M that are processed as Class E for OSCORE, as per Sections <a href="https://rfc-editor.org/rfc/rfc8613#section-4.1.1" class="relref">4.1.1</a> and <a href="https://rfc-editor.org/rfc/rfc8613#section-4.1.3" class="relref">4.1.3</a> of <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">Per the update made by this document, the sender endpoint <span class="bcp14">MUST</span> perform the procedure defined below for each CoAP option OPT that is included in M and is originally specified only as an outer option (Class U or I) for OSCORE. This procedure does not apply to options that are specificed (also) as class E. Depending on the outcome of this procedure, the sender endpoint processes OPT as per its original Class U or I, or instead as Class E.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">Before protecting M by using the OSCORE Security Context shared with another OSCORE endpoint X and applying the i-th OSCORE layer in sequence, the sender endpoint performs the following steps, for each CoAP option OPT that is included in M and is originally specified only as an outer option (Class U or I) for OSCORE. <a href="#sec-option-protection-diag" class="auto internal xref">Appendix B</a> provides an overview of these steps through a state diagram.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 <p id="section-3.1-5">Note that the sender endpoint can assess some conditions only "to the best of its knowledge". This is due to the possible presence of a reverse-proxy standing for X and whose presence as reverse-proxy is, by definition, expected to be unknown to the sender endpoint.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3.1-6">
 <li id="section-3.1-6.1">
@@ -1536,7 +1536,7 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
             <p id="section-3.1-6.7.1">If M includes the Proxy-Scheme or Proxy-Scheme-Number option, then this algorithm moves to Step 8. Otherwise, this algorithm moves to Step 9.<a href="#section-3.1-6.7.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-3.1-6.8">
-            <p id="section-3.1-6.8.1">The sender endpoint determines that OPT will be processed as if it was specified as Class E for OSCORE, i.e., to be both encrypted and integrity-protected. Then, the sender endpoint terminates this algorithm.<a href="#section-3.1-6.8.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-6.8.1">The sender endpoint determines that OPT will be processed as Class E for OSCORE, i.e., both encrypted and integrity-protected. Then, the sender endpoint terminates this algorithm.<a href="#section-3.1-6.8.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-3.1-6.9">
             <p id="section-3.1-6.9.1">The sender endpoint determines that OPT will be processed as per its original Class U or I for OSCORE. Then, the sender endpoint terminates this algorithm.<a href="#section-3.1-6.9.1" class="pilcrow">¶</a></p>
@@ -1807,7 +1807,7 @@ This occurs after having performed all the intended OSCORE protections of the ou
         <h3 id="name-hop-limit-option">
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-hop-limit-option" class="section-name selfRef">Hop-Limit Option</a>
         </h3>
-<p id="section-8.2-1"><a href="#sec-hop-limit" class="auto internal xref">Section 4</a> of this document defines that the Hop-Limit option <span>[<a href="#RFC8768" class="cite xref">RFC8768</a>]</span> is of Class U for OSCORE. This overrides the default behavior specified in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, according to which the option would be processed as if it was of Class E for OSCORE.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-1"><a href="#sec-hop-limit" class="auto internal xref">Section 4</a> of this document defines that the Hop-Limit option <span>[<a href="#RFC8768" class="cite xref">RFC8768</a>]</span> is of Class U for OSCORE. This overrides the default behavior specified in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, according to which the option would be processed as Class E for OSCORE.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 <p id="section-8.2-2">As discussed in <a href="#sec-hop-limit" class="auto internal xref">Section 4</a>, applying the default behavior would result in the Hop-Limit option added by the origin client being protected end-to-end for the origin server. That is, the intention of the client about performing a detection of forwarding loops would be hidden even from the first proxy in chain, which in turn adds an outer Hop-Limit option and thus further contributes to increasing the message size (see <a href="#sec-hop-limit" class="auto internal xref">Section 4</a>).<a href="#section-8.2-2" class="pilcrow">¶</a></p>
 <p id="section-8.2-3">Instead, having defined the Hop-Limit option as Class U for OSCORE, the following holds by virtue of the procedure defined in <a href="#general-rules" class="auto internal xref">Section 3.1</a>.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -4063,7 +4063,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
       <h2 id="name-state-diagram-protection-of">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-state-diagram-protection-of" class="section-name selfRef">State Diagram: Protection of CoAP Options</a>
       </h2>
-<p id="appendix-B-1"><a href="#fig-option-protection-diagram" class="auto internal xref">Figure 8</a> overviews the rules defined in <a href="#general-rules" class="auto internal xref">Section 3.1</a>, to determine whether a CoAP option that is originally specified as Class U or I for OSCORE has to be processed like if it was specified as Class E, when protecting an outgoing message.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1"><a href="#fig-option-protection-diagram" class="auto internal xref">Figure 8</a> overviews the rules defined in <a href="#general-rules" class="auto internal xref">Section 3.1</a>, to determine whether a CoAP option that is originally specified only as an outer option (Class U or I) for OSCORE has to be processed as Class E, when protecting an outgoing message.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <span id="name-protection-of-coap-options-"></span><div id="fig-option-protection-diagram">
 <figure id="figure-8">
         <div id="appendix-B-2.1">
@@ -4776,13 +4776,16 @@ Fundamentally, this is not worse then when applying the default behavior mention
             <p id="appendix-D.1-1.1.1">Removed definition and use of "OSCORE-in-OSCORE".<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.2">
-            <p id="appendix-D.1-1.2.1">Added security consideration on membership of OSCORE groups.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.2.1">More precise indication of outer or inner CoAP options.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.3">
-            <p id="appendix-D.1-1.3.1">Updated references.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.3.1">Added security consideration on membership of OSCORE groups.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.4">
-            <p id="appendix-D.1-1.4.1">Editorial improvements.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.4.1">Updated references.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.5">
+            <p id="appendix-D.1-1.5.1">Editorial improvements.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
