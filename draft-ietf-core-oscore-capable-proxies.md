@@ -841,7 +841,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-client-proxy-server title="Use of OSCORE between Client-Server, Client-Proxy, and Proxy-Server"}
 
-## With Forward-Proxy and EDHOC; C-S, C-P # {#sec-example-edhoc}
+## With Forward-Proxy and EDHOC; OSCORE: C-S, C-P # {#sec-example-edhoc}
 
 In the example shown in {{fig-example-edhoc}}, message exchanges are protected as follows.
 
@@ -1056,7 +1056,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-edhoc title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC"}
 
-## With Forward-Proxy and EDHOC (optimized); C-S, C-P # {#sec-example-edhoc-comb-req}
+## With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P # {#sec-example-edhoc-comb-req}
 
 In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are protected as follows.
 
@@ -1349,7 +1349,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-reverse-proxy-without-end-to-end title="Use of OSCORE between Client-Proxy and Proxy-Server (the proxy is a reverse-proxy)"}
 
-## With Reverse-Proxy; C-S, C-P, P-S
+## With Reverse-Proxy; OSCORE: C-S, C-P, P-S
 
 In the example shown in {{fig-example-reverse-proxy-with-end-to-end}}, message exchanges are protected with OSCORE as follows.
 
