@@ -5,9 +5,6 @@ title: OSCORE-capable Proxies
 abbrev: OSCORE-capable Proxies
 docname: draft-ietf-core-oscore-capable-proxies-latest
 
-# stand_alone: true
-
-ipr: trust200902
 area: Internet
 wg: CoRE Working Group
 kw: Internet-Draft
@@ -52,10 +49,10 @@ informative:
   RFC8742:
   RFC9200:
   RFC9528:
+  RFC9668:
   I-D.ietf-core-groupcomm-bis:
   I-D.ietf-core-groupcomm-proxy:
   I-D.ietf-core-observe-multicast-notifications:
-  I-D.ietf-core-oscore-edhoc:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-core-transport-indication:
   I-D.ietf-ace-key-groupcomm-oscore:
@@ -422,7 +419,7 @@ At the same time, the following applies, depending on the two peers using OSCORE
 
   Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
 
-  Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
+  Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{RFC9668}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}), and especially when relying on a long chain of proxies.
 
 * The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework for Authentication and Authorization in constrained environments {{RFC9200}}.
 
@@ -1066,7 +1063,7 @@ In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are pr
 
 The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC {{RFC9528}}.
 
-In particular, the client relies on the EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
+In particular, the client relies on the EDHOC + OSCORE request defined in {{RFC9668}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
