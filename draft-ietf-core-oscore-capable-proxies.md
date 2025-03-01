@@ -532,7 +532,7 @@ The presented examples build on the example shown in {{Section A.1 of RFC8613}},
 
 The abbreviations "REQ" and "RESP" are used to denote a request message and a response message, respectively.
 
-## Example 1
+## With Forward-Proxy; OSCORE: C-S, C-P
 
 In the example shown in {{fig-example-client-proxy}}, message exchanges are protected with OSCORE as follows.
 
@@ -627,7 +627,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-client-proxy title="Use of OSCORE between Client-Server and Client-Proxy"}
 
-## Example 2
+## With Forward-Proxy; OSCORE: C-S, P-S
 
 In the example shown in {{fig-example-proxy-server}}, message exchanges are protected with OSCORE as follows.
 
@@ -721,7 +721,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-proxy-server title="Use of OSCORE between Client-Server and Proxy-Server"}
 
-## Example 3
+## With Forward-Proxy; OSCORE: C-S, C-P, P-S
 
 In the example shown in {{fig-example-client-proxy-server}}, message exchanges are protected with OSCORE as follows.
 
@@ -841,7 +841,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-client-proxy-server title="Use of OSCORE between Client-Server, Client-Proxy, and Proxy-Server"}
 
-## Example 4 # {#sec-example-edhoc}
+## With Forward-Proxy and EDHOC; C-S, C-P # {#sec-example-edhoc}
 
 In the example shown in {{fig-example-edhoc}}, message exchanges are protected as follows.
 
@@ -1056,7 +1056,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-edhoc title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC"}
 
-## Example 5 # {#sec-example-edhoc-comb-req}
+## With Forward-Proxy and EDHOC (optimized); C-S, C-P # {#sec-example-edhoc-comb-req}
 
 In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are protected as follows.
 
@@ -1258,7 +1258,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-edhoc-comb-req title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC using the EDHOC + OSCORE request"}
 
-## Example 6
+## With Reverse-Proxy; OSCORE: C-P, P-S
 
 In the example shown in {{fig-example-reverse-proxy-without-end-to-end}}, message exchanges are protected with OSCORE as follows.
 
@@ -1349,7 +1349,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-reverse-proxy-without-end-to-end title="Use of OSCORE between Client-Proxy and Proxy-Server (the proxy is a reverse-proxy)"}
 
-## Example 7
+## With Reverse-Proxy; C-S, C-P, P-S
 
 In the example shown in {{fig-example-reverse-proxy-with-end-to-end}}, message exchanges are protected with OSCORE as follows.
 
