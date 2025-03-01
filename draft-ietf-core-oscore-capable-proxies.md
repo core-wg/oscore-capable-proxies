@@ -250,11 +250,11 @@ This document introduces the following two main deviations from the original OSC
 
 Let us consider a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context shared with another OSCORE endpoint X.
 
-As usual, the sender endpoint encrypts and integrity-protects the CoAP options included in M that are specified as Class E for OSCORE {{RFC8613}}.
+As usual, the sender endpoint encrypts and integrity-protects the CoAP options included in M that are processed as Class E for OSCORE, as per {{Sections 4.1.1 and 4.1.3 of RFC8613}}.
 
-In addition to that, the sender endpoint MUST perform the procedure defined below for each CoAP option OPT that is included in M and that is originally specified as Class U or I for OSCORE. Depending on the outcome of such a procedure, the sender endpoint processes OPT as per its original Class U or I, or instead as if it was specified as Class E.
+Per the update made by this document, the sender endpoint MUST perform the procedure defined below for each CoAP option OPT that is included in M and is originally specified only as an outer option (Class U or I) for OSCORE. This procedure does not apply to options that are specificed (also) as class E. Depending on the outcome of this procedure, the sender endpoint processes OPT as per its original Class U or I, or instead as Class E.
 
-When protecting M by using the OSCORE Security Context shared with another OSCORE endpoint X and applying the i-th OSCORE layer in sequence, the sender endpoint performs the following steps, for each CoAP option OPT included in M and originally defined as Class U or I for OSCORE. {{sec-option-protection-diag}} provides an overview of these steps through a state diagram.
+Before protecting M by using the OSCORE Security Context shared with another OSCORE endpoint X and applying the i-th OSCORE layer in sequence, the sender endpoint performs the following steps, for each CoAP option OPT that is included in M and is originally specified only as an outer option (Class U or I) for OSCORE. {{sec-option-protection-diag}} provides an overview of these steps through a state diagram.
 
 Note that the sender endpoint can assess some conditions only "to the best of its knowledge". This is due to the possible presence of a reverse-proxy standing for X and whose presence as reverse-proxy is, by definition, expected to be unknown to the sender endpoint.
 
@@ -276,7 +276,7 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
 7. If M includes the Proxy-Scheme or Proxy-Scheme-Number option, then this algorithm moves to Step 8. Otherwise, this algorithm moves to Step 9.
 
-8. The sender endpoint determines that OPT will be processed as if it was specified as Class E for OSCORE, i.e., to be both encrypted and integrity-protected. Then, the sender endpoint terminates this algorithm.
+8. The sender endpoint determines that OPT will be processed as Class E for OSCORE, i.e., both encrypted and integrity-protected. Then, the sender endpoint terminates this algorithm.
 
 9. The sender endpoint determines that OPT will be processed as per its original Class U or I for OSCORE. Then, the sender endpoint terminates this algorithm.
 
@@ -492,7 +492,7 @@ However, after performing and failing the check on the received request, S repli
 
 ## Hop-Limit Option ## {#sec-security-considerations-hop-limit}
 
-{{sec-hop-limit}} of this document defines that the Hop-Limit option {{RFC8768}} is of Class U for OSCORE. This overrides the default behavior specified in {{Section 4.1 of RFC8613}}, according to which the option would be processed as if it was of Class E for OSCORE.
+{{sec-hop-limit}} of this document defines that the Hop-Limit option {{RFC8768}} is of Class U for OSCORE. This overrides the default behavior specified in {{Section 4.1 of RFC8613}}, according to which the option would be processed as Class E for OSCORE.
 
 As discussed in {{sec-hop-limit}}, applying the default behavior would result in the Hop-Limit option added by the origin client being protected end-to-end for the origin server. That is, the intention of the client about performing a detection of forwarding loops would be hidden even from the first proxy in chain, which in turn adds an outer Hop-Limit option and thus further contributes to increasing the message size (see {{sec-hop-limit}}).
 
@@ -1477,7 +1477,7 @@ Curly brackets { ... } indicate encrypted data.
 
 # State Diagram: Protection of CoAP Options # {#sec-option-protection-diag}
 
-{{fig-option-protection-diagram}} overviews the rules defined in {{general-rules}}, to determine whether a CoAP option that is originally specified as Class U or I for OSCORE has to be processed like if it was specified as Class E, when protecting an outgoing message.
+{{fig-option-protection-diagram}} overviews the rules defined in {{general-rules}}, to determine whether a CoAP option that is originally specified only as an outer option (Class U or I) for OSCORE has to be processed as Class E, when protecting an outgoing message.
 
 ~~~~~~~~~~~ aasvg
 ..........................
@@ -1670,6 +1670,8 @@ request      +-----------------------------------------------+        |
 ## Version -03 to -04 ## {#sec-03-04}
 
 * Removed definition and use of "OSCORE-in-OSCORE".
+
+* More precise indication of outer or inner CoAP options.
 
 * Added security consideration on membership of OSCORE groups.
 
