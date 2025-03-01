@@ -541,7 +541,7 @@ Table of Contents
    perform the procedure defined below for each CoAP option OPT that is
    included in M and is originally specified only as an outer option
    (Class U or I) for OSCORE.  This procedure does not apply to options
-   that are specificed (also) as class E.  Depending on the outcome of
+   that are specified (also) as Class E.  Depending on the outcome of
    this procedure, the sender endpoint processes OPT as per its original
    Class U or I, or instead as Class E.
 
@@ -2434,7 +2434,8 @@ Appendix B.  State Diagram: Protection of CoAP Options
  |                                                                     |
  | I must protect an outgoing message M for another OSCORE endpoint X. |
  |                                                                     |
- | M includes a CoAP option OPT of Class U or I for OSCORE.            |
+ | M includes a CoAP option OPT that is originally specified only as   |
+ | an outer option (Class U or I) for OSCORE.                          |
  |                                                                     |
  +---------------------------------------------------------------------+
       |
