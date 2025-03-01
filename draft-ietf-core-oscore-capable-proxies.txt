@@ -875,8 +875,8 @@ Table of Contents
    guarantees that OSCORE and Group OSCORE provide in the case where
    such endpoints are specifically application endpoints.
 
-   If Group OSCORE is used over a communicaton leg and the group mode is
-   used to apply a protection layer to a message over that leg (see
+   If Group OSCORE is used over a communication leg and the group mode
+   is used to apply a protection layer to a message over that leg (see
    Section 7 of [I-D.ietf-core-oscore-groupcomm]), then all the members
    of the OSCORE group that support the group mode are able to remove
    that protection layer, i.e., to accordingly decrypt and verify the
