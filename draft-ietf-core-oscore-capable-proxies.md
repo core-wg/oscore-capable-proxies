@@ -252,7 +252,7 @@ Let us consider a sender endpoint that, when protecting an outgoing message M, a
 
 As usual, the sender endpoint encrypts and integrity-protects the CoAP options included in M that are processed as Class E for OSCORE, as per {{Sections 4.1.1 and 4.1.3 of RFC8613}}.
 
-Per the update made by this document, the sender endpoint MUST perform the procedure defined below for each CoAP option OPT that is included in M and is originally specified only as an outer option (Class U or I) for OSCORE. This procedure does not apply to options that are specificed (also) as class E. Depending on the outcome of this procedure, the sender endpoint processes OPT as per its original Class U or I, or instead as Class E.
+Per the update made by this document, the sender endpoint MUST perform the procedure defined below for each CoAP option OPT that is included in M and is originally specified only as an outer option (Class U or I) for OSCORE. This procedure does not apply to options that are specified (also) as Class E. Depending on the outcome of this procedure, the sender endpoint processes OPT as per its original Class U or I, or instead as Class E.
 
 Before protecting M by using the OSCORE Security Context shared with another OSCORE endpoint X and applying the i-th OSCORE layer in sequence, the sender endpoint performs the following steps, for each CoAP option OPT that is included in M and is originally specified only as an outer option (Class U or I) for OSCORE. {{sec-option-protection-diag}} provides an overview of these steps through a state diagram.
 
@@ -1492,7 +1492,8 @@ Curly brackets { ... } indicate encrypted data.
 |                                                                     |
 | I must protect an outgoing message M for another OSCORE endpoint X. |
 |                                                                     |
-| M includes a CoAP option OPT of Class U or I for OSCORE.            |
+| M includes a CoAP option OPT that is originally specified only as   |
+| an outer option (Class U or I) for OSCORE.                          |
 |                                                                     |
 +---------------------------------------------------------------------+
      |
