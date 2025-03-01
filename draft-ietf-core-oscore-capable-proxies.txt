@@ -256,12 +256,6 @@ Table of Contents
          with the Proxy-Scheme option or the Proxy-Scheme-Number option.
          This is relevant when using a reverse-proxy.
 
-   *  OSCORE-in-OSCORE: the process by which a message protected with
-      (Group) OSCORE is further protected with (Group) OSCORE.  This
-      means that, if such a process is used, a successful decryption and
-      verification of an OSCORE-protected message might yield an OSCORE-
-      protected message.
-
 2.  Use Cases
 
    The approach defined in this document has been motivated by a number
@@ -2611,6 +2605,8 @@ Appendix D.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 D.1.  Version -03 to -04
+
+   *  Removed definition and use of "OSCORE-in-OSCORE".
 
    *  Updated references.
 
