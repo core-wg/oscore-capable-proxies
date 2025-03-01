@@ -2492,8 +2492,8 @@ Appendix B.  State Diagram: Protection of CoAP Options
       +----->| Process OPT as per its original Class U or I |<-----+
              +----------------------------------------------+
 
-    Figure 8: Protection of CoAP Options of Class U or I in Outgoing
-                               Messages.
+   Figure 8: Protection of CoAP Options Originally Specified only as
+                Outer Options (Class U or I) for OSCORE.
 
 Appendix C.  State Diagram: Processing of Incoming Requests
 
