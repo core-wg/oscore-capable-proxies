@@ -10,12 +10,12 @@
 <meta content="
        Object Security for Constrained RESTful Environments (OSCORE) can be used to protect CoAP messages end-to-end between two endpoints at the application layer, also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines rules to escalate the protection of a CoAP option, in order to encrypt and integrity-protect it whenever possible. Finally, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints, and between an application endpoint and an intermediary or between two intermediaries. Therefore, this document updates RFC 8613. Furthermore, this document updates RFC 8768, by explicitly defining the processing with OSCORE for the CoAP option Hop-Limit. The approach defined in this document can be seamlessly used with Group OSCORE, for protecting CoAP messages when group communication is used in the presence of intermediaries. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.27.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-core-oscore-capable-proxies-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
-    Python 3.12.8
+  xml2rfc 3.27.0
+    Python 3.12.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -436,7 +436,7 @@ dl {
     margin-bottom: 0;
   }
 }
-dl > dt {
+dl:not(.dlNewline) > dt {
   float: left;
   margin-right: 2ch;
   min-width: 8ch;
@@ -1045,11 +1045,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">OSCORE-capable Proxies</td>
-<td class="right">February 2025</td>
+<td class="right">March 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tiloca &amp; Höglund</td>
-<td class="center">Expires 6 August 2025</td>
+<td class="center">Expires 2 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc8613" class="eref">8613</a>, <a href="https://www.rfc-editor.org/rfc/rfc8768" class="eref">8768</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-02" class="published">2 February 2025</time>
+<time datetime="2025-03-01" class="published">1 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-06">6 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-02">2 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1119,7 +1119,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 6 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1634,7 +1634,7 @@ In case the check fails, the endpoint <span class="bcp14">MUST</span> stop proce
 <p id="section-3.3-2.3.2.2.5">
 Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE option, which results in the decrypted request REQ*. The possible presence of an OSCORE option in REQ* is not treated as an error situation.<a href="#section-3.3-2.3.2.2.5" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.6">
-If the OSCORE processing results in an error, the endpoint <span class="bcp14">MUST</span> stop processing the request and performs error handling as per <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-23#section-7.2" class="relref">7.2</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-23#section-8.4" class="relref">8.4</a> of <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.3.2.2.6" class="pilcrow">¶</a></p>
+If the OSCORE processing results in an error, the endpoint <span class="bcp14">MUST</span> stop processing the request and performs error handling as per <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-24#section-7.2" class="relref">7.2</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-24#section-8.4" class="relref">8.4</a> of <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>.<a href="#section-3.3-2.3.2.2.6" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.3.2.2.7">
 Otherwise, REQ takes REQ*, and the endpoint moves to Step 1.<a href="#section-3.3-2.3.2.2.7" class="pilcrow">¶</a></p>
 </li>
@@ -1715,7 +1715,7 @@ Then, the proxy stores specifically that resulting response message in its cache
 <p id="section-6-3.1.2">
 Assuming that OSCORE has to be used both between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain, and then with the origin server through the chain of proxies (see the example in <a href="#sec-example-edhoc" class="auto internal xref">Appendix A.4</a>).<a href="#section-6-3.1.2" class="pilcrow">¶</a></p>
 <p id="section-6-3.1.3">
-Furthermore, the additional use of the combined EDHOC + OSCORE request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span> is particularly beneficial in this case (see the example in <a href="#sec-example-edhoc-comb-req" class="auto internal xref">Appendix A.5</a>), and especially when relying on a long chain of proxies.<a href="#section-6-3.1.3" class="pilcrow">¶</a></p>
+Furthermore, the additional use of the combined EDHOC + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> is particularly beneficial in this case (see the example in <a href="#sec-example-edhoc-comb-req" class="auto internal xref">Appendix A.5</a>), and especially when relying on a long chain of proxies.<a href="#section-6-3.1.3" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-3.2">
           <p id="section-6-3.2.1">The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in <span>[<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span> and based on the ACE framework for Authentication and Authorization in constrained environments <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-6-3.2.1" class="pilcrow">¶</a></p>
@@ -1863,11 +1863,11 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dl class="references">
 <dt id="I-D.ietf-core-href">[I-D.ietf-core-href]</dt>
         <dd>
-<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"Constrained Resource Identifiers"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-href-17</span>, <time datetime="2025-01-24" class="refDate">24 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-href-17">https://datatracker.ietf.org/doc/html/draft-ietf-core-href-17</a>&gt;</span>. </dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"Constrained Resource Identifiers"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-href-18</span>, <time datetime="2025-02-03" class="refDate">3 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-href-18">https://datatracker.ietf.org/doc/html/draft-ietf-core-href-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-23</span>, <time datetime="2024-09-26" class="refDate">26 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-23">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-23</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-24</span>, <time datetime="2025-02-08" class="refDate">8 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-24">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-24</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-schc-8824-update">[I-D.ietf-schc-8824-update]</dt>
         <dd>
@@ -1928,11 +1928,11 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
         <dd>
-<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-16</span>, <time datetime="2025-01-28" class="refDate">28 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-16">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-16</a>&gt;</span>. </dd>
+<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-18</span>, <time datetime="2025-02-28" class="refDate">28 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-18">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-groupcomm-bis">[I-D.ietf-core-groupcomm-bis]</dt>
         <dd>
-<span class="refAuthor">Dijk, E.</span>, <span class="refAuthor">Wang, C.</span>, and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-12</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-12">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-12</a>&gt;</span>. </dd>
+<span class="refAuthor">Dijk, E.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-13</span>, <time datetime="2025-02-24" class="refDate">24 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-13">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-13</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-groupcomm-proxy">[I-D.ietf-core-groupcomm-proxy]</dt>
         <dd>
@@ -1941,10 +1941,6 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dt id="I-D.ietf-core-observe-multicast-notifications">[I-D.ietf-core-observe-multicast-notifications]</dt>
         <dd>
 <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-10</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-10">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-10</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="I-D.ietf-core-oscore-edhoc">[I-D.ietf-core-oscore-edhoc]</dt>
-        <dd>
-<span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Hristozov, S.</span>, and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Using Ephemeral Diffie-Hellman Over COSE (EDHOC) with the Constrained Application Protocol (CoAP) and Object Security for Constrained RESTful Environments (OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-edhoc-11</span>, <time datetime="2024-04-09" class="refDate">9 April 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-edhoc-11">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-edhoc-11</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-transport-indication">[I-D.ietf-core-transport-indication]</dt>
         <dd>
@@ -1981,6 +1977,10 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dt id="RFC9528">[RFC9528]</dt>
         <dd>
 <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Preuß Mattsson, J.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="seriesInfo">RFC 9528</span>, <span class="seriesInfo">DOI 10.17487/RFC9528</span>, <time datetime="2024-03" class="refDate">March 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9528">https://www.rfc-editor.org/rfc/rfc9528</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9668">[RFC9668]</dt>
+        <dd>
+<span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Hristozov, S.</span>, and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Using Ephemeral Diffie-Hellman Over COSE (EDHOC) with the Constrained Application Protocol (CoAP) and Object Security for Constrained RESTful Environments (OSCORE)"</span>, <span class="seriesInfo">RFC 9668</span>, <span class="seriesInfo">DOI 10.17487/RFC9668</span>, <time datetime="2024-11" class="refDate">November 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9668">https://www.rfc-editor.org/rfc/rfc9668</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TOR-SPEC">[TOR-SPEC]</dt>
       <dd>
@@ -3180,7 +3180,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
 </li>
         </ul>
 <p id="appendix-A.5-3">The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-A.5-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-4">In particular, the client relies on the EDHOC + OSCORE request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span> and denoted as COMB_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-A.5-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.5-4">In particular, the client relies on the EDHOC + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> and denoted as COMB_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-A.5-4" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-se"></span><div id="fig-example-edhoc-comb-req">
 <figure id="figure-5">
           <div id="appendix-A.5-5.1">

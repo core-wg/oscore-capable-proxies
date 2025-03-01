@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                         2 February 2025
-Expires: 6 August 2025
+Intended status: Standards Track                            1 March 2025
+Expires: 2 September 2025
 
 
                          OSCORE-capable Proxies
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 August 2025.
+   This Internet-Draft will expire on 2 September 2025.
 
 Copyright Notice
 
@@ -964,9 +964,9 @@ Table of Contents
       Appendix A.4).
 
       Furthermore, the additional use of the combined EDHOC + OSCORE
-      request defined in [I-D.ietf-core-oscore-edhoc] is particularly
-      beneficial in this case (see the example in Appendix A.5), and
-      especially when relying on a long chain of proxies.
+      request defined in [RFC9668] is particularly beneficial in this
+      case (see the example in Appendix A.5), and especially when
+      relying on a long chain of proxies.
 
    *  The use of Group OSCORE is expected to be limited between the
       origin application endpoints, e.g., between the origin client and
@@ -1196,17 +1196,17 @@ Table of Contents
    [I-D.ietf-core-href]
               Bormann, C. and H. Birkholz, "Constrained Resource
               Identifiers", Work in Progress, Internet-Draft, draft-
-              ietf-core-href-17, 24 January 2025,
+              ietf-core-href-18, 3 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              href-17>.
+              href-18>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
               and R. Höglund, "Group Object Security for Constrained
               RESTful Environments (Group OSCORE)", Work in Progress,
-              Internet-Draft, draft-ietf-core-oscore-groupcomm-23, 26
-              September 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-oscore-groupcomm-23>.
+              Internet-Draft, draft-ietf-core-oscore-groupcomm-24, 8
+              February 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-oscore-groupcomm-24>.
 
    [I-D.ietf-schc-8824-update]
               Tiloca, M., Toutain, L., Martinez, I., and A. Minaburo,
@@ -1289,17 +1289,17 @@ Table of Contents
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-16, 28 January 2025,
+              ietf-core-coap-pubsub-18, 28 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-16>.
+              coap-pubsub-18>.
 
    [I-D.ietf-core-groupcomm-bis]
-              Dijk, E., Wang, C., and M. Tiloca, "Group Communication
-              for the Constrained Application Protocol (CoAP)", Work in
+              Dijk, E. and M. Tiloca, "Group Communication for the
+              Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              12, 21 October 2024,
+              13, 24 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-bis-12>.
+              groupcomm-bis-13>.
 
    [I-D.ietf-core-groupcomm-proxy]
               Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
@@ -1315,16 +1315,6 @@ Table of Contents
               multicast-notifications-10, 21 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               observe-multicast-notifications-10>.
-
-   [I-D.ietf-core-oscore-edhoc]
-              Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
-              G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
-              (EDHOC) with the Constrained Application Protocol (CoAP)
-              and Object Security for Constrained RESTful Environments
-              (OSCORE)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-edhoc-11, 9 April 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-edhoc-11>.
 
    [I-D.ietf-core-transport-indication]
               Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
@@ -1381,6 +1371,13 @@ Table of Contents
               "Ephemeral Diffie-Hellman Over COSE (EDHOC)", RFC 9528,
               DOI 10.17487/RFC9528, March 2024,
               <https://www.rfc-editor.org/rfc/rfc9528>.
+
+   [RFC9668]  Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
+              G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
+              (EDHOC) with the Constrained Application Protocol (CoAP)
+              and Object Security for Constrained RESTful Environments
+              (OSCORE)", RFC 9668, DOI 10.17487/RFC9668, November 2024,
+              <https://www.rfc-editor.org/rfc/rfc9668>.
 
    [TOR-SPEC] Tor Project, "Tor Specifications",
               <https://spec.torproject.org/>.
@@ -1959,9 +1956,9 @@ A.5.  Example 5
    the key exchange protocol EDHOC [RFC9528].
 
    In particular, the client relies on the EDHOC + OSCORE request
-   defined in [I-D.ietf-core-oscore-edhoc] and denoted as COMB_REQ, in
-   order to transport the last EDHOC message_3 and the first OSCORE-
-   protected application CoAP request combined together.
+   defined in [RFC9668] and denoted as COMB_REQ, in order to transport
+   the last EDHOC message_3 and the first OSCORE-protected application
+   CoAP request combined together.
 
    Client  Proxy  Server
      |       |       |
