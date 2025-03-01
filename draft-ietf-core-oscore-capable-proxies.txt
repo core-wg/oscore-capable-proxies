@@ -106,10 +106,10 @@ Table of Contents
      A.1.  With Forward-Proxy; OSCORE: C-S, C-P
      A.2.  With Forward-Proxy; OSCORE: C-S, P-S
      A.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
-     A.4.  With Forward-Proxy and EDHOC; C-S, C-P
-     A.5.  With Forward-Proxy and EDHOC (optimized); C-S, C-P
+     A.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
+     A.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      A.6.  With Reverse-Proxy; OSCORE: C-P, P-S
-     A.7.  With Reverse-Proxy; C-S, C-P, P-S
+     A.7.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
    Appendix B.  State Diagram: Protection of CoAP Options
    Appendix C.  State Diagram: Processing of Incoming Requests
    Appendix D.  Document Updates
@@ -1722,7 +1722,7 @@ A.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
       Figure 3: Use of OSCORE between Client-Server, Client-Proxy, and
                                 Proxy-Server
 
-A.4.  With Forward-Proxy and EDHOC; C-S, C-P
+A.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
 
    In the example shown in Figure 4, message exchanges are protected as
    follows.
@@ -1944,7 +1944,7 @@ A.4.  With Forward-Proxy and EDHOC; C-S, C-P
       Figure 4: Use of OSCORE between Client-Server and Proxy-Server,
           with OSCORE Security Contexts established through EDHOC
 
-A.5.  With Forward-Proxy and EDHOC (optimized); C-S, C-P
+A.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
 
    In the example shown in Figure 5, message exchanges are protected as
    follows.
@@ -2264,7 +2264,7 @@ A.6.  With Reverse-Proxy; OSCORE: C-P, P-S
        Figure 6: Use of OSCORE between Client-Proxy and Proxy-Server
                        (the proxy is a reverse-proxy)
 
-A.7.  With Reverse-Proxy; C-S, C-P, P-S
+A.7.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
 
    In the example shown in Figure 7, message exchanges are protected
    with OSCORE as follows.
