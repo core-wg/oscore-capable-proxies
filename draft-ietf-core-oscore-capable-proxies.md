@@ -405,7 +405,7 @@ Further security considerations to take into account are inherited from the spec
 
 This document does not change the security properties of OSCORE and Group OSCORE. That is, given any two OSCORE endpoints, the method defined in this document provides them with the same security guarantees that OSCORE and Group OSCORE provide in the case where such endpoints are specifically application endpoints.
 
-If Group OSCORE is used over a communicaton leg and the group mode is used to apply a protection layer to a message over that leg (see {{Section 7 of I-D.ietf-core-oscore-groupcomm}}), then all the members of the OSCORE group that support the group mode are able to remove that protection layer, i.e., to accordingly decrypt and verify the message. Therefore, the OSCORE group should only include OSCORE endpoints for which that is acceptable.
+If Group OSCORE is used over a communication leg and the group mode is used to apply a protection layer to a message over that leg (see {{Section 7 of I-D.ietf-core-oscore-groupcomm}}), then all the members of the OSCORE group that support the group mode are able to remove that protection layer, i.e., to accordingly decrypt and verify the message. Therefore, the OSCORE group should only include OSCORE endpoints for which that is acceptable.
 
 ## Preserving Location Anonymity
 
