@@ -150,7 +150,6 @@ In addition, this document uses the following terms.
 
    - The set of CoAP options comprising any of the Uri-Host, Uri-Port, and Uri-Path options, when those are not used together with the Proxy-Scheme option or the Proxy-Scheme-Number option. This is relevant when using a reverse-proxy.
 
-* OSCORE-in-OSCORE: the process by which a message protected with (Group) OSCORE is further protected with (Group) OSCORE. This means that, if such a process is used, a successful decryption and verification of an OSCORE-protected message might yield an OSCORE-protected message.
 
 # Use Cases # {#sec-use-cases}
 
@@ -1667,6 +1666,8 @@ request      +-----------------------------------------------+        |
 {:removeinrfc}
 
 ## Version -03 to -04 ## {#sec-03-04}
+
+* Removed definition and use of "OSCORE-in-OSCORE".
 
 * Updated references.
 
