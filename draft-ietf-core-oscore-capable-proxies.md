@@ -112,7 +112,7 @@ This document fills this gap, and updates {{RFC8613}} as follows.
 
 * It defines rules to escalate the protection of a CoAP option that is originally meant to be unprotected or only integrity-protected by OSCORE. This results in both encrypting and integrity-protecting a CoAP option whenever it is possible.
 
-* It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence, as an "OSCORE-in-OSCORE" process. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).
+* It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).
 
 Furthermore, this document updates {{RFC8768}}, as it explicitly defines the CoAP option Hop-Limit to be of Class U for OSCORE (see {{sec-hop-limit}}). In the case where the Hop-Limit option is first added to a request by an origin client instead of an intermediary, this update avoids undesired overhead in terms of message size and ensures that the first intermediary in the chain enforces the intent of the origin client in detecting forwarding loops.
 
@@ -193,7 +193,7 @@ Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to
 
 If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see {{Section 5.7.3 of RFC7252}}). That is, in addition to its own resources, the LwM2M Gateway serves the resources hosted by each end IoT device standing behind it, as exposed by the LwM2M Gateway under a dedicated URI path. As per {{LwM2M-Gateway}}, the first URI path segment is used as "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.
 
-As per Section 7 of {{LwM2M-Gateway}}, message exchanges between the LwM2M Server and the L2M2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as reverse-proxy.
+As per Section 7 of {{LwM2M-Gateway}}, message exchanges between the LwM2M Server and the LwM2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as reverse-proxy.
 
 ## Further Use Cases
 
@@ -227,13 +227,15 @@ The approach defined in this document can be useful also in the following use ca
 
 # Message Processing # {#sec-message-processing}
 
-As mentioned in {{intro}}, this document introduces the following two main deviations from the original OSCORE specification {{RFC8613}}.
+This section defines the processing of CoAP messages with OSCORE.
+
+This document introduces the following two main deviations from the original OSCORE specification {{RFC8613}}.
 
 1. An "OSCORE endpoint", as a producer/consumer of an OSCORE option, can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.
 
    Hence, OSCORE can be used between an origin client/server and a proxy, as well as between two proxies in an intermediary chain.
 
-2. A CoAP message can be secured by multiple OSCORE protections applied in sequence. In such a case, the final result is a message with nested OSCORE protections, as the output of an "OSCORE-in-OSCORE" process. Hence, following a decryption, the resulting message might legitimately include an OSCORE option, and thus have in turn to be decrypted.
+2. A CoAP message can be secured by multiple OSCORE protections applied in sequence. In such a case, the final result is a message with nested OSCORE protections. Hence, following a decryption, the resulting message might legitimately include an OSCORE option, and thus have in turn to be decrypted.
 
    The most common case is expected to consider a message protected with up to two OSCORE layers, i.e.: i) an inner layer, protecting the message end-to-end between the origin client and the origin server acting as application endpoints; and ii) an outer layer, protecting the message between a certain OSCORE endpoint and the other OSCORE endpoint adjacent in the intermediary chain.
 
@@ -531,7 +533,7 @@ The abbreviations "REQ" and "RESP" are used to denote a request message and a re
 
 ## Example 1
 
-In the example shown in {{fig-example-client-proxy}}, message exchanges are protected with OSCORE over the following legs.
+In the example shown in {{fig-example-client-proxy}}, message exchanges are protected with OSCORE as follows.
 
 * End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
 
@@ -626,7 +628,7 @@ Curly brackets { ... } indicate encrypted data.
 
 ## Example 2
 
-In the example shown in {{fig-example-proxy-server}}, message exchanges are protected with OSCORE over the following legs.
+In the example shown in {{fig-example-proxy-server}}, message exchanges are protected with OSCORE as follows.
 
 * End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
 
@@ -720,7 +722,7 @@ Curly brackets { ... } indicate encrypted data.
 
 ## Example 3
 
-In the example shown in {{fig-example-client-proxy-server}}, message exchanges are protected with OSCORE over the following legs.
+In the example shown in {{fig-example-client-proxy-server}}, message exchanges are protected with OSCORE as follows.
 
 * End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
 
@@ -840,7 +842,7 @@ Curly brackets { ... } indicate encrypted data.
 
 ## Example 4 # {#sec-example-edhoc}
 
-In the example shown in {{fig-example-edhoc}}, message exchanges are protected over the following legs.
+In the example shown in {{fig-example-edhoc}}, message exchanges are protected as follows.
 
 * End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
 
@@ -1055,7 +1057,7 @@ Curly brackets { ... } indicate encrypted data.
 
 ## Example 5 # {#sec-example-edhoc-comb-req}
 
-In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are protected over the following legs.
+In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are protected as follows.
 
 * End-to-end, between the client and the server. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
 
@@ -1257,7 +1259,7 @@ Curly brackets { ... } indicate encrypted data.
 
 ## Example 6
 
-In the example shown in {{fig-example-reverse-proxy-without-end-to-end}}, message exchanges are protected with OSCORE over the following legs.
+In the example shown in {{fig-example-reverse-proxy-without-end-to-end}}, message exchanges are protected with OSCORE as follows.
 
 * Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
@@ -1348,7 +1350,7 @@ Curly brackets { ... } indicate encrypted data.
 
 ## Example 7
 
-In the example shown in {{fig-example-reverse-proxy-with-end-to-end}}, message exchanges are protected with OSCORE over the following legs.
+In the example shown in {{fig-example-reverse-proxy-with-end-to-end}}, message exchanges are protected with OSCORE as follows.
 
 * End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
 
@@ -1663,6 +1665,12 @@ request      +-----------------------------------------------+        |
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -03 to -04 ## {#sec-03-04}
+
+* Updated references.
+
+* Editorial improvements.
 
 ## Version -02 to -03 ## {#sec-02-03}
 
