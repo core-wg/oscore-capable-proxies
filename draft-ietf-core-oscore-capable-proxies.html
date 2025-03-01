@@ -1485,13 +1485,13 @@ Building on that, it is also possible to enable the operation of hidden services
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-deviations-from-the-origina" class="section-name selfRef">Deviations from the Original Message Processing</a>
         </h3>
 <p id="section-3.1-1">This document introduces the following two main deviations from the original OSCORE specification <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.1-2">
-<li id="section-3.1-2.1">
+<ul class="normal">
+<li class="normal" id="section-3.1-2.1">
             <p id="section-3.1-2.1.1">An "OSCORE endpoint", as a producer/consumer of an OSCORE option, can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2.1.2">
 Hence, OSCORE can be used between an origin client/server and a proxy, as well as between two proxies in an intermediary chain.<a href="#section-3.1-2.1.2" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-3.1-2.2">
+          <li class="normal" id="section-3.1-2.2">
             <p id="section-3.1-2.2.1">A CoAP message can be secured by multiple OSCORE protections applied in sequence. In such a case, the final result is a message with nested OSCORE protections. Hence, following a decryption, the resulting message might legitimately include an OSCORE option, and thus have in turn to be decrypted.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2.2.2">
 The most common case is expected to consider a message protected with up to two OSCORE layers, i.e.: i) an inner layer, protecting the message end-to-end between the origin client and the origin server acting as application endpoints; and ii) an outer layer, protecting the message between a certain OSCORE endpoint and the other OSCORE endpoint adjacent in the intermediary chain.<a href="#section-3.1-2.2.2" class="pilcrow">¶</a></p>
@@ -1502,7 +1502,7 @@ An OSCORE endpoint <span class="bcp14">SHOULD</span> define the maximum number o
 <p id="section-3.1-2.2.5">
 If its defined limit is reached when processing a CoAP message, an OSCORE endpoint <span class="bcp14">MUST NOT</span> perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed (see <a href="#outgoing-responses" class="auto internal xref">Section 3.5</a>).<a href="#section-3.1-2.2.5" class="pilcrow">¶</a></p>
 </li>
-        </ol>
+        </ul>
 </section>
 </div>
 <div id="general-rules">
