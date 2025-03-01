@@ -1274,13 +1274,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1">
-                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-D.1" class="auto internal xref">D.1</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
+                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-D.1" class="auto internal xref">D.1</a>.  <a href="#name-version-03-to-04" class="internal xref">Version -03 to -04</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2">
-                <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-D.2" class="auto internal xref">D.2</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
+                <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-D.2" class="auto internal xref">D.2</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.3">
-                <p id="section-toc.1-1.14.2.3.1"><a href="#appendix-D.3" class="auto internal xref">D.3</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+                <p id="section-toc.1-1.14.2.3.1"><a href="#appendix-D.3" class="auto internal xref">D.3</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.4">
+                <p id="section-toc.1-1.14.2.4.1"><a href="#appendix-D.4" class="auto internal xref">D.4</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
 </li>
             </ul>
 </li>
@@ -1314,7 +1317,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <p id="section-1-8.2.1">It defines rules to escalate the protection of a CoAP option that is originally meant to be unprotected or only integrity-protected by OSCORE. This results in both encrypting and integrity-protecting a CoAP option whenever it is possible.<a href="#section-1-8.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-8.3">
-          <p id="section-1-8.3.1">It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence, as an "OSCORE-in-OSCORE" process. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).<a href="#section-1-8.3.1" class="pilcrow">¶</a></p>
+          <p id="section-1-8.3.1">It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, and the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as next hop towards the origin server).<a href="#section-1-8.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-1-9">Furthermore, this document updates <span>[<a href="#RFC8768" class="cite xref">RFC8768</a>]</span>, as it explicitly defines the CoAP option Hop-Limit to be of Class U for OSCORE (see <a href="#sec-hop-limit" class="auto internal xref">Section 4</a>). In the case where the Hop-Limit option is first added to a request by an origin client instead of an intermediary, this update avoids undesired overhead in terms of message size and ensures that the first intermediary in the chain enforces the intent of the origin client in detecting forwarding loops.<a href="#section-1-9" class="pilcrow">¶</a></p>
@@ -1423,7 +1426,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2.4-1">The specification <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span> extends the LwM2M architecture by defining the LwM2M Gateway functionality. That is, a LwM2M Server can manage end IoT devices that are deployed "behind" the LwM2M Gateway. While it is outside the scope of that specification, it is possible for the LwM2M Gateway to use any suitable protocol with its connected end IoT devices, as well as to carry out any required protocol translation.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2">Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to forward it to an end IoT device. With particular reference to CoAP and the related transport binding specified in <span>[<a href="#LwM2M-Transport" class="cite xref">LwM2M-Transport</a>]</span>, the LwM2M Server acting as CoAP client sends its request to the LwM2M Gateway acting as CoAP server.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
 <p id="section-2.4-3">If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.3" class="relref">Section 5.7.3</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>). That is, in addition to its own resources, the LwM2M Gateway serves the resources hosted by each end IoT device standing behind it, as exposed by the LwM2M Gateway under a dedicated URI path. As per <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, the first URI path segment is used as "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
-<p id="section-2.4-4">As per Section 7 of <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, message exchanges between the LwM2M Server and the L2M2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as reverse-proxy.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<p id="section-2.4-4">As per Section 7 of <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, message exchanges between the LwM2M Server and the LwM2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as reverse-proxy.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="further-use-cases">
@@ -1474,26 +1477,27 @@ Building on that, it is also possible to enable the operation of hidden services
       <h2 id="name-message-processing">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-message-processing" class="section-name selfRef">Message Processing</a>
       </h2>
-<p id="section-3-1">As mentioned in <a href="#intro" class="auto internal xref">Section 1</a>, this document introduces the following two main deviations from the original OSCORE specification <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3-2">
-<li id="section-3-2.1">
-          <p id="section-3-2.1.1">An "OSCORE endpoint", as a producer/consumer of an OSCORE option, can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
-<p id="section-3-2.1.2">
-Hence, OSCORE can be used between an origin client/server and a proxy, as well as between two proxies in an intermediary chain.<a href="#section-3-2.1.2" class="pilcrow">¶</a></p>
+<p id="section-3-1">This section defines the processing of CoAP messages with OSCORE.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">This document introduces the following two main deviations from the original OSCORE specification <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3-3">
+<li id="section-3-3.1">
+          <p id="section-3-3.1.1">An "OSCORE endpoint", as a producer/consumer of an OSCORE option, can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
+<p id="section-3-3.1.2">
+Hence, OSCORE can be used between an origin client/server and a proxy, as well as between two proxies in an intermediary chain.<a href="#section-3-3.1.2" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-3-2.2">
-          <p id="section-3-2.2.1">A CoAP message can be secured by multiple OSCORE protections applied in sequence. In such a case, the final result is a message with nested OSCORE protections, as the output of an "OSCORE-in-OSCORE" process. Hence, following a decryption, the resulting message might legitimately include an OSCORE option, and thus have in turn to be decrypted.<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
-<p id="section-3-2.2.2">
-The most common case is expected to consider a message protected with up to two OSCORE layers, i.e.: i) an inner layer, protecting the message end-to-end between the origin client and the origin server acting as application endpoints; and ii) an outer layer, protecting the message between a certain OSCORE endpoint and the other OSCORE endpoint adjacent in the intermediary chain.<a href="#section-3-2.2.2" class="pilcrow">¶</a></p>
-<p id="section-3-2.2.3">
-However, a message can also be protected with a higher, arbitrary number of nested OSCORE layers, e.g., in scenarios relying on a longer chain of intermediaries. For instance, the origin client can sequentially apply multiple OSCORE layers to a request, each of which to be consumed and removed by one of the intermediaries in the chain, until the origin server is reached and it consumes the innermost OSCORE layer.<a href="#section-3-2.2.3" class="pilcrow">¶</a></p>
-<p id="section-3-2.2.4">
-An OSCORE endpoint <span class="bcp14">SHOULD</span> define the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message. The defined limit has to appropriately reflect the security requirements of the application. At the same time, such a limit is typically bounded by the maximum number of OSCORE Security Contexts that can be active at the endpoint, and also by the number of intermediary OSCORE endpoints that have been explicitly set up by the communicating parties.<a href="#section-3-2.2.4" class="pilcrow">¶</a></p>
-<p id="section-3-2.2.5">
-If its defined limit is reached when processing a CoAP message, an OSCORE endpoint <span class="bcp14">MUST NOT</span> perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed (see <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>).<a href="#section-3-2.2.5" class="pilcrow">¶</a></p>
+        <li id="section-3-3.2">
+          <p id="section-3-3.2.1">A CoAP message can be secured by multiple OSCORE protections applied in sequence. In such a case, the final result is a message with nested OSCORE protections. Hence, following a decryption, the resulting message might legitimately include an OSCORE option, and thus have in turn to be decrypted.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+<p id="section-3-3.2.2">
+The most common case is expected to consider a message protected with up to two OSCORE layers, i.e.: i) an inner layer, protecting the message end-to-end between the origin client and the origin server acting as application endpoints; and ii) an outer layer, protecting the message between a certain OSCORE endpoint and the other OSCORE endpoint adjacent in the intermediary chain.<a href="#section-3-3.2.2" class="pilcrow">¶</a></p>
+<p id="section-3-3.2.3">
+However, a message can also be protected with a higher, arbitrary number of nested OSCORE layers, e.g., in scenarios relying on a longer chain of intermediaries. For instance, the origin client can sequentially apply multiple OSCORE layers to a request, each of which to be consumed and removed by one of the intermediaries in the chain, until the origin server is reached and it consumes the innermost OSCORE layer.<a href="#section-3-3.2.3" class="pilcrow">¶</a></p>
+<p id="section-3-3.2.4">
+An OSCORE endpoint <span class="bcp14">SHOULD</span> define the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message. The defined limit has to appropriately reflect the security requirements of the application. At the same time, such a limit is typically bounded by the maximum number of OSCORE Security Contexts that can be active at the endpoint, and also by the number of intermediary OSCORE endpoints that have been explicitly set up by the communicating parties.<a href="#section-3-3.2.4" class="pilcrow">¶</a></p>
+<p id="section-3-3.2.5">
+If its defined limit is reached when processing a CoAP message, an OSCORE endpoint <span class="bcp14">MUST NOT</span> perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed (see <a href="#outgoing-responses" class="auto internal xref">Section 3.4</a>).<a href="#section-3-3.2.5" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-3-3"><a href="#sec-examples" class="auto internal xref">Appendix A</a> provides a number of examples where the approach defined in this document is used to protect message exchanges.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4"><a href="#sec-examples" class="auto internal xref">Appendix A</a> provides a number of examples where the approach defined in this document is used to protect message exchanges.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <div id="general-rules">
 <section id="section-3.1">
         <h3 id="name-protection-of-coap-options">
@@ -2004,7 +2008,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <h3 id="name-example-1">
 <a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-example-1" class="section-name selfRef">Example 1</a>
         </h3>
-<p id="appendix-A.1-1">In the example shown in <a href="#fig-example-client-proxy" class="auto internal xref">Figure 1</a>, message exchanges are protected with OSCORE over the following legs.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-1">In the example shown in <a href="#fig-example-client-proxy" class="auto internal xref">Figure 1</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.1-2.1">
             <p id="appendix-A.1-2.1.1">End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.1-2.1.1" class="pilcrow">¶</a></p>
@@ -2222,7 +2226,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <h3 id="name-example-2">
 <a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-example-2" class="section-name selfRef">Example 2</a>
         </h3>
-<p id="appendix-A.2-1">In the example shown in <a href="#fig-example-proxy-server" class="auto internal xref">Figure 2</a>, message exchanges are protected with OSCORE over the following legs.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-1">In the example shown in <a href="#fig-example-proxy-server" class="auto internal xref">Figure 2</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.2-2.1">
             <p id="appendix-A.2-2.1.1">End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.2-2.1.1" class="pilcrow">¶</a></p>
@@ -2439,7 +2443,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <h3 id="name-example-3">
 <a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-example-3" class="section-name selfRef">Example 3</a>
         </h3>
-<p id="appendix-A.3-1">In the example shown in <a href="#fig-example-client-proxy-server" class="auto internal xref">Figure 3</a>, message exchanges are protected with OSCORE over the following legs.<a href="#appendix-A.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-1">In the example shown in <a href="#fig-example-client-proxy-server" class="auto internal xref">Figure 3</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-A.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.3-2.1">
             <p id="appendix-A.3-2.1.1">End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.3-2.1.1" class="pilcrow">¶</a></p>
@@ -2703,7 +2707,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <h3 id="name-example-4">
 <a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-example-4" class="section-name selfRef">Example 4</a>
         </h3>
-<p id="appendix-A.4-1">In the example shown in <a href="#fig-example-edhoc" class="auto internal xref">Figure 4</a>, message exchanges are protected over the following legs.<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.4-1">In the example shown in <a href="#fig-example-edhoc" class="auto internal xref">Figure 4</a>, message exchanges are protected as follows.<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.4-2.1">
             <p id="appendix-A.4-2.1.1">End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.4-2.1.1" class="pilcrow">¶</a></p>
@@ -3170,7 +3174,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <h3 id="name-example-5">
 <a href="#appendix-A.5" class="section-number selfRef">A.5. </a><a href="#name-example-5" class="section-name selfRef">Example 5</a>
         </h3>
-<p id="appendix-A.5-1">In the example shown in <a href="#fig-example-edhoc-comb-req" class="auto internal xref">Figure 5</a>, message exchanges are protected over the following legs.<a href="#appendix-A.5-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.5-1">In the example shown in <a href="#fig-example-edhoc-comb-req" class="auto internal xref">Figure 5</a>, message exchanges are protected as follows.<a href="#appendix-A.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.5-2.1">
             <p id="appendix-A.5-2.1.1">End-to-end, between the client and the server. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.5-2.1.1" class="pilcrow">¶</a></p>
@@ -3602,7 +3606,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <h3 id="name-example-6">
 <a href="#appendix-A.6" class="section-number selfRef">A.6. </a><a href="#name-example-6" class="section-name selfRef">Example 6</a>
         </h3>
-<p id="appendix-A.6-1">In the example shown in <a href="#fig-example-reverse-proxy-without-end-to-end" class="auto internal xref">Figure 6</a>, message exchanges are protected with OSCORE over the following legs.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-1">In the example shown in <a href="#fig-example-reverse-proxy-without-end-to-end" class="auto internal xref">Figure 6</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.6-2.1">
             <p id="appendix-A.6-2.1.1">Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-A.6-2.1.1" class="pilcrow">¶</a></p>
@@ -3795,7 +3799,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <h3 id="name-example-7">
 <a href="#appendix-A.7" class="section-number selfRef">A.7. </a><a href="#name-example-7" class="section-name selfRef">Example 7</a>
         </h3>
-<p id="appendix-A.7-1">In the example shown in <a href="#fig-example-reverse-proxy-with-end-to-end" class="auto internal xref">Figure 7</a>, message exchanges are protected with OSCORE over the following legs.<a href="#appendix-A.7-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-1">In the example shown in <a href="#fig-example-reverse-proxy-with-end-to-end" class="auto internal xref">Figure 7</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-A.7-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.7-2.1">
             <p id="appendix-A.7-2.1.1">End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.7-2.1.1" class="pilcrow">¶</a></p>
@@ -4764,107 +4768,122 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
 <p id="appendix-D-1">This section is to be removed before publishing as an RFC.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
-<div id="sec-02-03">
+<div id="sec-03-04">
 <section id="appendix-D.1">
-        <h3 id="name-version-02-to-03">
-<a href="#appendix-D.1" class="section-number selfRef">D.1. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
+        <h3 id="name-version-03-to-04">
+<a href="#appendix-D.1" class="section-number selfRef">D.1. </a><a href="#name-version-03-to-04" class="section-name selfRef">Version -03 to -04</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-D.1-1.1">
-            <p id="appendix-D.1-1.1.1">Clarified motivation for updating RFC 8768 in the introduction.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.1.1">Updated references.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.2">
-            <p id="appendix-D.1-1.2.1">Explained that OSCORE-capable proxies have to recognize CoAP options included in outgoing messages to protect.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.2.1">Editorial improvements.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.1-1.3">
-            <p id="appendix-D.1-1.3.1">Fixed typo about the intended class of Hop-Limit option for OSCORE.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+        </ul>
+</section>
+</div>
+<div id="sec-02-03">
+<section id="appendix-D.2">
+        <h3 id="name-version-02-to-03">
+<a href="#appendix-D.2" class="section-number selfRef">D.2. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="appendix-D.2-1.1">
+            <p id="appendix-D.2-1.1.1">Clarified motivation for updating RFC 8768 in the introduction.<a href="#appendix-D.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.1-1.4">
-            <p id="appendix-D.1-1.4.1">Fixed protection of the Uri-Host option in examples.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.2-1.2">
+            <p id="appendix-D.2-1.2.1">Explained that OSCORE-capable proxies have to recognize CoAP options included in outgoing messages to protect.<a href="#appendix-D.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.1-1.5">
-            <p id="appendix-D.1-1.5.1">Added security considerations about the Hop-Limit option.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.2-1.3">
+            <p id="appendix-D.2-1.3.1">Fixed typo about the intended class of Hop-Limit option for OSCORE.<a href="#appendix-D.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.1-1.6">
-            <p id="appendix-D.1-1.6.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.2-1.4">
+            <p id="appendix-D.2-1.4.1">Fixed protection of the Uri-Host option in examples.<a href="#appendix-D.2-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.2-1.5">
+            <p id="appendix-D.2-1.5.1">Added security considerations about the Hop-Limit option.<a href="#appendix-D.2-1.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.2-1.6">
+            <p id="appendix-D.2-1.6.1">Clarifications and editorial improvements.<a href="#appendix-D.2-1.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-01-02">
-<section id="appendix-D.2">
+<section id="appendix-D.3">
         <h3 id="name-version-01-to-02">
-<a href="#appendix-D.2" class="section-number selfRef">D.2. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
+<a href="#appendix-D.3" class="section-number selfRef">D.3. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-D.2-1.1">
-            <p id="appendix-D.2-1.1.1">Revised escalation of CoAP option protection.<a href="#appendix-D.2-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-D.3-1.1">
+            <p id="appendix-D.3-1.1.1">Revised escalation of CoAP option protection.<a href="#appendix-D.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.2-1.2">
-            <p id="appendix-D.2-1.2.1">Specified general ordering for protecting outgoing requests.<a href="#appendix-D.2-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.3-1.2">
+            <p id="appendix-D.3-1.2.1">Specified general ordering for protecting outgoing requests.<a href="#appendix-D.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.2-1.3">
-            <p id="appendix-D.2-1.3.1">Explicit definition of OSCORE processing for the Hop-Limit option (update to RFC 8768).<a href="#appendix-D.2-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.3-1.3">
+            <p id="appendix-D.3-1.3.1">Explicit definition of OSCORE processing for the Hop-Limit option (update to RFC 8768).<a href="#appendix-D.3-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.2-1.4">
-            <p id="appendix-D.2-1.4.1">Added examples of message exchange with a reverse-proxy.<a href="#appendix-D.2-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.3-1.4">
+            <p id="appendix-D.3-1.4.1">Added examples of message exchange with a reverse-proxy.<a href="#appendix-D.3-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.2-1.5">
-            <p id="appendix-D.2-1.5.1">Clarifications and editorial improvements.<a href="#appendix-D.2-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.3-1.5">
+            <p id="appendix-D.3-1.5.1">Clarifications and editorial improvements.<a href="#appendix-D.3-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00-01">
-<section id="appendix-D.3">
+<section id="appendix-D.4">
         <h3 id="name-version-00-to-01">
-<a href="#appendix-D.3" class="section-number selfRef">D.3. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
+<a href="#appendix-D.4" class="section-number selfRef">D.4. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-D.3-1.1">
-            <p id="appendix-D.3-1.1.1">Escalation of option protection as explicit update point to RFC 8613.<a href="#appendix-D.3-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-D.4-1.1">
+            <p id="appendix-D.4-1.1.1">Escalation of option protection as explicit update point to RFC 8613.<a href="#appendix-D.4-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.2">
-            <p id="appendix-D.3-1.2.1">Clarified examples of Class U/I CoAP options that become encrypted.<a href="#appendix-D.3-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.2">
+            <p id="appendix-D.4-1.2.1">Clarified examples of Class U/I CoAP options that become encrypted.<a href="#appendix-D.4-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.3">
-            <p id="appendix-D.3-1.3.1">Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-Number.<a href="#appendix-D.3-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.3">
+            <p id="appendix-D.4-1.3.1">Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-Number.<a href="#appendix-D.4-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.4">
-            <p id="appendix-D.3-1.4.1">Added reference to Onion CoAP as use case.<a href="#appendix-D.3-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.4">
+            <p id="appendix-D.4-1.4.1">Added reference to Onion CoAP as use case.<a href="#appendix-D.4-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.5">
-            <p id="appendix-D.3-1.5.1">Required to set a limit on OSCORE layers that can be added/removed.<a href="#appendix-D.3-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.5">
+            <p id="appendix-D.4-1.5.1">Required to set a limit on OSCORE layers that can be added/removed.<a href="#appendix-D.4-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.6">
-            <p id="appendix-D.3-1.6.1">Revised general rules on protecting CoAP options.<a href="#appendix-D.3-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.6">
+            <p id="appendix-D.4-1.6.1">Revised general rules on protecting CoAP options.<a href="#appendix-D.4-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.7">
-            <p id="appendix-D.3-1.7.1">A forward-proxy consumes a request when the request URI identifies the proxy itself.<a href="#appendix-D.3-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.7">
+            <p id="appendix-D.4-1.7.1">A forward-proxy consumes a request when the request URI identifies the proxy itself.<a href="#appendix-D.4-1.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.8">
-            <p id="appendix-D.3-1.8.1">Consistency fix: a reverse-proxy can forward based on Uri-Host, Uri-Port or Uri-Path.<a href="#appendix-D.3-1.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.8">
+            <p id="appendix-D.4-1.8.1">Consistency fix: a reverse-proxy can forward based on Uri-Host, Uri-Port or Uri-Path.<a href="#appendix-D.4-1.8.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.9">
-            <p id="appendix-D.3-1.9.1">Generalized authorization checks as acceptability checks.<a href="#appendix-D.3-1.9.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.9">
+            <p id="appendix-D.4-1.9.1">Generalized authorization checks as acceptability checks.<a href="#appendix-D.4-1.9.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.10">
-            <p id="appendix-D.3-1.10.1">Added acceptability check before decrypting a request.<a href="#appendix-D.3-1.10.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.10">
+            <p id="appendix-D.4-1.10.1">Added acceptability check before decrypting a request.<a href="#appendix-D.4-1.10.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.11">
-            <p id="appendix-D.3-1.11.1">Fixes in the examples of message exchange.<a href="#appendix-D.3-1.11.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.11">
+            <p id="appendix-D.4-1.11.1">Fixes in the examples of message exchange.<a href="#appendix-D.4-1.11.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.12">
-            <p id="appendix-D.3-1.12.1">Updated state diagram of the incoming request processing.<a href="#appendix-D.3-1.12.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.12">
+            <p id="appendix-D.4-1.12.1">Updated state diagram of the incoming request processing.<a href="#appendix-D.4-1.12.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.13">
-            <p id="appendix-D.3-1.13.1">Added state diagram on the protection of CoAP options of Class U/I.<a href="#appendix-D.3-1.13.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.13">
+            <p id="appendix-D.4-1.13.1">Added state diagram on the protection of CoAP options of Class U/I.<a href="#appendix-D.4-1.13.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.14">
-            <p id="appendix-D.3-1.14.1">Updated references.<a href="#appendix-D.3-1.14.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.14">
+            <p id="appendix-D.4-1.14.1">Updated references.<a href="#appendix-D.4-1.14.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-D.3-1.15">
-            <p id="appendix-D.3-1.15.1">Editorial fixes and improvements.<a href="#appendix-D.3-1.15.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.4-1.15">
+            <p id="appendix-D.4-1.15.1">Editorial fixes and improvements.<a href="#appendix-D.4-1.15.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
