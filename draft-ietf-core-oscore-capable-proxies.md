@@ -228,6 +228,10 @@ The approach defined in this document can be useful also in the following use ca
 
 This section defines the processing of CoAP messages with OSCORE.
 
+{{sec-examples}} provides a number of examples where the approach defined in this document is used to protect message exchanges.
+
+## Deviations from the Original Message Processing
+
 This document introduces the following two main deviations from the original OSCORE specification {{RFC8613}}.
 
 1. An "OSCORE endpoint", as a producer/consumer of an OSCORE option, can be not only an application endpoint (i.e., an origin client or server), but also an intermediary such as a proxy.
@@ -243,8 +247,6 @@ This document introduces the following two main deviations from the original OSC
    An OSCORE endpoint SHOULD define the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message. The defined limit has to appropriately reflect the security requirements of the application. At the same time, such a limit is typically bounded by the maximum number of OSCORE Security Contexts that can be active at the endpoint, and also by the number of intermediary OSCORE endpoints that have been explicitly set up by the communicating parties.
 
    If its defined limit is reached when processing a CoAP message, an OSCORE endpoint MUST NOT perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint MUST abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint MUST reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed (see {{outgoing-responses}}).
-
-{{sec-examples}} provides a number of examples where the approach defined in this document is used to protect message exchanges.
 
 ## Protection of CoAP Options {#general-rules}
 
@@ -398,7 +400,7 @@ Although it is not possible as per the original OSCORE specification {{RFC8613}}
 
 In particular, this approach requires both the origin client and the origin server to have already joined the correct OSCORE group. Then, starting from the same plain CoAP request, different clients in the OSCORE group are able to deterministically generate a same Deterministic Request protected with Group OSCORE, which is sent to a proxy for being forwarded to the origin server. The proxy can effectively cache the resulting OSCORE-protected response from the server, since the same plain CoAP request will result again in the same Deterministic Request and thus will produce a cache hit at the proxy.
 
-When using this approach, the following also applies in addition to what is defined in {{sec-message-processing}}, when processing incoming messages at a proxy that implements caching of responses.
+When using this approach, the following also applies in addition to what is defined in {{incoming-requests}} and {{incoming-responses}}, when processing incoming messages at a proxy that implements caching of responses.
 
 * Upon receiving a request from (the previous hop towards) the origin client, the proxy checks if specifically the message available during the execution of Step 2 in {{incoming-requests}} produces a cache hit.
 
@@ -1672,6 +1674,8 @@ request      +-----------------------------------------------+        |
 ## Version -03 to -04 ## {#sec-03-04}
 
 * Removed definition and use of "OSCORE-in-OSCORE".
+
+* Explain deviations from RFC 8613 as an actual subsection.
 
 * More precise indication of outer or inner CoAP options.
 
