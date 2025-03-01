@@ -3175,10 +3175,10 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <p id="appendix-A.5-1">In the example shown in <a href="#fig-example-edhoc-comb-req" class="auto internal xref">Figure 5</a>, message exchanges are protected as follows.<a href="#appendix-A.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.5-2.1">
-            <p id="appendix-A.5-2.1.1">End-to-end, between the client and the server. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.5-2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.5-2.1.1">End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-A.5-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.5-2.2">
-            <p id="appendix-A.5-2.2.1">Between the client and the proxy. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-A.5-2.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.5-2.2.1">Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-A.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="appendix-A.5-3">The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-A.5-3" class="pilcrow">¶</a></p>
