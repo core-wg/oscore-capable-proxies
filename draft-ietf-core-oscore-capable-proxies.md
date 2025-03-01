@@ -1060,9 +1060,9 @@ Curly brackets { ... } indicate encrypted data.
 
 In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are protected as follows.
 
-* End-to-end, between the client and the server. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
+* End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
 
-* Between the client and the proxy. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
+* Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
 The example also shows how the client establishes an OSCORE Security Context CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC {{RFC9528}}.
 
