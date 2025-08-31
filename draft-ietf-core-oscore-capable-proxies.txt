@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                            1 March 2025
-Expires: 2 September 2025
+Intended status: Standards Track                          31 August 2025
+Expires: 4 March 2026
 
 
                          OSCORE-capable Proxies
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 September 2025.
+   This Internet-Draft will expire on 4 March 2026.
 
 Copyright Notice
 
@@ -992,25 +992,25 @@ Table of Contents
    [I-D.ietf-core-href]
               Bormann, C. and H. Birkholz, "Constrained Resource
               Identifiers", Work in Progress, Internet-Draft, draft-
-              ietf-core-href-18, 3 February 2025,
+              ietf-core-href-24, 30 August 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              href-18>.
+              href-24>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
               and R. Höglund, "Group Object Security for Constrained
               RESTful Environments (Group OSCORE)", Work in Progress,
-              Internet-Draft, draft-ietf-core-oscore-groupcomm-24, 8
-              February 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-oscore-groupcomm-24>.
+              Internet-Draft, draft-ietf-core-oscore-groupcomm-26, 5
+              July 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-core-oscore-groupcomm-26>.
 
    [I-D.ietf-schc-8824-update]
-              Tiloca, M., Toutain, L., Martinez, I., and A. Minaburo,
+              Tiloca, M., Toutain, L., Martínez, I., and A. Minaburo,
               "Static Context Header Compression (SCHC) for the
               Constrained Application Protocol (CoAP)", Work in
-              Progress, Internet-Draft, draft-ietf-schc-8824-update-03,
-              21 October 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-schc-8824-update-03>.
+              Progress, Internet-Draft, draft-ietf-schc-8824-update-05,
+              7 July 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-schc-8824-update-05>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1047,39 +1047,40 @@ Table of Contents
    [I-D.amsuess-core-cachable-oscore]
               Amsüss, C. and M. Tiloca, "Cacheable OSCORE", Work in
               Progress, Internet-Draft, draft-amsuess-core-cachable-
-              oscore-10, 8 January 2025,
+              oscore-11, 6 July 2025,
               <https://datatracker.ietf.org/doc/html/draft-amsuess-core-
-              cachable-oscore-10>.
+              cachable-oscore-11>.
 
    [I-D.amsuess-t2trg-onion-coap]
               Amsüss, C., Tiloca, M., and R. Höglund, "Using onion
               routing with CoAP", Work in Progress, Internet-Draft,
-              draft-amsuess-t2trg-onion-coap-03, 17 November 2024,
+              draft-amsuess-t2trg-onion-coap-04, 7 July 2025,
               <https://datatracker.ietf.org/doc/html/draft-amsuess-
-              t2trg-onion-coap-03>.
+              t2trg-onion-coap-04>.
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              06, 21 October 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              coap-est-oscore-06>.
+              08, 7 July 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-coap-est-oscore-08>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
-              Tiloca, M., Park, J., and F. Palombini, "Key Management
-              for OSCORE Groups in ACE", Work in Progress, Internet-
-              Draft, draft-ietf-ace-key-groupcomm-oscore-16, 6 March
-              2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              ace-key-groupcomm-oscore-16>.
+              Tiloca, M. and F. Palombini, "Key Management for Group
+              Object Security for Constrained RESTful Environments
+              (Group OSCORE) Using Authentication and Authorization for
+              Constrained Environments (ACE)", Work in Progress,
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-18, 28
+              August 2025, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ace-key-groupcomm-oscore-18>.
 
    [I-D.ietf-core-coap-pm]
-              Fioccola, G., Zhou, T., Nilo, M., and F. Bulgarella,
-              "Constrained Application Protocol (CoAP) Performance
-              Measurement Option", Work in Progress, Internet-Draft,
-              draft-ietf-core-coap-pm-03, 3 October 2024,
+              Fioccola, G., Zhou, T., Cociglio, M., Bulgarella, F., and
+              Y. Zhu, "Constrained Application Protocol (CoAP)
+              Performance Measurement Option", Work in Progress,
+              Internet-Draft, draft-ietf-core-coap-pm-04, 4 April 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pm-03>.
+              coap-pm-04>.
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
@@ -1093,31 +1094,30 @@ Table of Contents
               Dijk, E. and M. Tiloca, "Group Communication for the
               Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              13, 24 February 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-bis-13>.
+              14, 2 July 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-groupcomm-bis-14>.
 
    [I-D.ietf-core-groupcomm-proxy]
               Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
               Communication", Work in Progress, Internet-Draft, draft-
-              ietf-core-groupcomm-proxy-03, 21 October 2024,
+              ietf-core-groupcomm-proxy-04, 3 March 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-proxy-03>.
+              groupcomm-proxy-04>.
 
    [I-D.ietf-core-observe-multicast-notifications]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Observe Notifications as CoAP Multicast Responses", Work
               in Progress, Internet-Draft, draft-ietf-core-observe-
-              multicast-notifications-10, 21 October 2024,
+              multicast-notifications-12, 7 July 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              observe-multicast-notifications-10>.
+              observe-multicast-notifications-12>.
 
    [I-D.ietf-core-transport-indication]
               Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
               Work in Progress, Internet-Draft, draft-ietf-core-
-              transport-indication-07, 21 October 2024,
+              transport-indication-09, 7 July 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              transport-indication-07>.
+              transport-indication-09>.
 
    [LwM2M-Core]
               Open Mobile Alliance, "Lightweight Machine to Machine
@@ -2705,8 +2705,8 @@ E.4.  Version -00 to -01
 Acknowledgments
 
    The authors sincerely thank Christian Amsüss, Peter Blomqvist,
-   Carsten Bormann, David Navarro, and Göran Selander for their comments
-   and feedback.
+   Carsten Bormann, David Navarro, Göran Selander, and Lucas Åhl for
+   their comments and feedback.
 
    The work on this document has been partly supported by the Sweden's
    Innovation Agency VINNOVA and the Celtic-Next projects CRITISEC and
@@ -2718,7 +2718,7 @@ Authors' Addresses
    Marco Tiloca
    RISE AB
    Isafjordsgatan 22
-   SE-16440 Kista
+   SE-164 40 Kista
    Sweden
    Email: marco.tiloca@ri.se
 
@@ -2726,6 +2726,6 @@ Authors' Addresses
    Rikard Höglund
    RISE AB
    Isafjordsgatan 22
-   SE-16440 Kista
+   SE-164 40 Kista
    Sweden
    Email: rikard.hoglund@ri.se
