@@ -21,7 +21,7 @@ author:
         org: RISE AB
         street: Isafjordsgatan 22
         city: Kista
-        code: SE-16440
+        code: SE-164 40
         country: Sweden
         email: marco.tiloca@ri.se
       -
@@ -30,7 +30,7 @@ author:
         org: RISE AB
         street: Isafjordsgatan 22
         city: Kista
-        code: SE-16440
+        code: SE-164 40
         country: Sweden
         email: rikard.hoglund@ri.se
 
@@ -1748,6 +1748,6 @@ request      +-----------------------------------------------+        |
 # Acknowledgments # {#acknowledgments}
 {:numbered="false"}
 
-The authors sincerely thank {{{Christian Amsüss}}}, {{{Peter Blomqvist}}}, {{{Carsten Bormann}}}, {{{David Navarro}}}, and {{{Göran Selander}}} for their comments and feedback.
+The authors sincerely thank {{{Christian Amsüss}}}, {{{Peter Blomqvist}}}, {{{Carsten Bormann}}}, {{{David Navarro}}}, {{{Göran Selander}}}, and {{{Lucas Åhl}}} for their comments and feedback.
 
 The work on this document has been partly supported by the Sweden's Innovation Agency VINNOVA and the Celtic-Next projects CRITISEC and CYPRESS; and by the H2020 project SIFIS-Home (Grant agreement 952652).
