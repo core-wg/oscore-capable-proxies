@@ -768,7 +768,7 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|    Code: 0.02 (POST)
   |       | POST  |   Token: 0x7b
-  |       |       |  OSCORE: [kid:0xd4, Partial IV:31]
+  |       |       |  OSCORE: [kid:0xd4, Partial IV:53]
   |       |       |    0xff
   |       |       | Payload: {Code: 0.02 (POST),
   |       |       |           Uri-Host: "example.com",
@@ -930,6 +930,10 @@ CTX_C_P   |       |
   |       |       |            0xff,
   |       |       |            EDHOC message_2
   |       |       |           } // Encrypted with CTX_C_P
+  |       |       |
+Decrypt   |       |
+RESP with |       |
+CTX_C_P   |       |
   |       |       |
 Establish |       |
 CTX_C_S   |       |
@@ -1166,7 +1170,8 @@ for S     |       |
 from REQ  |       |
   |       |       |
 Encrypt   |       |
-REQ with  |       |
+COMB_REQ  |       |
+with      |       |
 CTX_C_P   |       |
   |       |       |
   +------>|       |     Code: 0.02 (POST)
@@ -1187,7 +1192,8 @@ CTX_C_P   |       |
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
-  |     REQ with  |
+  |     COMB_REQ  |
+  |     with      |
   |     CTX_C_P   |
   |       |       |
   |       +------>|     Code: 0.02 (POST)
@@ -1403,7 +1409,7 @@ CTX_C_P   |       |
   |       |       |
   |       +------>|    Code: 0.02 (POST)
   |       | POST  |   Token: 0x7b
-  |       |       |  OSCORE: [kid:0xd4, Partial IV:31]
+  |       |       |  OSCORE: [kid:0xd4, Partial IV:53]
   |       |       |    0xff
   |       |       | Payload: {Code: 0.02 (POST),
   |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
@@ -1672,6 +1678,8 @@ request      +-----------------------------------------------+        |
 {:removeinrfc}
 
 ## Version -04 to -05 ## {#sec-04-05}
+
+* Fixes in the examples of message exchange.
 
 * Minor clarifications and editorial improvements.
 
