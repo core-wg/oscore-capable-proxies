@@ -1653,7 +1653,7 @@ B.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
      |       |       |
      |       +------>|    Code: 0.02 (POST)
      |       | POST  |   Token: 0x7b
-     |       |       |  OSCORE: [kid:0xd4, Partial IV:31]
+     |       |       |  OSCORE: [kid:0xd4, Partial IV:53]
      |       |       |    0xff
      |       |       | Payload: {Code: 0.02 (POST),
      |       |       |           Uri-Host: "example.com",
@@ -1822,6 +1822,10 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       |            0xff,
      |       |       |            EDHOC message_2
      |       |       |           } // Encrypted with CTX_C_P
+     |       |       |
+   Decrypt   |       |
+   RESP with |       |
+   CTX_C_P   |       |
      |       |       |
    Establish |       |
    CTX_C_S   |       |
@@ -2068,7 +2072,8 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
    from REQ  |       |
      |       |       |
    Encrypt   |       |
-   REQ with  |       |
+   COMB_REQ  |       |
+   with      |       |
    CTX_C_P   |       |
      |       |       |
      +------>|       |     Code: 0.02 (POST)
@@ -2089,7 +2094,8 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      |       |       |           } // Encrypted with CTX_C_P
      |       |       |
      |     Decrypt   |
-     |     REQ with  |
+     |     COMB_REQ  |
+     |     with      |
      |     CTX_C_P   |
      |       |       |
      |       +------>|     Code: 0.02 (POST)
@@ -2349,7 +2355,7 @@ B.7.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
      |       |       |
      |       +------>|    Code: 0.02 (POST)
      |       | POST  |   Token: 0x7b
-     |       |       |  OSCORE: [kid:0xd4, Partial IV:31]
+     |       |       |  OSCORE: [kid:0xd4, Partial IV:53]
      |       |       |    0xff
      |       |       | Payload: {Code: 0.02 (POST),
      |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
@@ -2623,6 +2629,8 @@ Appendix E.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 E.1.  Version -04 to -05
+
+   *  Fixes in the examples of message exchange.
 
    *  Minor clarifications and editorial improvements.
 
