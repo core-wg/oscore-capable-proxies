@@ -89,7 +89,7 @@ informative:
 
 --- abstract
 
-Object Security for Constrained RESTful Environments (OSCORE) can be used to protect CoAP messages end-to-end between two endpoints at the application layer, also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines rules to escalate the protection of a CoAP option, in order to encrypt and integrity-protect it whenever possible. Finally, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints; and between an application endpoint and an intermediary or between two intermediaries. Therefore, this document updates RFC 8613. Furthermore, this document updates RFC 8768, by explicitly defining the processing with OSCORE for the CoAP option Hop-Limit. The approach defined in this document can be seamlessly used with Group OSCORE, for protecting CoAP messages when group communication is used in the presence of intermediaries.
+When using the Constrained Application Protocol (CoAP), messages exchanged between two endpoints can be protected end-to-end at the application layer by means of Object Security for Constrained RESTful Environments (OSCORE), also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines rules to escalate the protection of a CoAP option, in order to encrypt and integrity-protect it whenever possible. Finally, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints; and between an application endpoint and an intermediary or between two intermediaries. Therefore, this document updates RFC 8613. Furthermore, this document updates RFC 8768, by explicitly defining the processing with OSCORE for the CoAP Hop-Limit Option. The approach defined in this document can be seamlessly employed also with Group OSCORE, for protecting CoAP messages when group communication is used in the presence of intermediaries.
 
 --- middle
 
@@ -97,7 +97,7 @@ Object Security for Constrained RESTful Environments (OSCORE) can be used to pro
 
 The Constrained Application Protocol (CoAP) {{RFC7252}} supports the presence of intermediaries such as forward-proxies and reverse-proxies, which assist origin clients by performing requests to origin servers on their behalf and forwarding back the corresponding responses.
 
-CoAP supports also group communication scenarios {{I-D.ietf-core-groupcomm-bis}}, where clients can send a one-to-many request targeting all the servers in the group, e.g., by using IP multicast. Like for one-to-one communication, group settings can also rely on intermediaries {{I-D.ietf-core-groupcomm-proxy}}.
+CoAP supports also group communication scenarios {{I-D.ietf-core-groupcomm-bis}}, where clients can send a one-to-many request targeting all the servers in the group, e.g., by using IP multicast. Like for one-to-one communication, group settings can also rely on intermediaries, e.g., by using the realization of proxy specified in {{I-D.ietf-core-groupcomm-proxy}}.
 
 The security protocol Object Security for Constrained RESTful Environments (OSCORE) {{RFC8613}} can be used to protect CoAP messages between two endpoints at the application layer, especially achieving end-to-end security in the presence of (non-trusted) intermediaries. When CoAP group communication is used, the same can be achieved by means of the security protocol Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
@@ -115,11 +115,11 @@ This document fills this gap and updates {{RFC8613}} as follows.
 
 * It admits a CoAP message to be secured by multiple, nested OSCORE protections applied in sequence. For instance, this is the case when the message is OSCORE-protected end-to-end between the origin client and origin server, after which the result is further OSCORE-protected over the leg between the current and next hop (e.g., the origin client and the adjacent intermediary acting as the next hop towards the origin server).
 
-Furthermore, this document updates {{RFC8768}}, by explicitly defining the CoAP option Hop-Limit to be of Class U for OSCORE (see {{sec-hop-limit}}). In the case where the Hop-Limit option is first added to a request by an origin client instead of an intermediary, this update avoids undesired overhead in terms of message size and ensures that the first intermediary in the chain enforces the intent of the origin client in detecting forwarding loops.
+Furthermore, this document updates {{RFC8768}}, by explicitly defining the CoAP Hop-Limit Option to be of Class U for OSCORE (see {{sec-hop-limit}}). In the case where the Hop-Limit Option is first added to a request by an origin client instead of an intermediary, this update avoids undesired overhead in terms of message size and ensures that the first intermediary in the chain enforces the intent of the origin client in detecting forwarding loops.
 
-This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message, depending on the presence of the OSCORE option and of other CoAP options intended for an intermediary.
+This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message, depending on the presence of the CoAP OSCORE Option and of other CoAP options intended for an intermediary.
 
-The approach defined in this document can be seamlessly adopted also when Group OSCORE is used for protecting CoAP messages in group communication scenarios that rely on intermediaries.
+The approach defined in this document can be seamlessly employed also when Group OSCORE is used for protecting CoAP messages in group communication scenarios that rely on intermediaries.
 
 ## Terminology ## {#terminology}
 
@@ -145,11 +145,11 @@ In addition, this document uses the following terms.
 
 * Proxy-related options: either of the following (set of) CoAP options that a proxy can use to understand where to forward a CoAP request. These CoAP options are defined in {{RFC7252}} and {{I-D.ietf-core-href}}.
 
-  - The Proxy-Uri option or the Proxy-Cri option. These are relevant when using a forward-proxy.
+  - The Proxy-Uri Option or the Proxy-Cri Option. These are relevant when using a forward-proxy.
 
-  - The set of CoAP options comprising the Proxy-Scheme option or the Proxy-Scheme-Number option, together with any of the Uri-* options. This is relevant when using a forward-proxy.
+  - The set of CoAP options comprising the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* options. This is relevant when using a forward-proxy.
 
-  - The set of CoAP options comprising any of the Uri-Host, Uri-Port, and Uri-Path options, when those are not used together with the Proxy-Scheme option or the Proxy-Scheme-Number option. This is relevant when using a reverse-proxy.
+  - The set of CoAP options comprising any of the Uri-Host, Uri-Port, and Uri-Path options, when those are not used together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
 
 
 # Message Processing # {#sec-message-processing}
@@ -162,11 +162,11 @@ This section defines the processing of CoAP messages with OSCORE.
 
 This document introduces the following two main deviations from the original OSCORE specification {{RFC8613}}.
 
-* An "OSCORE endpoint", as a producer/consumer of an OSCORE option, can be not only an application endpoint (i.e., an origin client or server) but also an intermediary such as a proxy.
+* An "OSCORE endpoint", as a producer/consumer of an OSCORE Option, can be not only an application endpoint (i.e., an origin client or server) but also an intermediary such as a proxy.
 
-  Hence, OSCORE can be used between an origin client/server and a proxy as well as between two proxies in an intermediary chain.
+  Hence, OSCORE can be used between an origin client/server and a proxy, as well as between two proxies in an intermediary chain.
 
-* A CoAP message can be secured by multiple OSCORE protections applied in sequence. In such a case, the final result is a message with nested OSCORE protections. Hence, following a decryption, the resulting message might legitimately include an OSCORE option and thus have in turn to be decrypted.
+* A CoAP message can be secured by multiple OSCORE protections applied in sequence. In such a case, the final result is a message with nested OSCORE protections. Hence, following a decryption, the resulting message might legitimately include an OSCORE Option and thus have in turn to be decrypted.
 
   The most common case is expected to consider a message protected with up to two OSCORE layers, i.e.: i) an inner layer, protecting the message end-to-end between the origin client and the origin server acting as application endpoints; and ii) an outer layer, protecting the message between a certain OSCORE endpoint and the other OSCORE endpoint adjacent in the intermediary chain.
 
@@ -178,7 +178,7 @@ This document introduces the following two main deviations from the original OSC
 
 ## Protection of CoAP Options {#general-rules}
 
-The following considers a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context that is shares with another OSCORE endpoint X.
+The following considers a sender endpoint that, when protecting an outgoing message M, applies the i-th OSCORE layer in sequence, by using the OSCORE Security Context that it shares with another OSCORE endpoint X.
 
 As usual, the sender endpoint encrypts and integrity-protects the CoAP options included in M that are processed as Class E for OSCORE, as per {{Sections 4.1.1 and 4.1.3 of RFC8613}}.
 
@@ -202,17 +202,17 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
 5. If X needs to access OPT before having removed the i-th OSCORE layer or in order to remove the i-th OSCORE layer, then this algorithm moves to Step 9. Otherwise, this algorithm moves to Step 6.
 
-6. If OPT is the Uri-Host or Uri-Port option, then this algorithm moves to Step 7. Otherwise, this algorithm moves to Step 8.
+6. If OPT is the Uri-Host Option or the Uri-Port Option, then this algorithm moves to Step 7. Otherwise, this algorithm moves to Step 8.
 
-7. If M includes the Proxy-Scheme or Proxy-Scheme-Number option, then this algorithm moves to Step 8. Otherwise, this algorithm moves to Step 9.
+7. If M includes the Proxy-Scheme Option or the Proxy-Scheme-Number Option, then this algorithm moves to Step 8. Otherwise, this algorithm moves to Step 9.
 
 8. The sender endpoint determines that OPT will be processed as Class E for OSCORE, i.e., both encrypted and integrity-protected. Then, the sender endpoint terminates this algorithm.
 
 9. The sender endpoint determines that OPT will be processed as per its original Class U or I for OSCORE. Then, the sender endpoint terminates this algorithm.
 
-Compared to what is defined in {{Section 5.7.1 of RFC7252}}, a new requirement is introduced for a proxy that acts as OSCORE endpoint. That is, for each CoAP option OPT included in an outgoing message M that the proxy protects with OSCORE, the proxy has to be able to recognize OPT and thus be aware of the original Class of OPT for OSCORE.
+Compared to what is defined in {{Section 5.7.1 of RFC7252}}, a new requirement is introduced for a proxy that acts as an OSCORE endpoint. That is, for each CoAP option OPT included in an outgoing message M that the proxy protects with OSCORE, the proxy has to be able to recognize OPT and thus be aware of the original Class of OPT for OSCORE.
 
-If a proxy that acts as OSCORE endpoint does not recognize a CoAP option included in M, then the proxy MUST stop processing M and performs the following actions.
+If a proxy that acts as an OSCORE endpoint does not recognize a CoAP option included in M, then the proxy MUST stop processing M and performs the following actions:
 
 * If M is a request, then the proxy MUST respond with a 4.02 (Bad Option) error response to (the previous hop towards) the origin client.
 
