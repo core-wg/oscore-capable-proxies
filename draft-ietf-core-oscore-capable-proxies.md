@@ -53,12 +53,13 @@ informative:
   I-D.ietf-core-groupcomm-bis:
   I-D.ietf-core-groupcomm-proxy:
   I-D.ietf-core-observe-multicast-notifications:
+  I-D.ietf-core-multicast-notifications-proxy:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-core-transport-indication:
   I-D.ietf-ace-key-groupcomm-oscore:
   I-D.ietf-core-coap-pm:
   I-D.ietf-ace-coap-est-oscore:
-  I-D.amsuess-core-cachable-oscore:
+  I-D.ietf-core-cacheable-oscore:
   I-D.amsuess-t2trg-onion-coap:
   LwM2M-Core:
     author:
@@ -245,7 +246,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
      Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to Step 1.
 
-     Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Notifications option (see {{Section 12 of I-D.ietf-core-observe-multicast-notifications}}).
+     Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses option (see {{Section 4 of I-D.ietf-core-multicast-notifications-proxy}}).
 
      If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
 
@@ -323,7 +324,7 @@ When OSCORE is used at proxies like it is defined in this document, the process 
 
 # Caching of OSCORE-Protected Responses # {#sec-response-caching}
 
-Although it is not possible as per the original OSCORE specification {{RFC8613}}, effective cacheability of OSCORE-protected responses at proxies can be achieved. To this end, the approach defined in {{I-D.amsuess-core-cachable-oscore}} can be used, as based on Deterministic Requests protected with the pairwise mode of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}} used end-to-end between an origin client and an origin server. The applicability of this approach is limited to requests that are safe to process (in the REST sense) and that do not yield side effects at the origin server.
+Although it is not possible as per the original OSCORE specification {{RFC8613}}, effective cacheability of OSCORE-protected responses at proxies can be achieved. To this end, the approach defined in {{I-D.ietf-core-cacheable-oscore}} can be used, as based on Deterministic Requests protected with the pairwise mode of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}} used end-to-end between an origin client and an origin server. The applicability of this approach is limited to requests that are safe to process (in the REST sense) and that do not yield side effects at the origin server.
 
 In particular, this approach requires both the origin client and the origin server to have already joined the correct OSCORE group. Then, starting from the same plain CoAP request, different clients in the OSCORE group are able to deterministically generate a same Deterministic Request protected with Group OSCORE, which is sent to a proxy for being forwarded to the origin server. The proxy can effectively cache the resulting OSCORE-protected response from the server, since the same plain CoAP request will result again in the same Deterministic Request and thus will produce a cache hit at the proxy.
 
@@ -471,9 +472,9 @@ The Observe extension for CoAP {{RFC7641}} allows a client to register its inter
 
 In some applications, such as based on publish-subscribe communication {{I-D.ietf-core-coap-pubsub}}, multiple clients are interested in observing the same resource at the same server. Hence, {{I-D.ietf-core-observe-multicast-notifications}} defines a method that allows the server to send a multicast notification to all the observer clients at once, e.g., over IP multicast. To this end, the server synchronizes the clients by providing them with a common "phantom observation request", against which the following multicast notifications will match.
 
-In case the clients and the server use Group OSCORE for end-to-end security and a proxy is also involved, an additional step is required (see {{Section 12 of I-D.ietf-core-observe-multicast-notifications}}). That is, clients are in turn required to provide the proxy with the obtained "phantom observation request", thus enabling the proxy to receive the multicast notifications from the server.
+In case the clients and the server use Group OSCORE for end-to-end security and a proxy is also involved, an additional step is required (see {{Section 4 of I-D.ietf-core-multicast-notifications-proxy}}). That is, clients are in turn required to provide the proxy with the obtained "phantom observation request", thus enabling the proxy to receive the multicast notifications from the server.
 
-Therefore, it is preferable to have a security association also between each client and the proxy, in order to ensure the integrity of that information provided to the proxy (see {{Section 15.3 of I-D.ietf-core-observe-multicast-notifications}}). Like for the use case in {{ssec-uc1}}, this would be conveniently achieved with a dedicated OSCORE Security Context between a client and the proxy, since the client is also using Group OSCORE with the origin server.
+Therefore, it is preferable to have a security association also between each client and the proxy, in order to ensure the integrity of that information provided to the proxy (see {{Section 10.1 of I-D.ietf-core-multicast-notifications-proxy}}). Like for the use case in {{ssec-uc1}}, this would be conveniently achieved with a dedicated OSCORE Security Context between a client and the proxy, since the client is also using Group OSCORE with the origin server.
 
 ## LwM2M Client and External Application Server # {#ssec-uc3}
 
@@ -1676,6 +1677,12 @@ request      +-----------------------------------------------+        |
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -05 to -06 ## {#sec-05-06}
+
+* Updated references.
+
+* Minor clarifications and editorial improvements.
 
 ## Version -04 to -05 ## {#sec-04-05}
 
