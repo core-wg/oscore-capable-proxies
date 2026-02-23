@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                        1 September 2025
-Expires: 5 March 2026
+Intended status: Standards Track                        23 February 2026
+Expires: 27 August 2026
 
 
                          OSCORE-capable Proxies
@@ -58,11 +58,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 March 2026.
+   This Internet-Draft will expire on 27 August 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -114,11 +114,12 @@ Table of Contents
    Appendix C.  State Diagram: Protection of CoAP Options
    Appendix D.  State Diagram: Processing of Incoming Requests
    Appendix E.  Document Updates
-     E.1.  Version -04 to -05
-     E.2.  Version -03 to -04
-     E.3.  Version -02 to -03
-     E.4.  Version -01 to -02
-     E.5.  Version -00 to -01
+     E.1.  Version -05 to -06
+     E.2.  Version -04 to -05
+     E.3.  Version -03 to -04
+     E.4.  Version -02 to -03
+     E.5.  Version -01 to -02
+     E.6.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -482,8 +483,8 @@ Table of Contents
           differently indicated in REQ, e.g., by means of any of its
           CoAP options.  For instance, a forward-proxy does not forward
           a request that includes proxy-related options together with
-          the Listen-To-Multicast-Notifications option (see Section 12
-          of [I-D.ietf-core-observe-multicast-notifications]).
+          the Listen-To-Multicast-Responses option (see Section 4 of
+          [I-D.ietf-core-multicast-notifications-proxy]).
 
           If the endpoint forwards REQ to (the next hop towards) the
           origin server, this may result in (further) protecting REQ
@@ -686,7 +687,7 @@ Table of Contents
    Although it is not possible as per the original OSCORE specification
    [RFC8613], effective cacheability of OSCORE-protected responses at
    proxies can be achieved.  To this end, the approach defined in
-   [I-D.amsuess-core-cachable-oscore] can be used, as based on
+   [I-D.ietf-core-cacheable-oscore] can be used, as based on
    Deterministic Requests protected with the pairwise mode of Group
    OSCORE [I-D.ietf-core-oscore-groupcomm] used end-to-end between an
    origin client and an origin server.  The applicability of this
@@ -995,25 +996,25 @@ Table of Contents
    [I-D.ietf-core-href]
               Bormann, C. and H. Birkholz, "Constrained Resource
               Identifiers", Work in Progress, Internet-Draft, draft-
-              ietf-core-href-24, 30 August 2025,
+              ietf-core-href-30, 21 November 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              href-24>.
+              href-30>.
 
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
               and R. Höglund, "Group Object Security for Constrained
               RESTful Environments (Group OSCORE)", Work in Progress,
-              Internet-Draft, draft-ietf-core-oscore-groupcomm-26, 5
-              July 2025, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-core-oscore-groupcomm-26>.
+              Internet-Draft, draft-ietf-core-oscore-groupcomm-28, 23
+              December 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-oscore-groupcomm-28>.
 
    [I-D.ietf-schc-8824-update]
               Tiloca, M., Toutain, L., Martínez, I., and A. Minaburo,
               "Static Context Header Compression (SCHC) for the
               Constrained Application Protocol (CoAP)", Work in
-              Progress, Internet-Draft, draft-ietf-schc-8824-update-05,
-              7 July 2025, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-schc-8824-update-05>.
+              Progress, Internet-Draft, draft-ietf-schc-8824-update-07,
+              1 December 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-schc-8824-update-07>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1047,13 +1048,6 @@ Table of Contents
 
 9.2.  Informative References
 
-   [I-D.amsuess-core-cachable-oscore]
-              Amsüss, C. and M. Tiloca, "Cacheable OSCORE", Work in
-              Progress, Internet-Draft, draft-amsuess-core-cachable-
-              oscore-11, 6 July 2025,
-              <https://datatracker.ietf.org/doc/html/draft-amsuess-core-
-              cachable-oscore-11>.
-
    [I-D.amsuess-t2trg-onion-coap]
               Amsüss, C., Tiloca, M., and R. Höglund, "Using onion
               routing with CoAP", Work in Progress, Internet-Draft,
@@ -1065,25 +1059,33 @@ Table of Contents
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              08, 7 July 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-est-oscore-08>.
+              09, 20 October 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
+              coap-est-oscore-09>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M. and F. Palombini, "Key Management for Group
               Object Security for Constrained RESTful Environments
               (Group OSCORE) Using Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-18, 28
-              August 2025, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-ace-key-groupcomm-oscore-18>.
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-19, 24
+              January 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-key-groupcomm-oscore-19>.
+
+   [I-D.ietf-core-cacheable-oscore]
+              Amsüss, C. and M. Tiloca, "Cacheable OSCORE", Work in
+              Progress, Internet-Draft, draft-ietf-core-cacheable-
+              oscore-00, 22 September 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              cacheable-oscore-00>.
 
    [I-D.ietf-core-coap-pm]
               Fioccola, G., Zhou, T., Cociglio, M., Bulgarella, F., and
               Y. Zhu, "Constrained Application Protocol (CoAP)
               Performance Measurement Option", Work in Progress,
-              Internet-Draft, draft-ietf-core-coap-pm-04, 4 April 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pm-04>.
+              Internet-Draft, draft-ietf-core-coap-pm-05, 20 October
+              2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              core-coap-pm-05>.
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
@@ -1097,23 +1099,32 @@ Table of Contents
               Dijk, E. and M. Tiloca, "Group Communication for the
               Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              14, 2 July 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-groupcomm-bis-14>.
+              18, 10 February 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              groupcomm-bis-18>.
 
    [I-D.ietf-core-groupcomm-proxy]
               Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
               Communication", Work in Progress, Internet-Draft, draft-
-              ietf-core-groupcomm-proxy-04, 3 March 2025,
+              ietf-core-groupcomm-proxy-05, 3 September 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-proxy-04>.
+              groupcomm-proxy-05>.
+
+   [I-D.ietf-core-multicast-notifications-proxy]
+              Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
+              "Using Proxies for Observe Notifications as CoAP Multicast
+              Responses", Work in Progress, Internet-Draft, draft-ietf-
+              core-multicast-notifications-proxy-00, 20 October 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              multicast-notifications-proxy-00>.
 
    [I-D.ietf-core-observe-multicast-notifications]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Observe Notifications as CoAP Multicast Responses", Work
               in Progress, Internet-Draft, draft-ietf-core-observe-
-              multicast-notifications-12, 7 July 2025,
+              multicast-notifications-13, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              observe-multicast-notifications-12>.
+              observe-multicast-notifications-13>.
 
    [I-D.ietf-core-transport-indication]
               Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
@@ -1230,15 +1241,15 @@ A.2.  CoAP Observe Notifications over Multicast
 
    In case the clients and the server use Group OSCORE for end-to-end
    security and a proxy is also involved, an additional step is required
-   (see Section 12 of [I-D.ietf-core-observe-multicast-notifications]).
+   (see Section 4 of [I-D.ietf-core-multicast-notifications-proxy]).
    That is, clients are in turn required to provide the proxy with the
    obtained "phantom observation request", thus enabling the proxy to
    receive the multicast notifications from the server.
 
    Therefore, it is preferable to have a security association also
    between each client and the proxy, in order to ensure the integrity
-   of that information provided to the proxy (see Section 15.3 of
-   [I-D.ietf-core-observe-multicast-notifications]).  Like for the use
+   of that information provided to the proxy (see Section 10.1 of
+   [I-D.ietf-core-multicast-notifications-proxy]).  Like for the use
    case in Appendix A.1, this would be conveniently achieved with a
    dedicated OSCORE Security Context between a client and the proxy,
    since the client is also using Group OSCORE with the origin server.
@@ -2628,13 +2639,19 @@ Appendix E.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-E.1.  Version -04 to -05
+E.1.  Version -05 to -06
+
+   *  Updated references.
+
+   *  Minor clarifications and editorial improvements.
+
+E.2.  Version -04 to -05
 
    *  Fixes in the examples of message exchange.
 
    *  Minor clarifications and editorial improvements.
 
-E.2.  Version -03 to -04
+E.3.  Version -03 to -04
 
    *  Removed definition and use of "OSCORE-in-OSCORE".
 
@@ -2650,7 +2667,7 @@ E.2.  Version -03 to -04
 
    *  Editorial improvements.
 
-E.3.  Version -02 to -03
+E.4.  Version -02 to -03
 
    *  Clarified motivation for updating RFC 8768 in the introduction.
 
@@ -2666,7 +2683,7 @@ E.3.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-E.4.  Version -01 to -02
+E.5.  Version -01 to -02
 
    *  Revised escalation of CoAP option protection.
 
@@ -2679,7 +2696,7 @@ E.4.  Version -01 to -02
 
    *  Clarifications and editorial improvements.
 
-E.5.  Version -00 to -01
+E.6.  Version -00 to -01
 
    *  Escalation of option protection as explicit update point to RFC
       8613.
