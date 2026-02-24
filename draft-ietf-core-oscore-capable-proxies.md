@@ -396,7 +396,7 @@ An Outer SCHC Compression is intended for the (next hop towards the) destination
 
 1. It performs a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the previous hop towards the destination application endpoint.
 
-2. Unless it is the destination application endpoint, it performs a new Outer SCHC Compression on the result from the previous step, by relying on the SCHC Rules shared with the (next hop towards the) destination application endpoint. Then, it sends the result to the (next-hop towards the) destination application endpoint.
+2. Unless it is the destination application endpoint, it performs an Outer SCHC Compression after having performed all the intended OSCORE protections of an outgoing message, by relying on the SCHC Rules shared with the (next hop towards the) destination application endpoint. Then, it sends the result to the (next-hop towards the) destination application endpoint.
 
 Note that the generalization above does not alter the core approach, design choices, and features of the SCHC Compression/Decompression applied to CoAP headers.
 
@@ -1683,6 +1683,8 @@ request      +-----------------------------------------------+        |
 ## Version -05 to -06 ## {#sec-05-06}
 
 * Removed normative language when behavior is not new.
+
+* Fixed generalization of Outer SCHC Compression.
 
 * Updated references.
 
