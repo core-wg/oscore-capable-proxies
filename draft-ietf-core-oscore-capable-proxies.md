@@ -364,7 +364,7 @@ The method defined in this document enables the possible protection of the same 
 
 To this end, it is possible to use the Static Context Header Compression and fragmentation (SCHC) framework {{RFC8724}}. In particular, {{I-D.ietf-schc-8824-update}} specifies how to use SCHC for compressing headers of CoAP messages, also when messages are protected with OSCORE. The SCHC Compression/Decompression is applicable also in the presence of CoAP proxies and especially in the two following cases.
 
-* In case OSCORE is not used at all, the SCHC processing occurs hop-by-hop, by relying on SCHC Rules that are consistently shared between two adjacent hops.
+* In case OSCORE is not used at all, the SCHC processing occurs hop-by-hop, by relying on SCHC Rules that are shared between two adjacent hops.
 
 * In case OSCORE is used only end-to-end between the application endpoints, then an Inner SCHC Compression/Decompression and an Outer SCHC Compression/Decompression are performed (see {{Section 8.2 of I-D.ietf-schc-8824-update}}). In particular, the following holds.
 
@@ -378,11 +378,11 @@ When processing an outgoing CoAP message, a sender endpoint proceeds as follows.
 
 * The sender endpoint performs one Inner SCHC Compression for each OSCORE layer applied to the outgoing message.
 
-  Each Inner SCHC Compression occurs before protecting the message with that OSCORE layer and relies on the SCHC Rules that are shared with the other OSCORE endpoint.
+  Each Inner SCHC Compression occurs before protecting the message with that OSCORE layer and relies on the Inner SCHC Rules that are shared with the other OSCORE endpoint.
 
 * The sender endpoint performs exactly one Outer SCHC Compression.
 
-  This occurs after having performed all the intended OSCORE protections of the outgoing message and relies on the SCHC Rules that are shared with the (next hop towards the) destination application endpoint.
+  This occurs after having performed all the intended OSCORE protections of the outgoing message and relies on the Outer SCHC Rules that are shared with the (next hop towards the) destination application endpoint.
 
 That is, with respect to the SCHC Compression/Decompression processing, the following holds.
 
@@ -390,13 +390,13 @@ An Inner SCHC Compression is intended for a destination OSCORE endpoint, which p
 
 1. It decrypts an incoming message with the OSCORE Security Context shared with the other OSCORE endpoint.
 
-2. It performs the corresponding Inner SCHC Decompression, by relying on the SCHC Rules shared with the other OSCORE endpoint.
+2. It performs the corresponding Inner SCHC Decompression, by relying on the Inner SCHC Rules shared with the other OSCORE endpoint.
 
 An Outer SCHC Compression is intended for the (next hop towards the) destination application endpoint, which performs the following steps.
 
-1. It performs a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the previous hop towards the destination application endpoint.
+1. It performs the Outer SCHC Decompression on an incoming message, by relying on the Outer SCHC Rules shared with the previous hop towards the destination application endpoint.
 
-2. Unless it is the destination application endpoint, it performs an Outer SCHC Compression after having performed all the intended OSCORE protections of an outgoing message, by relying on the SCHC Rules shared with the (next hop towards the) destination application endpoint. Then, it sends the result to the (next-hop towards the) destination application endpoint.
+2. Unless it is the destination application endpoint, it performs a new Outer SCHC Compression after having performed all the intended OSCORE protections of an outgoing message, by relying on the Outer SCHC Rules shared with the (next hop towards the) destination application endpoint. Then, it sends the result to the (next-hop towards the) destination application endpoint.
 
 Note that the generalization above does not alter the core approach, design choices, and features of the SCHC Compression/Decompression applied to CoAP headers.
 
@@ -1684,7 +1684,11 @@ request      +-----------------------------------------------+        |
 
 * Removed normative language when behavior is not new.
 
-* Fixed generalization of Outer SCHC Compression.
+* Use of SCHC Compression/Decompression:
+
+  * Fixed generalization of Outer SCHC Compression.
+
+  * Explicit distinction between Inner and Outer SCHC Compression Rules.
 
 * Updated references.
 
