@@ -174,7 +174,7 @@ This document introduces the following two main deviations from the original OSC
 
   An OSCORE endpoint SHOULD define the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message. The defined limit has to appropriately reflect the security requirements of the application. At the same time, such a limit is typically bounded by the maximum number of OSCORE Security Contexts that can be active at the endpoint as well as by the number of intermediary OSCORE endpoints that have been explicitly set up by the communicating parties.
 
-  If its defined limit is reached when processing a CoAP message, an OSCORE endpoint MUST NOT perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint MUST abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint MUST reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed (see {{outgoing-responses}}).
+  If its defined limit is reached when processing a CoAP message, an OSCORE endpoint MUST NOT perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint MUST abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint MUST reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed (see {{outgoing-responses}}).
 
 ## Protection of CoAP Options {#general-rules}
 
@@ -236,57 +236,57 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
 2. The endpoint proceeds as defined below, depending on which of the two following conditions holds.
 
-   * REQ includes either of the following (set) of CoAP options: the Proxy-Uri option; the Proxy-Cri option; the Proxy-Scheme option or the Proxy-Scheme-Number option, together with any of the Uri-* options.
+   * REQ includes either of the following (set) of CoAP options: the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* options.
 
-     If the endpoint is not configured to be a forward-proxy, it MUST stop processing the request and MUST respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If the endpoint is not configured to be a forward-proxy, it MUST stop processing REQ and MUST respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-     Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message before performing this step.
+     Otherwise, the endpoint MUST check whether forwarding the REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.
 
-     In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-     Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to Step 1.
+     Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority component (host and port) of the request URI identifies the endpoint itself. In such a case, REQ has to be treated as a local (non-proxied) request and the endpoint moves to Step 1.
 
-     Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses option (see {{Section 4 of I-D.ietf-core-multicast-notifications-proxy}}).
-
-     If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
-
-     After that, the endpoint does not take any further action.
-
-   * REQ does not include the Proxy-Scheme option or the Proxy-Scheme-Number option, but it includes one or more Uri-Path options, and/or the Uri-Host option, and/or the Uri-Port option.
-
-     If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the Uri-Path, Uri-Host, and Uri-Port options is not intended to support reverse-proxy functionalities, then the endpoint moves to Step 3.
-
-     Otherwise, the endpoint MUST check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message before performing this step.
-
-     In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
-
-     Otherwise, the endpoint consumes the present Uri-Path, Uri-Host, and Uri-Port options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
+     Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses Option (see {{Section 4 of I-D.ietf-core-multicast-notifications-proxy}}).
 
      If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
 
      After that, the endpoint does not take any further action.
 
-     Note that, when forwarding REQ, the endpoint might not remove all the Uri-Path options originally present, e.g., in case the next hop towards the origin server is a reverse-proxy.
+   * REQ does not include the Proxy-Scheme Option or the Proxy-Scheme-Number Option, but it includes one or more Uri-Path Options, and/or the Uri-Host Option, and/or the Uri-Port Option.
+
+     If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the Uri-Path, Uri-Host, and Uri-Port Options is not intended to support reverse-proxy functionalities, then the endpoint moves to Step 3.
+
+     Otherwise, the endpoint MUST check whether forwarding REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.
+
+     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+
+     Otherwise, the endpoint consumes the included Uri-Path, Uri-Host, and Uri-Port Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
+
+     If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
+
+     After that, the endpoint does not take any further action.
+
+     Note that, when forwarding REQ, the endpoint might not remove all the Uri-Path Options originally included, e.g., in case the next hop towards the origin server is a reverse-proxy.
 
 3. The endpoint proceeds as defined below, depending on which of the two following conditions holds.
 
-   * REQ does not include an OSCORE option.
+   * REQ does not include an OSCORE Option.
 
      If the endpoint does not have an application to handle REQ, it MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
      Otherwise, the endpoint delivers REQ to the application.
 
-   * REQ includes an OSCORE option.
+   * REQ includes an OSCORE Option.
 
-     If REQ includes any Uri-Path options, the endpoint MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If REQ includes any Uri-Path Options, the endpoint MUST stop processing REQ and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-     Otherwise, the endpoint MUST check whether decrypting the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request and then asserting whether the OSCORE Security Context indicated by the OSCORE option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.
+     Otherwise, the endpoint MUST check whether decrypting and verifying REQ is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of REQ and then verifying whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt and verify a request from the alleged request sender.
 
-     In case the check fails, the endpoint MUST stop processing the request and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-     Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE option, which results in the decrypted request REQ\*. The possible presence of an OSCORE option in REQ\* is not treated as an error situation.
+     Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, which results in the decrypted request REQ\*. The possible presence of an OSCORE Option in REQ\* is not treated as an error situation.
 
-     If the OSCORE processing results in an error, the endpoint MUST stop processing the request and performs error handling as per {{Section 8.2 of RFC8613}} or {{Sections 7.2 and 8.4 of I-D.ietf-core-oscore-groupcomm}}, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If the OSCORE processing results in an error, the endpoint MUST stop processing REQ and performs error handling as per {{Section 8.2 of RFC8613}} or {{Sections 7.2 and 8.4 of I-D.ietf-core-oscore-groupcomm}}, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
      Otherwise, REQ takes REQ\* and the endpoint moves to Step 1.
 
@@ -296,15 +296,15 @@ The rules from {{general-rules}} apply when processing an outgoing response mess
 
 When a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
 
-The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.
+The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.
 
-In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.
+In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.
 
 ## Processing of an Incoming Response {#incoming-responses}
 
-The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which they were added.
+The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which those layers were added.
 
-When doing so, the possible presence of an OSCORE option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the corresponding outgoing request. In such a case, the endpoint MUST stop processing the response.
+When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the corresponding outgoing request. In such a case, the endpoint MUST stop processing the response.
 
 # OSCORE Processing of the Hop-Limit Option # {#sec-hop-limit}
 
