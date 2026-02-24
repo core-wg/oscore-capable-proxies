@@ -238,7 +238,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
    * REQ includes either of the following (set) of CoAP options: the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* options.
 
-     If the endpoint is not configured to be a forward-proxy, it MUST stop processing REQ and MUST respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If the endpoint is not configured to be a forward-proxy, it stops processing REQ and responds with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
      Otherwise, the endpoint MUST check whether forwarding the REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.
 
@@ -1679,6 +1679,8 @@ request      +-----------------------------------------------+        |
 {:removeinrfc}
 
 ## Version -05 to -06 ## {#sec-05-06}
+
+* Removed normative language when behavior is not new.
 
 * Updated references.
 
