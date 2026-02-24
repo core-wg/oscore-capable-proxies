@@ -47,6 +47,7 @@ informative:
   RFC7030:
   RFC7641:
   RFC8742:
+  RFC9147:
   RFC9200:
   RFC9528:
   RFC9668:
@@ -97,7 +98,7 @@ When using the Constrained Application Protocol (CoAP), messages exchanged betwe
 
 The Constrained Application Protocol (CoAP) {{RFC7252}} supports the presence of intermediaries such as forward-proxies and reverse-proxies, which assist origin clients by performing requests to origin servers on their behalf and forwarding back the corresponding responses.
 
-CoAP supports also group communication scenarios {{I-D.ietf-core-groupcomm-bis}}, where clients can send a one-to-many request targeting all the servers in the group, e.g., by using IP multicast. Like for one-to-one communication, group settings can also rely on intermediaries, e.g., by using the realization of proxy specified in {{I-D.ietf-core-groupcomm-proxy}}.
+CoAP also supports group communication scenarios {{I-D.ietf-core-groupcomm-bis}}, where clients can send a one-to-many request targeting all the servers in the group, e.g., by using IP multicast. Like for one-to-one communication, group settings can also rely on intermediaries, e.g., by using the realization of proxy specified in {{I-D.ietf-core-groupcomm-proxy}}.
 
 The security protocol Object Security for Constrained RESTful Environments (OSCORE) {{RFC8613}} can be used to protect CoAP messages between two endpoints at the application layer, especially achieving end-to-end security in the presence of (non-trusted) intermediaries. When CoAP group communication is used, the same can be achieved by means of the security protocol Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
@@ -412,7 +413,7 @@ If Group OSCORE is used over a communication leg and the group mode is used to a
 
 ## Preserving Location Anonymity
 
-Before decrypting an incoming request (see Step 3 in {{incoming-requests}}), the recipient endpoint checks whether decrypting the request is an acceptable operation to perform. The performed check is in accordance with the endpoint's configuration and a possible authorization enforcement as well as in the light of the alleged request sender and the OSCORE Security Context to use.
+Before decrypting an incoming request (see Step 3 in {{incoming-requests}}), the recipient endpoint checks whether decrypting the request is an acceptable operation to perform. The performed check is in accordance with the endpoint's configuration and a possible authorization enforcement, as well as in the light of the alleged request sender and the OSCORE Security Context to use.
 
 This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
 
@@ -424,27 +425,27 @@ However, after performing and failing the check on the received request, S repli
 
 ## Hop-Limit Option ## {#sec-security-considerations-hop-limit}
 
-{{sec-hop-limit}} of this document defines that the Hop-Limit option {{RFC8768}} is of Class U for OSCORE. This overrides the default behavior specified in {{Section 4.1 of RFC8613}}, according to which the option would be processed as Class E for OSCORE.
+{{sec-hop-limit}} of this document defines that the Hop-Limit Option {{RFC8768}} is of Class U for OSCORE. This overrides the default behavior specified in {{Section 4.1 of RFC8613}}, according to which the option would be processed as Class E for OSCORE.
 
-As discussed in {{sec-hop-limit}}, applying the default behavior would result in the Hop-Limit option added by the origin client being protected end-to-end for the origin server. That is, the intention of the client about performing a detection of forwarding loops would be hidden even from the first proxy in chain, which in turn adds an outer Hop-Limit option and thus further contributes to increasing the message size (see {{sec-hop-limit}}).
+As discussed in {{sec-hop-limit}}, applying the default behavior would result in the Hop-Limit Option added by the origin client being protected end-to-end for the origin server. That is, the intention of the client about performing a detection of forwarding loops would be hidden even from the first proxy in chain, which in turn adds an outer Hop-Limit Option and thus further contributes to increasing the message size (see {{sec-hop-limit}}).
 
-Instead, having defined the Hop-Limit option as Class U for OSCORE, the following holds by virtue of the procedure defined in {{general-rules}}.
+Instead, having defined the Hop-Limit Option as Class U for OSCORE, the following holds by virtue of the procedure defined in {{general-rules}}.
 
 * If the origin client and the origin server share an OSCORE Security Context, the client protects the option end-to-end for the server only when sending a request to the server directly (i.e., not via a proxy).
 
 * If the origin client and the first proxy in the chain share an OSCORE Security Context, then the client protects the option for the proxy, while also avoiding the downsides resulting from the default behavior mentioned above.
 
-  Otherwise, unless the communication leg between the origin client and the first proxy in the chain relies on another secure association (e.g., a DTLS connection), the Hop-Limit option included in a request sent to the proxy will be unprotected.
+  Otherwise, unless the communication leg between the origin client and the first proxy in the chain relies on another secure association (e.g., a DTLS connection {{RFC9147}}), the Hop-Limit Option included in a request sent to the proxy will be unprotected.
 
-  Fundamentally, this is not worse then when applying the default behavior mentioned above. In that case, the origin client would not be able to provide the proxy with its intention as to detecting forwarding loops, while an active on-path adversary would be able to tamper with the request and add an outer Hop-Limit option with a fraudulent value for the proxy to use.
+  Fundamentally, this is not worse then when applying the default behavior mentioned above. In that case, the origin client would not be able to provide the proxy with its intention as to detecting forwarding loops, while an active on-path adversary would be able to tamper with the request and add an outer Hop-Limit Option with a fraudulent value for the proxy to use.
 
-More generally, if any two adjacent hops share an OSCORE Security Context, then the Hop-Limit option will be protected with OSCORE in the communication leg between those two hops.
+More generally, if any two adjacent hops share an OSCORE Security Context, then the Hop-Limit Option will be protected with OSCORE in the communication leg between those two hops.
 
-If the Hop-Limit option is transported unprotected over the communication leg between two hops, then the following applies.
+If the Hop-Limit Option is transported unprotected over the communication leg between two hops, then the following applies.
 
 * A passive on-path adversary can read the option value. By possibly relying on other information such as the option value read in other communication legs, the adversary might be able to infer the topology of the network and the path used for delivering requests from the origin client.
 
-* An active on-path adversary can add or remove the option, or alter its value. Adding the option allows the adversary to trigger an otherwise undesired process for detecting forwarding loops, e.g., as an attempt to probe the topology of the network. Removing the option results in undetectably interrupting the ongoing process for detecting forwarding loops, while altering the option value undetectably interferes with the natural unfolding of such an ongoing process.
+* An active on-path adversary can add or remove the option, or alter its value. Adding the option allows the adversary to trigger an otherwise undesired process for detecting forwarding loops, e.g., as an attempt to probe the topology of the network. Removing the option results in undetectably interrupting the ongoing process for detecting forwarding loops, while altering the option value undetectably interferes with the natural progress of such an ongoing process.
 
 # IANA Considerations
 
@@ -452,7 +453,7 @@ This document has the following actions for IANA.
 
 ## CoAP Option Numbers Registry ## {#iana-coap-options}
 
-IANA is asked to add this document as an additional reference for the Hop-Limit option in the "CoAP Option Numbers" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
+IANA is asked to add this document as an additional reference for the Hop-Limit Option in the "CoAP Option Numbers" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
 --- back
 
@@ -462,21 +463,21 @@ The approach defined in this document has been motivated by a number of use case
 
 ## CoAP Group Communication with Proxies # {#ssec-uc1}
 
-CoAP supports also one-to-many group communication {{I-D.ietf-core-groupcomm-bis}}, e.g., over IP multicast, which can be protected end-to-end between origin client and origin servers by using Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
+CoAP also supports one-to-many group communication {{I-D.ietf-core-groupcomm-bis}}, e.g., over IP multicast, which can be protected end-to-end between origin client and origin servers by using Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
 This communication model can be assisted by intermediaries such as a CoAP forward-proxy or reverse-proxy, which relays a group request to the origin servers. If Group OSCORE is used, the proxy is intentionally not a member of the OSCORE group. Furthermore, {{I-D.ietf-core-groupcomm-proxy}} defines a signaling protocol between origin client and proxy, to ensure that responses from the different origin servers are forwarded back to the origin client within a time interval set by the client and that those responses can be distinguished from one another.
 
-In particular, it is required that the proxy identifies the origin client as allowed-listed, before forwarding a group request to the servers (see {{Section 4 of I-D.ietf-core-groupcomm-proxy}}). This requires a security association between the origin client and the proxy, which would be convenient to provide with a dedicated OSCORE Security Context between the two, since the client is possibly using also Group OSCORE with the origin servers.
+That signaling protocol requires that the proxy identifies the origin client as allowed-listed, before forwarding a group request to the servers (see {{Section 4 of I-D.ietf-core-groupcomm-proxy}}). In turn, this requires a security association between the origin client and the proxy, which would be convenient to provide with a dedicated OSCORE Security Context shared between the two, since the client is possibly using also Group OSCORE with the origin servers.
 
 ## CoAP Observe Notifications over Multicast # {#ssec-uc2}
 
 The Observe extension for CoAP {{RFC7641}} allows a client to register its interest in "observing" a resource at a server. The server can then send back notification responses upon changes in the resource representation, all matching with the original observation request.
 
-In some applications, such as based on publish-subscribe communication {{I-D.ietf-core-coap-pubsub}}, multiple clients are interested in observing the same resource at the same server. Hence, {{I-D.ietf-core-observe-multicast-notifications}} defines a method that allows the server to send a multicast notification to all the observer clients at once, e.g., over IP multicast. To this end, the server synchronizes the clients by providing them with a common "phantom observation request", against which the following multicast notifications will match.
+In some applications, such as based on publish-subscribe communication {{I-D.ietf-core-coap-pubsub}}, multiple clients are interested in observing the same resource at the same server. In the interest of such applications, {{I-D.ietf-core-observe-multicast-notifications}} defines a method that allows the server to send a single notification response to all the observer clients at once, e.g., over IP multicast. To this end, the server synchronizes the clients by providing them with a common "phantom observation request", against which the following multicast notifications will match.
 
 In case the clients and the server use Group OSCORE for end-to-end security and a proxy is also involved, an additional step is required (see {{Section 4 of I-D.ietf-core-multicast-notifications-proxy}}). That is, clients are in turn required to provide the proxy with the obtained "phantom observation request", thus enabling the proxy to receive the multicast notifications from the server.
 
-Therefore, it is preferable to have a security association also between each client and the proxy, in order to ensure the integrity of that information provided to the proxy (see {{Section 10.1 of I-D.ietf-core-multicast-notifications-proxy}}). Like for the use case in {{ssec-uc1}}, this would be conveniently achieved with a dedicated OSCORE Security Context between a client and the proxy, since the client is also using Group OSCORE with the origin server.
+Therefore, it is preferable to have a security association also between each client and the proxy, in order to ensure the integrity of that information provided to the proxy (see {{Section 10.1 of I-D.ietf-core-multicast-notifications-proxy}}). Like for the use case in {{ssec-uc1}}, this would be conveniently achieved with a dedicated OSCORE Security Context shared between a client and the proxy, since the client is also using Group OSCORE with the origin server.
 
 ## LwM2M Client and External Application Server # {#ssec-uc3}
 
@@ -509,9 +510,9 @@ The approach defined in this document can be useful also in the following use ca
 
   However, in order for OSCORE to be an applicable security mechanism for this scenario, OSCORE has to be terminated at the proxy. That is, it would be required for a client and the proxy to share a dedicated OSCORE Security Context and to use it for protecting their communication leg.
 
-* The method specified in {{I-D.ietf-core-coap-pm}} relies on the Performance Measurement option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.
+* The method specified in {{I-D.ietf-core-coap-pm}} relies on the Performance Measurement Option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.
 
-  When OSCORE is used in deployments including on-path probes, an inner Performance Measurement option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement option allows also hop-by-hop measurements to be performed by relying on an on-path probe.
+  When OSCORE is used in deployments including on-path probes, an inner Performance Measurement Option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement Option allows also hop-by-hop measurements to be performed by relying on an on-path probe.
 
   Therefore, it is preferable to have a secure association with an on-path probe, in order to also ensure the integrity of the hop-by-hop measurements exchanged with the probe.
 
@@ -1279,9 +1280,9 @@ In the example shown in {{fig-example-reverse-proxy-without-end-to-end}}, messag
 
 In this example, the proxy is specifically a reverse-proxy. Like typically expected in such a case, the client is not aware of that and believes to communicate with an origin server.
 
-In order to determine where it has to forward an incoming request to, the proxy relies on the hostname that clients specify in the Uri-Host option of their sent requests. In particular, upon receiving a request that includes the Uri-Host option with value "dev.example", the proxy forwards the request to the origin server shown in the example.
+In order to determine where it has to forward an incoming request to, the proxy relies on the hostname that clients specify in the Uri-Host Option of their sent requests. In particular, upon receiving a request that includes the Uri-Host Option with value "dev.example", the proxy forwards the request to the origin server shown in the example.
 
-Furthermore, this example assumes that, in the URI identifying the target resource at the server, the host component represents the destination IP address of the request as an IP-literal. Therefore, the request from the proxy to the server does not include a Uri-Host option (see {{Section 6.4 of RFC7252}}).
+Furthermore, this example assumes that, in the URI identifying the target resource at the server, the host subcomponent represents the destination IP address of the request as an IP-literal. Therefore, the request from the proxy to the server does not include a Uri-Host Option (see {{Section 6.4 of RFC7252}}).
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
@@ -1372,11 +1373,11 @@ In the example shown in {{fig-example-reverse-proxy-with-end-to-end}}, message e
 
 In this example, the proxy is specifically a reverse-proxy. However, unlike typically expected, the client is aware to communicate with a reverse-proxy. This is the case, e.g., in the LwM2M scenario considered in {{ssec-uc4}}, where the LwM2M Server acts as a CoAP client and uses a LwM2M Gateway acting as a CoAP-to-CoAP reverse-proxy in order to reach an end IoT device.
 
-In order to determine where it has to forward an incoming request to, the proxy relies on the URI path components that are specified as value of the Uri-Path options included in the request. In particular, the proxy relies on the first URI path segment to identify the specific IoT device to which the request has to be forwarded, while the remaining URI path segments specify the target resource at the IoT device.
+In order to determine where it has to forward an incoming request to, the proxy relies on the URI path components that are specified as value of the Uri-Path Options included in the request. In particular, the proxy relies on the first URI path segment to identify the specific IoT device to which the request has to be forwarded, while the remaining URI path segments specify the target resource at the IoT device.
 
 However, as shown in the example, the URI path segments that specify the target resource are hidden from the proxy, since they are protected by the additional use of OSCORE end-to-end between the client and the server.
 
-Furthermore, this example assumes that, in the URIs identifying the target resource at the proxy as well as in the URI identifying the target resource at the server, the host component represents the destination IP address of the request as an IP-literal. Therefore, both the request from the client to the proxy and the request from the proxy to the server do not include a Uri-Host option (see {{Section 6.4 of RFC7252}}).
+Furthermore, this example assumes that, in the URIs identifying the target resource at the proxy as well as in the URI identifying the target resource at the server, the host subcomponent represents the destination IP address of the request as an IP-literal. Therefore, both the request from the client to the proxy and the request from the proxy to the server do not include a Uri-Host Option (see {{Section 6.4 of RFC7252}}).
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
@@ -1507,59 +1508,60 @@ Curly brackets { ... } indicate encrypted data.
 | an outer option (Class U or I) for OSCORE.                          |
 |                                                                     |
 +---------------------------------------------------------------------+
-     |
-     |
-     v
+    |
+    |
+    v
 +-----------+         +------------------+         +------------------+
 | Did I add |---YES-->| As far as I can  |---YES-->| As far as I can  |
 | OPT to M? |         | tell, is X a     |         | tell, is X the   |
 +-----------+         | consumer of OPT? |         | immediately next |
-     |                +------------------+         | consumer of OPT? |
-     |                   |                         +------------------+
-     |                   |                              |         |
-     NO                  NO                            YES        NO
-     |                   |                              |         |
-     v                   v                              v         |
-  +-------------------------+          +---------------------+    |
-  | * As far as I can tell, |          | Does X need to      |    |
-  |   X is my next hop;     |          | access OPT before   |    |
-  |                         |          | decrypting M or in  |    |
-  | OR                      |          | order to decrypt M? |    |
-  |                         |          +---------------------+    |
-  | * As far as I can tell, |              |            |         |
-  |   my next hop is not    |              NO          YES        |
-  |   the immediately next  |              |            |         |
-  |   consumer of OPT       |              |            |         |
-  +-------------------------+              |            |         |
-     |                   |                 |            |         |
-     NO                 YES                |            |         |
-     |                   |                 |            |         |
-     |                   |                 |            |         |
-     |                   v                 v            |         |
-     |   +-----------------------------------------+    |         |
-     |   | Is OPT the Uri-Host or Uri-Port option? |    |         |
-     |   +-----------------------------------------+    |         |
-     |        |                            |            |         |
-     |        NO                          YES           |         |
-     |        |                            |            |         |
-     |        |                            |            |         |
-     |        |                            v            |         |
-     |        |  +---------------------------------+    |         |
-     |        |  | Does M include the Proxy-Scheme |    |         |
-     |        |  | or Proxy-Scheme-Number option?  |    |         |
-     |        |  +---------------------------------+    |         |
-     |        |          |                 |            |         |
-     |        |         YES                NO           |         |
-     |        |          |                 |            |         |
-     |        v          v                 |            |         |
-     |      +------------------------+     |            |         |
-     |      | Process OPT as Class E |     |            |         |
-     |      +------------------------+     |            |         |
-     |                                     |            |         |
-     |                                     v            v         |
-     |      +----------------------------------------------+      |
-     +----->| Process OPT as per its original Class U or I |<-----+
-            +----------------------------------------------+
+    |                 +------------------+         | consumer of OPT? |
+    |                    |                         +------------------+
+    |                    |                                |         |
+    NO                   NO                              YES        NO
+    |                    |                                |         |
+    v                    v                                v         |
+  +-------------------------+         +---------------------+       |
+  | * As far as I can tell, |         | Does X need to      |       |
+  |   X is my next hop;     |         | access OPT before   |       |
+  |                         |         | decrypting M or in  |       |
+  | OR                      |         | order to decrypt M? |       |
+  |                         |         +---------------------+       |
+  | * As far as I can tell, |           |                 |         |
+  |   my next hop is not    |           NO               YES        |
+  |   the immediately next  |           |                 |         |
+  |   consumer of OPT       |           |                 |         |
+  +-------------------------+           |                 |         |
+    |                     |             |                 |         |
+    NO                   YES            |                 |         |
+    |                     |             |                 |         |
+    |                     |             |                 |         |
+    |                     v             v                 |         |
+    |        +----------------------------+               |         |
+    |        | Is OPT the Uri-Host Option |               |         |
+    |    +---| or the Uri-Port Option?    |               |         |
+    |    |   +----------------------------+               |         |
+    |    |                              |                 |         |
+    |    NO                            YES                |         |
+    |    |                              |                 |         |
+    |    |                              |                 |         |
+    |    |                              v                 |         |
+    |    |   +----------------------------------------+   |         |
+    |    |   | Does M include the Proxy-Scheme Option |   |         |
+    |    |   | or the Proxy-Scheme-Number Option?     |   |         |
+    |    |   +----------------------------------------+   |         |
+    |    |               |              |                 |         |
+    |    |              YES             NO                |         |
+    |    |               |              |                 |         |
+    |    v               v              |                 |         |
+    |  +------------------------+       |                 |         |
+    |  | Process OPT as Class E |       |                 |         |
+    |  +------------------------+       |                 |         |
+    |                                   |                 |         |
+    |                                   v                 v         |
+    |        +----------------------------------------------+       |
+    +------->| Process OPT as per its original Class U or I |<------+
+             +----------------------------------------------+
 ~~~~~~~~~~~
 {: #fig-option-protection-diagram title="Protection of CoAP Options Originally Specified only as Outer Options (Class U or I) for OSCORE" artwork-align="center"}
 
@@ -1583,9 +1585,9 @@ request      +-----------------------------------------------+        |
               v             |             |          v                |
 +--------------+ YES    +---------+       |  +----------------+       |
 | Is there the |------->| Am I a  |       |  | Is there an    |       |
-| Proxy-Uri or |        | forward |       |  | OSCORE option? |       |
+| Proxy-Uri or |        | forward |       |  | OSCORE Option? |       |
 | Proxy-Cri    |  +---->| proxy?  |       |  +----------------+       |
-| option?      |  |     +---------+       |   ^   |       |           |
+| Option?      |  |     +---------+       |   ^   |       |           |
 +--------------+  |       |               |   |   NO     YES          |
    |              |      YES              |   |   |       |           |
    NO             |       |               |   |   |       |           |
@@ -1597,15 +1599,15 @@ request      +-----------------------------------------------+        |
    |              |       |  :........:   |   |   |    +-----------+  |
    |              |       |      ^        |   |   |    | Are there |  |
    |              |       |      |        |   |   |    | Uri-Path  |  |
-   |             YES      |      NO       |   |   |    | options?  |  |
+   |             YES      |      NO       |   |   |    | Options?  |  |
    v              |       v      |        |   |   |    +-----------+  |
 +---------------------+ +---------------+ |   |   |     |         |   |
 | Is there the        | | Is it         | |   |   |    YES        NO  |
 | Proxy-Scheme or     | | acceptable to | |   |   |     |         |   |
 | Proxy-Scheme-Number | | forward the   | |   |   |     v         |   |
-| option, together    | | request? (#)  | |   |   |   ..........  |   |
+| Option, together    | | request? (#)  | |   |   |   ..........  |   |
 | with the Uri-Host   | +---------------+ |   |   |   : Return :  |   |
-| or Uri-Port option? |           |       |   |   |   : 4.00   :  |   |
+| or Uri-Port Option? |           |       |   |   |   : 4.00   :  |   |
 +---------------------+          YES      |   |   |   ..........  |   |
    |                              |       |   |   |               |   |
    NO                             |       |   |   |               |   |
@@ -1635,9 +1637,9 @@ request      +-----------------------------------------------+        |
 +--------------------------+   ...........    |   |     +---------+   |
 | There is no Proxy-Scheme |   : Forward :    |   |          |        |
 | or Proxy-Scheme-Number   |   : the     :    |   |          |        |
-| option, but there are    |   : request :    |   |          v        |
+| Option, but there are    |   : request :    |   |          v        |
 | Uri-Path and/or Uri-Host |   :.........:    |   |    +----------+   |
-| and/or Uri-Port options  |      ^           |   |    | Success? |   |
+| and/or Uri-Port Options  |      ^           |   |    | Success? |   |
 +--------------------------+      |           |   |    +----------+   |
    |                              |           |   |     |    |        |
    |                              |           |   |     NO   |        |
@@ -1667,7 +1669,7 @@ request      +-----------------------------------------------+        |
 +--------------------------------+            |  ..................
 | Am I a reverse-proxy using the |            |  : Deliver the    :
 | exact value of these Uri-Path, |---NO-------+  : request to the :
-| Uri-Host, and Uri-Port options |               : application    :
+| Uri-Host, and Uri-Port Options |               : application    :
 | for proxying?                  |               :................:
 +--------------------------------+
 
