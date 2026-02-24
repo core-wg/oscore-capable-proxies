@@ -1659,7 +1659,7 @@ For the purposes of this document, there is no need for a proxy to also be a mem
 <p id="section-6-2">To this end, it is possible to use the Static Context Header Compression and fragmentation (SCHC) framework <span>[<a href="#RFC8724" class="cite xref">RFC8724</a>]</span>. In particular, <span>[<a href="#I-D.ietf-schc-8824-update" class="cite xref">I-D.ietf-schc-8824-update</a>]</span> specifies how to use SCHC for compressing headers of CoAP messages, also when messages are protected with OSCORE. The SCHC Compression/Decompression is applicable also in the presence of CoAP proxies and especially in the two following cases.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6-3.1">
-          <p id="section-6-3.1.1">In case OSCORE is not used at all, the SCHC processing occurs hop-by-hop, by relying on SCHC Rules that are consistently shared between two adjacent hops.<a href="#section-6-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-6-3.1.1">In case OSCORE is not used at all, the SCHC processing occurs hop-by-hop, by relying on SCHC Rules that are shared between two adjacent hops.<a href="#section-6-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-3.2">
           <p id="section-6-3.2.1">In case OSCORE is used only end-to-end between the application endpoints, then an Inner SCHC Compression/Decompression and an Outer SCHC Compression/Decompression are performed (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-07#section-8.2" class="relref">Section 8.2</a> of [<a href="#I-D.ietf-schc-8824-update" class="cite xref">I-D.ietf-schc-8824-update</a>]</span>). In particular, the following holds.<a href="#section-6-3.2.1" class="pilcrow">¶</a></p>
@@ -1675,12 +1675,12 @@ The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompres
 <li class="normal" id="section-6-6.1">
           <p id="section-6-6.1.1">The sender endpoint performs one Inner SCHC Compression for each OSCORE layer applied to the outgoing message.<a href="#section-6-6.1.1" class="pilcrow">¶</a></p>
 <p id="section-6-6.1.2">
-Each Inner SCHC Compression occurs before protecting the message with that OSCORE layer and relies on the SCHC Rules that are shared with the other OSCORE endpoint.<a href="#section-6-6.1.2" class="pilcrow">¶</a></p>
+Each Inner SCHC Compression occurs before protecting the message with that OSCORE layer and relies on the Inner SCHC Rules that are shared with the other OSCORE endpoint.<a href="#section-6-6.1.2" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-6.2">
           <p id="section-6-6.2.1">The sender endpoint performs exactly one Outer SCHC Compression.<a href="#section-6-6.2.1" class="pilcrow">¶</a></p>
 <p id="section-6-6.2.2">
-This occurs after having performed all the intended OSCORE protections of the outgoing message and relies on the SCHC Rules that are shared with the (next hop towards the) destination application endpoint.<a href="#section-6-6.2.2" class="pilcrow">¶</a></p>
+This occurs after having performed all the intended OSCORE protections of the outgoing message and relies on the Outer SCHC Rules that are shared with the (next hop towards the) destination application endpoint.<a href="#section-6-6.2.2" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-6-7">That is, with respect to the SCHC Compression/Decompression processing, the following holds.<a href="#section-6-7" class="pilcrow">¶</a></p>
@@ -1690,16 +1690,16 @@ This occurs after having performed all the intended OSCORE protections of the ou
           <p id="section-6-9.1.1">It decrypts an incoming message with the OSCORE Security Context shared with the other OSCORE endpoint.<a href="#section-6-9.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-6-9.2">
-          <p id="section-6-9.2.1">It performs the corresponding Inner SCHC Decompression, by relying on the SCHC Rules shared with the other OSCORE endpoint.<a href="#section-6-9.2.1" class="pilcrow">¶</a></p>
+          <p id="section-6-9.2.1">It performs the corresponding Inner SCHC Decompression, by relying on the Inner SCHC Rules shared with the other OSCORE endpoint.<a href="#section-6-9.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <p id="section-6-10">An Outer SCHC Compression is intended for the (next hop towards the) destination application endpoint, which performs the following steps.<a href="#section-6-10" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6-11">
 <li id="section-6-11.1">
-          <p id="section-6-11.1.1">It performs a corresponding Outer SCHC Decompression on an incoming message, by relying on the SCHC Rules shared with the previous hop towards the destination application endpoint.<a href="#section-6-11.1.1" class="pilcrow">¶</a></p>
+          <p id="section-6-11.1.1">It performs the Outer SCHC Decompression on an incoming message, by relying on the Outer SCHC Rules shared with the previous hop towards the destination application endpoint.<a href="#section-6-11.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-6-11.2">
-          <p id="section-6-11.2.1">Unless it is the destination application endpoint, it performs an Outer SCHC Compression after having performed all the intended OSCORE protections of an outgoing message, by relying on the SCHC Rules shared with the (next hop towards the) destination application endpoint. Then, it sends the result to the (next-hop towards the) destination application endpoint.<a href="#section-6-11.2.1" class="pilcrow">¶</a></p>
+          <p id="section-6-11.2.1">Unless it is the destination application endpoint, it performs a new Outer SCHC Compression after having performed all the intended OSCORE protections of an outgoing message, by relying on the Outer SCHC Rules shared with the (next hop towards the) destination application endpoint. Then, it sends the result to the (next-hop towards the) destination application endpoint.<a href="#section-6-11.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <p id="section-6-12">Note that the generalization above does not alter the core approach, design choices, and features of the SCHC Compression/Decompression applied to CoAP headers.<a href="#section-6-12" class="pilcrow">¶</a></p>
@@ -4811,7 +4811,15 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.1.1">Removed normative language when behavior is not new.<a href="#appendix-E.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.2">
-            <p id="appendix-E.1-1.2.1">Fixed generalization of Outer SCHC Compression.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.2.1">Use of SCHC Compression/Decompression:<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-E.1-1.2.2.1">
+                <p id="appendix-E.1-1.2.2.1.1">Fixed generalization of Outer SCHC Compression.<a href="#appendix-E.1-1.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-E.1-1.2.2.2">
+                <p id="appendix-E.1-1.2.2.2.1">Explicit distinction between Inner and Outer SCHC Compression Rules.<a href="#appendix-E.1-1.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
 </li>
           <li class="normal" id="appendix-E.1-1.3">
             <p id="appendix-E.1-1.3.1">Updated references.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
