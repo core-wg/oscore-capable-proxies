@@ -42,6 +42,7 @@ normative:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-core-href:
   I-D.ietf-schc-8824-update:
+  I-D.ietf-core-uri-path-abbrev:
 
 informative:
   RFC7030:
@@ -144,13 +145,13 @@ In addition, this document uses the following terms.
 
 * Hop: an endpoint in the end-to-end path between two application endpoints included.
 
-* Proxy-related options: either of the following (set of) CoAP options that a proxy can use to understand where to forward a CoAP request. These CoAP options are defined in {{RFC7252}} and {{I-D.ietf-core-href}}.
+* Proxy-related options: either of the following (set of) CoAP options that a proxy can use to understand where to forward a CoAP request. These CoAP options are defined in {{RFC7252}}, {{I-D.ietf-core-href}}, and {{I-D.ietf-core-uri-path-abbrev}}.
 
-  - The Proxy-Uri Option or the Proxy-Cri Option. These are relevant when using a forward-proxy.
+  - The Proxy-Uri Option or the Proxy-Cri Option, possibly in combination with the Uri-Path-Abbrev Option (see {{Section 2.4 of I-D.ietf-core-uri-path-abbrev}}). These are relevant when using a forward-proxy.
 
-  - The set of CoAP options comprising the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* options. This is relevant when using a forward-proxy.
+  - The set of CoAP options comprising the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with a combination of any among the Uri-Host Option, the Uri-Port Option, and the mutually exclusive Uri-Path Option and Uri-Path-Abbrev Option. This is relevant when using a forward-proxy.
 
-  - The set of CoAP options comprising any of the Uri-Host, Uri-Port, and Uri-Path options, when those are not used together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
+  - The set of CoAP options consisting in a combination of any among the Uri-Host Option, the Uri-Port Option, and the mutually exclusive Uri-Path Option and Uri-Path-Abbrev Option, when those are not used together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
 
 
 # Message Processing # {#sec-message-processing}
@@ -237,7 +238,17 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
 2. The endpoint proceeds as defined below, depending on which of the two following conditions holds.
 
-   * REQ includes either of the following (set) of CoAP options: the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* options.
+   * REQ includes either of the following (set) of CoAP options:
+
+     * The Proxy-Uri Option or the Proxy-Cri Option, possibly in combination with the Uri-Path-Abbrev Option (see {{Section 2.4 of I-D.ietf-core-uri-path-abbrev}}).
+
+     * The Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with a combination of:
+
+       * The Uri-Host Option.
+
+       * The Uri-Port Option.
+
+       * Either the Uri-Path-Abbrev Option, or one or more Uri-Path Options.
 
      If the endpoint is not configured to be a forward-proxy, it stops processing REQ and responds with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
@@ -253,21 +264,27 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
      After that, the endpoint does not take any further action.
 
-   * REQ does not include the Proxy-Scheme Option or the Proxy-Scheme-Number Option, but it includes one or more Uri-Path Options, and/or the Uri-Host Option, and/or the Uri-Port Option.
+   * REQ does not include the Proxy-Scheme Option or the Proxy-Scheme-Number Option, but it includes a combination of:
 
-     If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the Uri-Path, Uri-Host, and Uri-Port Options is not intended to support reverse-proxy functionalities, then the endpoint moves to Step 3.
+     * The Uri-Host Option.
+
+     * The Uri-Port Option.
+
+     * Either the Uri-Path-Abbrev Option, or one or more Uri-Path Options.
+
+     If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the included Uri-Host, Uri-Port, Uri-Path, and Uri-Path-Abbrev Options is not intended to support reverse-proxy functionalities, then the endpoint moves to Step 3.
 
      Otherwise, the endpoint MUST check whether forwarding REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.
 
      In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
-     Otherwise, the endpoint consumes the included Uri-Path, Uri-Host, and Uri-Port Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
+     Otherwise, the endpoint consumes the included Uri-Host, Uri-Port, Uri-Path, and Uri-Path-Abbrev Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
 
      If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per {{outgoing-requests}}.
 
      After that, the endpoint does not take any further action.
 
-     Note that, when forwarding REQ, the endpoint might not remove all the Uri-Path Options originally included, e.g., in case the next hop towards the origin server is a reverse-proxy.
+     Note that, when forwarding REQ, the endpoint might not remove the Uri-Path-Abbrev-Option or all the Uri-Path Options originally included, e.g., in case the next hop towards the origin server is a reverse-proxy.
 
 3. The endpoint proceeds as defined below, depending on which of the two following conditions holds.
 
@@ -279,7 +296,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
    * REQ includes an OSCORE Option.
 
-     If REQ includes any Uri-Path Options, the endpoint MUST stop processing REQ and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If REQ includes the Uri-Path-Abbrev Option or any Uri-Path Options, the endpoint MUST stop processing REQ and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
      Otherwise, the endpoint MUST check whether decrypting and verifying REQ is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of REQ and then verifying whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt and verify a request from the alleged request sender.
 
@@ -1574,104 +1591,112 @@ Curly brackets { ... } indicate encrypted data.
              +-----------------------------------------------+
 Incoming --->|        Are there proxy-related options?       |<-------+
 request      +-----------------------------------------------+        |
-              |                           ^          |                |
-             YES        ..........        |          NO               |
-              |         : Return :        |          |                |
-              |         : 5.05   :        |          |                |
-              |         :........:        |          |                |
-              |             ^             |          |                |
-              |             |             |          |                |
-              |             NO            |          |                |
-              v             |             |          v                |
-+--------------+ YES    +---------+       |  +----------------+       |
-| Is there the |------->| Am I a  |       |  | Is there an    |       |
-| Proxy-Uri or |        | forward |       |  | OSCORE Option? |       |
-| Proxy-Cri    |  +---->| proxy?  |       |  +----------------+       |
-| Option?      |  |     +---------+       |   ^   |       |           |
-+--------------+  |       |               |   |   NO     YES          |
-   |              |      YES              |   |   |       |           |
-   NO             |       |               |   |   |       |           |
-   |              |       |               |   |   |       |           |
-   |              |       |               |   |   |       |           |
-   |              |       |  ..........   |   |   |       |           |
-   |              |       |  : Return :   |   |   |       |           |
-   |              |       |  : 4.01   :   |   |   |       v           |
-   |              |       |  :........:   |   |   |    +-----------+  |
-   |              |       |      ^        |   |   |    | Are there |  |
-   |              |       |      |        |   |   |    | Uri-Path  |  |
-   |             YES      |      NO       |   |   |    | Options?  |  |
-   v              |       v      |        |   |   |    +-----------+  |
-+---------------------+ +---------------+ |   |   |     |         |   |
-| Is there the        | | Is it         | |   |   |    YES        NO  |
-| Proxy-Scheme or     | | acceptable to | |   |   |     |         |   |
-| Proxy-Scheme-Number | | forward the   | |   |   |     v         |   |
-| Option, together    | | request? (#)  | |   |   |   ..........  |   |
-| with the Uri-Host   | +---------------+ |   |   |   : Return :  |   |
-| or Uri-Port Option? |           |       |   |   |   : 4.00   :  |   |
-+---------------------+          YES      |   |   |   ..........  |   |
-   |                              |       |   |   |               |   |
-   NO                             |       |   |   |               |   |
-   |                              |       |   |   |               |   |
-   |                              v       |   |   |               v   |
-   |                  +---------------+   |   |   | +---------------+ |
-   |                  | Consume the   |   |   |   | | Is it         | |
-   |                  | proxy-related |   |   |   | | acceptable to | |
-   |                  | options       |   |   |   | | decrypt the   | |
-   |                  +---------------+   |   |   | | request? (#)  | |
-   |                              |       |   |   | +---------------+ |
-   |                              |       |   |   |    |         |    |
-   |                              |       |   |   |    NO       YES   |
-   |                              |       |   |   |    |         |    |
-   |                              |      YES  |   |    |         |    |
-   |                              v       |   |   |    |         |    |
-   |        +------------------------------+  |   |    |         |    |
-   |        | Does the authority component |  |   |    v         |    |
-   |        | (host and port) of the       |  |   |  ..........  |    |
-   |        | request URI identify me?     |  |   |  : Return :  |    |
-   |        +------------------------------+  |   |  : 4.01   :  |    |
-   |                              |           |   |  :........:  |    |
-   |                              NO          |   |              |    |
-   |                              |           |   |              v    |
-   |                              |           |   |     +---------+   |
-   v                              v           |   |     | Decrypt |   |
-+--------------------------+   ...........    |   |     +---------+   |
-| There is no Proxy-Scheme |   : Forward :    |   |          |        |
-| or Proxy-Scheme-Number   |   : the     :    |   |          |        |
-| Option, but there are    |   : request :    |   |          v        |
-| Uri-Path and/or Uri-Host |   :.........:    |   |    +----------+   |
-| and/or Uri-Port Options  |      ^           |   |    | Success? |   |
-+--------------------------+      |           |   |    +----------+   |
-   |                              |           |   |     |    |        |
-   |                              |           |   |     NO   |        |
-   |                              |           |   |     |    |        |
-   |                              |           |   |     |    +---YES--+
-   |                              |           |   |     |
-   |                              |           |   |     v
-   |       ..........    +---------------+    |   |   ................
-   |       : Return :    | Consume the   |    |   |   : OSCORE error :
-   |       : 4.01   :    | proxy-related |    |   |   : handling     :
-   |       :........:    | options       |    |   |   :..............:
-   |            ^        +---------------+    |   |
-   |            |                 ^           |   v
-   |            |                 |           |  +--------------+
-   |            NO                |           |  | Is there an  |
-   |            |                 |           |  | application? |
-   |     +---------------+        |           |  +--------------+
-   |     | Is it         |        |           |     |        |
-   |     | acceptable to |---YES--+           |    YES       NO
-   |     | forward the   |                    |     |        |
-   |     | request? (#)  |                    |     |        v
-   |     +---------------+                    |     |    ..........
-   |            ^                             |     |    : Return :
-   |            |                             |     |    : 4.00   :
-   |           YES                            |     |    :........:
-   v            |                             |     v
-+--------------------------------+            |  ..................
-| Am I a reverse-proxy using the |            |  : Deliver the    :
-| exact value of these Uri-Path, |---NO-------+  : request to the :
-| Uri-Host, and Uri-Port Options |               : application    :
-| for proxying?                  |               :................:
-+--------------------------------+
+               |                         ^          |                 |
+              YES          ..........    |          NO                |
+               |           : Return :    |          |                 |
+               |           : 5.05   :    |          |                 |
+               |           :........:    |          |                 |
+               |               ^         |          |                 |
+               |               |         |          |                 |
+               |               NO        |          |                 |
+               v               |         |          v                 |
++------------------+ YES  +---------+    | +----------------+         |
+| Is there the     |----->| Am I a  |    | | Is there an    |         |
+| Proxy-Uri Option |      | forward |    | | OSCORE Option? |         |
+| or the Proxy-Cri | +--->| proxy?  |    | +----------------+         |
+| Option, possibly | |    +---------+    |  ^   |       |             |
+| with the         | |     |             |  |   |       |             |
+| Uri-Path-Abbrev  | |     |             |  |   |       |             |
+| Option?          | |     |             |  |   |       |             |
++------------------+ |     |             |  |   NO     YES            |
+   |                 |    YES            |  |   |       |             |
+   NO                |     |             |  |   |       |             |
+   |                 |     |             |  |   |       |             |
+   |                 |     |             |  |   |       |             |
+   |                 |     |  .......... |  |   |       |             |
+   |                 |     |  : Return : |  |   |       |             |
+   |                 |     |  : 4.01   : |  |   |       v             |
+   |                 |     |  :........: |  |   | +-----------------+ |
+   |                 |     |       ^     |  |   | | Are there the   | |
+   |                 |     |       |     |  |   | | Uri-Path-Abbrev | |
+   |                YES    |       NO    |  |   | | Option or any   | |
+   v                 |     v       |     |  |   | | Uri-Path        | |
++---------------------+ +--------------+ |  |   | | Options?        | |
+| Is there the        | | Is it        | |  |   | +-----------------+ |
+| Proxy-Scheme        | | acceptable   | |  |   |       |       |     |
+| Option or the       | | to forward   | |  |   |       |       |     |
+| Proxy-Scheme-Number | | the request? | |  |   |      YES      NO    |
+| Option, with a      | | (#)          | |  |   |       |       |     |
+| combination of the  | +--------------+ |  |   |       |       |     |
+| following options?  |            |     |  |   |       v       |     |
+|                     |           YES    |  |   |   ..........  |     |
+| - Uri-Host;         |            |     |  |   |   : Return :  |     |
+| - Uri-Port;         |            |     |  |   |   : 4.00   :  |     |
+| - Uri-Path-Abbrev,  |            |     |  |   |   :........:  |     |
+|   or one or more    |            |     |  |   |               |     |
+|   Uri-Path          |            |     |  |   |               |     |
++---------------------+            |     |  |   |               |     |
+   |                               |     |  |   |               |     |
+   NO                              v     |  |   |               v     |
+   |                   +---------------+ |  |   | +---------------+   |
+   |                   | Consume the   | |  |   | | Is it         |   |
+   |                   | proxy-related | |  |   | | acceptable to |   |
+   |                   | options       | |  |   | | decrypt the   |   |
+   |                   +---------------+ |  |   | | request? (#)  |   |
+   |                               |     |  |   | +---------------+   |
+   |                               |     |  |   |    |         |      |
+   |                               |     |  |   |    NO       YES     |
+   |                               |     |  |   |    |         |      |
+   |                               |    YES |   |    |         |      |
+   |                               v     |  |   |    v         |      |
+   |       +------------------------------+ |   |  ..........  |      |
+   |       | Does the authority component | |   |  : Return :  |      |
+   |       | (host and port) of the       | |   |  : 4.01   :  |      |
+   |       | request URI identify me?     | |   |  :........:  |      |
+   |       +------------------------------+ |   |              |      |
+   |                               |        |   |              |      |
+   |                               NO       |   |              |      |
+   |                               |        |   |              v      |
+   |                               |        |   |     +---------+     |
+   v                               v        |   |     | Decrypt |     |
++-----------------------------+ ........... |   |     +---------+     |
+| There is no                 | : Forward : |   |          |          |
+| Proxy-Scheme Option or      | : the     : |   |          |          |
+| Proxy-Scheme-Number Option, | : request : |   |          v          |
+| but there is a combination  | :.........: |   |    +----------+     |
+| of the following options:   |    ^        |   |    | Success? |     |
+|                             |    |        |   |    +----------+     |
+| - Uri-Host;                 |    |        |   |     |    |          |
+| - Uri-Port;                 |    |        |   |     NO   |          |
+| - Uri-Path-Abbrev, or       |    |        |   |     |    |          |
+|   one or more Uri-Path      |    |        |   |     |    +----YES---+
++-----------------------------+    |        |   |     |
+   |                               |        |   |     v
+   |       ..........    +---------------+  |   |   ................
+   |       : Return :    | Consume the   |  |   |   : OSCORE error :
+   |       : 4.01   :    | proxy-related |  |   |   : handling     :
+   |       :........:    | options       |  |   |   :..............:
+   |            ^        +---------------+  |   |
+   |            |                  ^        |   v
+   |            |                  |        |  +--------------+
+   |            NO                 |        |  | Is there an  |
+   |            |                  |        |  | application? |
+   |     +---------------+         |        |  +--------------+
+   |     | Is it         |         |        |     |        |
+   |     | acceptable to |---YES---+        |    YES       NO
+   |     | forward the   |                  |     |        |
+   |     | request? (#)  |                  |     |        v
+   |     +---------------+                  |     |     ..........
+   |            ^                           |     |     : Return :
+   |            |                           |     |     : 4.00   :
+   |           YES                          |     |     :........:
+   v            |                           |     v
++-------------------------------------+     |   ..................
+| Am I a reverse-proxy using the      |     |   : Deliver the    :
+| exact value of the included options |-NO--+   : request to the :
+| Uri-Host, Uri-Port, Uri-Path, and   |         : application    :
+| Uri-Path-Abbrev for proxying?       |         :................:
++-------------------------------------+
 
 
 (#) This is determined according to the endpoint's configuration
@@ -1685,6 +1710,10 @@ request      +-----------------------------------------------+        |
 ## Version -05 to -06 ## {#sec-05-06}
 
 * Removed normative language when behavior is not new.
+
+* Removed inappropriate references to RFC 7252.
+
+* Covered the use of the CoAP Uri-Path-Abbrev Option.
 
 * Use of SCHC Compression/Decompression:
 
