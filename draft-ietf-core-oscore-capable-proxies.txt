@@ -2594,11 +2594,11 @@ Appendix D.  State Diagram: Processing of Incoming Requests
     |                              |       |   |   |    |         |    |
     |                              |      YES  |   |    |         |    |
     |                              v       |   |   |    |         |    |
-    |            +--------------------------+  |   |    |         |    |
-    |            | Does the authority       |  |   |    v         |    |
-    |            | (host and port) of the   |  |   |  ..........  |    |
-    |            | request URI identify me? |  |   |  : Return :  |    |
-    |            +--------------------------+  |   |  : 4.01   :  |    |
+    |        +------------------------------+  |   |    |         |    |
+    |        | Does the authority component |  |   |    v         |    |
+    |        | (host and port) of the       |  |   |  ..........  |    |
+    |        | request URI identify me?     |  |   |  : Return :  |    |
+    |        +------------------------------+  |   |  : 4.01   :  |    |
     |                              |           |   |  :........:  |    |
     |                              NO          |   |              |    |
     |                              |           |   |              v    |
