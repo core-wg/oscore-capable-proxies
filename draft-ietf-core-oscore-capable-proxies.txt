@@ -627,60 +627,62 @@ Table of Contents
 
 3.  OSCORE Processing of the Hop-Limit Option
 
-   The CoAP option Hop-Limit is defined in [RFC8768] and can be used to
-   detect forwarding loops through a chain of proxies.  The first proxy
-   in the chain that understands the option can include it in a received
-   request (if not present already), then sets a proper integer value
-   specifying the desired maximum number of hops, and finally forward
-   the request to the next hop.  Any following proxy that understands
-   the option decrements the option value and forwards the request if
-   the new value is different from zero, or returns a 5.08 (Hop Limit
-   Reached) error response otherwise.
+   The CoAP Hop-Limit Option is defined in [RFC8768] and can be used to
+   detect forwarding loops through a chain of proxies.
 
-   [RFC8768] does not define how the Hop-Limit option is processed by
+   The first proxy in the chain that understands the option can include
+   it in a received request (if not already present therein), then sets
+   the option value to a proper integer value specifying the desired
+   maximum number of hops, and finally forward the request to the next
+   hop.  Any following proxy that understands the option decrements the
+   option value and forwards the request if the new value is different
+   from zero, or it returns a 5.08 (Hop Limit Reached) error response
+   otherwise.
+
+   [RFC8768] does not define how the Hop-Limit Option is processed by
    OSCORE.  As a consequence, the default behavior specified in
-   Section 4.1 of [RFC8613] applies, i.e., the Hop-Limit option has to
+   Section 4.1 of [RFC8613] applies, i.e., the Hop-Limit Option has to
    be processed as Class E for OSCORE.
 
    However, this results in additionally and unjustifiably increasing
    the size of OSCORE-protected CoAP messages, in case the origin client
-   is the first endpoint to add the Hop-Limit option in a CoAP request.
+   is the first endpoint to add the Hop-Limit Option in a CoAP request.
    In the typical scenario where the origin client and the origin server
    share an OSCORE Security Context, the origin client including the
-   Hop-Limit option in a request will also protect that option when
+   Hop-Limit Option in a request will also protect that option when
    protecting the request end-to-end for the origin server, per the
    default processing mentioned above.  After that, the origin client
    sends the request to its adjacent proxy in the chain, which will add
-   an outer Hop-Limit option to be effectively considered from then on
+   an outer Hop-Limit Option to be effectively considered from then on
    as the message is forwarded towards the origin server.
 
    This undesirably prevents the first proxy in the chain from enforcing
    the intent of the origin client, which was presumably in the position
-   to specify a better initial value for the Hop-Limit option.  While
+   to specify a better initial value for the Hop-Limit Option.  While
    this does not fundamentally prevent the detection of forwarding
    loops, it is conducive to deviations from the intention of the origin
    client.  Moreover, it results in undesired overhead due to the
-   presence of the inner Hop-Limit option included by the client.  That
+   presence of the inner Hop-Limit Option included by the client.  That
    inner option will not be visible by the proxies in the chain and
    therefore will serve no practical purpose, but it will still be
    conveyed within the request as this traverses each hop towards the
    origin server.
 
    In order to prevent that by construction, this section updates
-   [RFC8768] by explicitly defining the Hop-Limit option to be of Class
+   [RFC8768] by explicitly defining the Hop-Limit Option to be of Class
    U for OSCORE.
 
    Therefore, with reference to the scenario discussed above, the origin
-   client does not protect the Hop-Limit option when protecting the
+   client does not protect the Hop-Limit Option when protecting the
    request end-to-end for the origin server, thus allowing the first
-   proxy in the chain to see and process the Hop-Limit option as
+   proxy in the chain to see and process the Hop-Limit Option as
    expected.
 
    When OSCORE is used at proxies like it is defined in this document,
    the process defined in Section 2.2 seamlessly applies also to the
-   Hop-Limit option.  Therefore, in a scenario where the origin client
+   Hop-Limit Option.  Therefore, in a scenario where the origin client
    also shares an OSCORE Security Context with the first proxy in the
-   chain, the origin client does not protect the Hop-Limit option end-
+   chain, the origin client does not protect the Hop-Limit Option end-
    to-end for the origin server, but it does protect the option when
    protecting the request for that proxy by means of their shared OSCORE
    Security Context.
@@ -717,11 +719,11 @@ Table of Contents
       available during the execution of Step 2 in Section 2.4 produces a
       cache hit.
 
-      That is, such a message: i) is exactly the one to be forwarded to
-      (the next hop towards) the origin server, in case no cache hit
-      occurs; and ii) is the result of an OSCORE decryption at the
-      proxy, in case OSCORE is used on the communication leg between the
-      proxy and (the previous hop towards) the origin client.
+      That is, such a message: i) is the one to be forwarded to (the
+      next hop towards) the origin server, in case no cache hit occurs;
+      and ii) is the result of an OSCORE decryption and verification at
+      the proxy, in case OSCORE is used on the communication leg between
+      the proxy and (the previous hop towards) the origin client.
 
    *  Upon receiving a response from (the next hop towards) the origin
       server, the proxy first removes the same OSCORE layers that it
@@ -729,9 +731,8 @@ Table of Contents
       defined in Section 2.6.
 
       Then, the proxy stores specifically that resulting response
-      message in its cache.  That is, such a stored message is exactly
-      the one to be forwarded to (the previous hop towards) the origin
-      client.
+      message in its cache.  That is, such a stored message is the one
+      to be forwarded to (the previous hop towards) the origin client.
 
    The specific rules about serving a request with a cached response are
    defined in Section 5.6 of [RFC7252] as well as in Section 7 of
@@ -779,19 +780,19 @@ Table of Contents
 
 6.  CoAP Header Compression with SCHC
 
-   The method defined in this document enables and results in the
-   possible protection of the same CoAP message with multiple, nested
-   OSCORE layers.  Especially when this happens, it is desirable to
-   compress the header of protected CoAP messages, in order to improve
-   performance and ensure that CoAP is usable also in Low-Power Wide-
-   Area Networks (LPWANs).
+   The method defined in this document enables the possible protection
+   of the same CoAP message with multiple, nested OSCORE layers.
+   Especially when that happens, it is desirable to compress the header
+   of protected CoAP messages, in order to improve performance and
+   ensure that CoAP is usable also in Low-Power Wide-Area Networks
+   (LPWANs).
 
    To this end, it is possible to use the Static Context Header
    Compression and fragmentation (SCHC) framework [RFC8724].  In
    particular, [I-D.ietf-schc-8824-update] specifies how to use SCHC for
    compressing headers of CoAP messages, also when messages are
    protected with OSCORE.  The SCHC Compression/Decompression is
-   applicable also in the presence of CoAP proxies and especially to the
+   applicable also in the presence of CoAP proxies and especially in the
    two following cases.
 
    *  In case OSCORE is not used at all, the SCHC processing occurs hop-
@@ -853,12 +854,11 @@ Table of Contents
        incoming message, by relying on the SCHC Rules shared with the
        previous hop towards the destination application endpoint.
 
-   2.  Unless it is exactly the destination application endpoint, it
-       performs a new Outer SCHC Compression on the result from the
-       previous step, by relying on the SCHC Rules shared with the (next
-       hop towards the) destination application endpoint.  Then, it
-       sends the result to the (next-hop towards the) destination
-       application endpoint.
+   2.  Unless it is the destination application endpoint, it performs a
+       new Outer SCHC Compression on the result from the previous step,
+       by relying on the SCHC Rules shared with the (next hop towards
+       the) destination application endpoint.  Then, it sends the result
+       to the (next-hop towards the) destination application endpoint.
 
    Note that the generalization above does not alter the core approach,
    design choices, and features of the SCHC Compression/Decompression
