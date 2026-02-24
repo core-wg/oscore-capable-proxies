@@ -471,10 +471,9 @@ Table of Contents
 
           In case the check fails, the endpoint MUST stop processing REQ
           and MUST respond with a 4.01 (Unauthorized) error response to
-          (the previous hop towards) the origin client, as per
-          Section 5.10.2 of [RFC7252].  This may result in protecting
-          the error response over that communication leg, as per
-          Section 2.5.
+          (the previous hop towards) the origin client.  This may result
+          in protecting the error response over that communication leg,
+          as per Section 2.5.
 
           Instead, in case the check succeeds, the endpoint consumes the
           proxy-related options as per Section 5.7.2 of [RFC7252].  In
@@ -517,10 +516,9 @@ Table of Contents
 
           In case the check fails, the endpoint MUST stop processing REQ
           and MUST respond with a 4.01 (Unauthorized) error response to
-          (the previous hop towards) the origin client, as per
-          Section 5.10.2 of [RFC7252].  This may result in protecting
-          the error response over that communication leg, as per
-          Section 2.5.
+          (the previous hop towards) the origin client.  This may result
+          in protecting the error response over that communication leg,
+          as per Section 2.5.
 
           Otherwise, the endpoint consumes the included Uri-Path, Uri-
           Host, and Uri-Port Options, and forwards REQ to (the next hop
@@ -572,10 +570,9 @@ Table of Contents
 
           In case the check fails, the endpoint MUST stop processing REQ
           and MUST respond with a 4.01 (Unauthorized) error response to
-          (the previous hop towards) the origin client, as per
-          Section 5.10.2 of [RFC7252].  This may result in protecting
-          the error response over that communication leg, as per
-          Section 2.5.
+          (the previous hop towards) the origin client.  This may result
+          in protecting the error response over that communication leg,
+          as per Section 2.5.
 
           Instead, in case the check succeeds, the endpoint decrypts REQ
           using the OSCORE Security Context indicated by the OSCORE
