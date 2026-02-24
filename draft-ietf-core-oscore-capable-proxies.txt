@@ -455,11 +455,11 @@ Table of Contents
           the Uri-* options.
 
           If the endpoint is not configured to be a forward-proxy, it
-          MUST stop processing REQ and MUST respond with a 5.05
-          (Proxying Not Supported) error response to (the previous hop
-          towards) the origin client, as per Section 5.10.2 of
-          [RFC7252].  This may result in protecting the error response
-          over that communication leg, as per Section 2.5.
+          stops processing REQ and responds with a 5.05 (Proxying Not
+          Supported) error response to (the previous hop towards) the
+          origin client, as per Section 5.10.2 of [RFC7252].  This may
+          result in protecting the error response over that
+          communication leg, as per Section 2.5.
 
           Otherwise, the endpoint MUST check whether forwarding the REQ
           to (the next hop towards) the origin server is an acceptable
@@ -2646,6 +2646,8 @@ Appendix E.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 E.1.  Version -05 to -06
+
+   *  Removed normative language when behavior is not new.
 
    *  Updated references.
 

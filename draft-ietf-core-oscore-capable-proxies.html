@@ -1504,7 +1504,7 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
 <li class="normal" id="section-2.4-2.2.2.1">
                 <p id="section-2.4-2.2.2.1.1">REQ includes either of the following (set) of CoAP options: the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* options.<a href="#section-2.4-2.2.2.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.2">
-If the endpoint is not configured to be a forward-proxy, it <span class="bcp14">MUST</span> stop processing REQ and <span class="bcp14">MUST</span> respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.1.2" class="pilcrow">¶</a></p>
+If the endpoint is not configured to be a forward-proxy, it stops processing REQ and responds with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.3">
 Otherwise, the endpoint <span class="bcp14">MUST</span> check whether forwarding the REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.<a href="#section-2.4-2.2.2.1.3" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.4">
@@ -4807,10 +4807,13 @@ Building on that, it is also possible to enable the operation of hidden services
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-E.1-1.1">
-            <p id="appendix-E.1-1.1.1">Updated references.<a href="#appendix-E.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.1.1">Removed normative language when behavior is not new.<a href="#appendix-E.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.2">
-            <p id="appendix-E.1-1.2.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.2.1">Updated references.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.3">
+            <p id="appendix-E.1-1.3.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
