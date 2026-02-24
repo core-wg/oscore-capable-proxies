@@ -242,7 +242,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
      Otherwise, the endpoint MUST check whether forwarding the REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.
 
-     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
      Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}. In particular, the endpoint checks whether the authority component (host and port) of the request URI identifies the endpoint itself. In such a case, REQ has to be treated as a local (non-proxied) request and the endpoint moves to Step 1.
 
@@ -258,7 +258,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
      Otherwise, the endpoint MUST check whether forwarding REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.
 
-     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
      Otherwise, the endpoint consumes the included Uri-Path, Uri-Host, and Uri-Port Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
 
@@ -282,7 +282,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
      Otherwise, the endpoint MUST check whether decrypting and verifying REQ is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of REQ and then verifying whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt and verify a request from the alleged request sender.
 
-     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per {{Section 5.10.2 of RFC7252}}. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     In case the check fails, the endpoint MUST stop processing REQ and MUST respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
      Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, which results in the decrypted request REQ\*. The possible presence of an OSCORE Option in REQ\* is not treated as an error situation.
 
