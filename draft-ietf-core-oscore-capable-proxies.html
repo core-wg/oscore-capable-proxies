@@ -1050,7 +1050,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tiloca &amp; Höglund</td>
-<td class="center">Expires 27 August 2026</td>
+<td class="center">Expires 28 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc8613" class="eref">8613</a>, <a href="https://www.rfc-editor.org/rfc/rfc8768" class="eref">8768</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-23" class="published">23 February 2026</time>
+<time datetime="2026-02-24" class="published">24 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-27">27 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-28">28 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1120,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 28 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1413,7 +1413,7 @@ However, a message can also be protected with a higher, arbitrary number of nest
 <p id="section-2.1-2.2.4">
 An OSCORE endpoint <span class="bcp14">SHOULD</span> define the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message. The defined limit has to appropriately reflect the security requirements of the application. At the same time, such a limit is typically bounded by the maximum number of OSCORE Security Contexts that can be active at the endpoint as well as by the number of intermediary OSCORE endpoints that have been explicitly set up by the communicating parties.<a href="#section-2.1-2.2.4" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.5">
-If its defined limit is reached when processing a CoAP message, an OSCORE endpoint <span class="bcp14">MUST NOT</span> perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed (see <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>).<a href="#section-2.1-2.2.5" class="pilcrow">¶</a></p>
+If its defined limit is reached when processing a CoAP message, an OSCORE endpoint <span class="bcp14">MUST NOT</span> perform any further OSCORE processing on that message. If the message is an outgoing request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> abort the message sending. If the message is an incoming request and it requires further OSCORE processing beyond the set limit, the endpoint <span class="bcp14">MUST</span> reply with a 4.01 (Unauthorized) error response. The endpoint protects such a response by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed (see <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>).<a href="#section-2.1-2.2.5" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1502,38 +1502,38 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
             <p id="section-2.4-2.2.1">The endpoint proceeds as defined below, depending on which of the two following conditions holds.<a href="#section-2.4-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.4-2.2.2.1">
-                <p id="section-2.4-2.2.2.1.1">REQ includes either of the following (set) of CoAP options: the Proxy-Uri option; the Proxy-Cri option; the Proxy-Scheme option or the Proxy-Scheme-Number option, together with any of the Uri-* options.<a href="#section-2.4-2.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.4-2.2.2.1.1">REQ includes either of the following (set) of CoAP options: the Proxy-Uri Option; the Proxy-Cri Option; the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with any of the Uri-* options.<a href="#section-2.4-2.2.2.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.2">
-If the endpoint is not configured to be a forward-proxy, it <span class="bcp14">MUST</span> stop processing the request and <span class="bcp14">MUST</span> respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.1.2" class="pilcrow">¶</a></p>
+If the endpoint is not configured to be a forward-proxy, it <span class="bcp14">MUST</span> stop processing REQ and <span class="bcp14">MUST</span> respond with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.3">
-Otherwise, the endpoint <span class="bcp14">MUST</span> check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message before performing this step.<a href="#section-2.4-2.2.2.1.3" class="pilcrow">¶</a></p>
+Otherwise, the endpoint <span class="bcp14">MUST</span> check whether forwarding the REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.<a href="#section-2.4-2.2.2.1.3" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.4">
-In case the check fails, the endpoint <span class="bcp14">MUST</span> stop processing the request and <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.1.4" class="pilcrow">¶</a></p>
+In case the check fails, the endpoint <span class="bcp14">MUST</span> stop processing REQ and <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.1.4" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.5">
-Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.2" class="relref">Section 5.7.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. In particular, the endpoint checks whether the authority (host and port) of the request URI identifies the endpoint itself. In such a case, the endpoint moves to Step 1.<a href="#section-2.4-2.2.2.1.5" class="pilcrow">¶</a></p>
+Instead, in case the check succeeds, the endpoint consumes the proxy-related options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.2" class="relref">Section 5.7.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. In particular, the endpoint checks whether the authority component (host and port) of the request URI identifies the endpoint itself. In such a case, REQ has to be treated as a local (non-proxied) request and the endpoint moves to Step 1.<a href="#section-2.4-2.2.2.1.5" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.6">
-Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-00#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>).<a href="#section-2.4-2.2.2.1.6" class="pilcrow">¶</a></p>
+Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-00#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>).<a href="#section-2.4-2.2.2.1.6" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.7">
 If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per <a href="#outgoing-requests" class="auto internal xref">Section 2.3</a>.<a href="#section-2.4-2.2.2.1.7" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.8">
 After that, the endpoint does not take any further action.<a href="#section-2.4-2.2.2.1.8" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.4-2.2.2.2">
-                <p id="section-2.4-2.2.2.2.1">REQ does not include the Proxy-Scheme option or the Proxy-Scheme-Number option, but it includes one or more Uri-Path options, and/or the Uri-Host option, and/or the Uri-Port option.<a href="#section-2.4-2.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.4-2.2.2.2.1">REQ does not include the Proxy-Scheme Option or the Proxy-Scheme-Number Option, but it includes one or more Uri-Path Options, and/or the Uri-Host Option, and/or the Uri-Port Option.<a href="#section-2.4-2.2.2.2.1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.2">
-If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the Uri-Path, Uri-Host, and Uri-Port options is not intended to support reverse-proxy functionalities, then the endpoint moves to Step 3.<a href="#section-2.4-2.2.2.2.2" class="pilcrow">¶</a></p>
+If the endpoint is not configured to be a reverse-proxy, or what is targeted by the value of the Uri-Path, Uri-Host, and Uri-Port Options is not intended to support reverse-proxy functionalities, then the endpoint moves to Step 3.<a href="#section-2.4-2.2.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.3">
-Otherwise, the endpoint <span class="bcp14">MUST</span> check whether forwarding this request to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt the incoming message before performing this step.<a href="#section-2.4-2.2.2.2.3" class="pilcrow">¶</a></p>
+Otherwise, the endpoint <span class="bcp14">MUST</span> check whether forwarding REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.<a href="#section-2.4-2.2.2.2.3" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.4">
-In case the check fails, the endpoint <span class="bcp14">MUST</span> stop processing the request and <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.2.4" class="pilcrow">¶</a></p>
+In case the check fails, the endpoint <span class="bcp14">MUST</span> stop processing REQ and <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.2.4" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.5">
-Otherwise, the endpoint consumes the present Uri-Path, Uri-Host, and Uri-Port options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-2.4-2.2.2.2.5" class="pilcrow">¶</a></p>
+Otherwise, the endpoint consumes the included Uri-Path, Uri-Host, and Uri-Port Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-2.4-2.2.2.2.5" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.6">
 If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per <a href="#outgoing-requests" class="auto internal xref">Section 2.3</a>.<a href="#section-2.4-2.2.2.2.6" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.7">
 After that, the endpoint does not take any further action.<a href="#section-2.4-2.2.2.2.7" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.8">
-Note that, when forwarding REQ, the endpoint might not remove all the Uri-Path options originally present, e.g., in case the next hop towards the origin server is a reverse-proxy.<a href="#section-2.4-2.2.2.2.8" class="pilcrow">¶</a></p>
+Note that, when forwarding REQ, the endpoint might not remove all the Uri-Path Options originally included, e.g., in case the next hop towards the origin server is a reverse-proxy.<a href="#section-2.4-2.2.2.2.8" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1541,24 +1541,24 @@ Note that, when forwarding REQ, the endpoint might not remove all the Uri-Path o
             <p id="section-2.4-2.3.1">The endpoint proceeds as defined below, depending on which of the two following conditions holds.<a href="#section-2.4-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.4-2.3.2.1">
-                <p id="section-2.4-2.3.2.1.1">REQ does not include an OSCORE option.<a href="#section-2.4-2.3.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.4-2.3.2.1.1">REQ does not include an OSCORE Option.<a href="#section-2.4-2.3.2.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.1.2">
 If the endpoint does not have an application to handle REQ, it <span class="bcp14">MUST</span> stop processing the request and <span class="bcp14">MAY</span> respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.1.3">
 Otherwise, the endpoint delivers REQ to the application.<a href="#section-2.4-2.3.2.1.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.4-2.3.2.2">
-                <p id="section-2.4-2.3.2.2.1">REQ includes an OSCORE option.<a href="#section-2.4-2.3.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.4-2.3.2.2.1">REQ includes an OSCORE Option.<a href="#section-2.4-2.3.2.2.1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.2.2">
-If REQ includes any Uri-Path options, the endpoint <span class="bcp14">MUST</span> stop processing the request and <span class="bcp14">MAY</span> respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.2.2" class="pilcrow">¶</a></p>
+If REQ includes any Uri-Path Options, the endpoint <span class="bcp14">MUST</span> stop processing REQ and <span class="bcp14">MAY</span> respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.2.3">
-Otherwise, the endpoint <span class="bcp14">MUST</span> check whether decrypting the request is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of the request and then asserting whether the OSCORE Security Context indicated by the OSCORE option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.<a href="#section-2.4-2.3.2.2.3" class="pilcrow">¶</a></p>
+Otherwise, the endpoint <span class="bcp14">MUST</span> check whether decrypting and verifying REQ is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement, and in view of the (previous hop towards the) origin client being the alleged request sender. This check can be based, for instance, on considering the source addressing information of REQ and then verifying whether the OSCORE Security Context indicated by the OSCORE Option is not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt and verify a request from the alleged request sender.<a href="#section-2.4-2.3.2.2.3" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.2.4">
-In case the check fails, the endpoint <span class="bcp14">MUST</span> stop processing the request and <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.2.4" class="pilcrow">¶</a></p>
+In case the check fails, the endpoint <span class="bcp14">MUST</span> stop processing REQ and <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.2.4" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.2.5">
-Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE option, which results in the decrypted request REQ*. The possible presence of an OSCORE option in REQ* is not treated as an error situation.<a href="#section-2.4-2.3.2.2.5" class="pilcrow">¶</a></p>
+Instead, in case the check succeeds, the endpoint decrypts REQ using the OSCORE Security Context indicated by the OSCORE Option, which results in the decrypted request REQ*. The possible presence of an OSCORE Option in REQ* is not treated as an error situation.<a href="#section-2.4-2.3.2.2.5" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.2.6">
-If the OSCORE processing results in an error, the endpoint <span class="bcp14">MUST</span> stop processing the request and performs error handling as per <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-7.2" class="relref">7.2</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-8.4" class="relref">8.4</a> of <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.2.6" class="pilcrow">¶</a></p>
+If the OSCORE processing results in an error, the endpoint <span class="bcp14">MUST</span> stop processing REQ and performs error handling as per <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-7.2" class="relref">7.2</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-8.4" class="relref">8.4</a> of <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, in case OSCORE or Group OSCORE is used, respectively. In case the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.2.6" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.2.7">
 Otherwise, REQ takes REQ* and the endpoint moves to Step 1.<a href="#section-2.4-2.3.2.2.7" class="pilcrow">¶</a></p>
 </li>
@@ -1574,8 +1574,8 @@ Otherwise, REQ takes REQ* and the endpoint moves to Step 1.<a href="#section-2.4
         </h3>
 <p id="section-2.5-1">The rules from <a href="#general-rules" class="auto internal xref">Section 2.2</a> apply when processing an outgoing response message, with the following additions.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
 <p id="section-2.5-2">When a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer <span class="bcp14">MUST</span> be applied by using that Security Context.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
-<p id="section-2.5-3">The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.<a href="#section-2.5-3" class="pilcrow">¶</a></p>
-<p id="section-2.5-4">In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which they were removed.<a href="#section-2.5-4" class="pilcrow">¶</a></p>
+<p id="section-2.5-3">The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.<a href="#section-2.5-3" class="pilcrow">¶</a></p>
+<p id="section-2.5-4">In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.<a href="#section-2.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="incoming-responses">
@@ -1583,8 +1583,8 @@ Otherwise, REQ takes REQ* and the endpoint moves to Step 1.<a href="#section-2.4
         <h3 id="name-processing-of-an-incoming-re">
 <a href="#section-2.6" class="section-number selfRef">2.6. </a><a href="#name-processing-of-an-incoming-re" class="section-name selfRef">Processing of an Incoming Response</a>
         </h3>
-<p id="section-2.6-1">The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which they were added.<a href="#section-2.6-1" class="pilcrow">¶</a></p>
-<p id="section-2.6-2">When doing so, the possible presence of an OSCORE option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the corresponding outgoing request. In such a case, the endpoint <span class="bcp14">MUST</span> stop processing the response.<a href="#section-2.6-2" class="pilcrow">¶</a></p>
+<p id="section-2.6-1">The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which those layers were added.<a href="#section-2.6-1" class="pilcrow">¶</a></p>
+<p id="section-2.6-2">When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the corresponding outgoing request. In such a case, the endpoint <span class="bcp14">MUST</span> stop processing the response.<a href="#section-2.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
