@@ -360,7 +360,9 @@ In the following cases, what is described above is in fact already guaranteed:
 
 * The source OSCORE endpoint protected the response with OSCORE, and the response is an Observe notification (see {{Section 4.1.3.5.2 of RFC8613}}).
 
-The requirement defined above additionally covers the case where the source OSCORE endpoint protected the response with OSCORE and Observe is not used. The same example mentioned in {{partial-iv-response-sender}} holds as relevant, with an origin client using OSCORE to protect a unicast request to a proxy, which forwards the request to a group of origin servers and relays the collected responses back to the origin client.
+The requirement defined above additionally covers the case where the source OSCORE endpoint protected the response with OSCORE and Observe is not used. Note that having multiple such responses to the same request implies that the source OSCORE endpoint is not an origin server.
+
+The same example mentioned in {{partial-iv-response-sender}} holds as relevant, with an origin client using OSCORE to protect a unicast request to a proxy, which forwards the request to a group of origin servers and relays the collected responses back to the origin client.
 
 # OSCORE Processing of the Hop-Limit Option # {#sec-hop-limit}
 
