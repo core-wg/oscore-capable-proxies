@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                        24 February 2026
-Expires: 28 August 2026
+Intended status: Standards Track                        25 February 2026
+Expires: 29 August 2026
 
 
                          OSCORE-capable Proxies
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 August 2026.
+   This Internet-Draft will expire on 29 August 2026.
 
 Copyright Notice
 
@@ -1107,9 +1107,9 @@ Table of Contents
               Object Security for Constrained RESTful Environments
               (Group OSCORE) Using Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-19, 24
-              January 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-key-groupcomm-oscore-19>.
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-20, 25
+              February 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-key-groupcomm-oscore-20>.
 
    [I-D.ietf-core-cacheable-oscore]
               Amsüss, C. and M. Tiloca, "Cacheable OSCORE", Work in
@@ -1174,27 +1174,28 @@ Table of Contents
 
    [LwM2M-Core]
               Open Mobile Alliance, "Lightweight Machine to Machine
-              Technical Specification - Core, Approved Version 1.2, OMA-
-              TS-LightweightM2M_Core-V1_2-20201110-A", November 2020,
-              <http://www.openmobilealliance.org/release/LightweightM2M/
-              V1_2-20201110-A/OMA-TS-LightweightM2M_Core-
-              V1_2-20201110-A.pdf>.
+              Technical Specification - Core, Approved Version 1.2.2,
+              OMA-TS-LightweightM2M_Core-V1_2_2-20240613-A", June 2024,
+              <https://www.openmobilealliance.org/release/
+              LightweightM2M/V1_2_2-20240613-A/OMA-TS-
+              LightweightM2M_Core-V1_2_2-20240613-A.pdf>.
 
    [LwM2M-Gateway]
               Open Mobile Alliance, "Lightweight Machine to Machine
-              Gateway Technical Specification - Approved Version 1.1,
-              OMA-TS-LWM2M_Gateway-V1_1-20210518-A", May 2021,
+              Gateway Technical Specification - Approved Version 1.1.1,
+              OMA-TS-LWM2M_Gateway-V1_1_1-20240312-A", March 2024,
               <https://www.openmobilealliance.org/release/LwM2M_Gateway/
-              V1_1-20210518-A/OMA-TS-LWM2M_Gateway-V1_1-20210518-A.pdf>.
+              V1_1_1-20240312-A/OMA-TS-LWM2M_Gateway-
+              V1_1_1-20240312-A.pdf>.
 
    [LwM2M-Transport]
               Open Mobile Alliance, "Lightweight Machine to Machine
               Technical Specification - Transport Bindings, Approved
-              Version 1.2, OMA-TS-LightweightM2M_Transport-
-              V1_2-20201110-A", November 2020,
-              <http://www.openmobilealliance.org/release/LightweightM2M/
-              V1_2-20201110-A/OMA-TS-LightweightM2M_Transport-
-              V1_2-20201110-A.pdf>.
+              Version 1.2.2, OMA-TS-LightweightM2M_Transport-
+              V1_2_2-20240613-A", June 2024,
+              <https://www.openmobilealliance.org/release/
+              LightweightM2M/V1_2_2-20240613-A/OMA-TS-
+              LightweightM2M_Transport-V1_2_2-20240613-A.pdf>.
 
    [RFC7030]  Pritikin, M., Ed., Yee, P., Ed., and D. Harkins, Ed.,
               "Enrollment over Secure Transport", RFC 7030,
@@ -1310,13 +1311,13 @@ A.3.  LwM2M Client and External Application Server
    CoAP and OSCORE to secure their communications at the application
    layer, including during the device registration process.
 
-   Furthermore, Section 5.5.1 of [LwM2M-Transport] specifies that:
+   Furthermore, Section 5.4.1 of [LwM2M-Transport] specifies that:
 
    |  OSCORE MAY also be used between LwM2M endpoint and non-LwM2M
-   |  endpoint, e.g., between an Application Server and a LwM2M Client
+   |  endpoint, e.g. between an Application Server and a LwM2M Client
    |  via a LwM2M server.  Both the LwM2M endpoint and non-LwM2M
    |  endpoint MUST implement OSCORE and be provisioned with an OSCORE
-   |  Security Context.
+   |  Security Context as defined in [OSCORE].
 
    In such a case, the LwM2M Server can practically act as forward-proxy
    between the LwM2M Client and the external Application Server.  At the
