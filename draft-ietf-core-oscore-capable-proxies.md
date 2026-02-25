@@ -318,11 +318,49 @@ The sender endpoint protects the response by applying the same OSCORE layers tha
 
 In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.
 
+### Partial IV in the OSCORE Option # {#partial-iv-response-sender}
+
+When protecting an outgoing response, a source OSCORE endpoint MUST include its Sender Sequence Number as Partial IV in the response and use it to build the nonce to protect the response, except when sending the first response to the corresponding request, in which case the Partial IV in the response MAY be omitted. This holds for each OSCORE layer that the source OSCORE endpoint applies to protect the outgoing response.
+
+If the source OSCORE endpoint is the origin server, what is described above is in fact already guaranteed:
+
+* When the response is protected with Group OSCORE (see {{Sections 5.3.1, 7.3, and 8.5 of I-D.ietf-core-oscore-groupcomm}}).
+
+* When the response is protected with OSCORE and it is an Observe notification {{RFC7641}} (see {{Section 8.3.1 of RFC8613}}).
+
+  Note that, when OSCORE is used, sending Observe notifications is the only way for the origin server to send multiple responses to the same request.
+
+If the source OSCORE endpoint is not the origin server but rather a proxy, there are circumstances by which the OSCORE endpoint might send multiple responses to the same request, even though they are protected with OSCORE and they are not Observe notifications.
+
+A relevant example is the setup where a proxy receives a unicast request from the origin client, and it forwards the request to a group of origin servers, e.g., over IP multicast {{I-D.ietf-core-groupcomm-bis}}. The specification {{I-D.ietf-core-groupcomm-proxy}} defines a realization of such proxy, which collects the individual responses from the origin servers and relays those responses back to the origin client. That is, all such responses are sent by the proxy as replies to the same unicast request that the origin client sent to the proxy. Just like for that request, each response can be protected with Group OSCORE end-to-end between the replying origin server and the origin client, as well as with OSCORE between the proxy and the origin client.
+
 ## Processing of an Incoming Response {#incoming-responses}
 
 The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which those layers were added.
 
 When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the corresponding outgoing request. In such a case, the endpoint MUST stop processing the response.
+
+### Partial IV in the OSCORE Option
+
+There are circumstances by which, after sending a request, the sender endpoint might receive multiple responses as replies from a given other endpoint. For example, this is the case:
+
+* When the request is an Observe request {{RFC7641}}.
+
+* When the request is sent to a group of recipients, e.g., over IP multicast {{I-D.ietf-core-groupcomm-bis}}.
+
+* When the request is sent to a proxy, which forwards the request to a group of recipients (e.g., over IP multicast), and then relays their responses back {{I-D.ietf-core-groupcomm-bis}}{{I-D.ietf-core-groupcomm-proxy}}.
+
+In either case, the sender endpoint willingly opts-in for receiving multiple responses to the same request. In practice, such an indication can rely on: including the CoAP Observe Option in the request {{RFC7641}}; sending the request as addressed to a group of recipients (e.g., to an IP multicast address) {{I-D.ietf-core-groupcomm-bis}}; including the CoAP Multicast-Timeout Option in the unicast request sent to a proxy, which forwards the request to a group of recipients {{I-D.ietf-core-groupcomm-proxy}}; or a combination of such means.
+
+When processing an incoming response to a request that could elicit multiple responses, a destination OSCORE endpoint MUST only accept for that request at most one response without Partial IV from each source OSCORE endpoint, and treat it as the oldest response for that request from that source OSCORE endpoint.
+
+In the following cases, what is described above is in fact already guaranteed:
+
+* The source OSCORE endpoint protected the response with Group OSCORE (see {{Section 5.3.1 of I-D.ietf-core-oscore-groupcomm}}).
+
+* The source OSCORE endpoint protected the response with OSCORE, and the response is an Observe notification (see {{Section 4.1.3.5.2 of RFC8613}}).
+
+The requirement defined above additionally covers the case where the source OSCORE endpoint protected the response with OSCORE and Observe is not used. The same example mentioned in {{partial-iv-response-sender}} holds as relevant, with an origin client using OSCORE to protect a unicast request to a proxy, which forwards the request to a group of origin servers and relays the collected responses back to the origin client.
 
 # OSCORE Processing of the Hop-Limit Option # {#sec-hop-limit}
 
@@ -1714,6 +1752,8 @@ request      +-----------------------------------------------+        |
 * Removed inappropriate references to RFC 7252.
 
 * Covered the use of the CoAP Uri-Path-Abbrev Option.
+
+* Added requirements on including the Partial IV in the OSCORE Option of responses.
 
 * Use of SCHC Compression/Decompression:
 
