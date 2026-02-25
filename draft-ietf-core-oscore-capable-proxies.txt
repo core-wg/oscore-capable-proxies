@@ -738,10 +738,14 @@ Table of Contents
 
    The requirement defined above additionally covers the case where the
    source OSCORE endpoint protected the response with OSCORE and Observe
-   is not used.  The same example mentioned in Section 2.5.1 holds as
-   relevant, with an origin client using OSCORE to protect a unicast
-   request to a proxy, which forwards the request to a group of origin
-   servers and relays the collected responses back to the origin client.
+   is not used.  Note that having multiple such responses to the same
+   request implies that the source OSCORE endpoint is not an origin
+   server.
+
+   The same example mentioned in Section 2.5.1 holds as relevant, with
+   an origin client using OSCORE to protect a unicast request to a
+   proxy, which forwards the request to a group of origin servers and
+   relays the collected responses back to the origin client.
 
 3.  OSCORE Processing of the Hop-Limit Option
 

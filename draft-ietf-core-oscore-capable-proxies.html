@@ -1674,7 +1674,8 @@ Note that, when OSCORE is used, sending Observe notifications is the only way fo
               <p id="section-2.6.1-6.2.1">The source OSCORE endpoint protected the response with OSCORE, and the response is an Observe notification (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1.3.5.2" class="relref">Section 4.1.3.5.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-2.6.1-6.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-2.6.1-7">The requirement defined above additionally covers the case where the source OSCORE endpoint protected the response with OSCORE and Observe is not used. The same example mentioned in <a href="#partial-iv-response-sender" class="auto internal xref">Section 2.5.1</a> holds as relevant, with an origin client using OSCORE to protect a unicast request to a proxy, which forwards the request to a group of origin servers and relays the collected responses back to the origin client.<a href="#section-2.6.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.6.1-7">The requirement defined above additionally covers the case where the source OSCORE endpoint protected the response with OSCORE and Observe is not used. Note that having multiple such responses to the same request implies that the source OSCORE endpoint is not an origin server.<a href="#section-2.6.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.6.1-8">The same example mentioned in <a href="#partial-iv-response-sender" class="auto internal xref">Section 2.5.1</a> holds as relevant, with an origin client using OSCORE to protect a unicast request to a proxy, which forwards the request to a group of origin servers and relays the collected responses back to the origin client.<a href="#section-2.6.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
