@@ -1174,9 +1174,19 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5">
                 <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="auto internal xref">2.5</a>.  <a href="#name-processing-of-an-outgoing-re" class="internal xref">Processing of an Outgoing Response</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.1">
+                    <p id="section-toc.1-1.2.2.5.2.1.1"><a href="#section-2.5.1" class="auto internal xref">2.5.1</a>.  <a href="#name-partial-iv-in-the-oscore-op" class="internal xref">Partial IV in the OSCORE Option</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.6">
                 <p id="section-toc.1-1.2.2.6.1"><a href="#section-2.6" class="auto internal xref">2.6</a>.  <a href="#name-processing-of-an-incoming-re" class="internal xref">Processing of an Incoming Response</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.6.2.1">
+                    <p id="section-toc.1-1.2.2.6.2.1.1"><a href="#section-2.6.1" class="auto internal xref">2.6.1</a>.  <a href="#name-partial-iv-in-the-oscore-opt" class="internal xref">Partial IV in the OSCORE Option</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1606,6 +1616,27 @@ Otherwise, REQ takes REQ* and the endpoint moves to Step 1.<a href="#section-2.4
 <p id="section-2.5-2">When a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer <span class="bcp14">MUST</span> be applied by using that Security Context.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
 <p id="section-2.5-3">The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.<a href="#section-2.5-3" class="pilcrow">¶</a></p>
 <p id="section-2.5-4">In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.<a href="#section-2.5-4" class="pilcrow">¶</a></p>
+<div id="partial-iv-response-sender">
+<section id="section-2.5.1">
+          <h4 id="name-partial-iv-in-the-oscore-op">
+<a href="#section-2.5.1" class="section-number selfRef">2.5.1. </a><a href="#name-partial-iv-in-the-oscore-op" class="section-name selfRef">Partial IV in the OSCORE Option</a>
+          </h4>
+<p id="section-2.5.1-1">When protecting an outgoing response, a source OSCORE endpoint <span class="bcp14">MUST</span> include its Sender Sequence Number as Partial IV in the response and use it to build the nonce to protect the response, except when sending the first response to the corresponding request, in which case the Partial IV in the response <span class="bcp14">MAY</span> be omitted. This holds for each OSCORE layer that the source OSCORE endpoint applies to protect the outgoing response.<a href="#section-2.5.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.5.1-2">If the source OSCORE endpoint is the origin server, what is described above is in fact already guaranteed:<a href="#section-2.5.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.5.1-3.1">
+              <p id="section-2.5.1-3.1.1">When the response is protected with Group OSCORE (see Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-5.3.1" class="relref">5.3.1</a>, <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-7.3" class="relref">7.3</a>, and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-8.5" class="relref">8.5</a> of <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>).<a href="#section-2.5.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.5.1-3.2">
+              <p id="section-2.5.1-3.2.1">When the response is protected with OSCORE and it is an Observe notification <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.3.1" class="relref">Section 8.3.1</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-2.5.1-3.2.1" class="pilcrow">¶</a></p>
+<p id="section-2.5.1-3.2.2">
+Note that, when OSCORE is used, sending Observe notifications is the only way for the origin server to send multiple responses to the same request.<a href="#section-2.5.1-3.2.2" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.5.1-4">If the source OSCORE endpoint is not the origin server but rather a proxy, there are circumstances by which the OSCORE endpoint might send multiple responses to the same request, even though they are protected with OSCORE and they are not Observe notifications.<a href="#section-2.5.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.5.1-5">A relevant example is the setup where a proxy receives a unicast request from the origin client, and it forwards the request to a group of origin servers, e.g., over IP multicast <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>. The specification <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span> defines a realization of such proxy, which collects the individual responses from the origin servers and relays those responses back to the origin client. That is, all such responses are sent by the proxy as replies to the same unicast request that the origin client sent to the proxy. Just like for that request, each response can be protected with Group OSCORE end-to-end between the replying origin server and the origin client, as well as with OSCORE between the proxy and the origin client.<a href="#section-2.5.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="incoming-responses">
@@ -1615,6 +1646,37 @@ Otherwise, REQ takes REQ* and the endpoint moves to Step 1.<a href="#section-2.4
         </h3>
 <p id="section-2.6-1">The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which those layers were added.<a href="#section-2.6-1" class="pilcrow">¶</a></p>
 <p id="section-2.6-2">When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the corresponding outgoing request. In such a case, the endpoint <span class="bcp14">MUST</span> stop processing the response.<a href="#section-2.6-2" class="pilcrow">¶</a></p>
+<div id="partial-iv-in-the-oscore-option">
+<section id="section-2.6.1">
+          <h4 id="name-partial-iv-in-the-oscore-opt">
+<a href="#section-2.6.1" class="section-number selfRef">2.6.1. </a><a href="#name-partial-iv-in-the-oscore-opt" class="section-name selfRef">Partial IV in the OSCORE Option</a>
+          </h4>
+<p id="section-2.6.1-1">There are circumstances by which, after sending a request, the sender endpoint might receive multiple responses as replies from a given other endpoint. For example, this is the case:<a href="#section-2.6.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.6.1-2.1">
+              <p id="section-2.6.1-2.1.1">When the request is an Observe request <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>.<a href="#section-2.6.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.6.1-2.2">
+              <p id="section-2.6.1-2.2.1">When the request is sent to a group of recipients, e.g., over IP multicast <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>.<a href="#section-2.6.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.6.1-2.3">
+              <p id="section-2.6.1-2.3.1">When the request is sent to a proxy, which forwards the request to a group of recipients (e.g., over IP multicast), and then relays their responses back <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span><span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>.<a href="#section-2.6.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.6.1-3">In either case, the sender endpoint willingly opts-in for receiving multiple responses to the same request. In practice, such an indication can rely on: including the CoAP Observe Option in the request <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>; sending the request as addressed to a group of recipients (e.g., to an IP multicast address) <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>; including the CoAP Multicast-Timeout Option in the unicast request sent to a proxy, which forwards the request to a group of recipients <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>; or a combination of such means.<a href="#section-2.6.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.6.1-4">When processing an incoming response to a request that could elicit multiple responses, a destination OSCORE endpoint <span class="bcp14">MUST</span> only accept for that request at most one response without Partial IV from each source OSCORE endpoint, and treat it as the oldest response for that request from that source OSCORE endpoint.<a href="#section-2.6.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.6.1-5">In the following cases, what is described above is in fact already guaranteed:<a href="#section-2.6.1-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.6.1-6.1">
+              <p id="section-2.6.1-6.1.1">The source OSCORE endpoint protected the response with Group OSCORE (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>).<a href="#section-2.6.1-6.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.6.1-6.2">
+              <p id="section-2.6.1-6.2.1">The source OSCORE endpoint protected the response with OSCORE, and the response is an Observe notification (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1.3.5.2" class="relref">Section 4.1.3.5.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-2.6.1-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.6.1-7">The requirement defined above additionally covers the case where the source OSCORE endpoint protected the response with OSCORE and Observe is not used. The same example mentioned in <a href="#partial-iv-response-sender" class="auto internal xref">Section 2.5.1</a> holds as relevant, with an origin client using OSCORE to protect a unicast request to a proxy, which forwards the request to a group of origin servers and relays the collected responses back to the origin client.<a href="#section-2.6.1-7" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -4899,21 +4961,24 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.3.1">Covered the use of the CoAP Uri-Path-Abbrev Option.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.4">
-            <p id="appendix-E.1-1.4.1">Use of SCHC Compression/Decompression:<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-E.1-1.4.2.1">
-                <p id="appendix-E.1-1.4.2.1.1">Fixed generalization of Outer SCHC Compression.<a href="#appendix-E.1-1.4.2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.4.1">Added requirements on including the Partial IV in the OSCORE Option of responses.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-E.1-1.4.2.2">
-                <p id="appendix-E.1-1.4.2.2.1">Explicit distinction between Inner and Outer SCHC Compression Rules.<a href="#appendix-E.1-1.4.2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.1-1.5">
+            <p id="appendix-E.1-1.5.1">Use of SCHC Compression/Decompression:<a href="#appendix-E.1-1.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-E.1-1.5.2.1">
+                <p id="appendix-E.1-1.5.2.1.1">Fixed generalization of Outer SCHC Compression.<a href="#appendix-E.1-1.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-E.1-1.5.2.2">
+                <p id="appendix-E.1-1.5.2.2.1">Explicit distinction between Inner and Outer SCHC Compression Rules.<a href="#appendix-E.1-1.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-E.1-1.5">
-            <p id="appendix-E.1-1.5.1">Updated references.<a href="#appendix-E.1-1.5.1" class="pilcrow">¶</a></p>
-</li>
           <li class="normal" id="appendix-E.1-1.6">
-            <p id="appendix-E.1-1.6.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.6.1">Updated references.<a href="#appendix-E.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.7">
+            <p id="appendix-E.1-1.7.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
