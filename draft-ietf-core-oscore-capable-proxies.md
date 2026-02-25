@@ -66,21 +66,21 @@ informative:
   LwM2M-Core:
     author:
       org: Open Mobile Alliance
-    title: Lightweight Machine to Machine Technical Specification - Core, Approved Version 1.2, OMA-TS-LightweightM2M_Core-V1_2-20201110-A
-    date: 2020-11
-    target: http://www.openmobilealliance.org/release/LightweightM2M/V1_2-20201110-A/OMA-TS-LightweightM2M_Core-V1_2-20201110-A.pdf
+    title: Lightweight Machine to Machine Technical Specification - Core, Approved Version 1.2.2, OMA-TS-LightweightM2M_Core-V1_2_2-20240613-A
+    date: 2024-06
+    target: https://www.openmobilealliance.org/release/LightweightM2M/V1_2_2-20240613-A/OMA-TS-LightweightM2M_Core-V1_2_2-20240613-A.pdf
   LwM2M-Transport:
     author:
       org: Open Mobile Alliance
-    title: Lightweight Machine to Machine Technical Specification - Transport Bindings, Approved Version 1.2, OMA-TS-LightweightM2M_Transport-V1_2-20201110-A
-    date: 2020-11
-    target: http://www.openmobilealliance.org/release/LightweightM2M/V1_2-20201110-A/OMA-TS-LightweightM2M_Transport-V1_2-20201110-A.pdf
+    title: Lightweight Machine to Machine Technical Specification - Transport Bindings, Approved Version 1.2.2, OMA-TS-LightweightM2M_Transport-V1_2_2-20240613-A
+    date: 2024-06
+    target: https://www.openmobilealliance.org/release/LightweightM2M/V1_2_2-20240613-A/OMA-TS-LightweightM2M_Transport-V1_2_2-20240613-A.pdf
   LwM2M-Gateway:
     author:
       org: Open Mobile Alliance
-    title: Lightweight Machine to Machine Gateway Technical Specification - Approved Version 1.1, OMA-TS-LWM2M_Gateway-V1_1-20210518-A
-    date: 2021-05
-    target: https://www.openmobilealliance.org/release/LwM2M_Gateway/V1_1-20210518-A/OMA-TS-LWM2M_Gateway-V1_1-20210518-A.pdf
+    title: Lightweight Machine to Machine Gateway Technical Specification - Approved Version 1.1.1, OMA-TS-LWM2M_Gateway-V1_1_1-20240312-A
+    date: 2024-03
+    target: https://www.openmobilealliance.org/release/LwM2M_Gateway/V1_1_1-20240312-A/OMA-TS-LWM2M_Gateway-V1_1_1-20240312-A.pdf
   TOR-SPEC:
     author:
       org: Tor Project
@@ -500,10 +500,10 @@ Therefore, it is preferable to have a security association also between each cli
 
 The Lightweight Machine-to-Machine (LwM2M) protocol {{LwM2M-Core}} enables a LwM2M Client device to securely bootstrap and then register at a LwM2M Server, with which it will perform most of its following communication exchanges. As per the transport bindings specification of LwM2M {{LwM2M-Transport}}, the LwM2M Client and LwM2M Server can use CoAP and OSCORE to secure their communications at the application layer, including during the device registration process.
 
-Furthermore, Section 5.5.1 of {{LwM2M-Transport}} specifies that:
+Furthermore, Section 5.4.1 of {{LwM2M-Transport}} specifies that:
 
 {:quote}
-> OSCORE MAY also be used between LwM2M endpoint and non-LwM2M endpoint, e.g., between an Application Server and a LwM2M Client via a LwM2M server. Both the LwM2M endpoint and non-LwM2M endpoint MUST implement OSCORE and be provisioned with an OSCORE Security Context.
+> OSCORE MAY also be used between LwM2M endpoint and non-LwM2M endpoint, e.g. between an Application Server and a LwM2M Client via a LwM2M server. Both the LwM2M endpoint and non-LwM2M endpoint MUST implement OSCORE and be provisioned with an OSCORE Security Context as defined in \[OSCORE\].
 
 In such a case, the LwM2M Server can practically act as forward-proxy between the LwM2M Client and the external Application Server. At the same time, the LwM2M Client and LwM2M Server must continue protecting communications on their leg using their OSCORE Security Context. Like for the use case in {{ssec-uc1}}, this also allows the LwM2M Server to identify the LwM2M Client, before forwarding its request outside the LwM2M domain and towards the external Application Server.
 
