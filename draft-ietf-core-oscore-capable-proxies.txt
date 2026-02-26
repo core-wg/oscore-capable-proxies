@@ -480,8 +480,8 @@ Table of Contents
           result in protecting the error response over that
           communication leg, as per Section 2.5.
 
-          Otherwise, the endpoint MUST check whether forwarding the REQ
-          to (the next hop towards) the origin server is an acceptable
+          Otherwise, the endpoint MUST check whether forwarding REQ to
+          (the next hop towards) the origin server is an acceptable
           operation to perform, according to the endpoint's
           configuration and a possible authorization enforcement.  This
           check can be based, for instance, on the specific OSCORE
@@ -551,16 +551,16 @@ Table of Contents
           differently indicated in REQ, e.g., by means of any of its
           CoAP options.
 
+          Note that, when forwarding REQ, the endpoint might not remove
+          the Uri-Path-Abbrev-Option or all the Uri-Path Options
+          originally included, e.g., in case the next hop towards the
+          origin server is a reverse-proxy.
+
           If the endpoint forwards REQ to (the next hop towards) the
           origin server, this may result in (further) protecting REQ
           over that communication leg, as per Section 2.3.
 
           After that, the endpoint does not take any further action.
-
-          Note that, when forwarding REQ, the endpoint might not remove
-          the Uri-Path-Abbrev-Option or all the Uri-Path Options
-          originally included, e.g., in case the next hop towards the
-          origin server is a reverse-proxy.
 
    3.  The endpoint proceeds as defined below, depending on which of the
        two following conditions holds.

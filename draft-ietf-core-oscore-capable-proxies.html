@@ -1535,7 +1535,7 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
 <p id="section-2.4-2.2.2.1.3">
 If the endpoint is not configured to be a forward-proxy, it stops processing REQ and responds with a 5.05 (Proxying Not Supported) error response to (the previous hop towards) the origin client, as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.1.3" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.4">
-Otherwise, the endpoint <span class="bcp14">MUST</span> check whether forwarding the REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.<a href="#section-2.4-2.2.2.1.4" class="pilcrow">¶</a></p>
+Otherwise, the endpoint <span class="bcp14">MUST</span> check whether forwarding REQ to (the next hop towards) the origin server is an acceptable operation to perform, according to the endpoint's configuration and a possible authorization enforcement. This check can be based, for instance, on the specific OSCORE Security Context that the endpoint used to decrypt and verify REQ before performing this step.<a href="#section-2.4-2.2.2.1.4" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.5">
 In case the check fails, the endpoint <span class="bcp14">MUST</span> stop processing REQ and <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.2.2.1.5" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.1.6">
@@ -1569,11 +1569,11 @@ In case the check fails, the endpoint <span class="bcp14">MUST</span> stop proce
 <p id="section-2.4-2.2.2.2.6">
 Otherwise, the endpoint consumes the included Uri-Host, Uri-Port, Uri-Path, and Uri-Path-Abbrev Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-2.4-2.2.2.2.6" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.7">
-If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per <a href="#outgoing-requests" class="auto internal xref">Section 2.3</a>.<a href="#section-2.4-2.2.2.2.7" class="pilcrow">¶</a></p>
+Note that, when forwarding REQ, the endpoint might not remove the Uri-Path-Abbrev-Option or all the Uri-Path Options originally included, e.g., in case the next hop towards the origin server is a reverse-proxy.<a href="#section-2.4-2.2.2.2.7" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.8">
-After that, the endpoint does not take any further action.<a href="#section-2.4-2.2.2.2.8" class="pilcrow">¶</a></p>
+If the endpoint forwards REQ to (the next hop towards) the origin server, this may result in (further) protecting REQ over that communication leg, as per <a href="#outgoing-requests" class="auto internal xref">Section 2.3</a>.<a href="#section-2.4-2.2.2.2.8" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.2.2.2.9">
-Note that, when forwarding REQ, the endpoint might not remove the Uri-Path-Abbrev-Option or all the Uri-Path Options originally included, e.g., in case the next hop towards the origin server is a reverse-proxy.<a href="#section-2.4-2.2.2.2.9" class="pilcrow">¶</a></p>
+After that, the endpoint does not take any further action.<a href="#section-2.4-2.2.2.2.9" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
