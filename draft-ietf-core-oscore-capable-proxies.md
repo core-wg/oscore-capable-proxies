@@ -87,7 +87,14 @@ informative:
     date: false
     title: Tor Specifications
     target: https://spec.torproject.org/
-
+  "DAI-SNAC":
+    author:
+      -
+        ins: C. Amsüss
+        name: Christian Amsüss
+    title: "Discovery and capabilities of guard proxies for CoRE networks"
+    date: 2021-12
+    target: http://dx.doi.org/10.1145/3488661.349402
 
 --- abstract
 
@@ -567,7 +574,9 @@ Combined with what is defined above, a server aware of a suitable cross-proxy ca
 
 ## Access Control to the Origin Server
 
-A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.
+A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. As an alternative to a hard firewall that can be either traversed or not, a proxy can instead apply major rate limits on incoming traffic from unauthenticated clients {{DAI-SNAC}} and lift those limits for authenticated clients, possibly to different extents depending on the specific client.
+
+In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.
 
 Furthermore, if the client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on their shared secure communication association to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.
 
