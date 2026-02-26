@@ -195,6 +195,8 @@ Per the update made by this document, the sender endpoint MUST perform the proce
 
 Before protecting M by using the OSCORE Security Context shared with the other OSCORE endpoint X and applying the i-th OSCORE layer in sequence, the sender endpoint performs the following steps for each CoAP option OPT that is included in M and is originally specified only as an outer option (Class U or I) for OSCORE. {{sec-option-protection-diag}} provides an overview of these steps through a state diagram.
 
+In the following, a recipient endpoint is denoted as "consumer" of an option OPT if the endpoint is meant to have access to OPT for processing it as appropriate.
+
 Note that the sender endpoint can assess some conditions only "to the best of its knowledge". This is due to the possible presence of a reverse-proxy standing for X and whose presence as reverse-proxy is, by definition, expected to be unknown to the sender endpoint.
 
 1. If the sender endpoint has added OPT to M, then this algorithm moves to Step 2. Otherwise, this algorithm moves to Step 4.
@@ -1767,6 +1769,8 @@ request      +-----------------------------------------------+        |
 * Removed normative language when behavior is not new.
 
 * Removed inappropriate references to RFC 7252.
+
+* Defined meaning of "consumer" of a CoAP option.
 
 * Covered the use of the CoAP Uri-Path-Abbrev Option.
 
