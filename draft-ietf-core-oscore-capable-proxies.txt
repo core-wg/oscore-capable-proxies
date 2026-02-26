@@ -360,6 +360,10 @@ Table of Contents
    only as an outer option (Class U or I) for OSCORE.  Appendix C
    provides an overview of these steps through a state diagram.
 
+   In the following, a recipient endpoint is denoted as "consumer" of an
+   option OPT if the endpoint is meant to have access to OPT for
+   processing it as appropriate.
+
    Note that the sender endpoint can assess some conditions only "to the
    best of its knowledge".  This is due to the possible presence of a
    reverse-proxy standing for X and whose presence as reverse-proxy is,
@@ -2818,6 +2822,8 @@ E.1.  Version -05 to -06
    *  Removed normative language when behavior is not new.
 
    *  Removed inappropriate references to RFC 7252.
+
+   *  Defined meaning of "consumer" of a CoAP option.
 
    *  Covered the use of the CoAP Uri-Path-Abbrev Option.
 
