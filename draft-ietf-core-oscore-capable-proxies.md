@@ -107,7 +107,7 @@ For a number of use cases (see {{sec-use-cases}}), it is required and/or benefic
 
 In such cases, and especially if the origin client already uses OSCORE to achieve end-to-end security with the origin server, it would be convenient that OSCORE is also used to secure communications between the origin client and its next hop.
 
-However, the original specification {{RFC8613}} does not define how OSCORE can be used to protect CoAP messages in that communication leg, or how to generally process CoAP messages with OSCORE at an intermediary. In fact, this would require also considering an intermediary as an "OSCORE endpoint".
+However, the original specification {{RFC8613}} does not define how OSCORE can be used to protect CoAP messages in that communication leg, or how to generally process CoAP messages with OSCORE at an intermediary. In fact, this would also require to consider an intermediary as an "OSCORE endpoint".
 
 This document fills this gap and updates {{RFC8613}} as follows.
 
