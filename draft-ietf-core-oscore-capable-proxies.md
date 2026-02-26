@@ -94,7 +94,7 @@ informative:
         name: Christian Amsüss
     title: "Discovery and capabilities of guard proxies for CoRE networks"
     date: 2021-12
-    target: http://dx.doi.org/10.1145/3488661.349402
+    target: http://dx.doi.org/10.1145/3488661.3494029
 
 --- abstract
 
