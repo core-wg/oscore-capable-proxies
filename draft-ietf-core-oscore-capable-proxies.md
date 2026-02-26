@@ -650,7 +650,7 @@ CTX_C_P   |       |
   |       |       |            0xff,
   |       |       |            {Code: 0.01 (GET),
   |       |       |             Uri-Path: "alarm_status"
-  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |            }   // Encrypted with CTX_C_S
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
@@ -698,7 +698,7 @@ CTX_C_P   |       |
   |       |       |            {Code: 2.05 (Content),
   |       |       |             0xff,
   |       |       |             "0"
-  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |            }   // Encrypted with CTX_C_S
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
@@ -754,7 +754,7 @@ CTX_C_S   |       |
   |       |       |                0xff,
   |       |       |                {Code: 0.01 (GET),
   |       |       |                 Uri-Path: "alarm_status"
-  |       |       |                } // Encrypted with CTX_C_S
+  |       |       |                }   // Encrypted with CTX_C_S
   |       |       |               } // Encrypted with CTX_P_S
   |       |       |
   |       |     Decrypt
@@ -783,7 +783,7 @@ CTX_C_S   |       |
   |       |       |                {Code: 2.05 (Content),
   |       |       |                 0xff,
   |       |       |                 "0"
-  |       |       |                } // Encrypted with CTX_C_S
+  |       |       |                }   // Encrypted with CTX_C_S
   |       |       |               } // Encrypted with CTX_P_S
   |       |       |
   |     Decrypt   |
@@ -841,7 +841,7 @@ CTX_C_P   |       |
   |       |       |            0xff,
   |       |       |            {Code: 0.01 (GET),
   |       |       |             Uri-Path: "alarm_status"
-  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |            }   // Encrypted with CTX_C_S
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
@@ -862,7 +862,7 @@ CTX_C_P   |       |
   |       |       |           0xff,
   |       |       |           {Code: 0.01 (GET),
   |       |       |            Uri-Path: "alarm_status"
-  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |           }   // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_P_S
   |       |       |
   |       |     Decrypt
@@ -891,7 +891,7 @@ CTX_C_P   |       |
   |       |       |           {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
-  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |           }   // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_P_S
   |       |       |
   |     Decrypt   |
@@ -912,7 +912,7 @@ CTX_C_P   |       |
   |       |       |           {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
-  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |           }   // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
@@ -1041,7 +1041,7 @@ CTX_C_P   |       |
   |       |       |            Proxy-Scheme: "coap",
   |       |       |            0xff,
   |       |       |            (C_R, EDHOC message_3)
-  |       |       |           } // Encrypted with CTX_C_P
+  |       |       |           }    // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
   |     REQ with  |
@@ -1083,7 +1083,7 @@ CTX_C_P   |       |
   |       |       |            0xff,
   |       |       |            {Code: 0.01 (GET),
   |       |       |             Uri-Path: "alarm_status"
-  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |            }   // Encrypted with CTX_C_S
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
@@ -1130,7 +1130,7 @@ CTX_C_P   |       |
   |       |       |            {Code: 2.05 (Content),
   |       |       |             0xff,
   |       |       |             "0"
-  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |            }   // Encrypted with CTX_C_S
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
@@ -1278,7 +1278,7 @@ CTX_C_P   |       |
   |       |       |            {
   |       |       |             Code: 0.01 (GET),
   |       |       |             Uri-Path:"alarm_status"
-  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |            }   // Encrypted with CTX_C_S
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
@@ -1336,7 +1336,7 @@ CTX_C_P   |       |
   |       |       |            {Code: 2.05 (Content),
   |       |       |             0xff,
   |       |       |             "0"
-  |       |       |            } // Encrypted with CTX_C_S
+  |       |       |            }   // Encrypted with CTX_C_S
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
@@ -1486,7 +1486,7 @@ CTX_C_P   |       |
   |       |       |           0xff,
   |       |       |           {Code: 0.01 (GET),
   |       |       |            Uri-Path: "alarm_status"
-  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |           }   // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
@@ -1506,7 +1506,7 @@ CTX_C_P   |       |
   |       |       |           0xff,
   |       |       |           {Code: 0.01 (GET),
   |       |       |            Uri-Path: "alarm_status"
-  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |           }   // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_P_S
   |       |       |
   |       |     Decrypt
@@ -1535,7 +1535,7 @@ CTX_C_P   |       |
   |       |       |           {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
-  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |           }   // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_P_S
   |       |       |
   |     Decrypt   |
@@ -1556,7 +1556,7 @@ CTX_C_P   |       |
   |       |       |           {Code: 2.05 (Content),
   |       |       |            0xff,
   |       |       |            "0"
-  |       |       |           } // Encrypted with CTX_C_S
+  |       |       |           }   // Encrypted with CTX_C_S
   |       |       |          } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
