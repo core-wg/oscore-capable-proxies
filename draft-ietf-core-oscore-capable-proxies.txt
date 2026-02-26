@@ -1042,7 +1042,7 @@ Table of Contents
 7.1.  Preserving Location Anonymity
 
    As discussed in Section 2.4.1, a particularly sensitive server might
-   use policies with strict creteria about what makes an OSCORE-
+   use policies with strict criteria about what makes an OSCORE-
    protected request eligible to be decrypted and verified.
 
    When a server using such policies receives an OSCORE-protected
