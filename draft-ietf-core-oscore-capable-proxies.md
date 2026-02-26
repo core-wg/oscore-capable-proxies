@@ -299,7 +299,7 @@ Upon receiving a request REQ, the recipient endpoint performs the actions descri
 
    * REQ does not include an OSCORE Option.
 
-     If the endpoint does not have an application to handle REQ, it MUST stop processing the request and MAY respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+     If the endpoint does not have an application to handle REQ, it MUST stop processing the request and MAY respond with a 4.04 (Not Found) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
      Otherwise, the endpoint delivers REQ to the application.
 
@@ -1745,7 +1745,7 @@ request      +-----------------------------------------------+        |
    |     | request? (#)  |                  |     |        v
    |     +---------------+                  |     |     ..........
    |            ^                           |     |     : Return :
-   |            |                           |     |     : 4.00   :
+   |            |                           |     |     : 4.04   :
    |           YES                          |     |     :........:
    v            |                           |     v
 +-------------------------------------+     |   ..................
@@ -1771,6 +1771,8 @@ request      +-----------------------------------------------+        |
 * Removed inappropriate references to RFC 7252.
 
 * Defined meaning of "consumer" of a CoAP option.
+
+* Fixed use of error codes at the origin server.
 
 * Covered the use of the CoAP Uri-Path-Abbrev Option.
 
