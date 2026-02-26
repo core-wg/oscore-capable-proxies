@@ -557,15 +557,23 @@ If CoAP is used in the communication leg between the LwM2M Gateway and the end I
 
 As per Section 7 of {{LwM2M-Gateway}}, message exchanges between the LwM2M Server and the LwM2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as a reverse-proxy.
 
+## Access Control to a Proxy
+
+From a security point of view, it would be convenient if the proxy could provide suitable credentials to the client, as a general trusted proxy for the system. At the same time, it can be desirable to limit the use of such a proxy to a set of clients that have permission to use it, and that the proxy can identify through a secure communication association.
+
+However, in order for OSCORE to be an applicable security mechanism for this scenario, OSCORE has to be terminated at the proxy. That is, it would be required for a client and the proxy to share a dedicated OSCORE Security Context and to use it for protecting their communication leg.
+
+Combined with what is defined above, a server aware of a suitable cross-proxy can rely on it as a third-party service, in order to indicate transports for CoAP that are available for that server (see {{Section 5 of I-D.ietf-core-transport-indication}}).
+
+## Access Control to the Origin Server
+
+A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.
+
+Furthermore, if the client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on their shared secure communication association to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.
+
 ## Further Use Cases
 
 The approach defined in this document can be useful also in the following use cases relying on a proxy.
-
-* A server aware of a suitable cross-proxy can rely on it as a third-party service, in order to indicate transports for CoAP that are available for that server (see {{Section 5 of I-D.ietf-core-transport-indication}}).
-
-  From a security point of view, it would be convenient if the proxy could provide suitable credentials to the client, as a general trusted proxy for the system. At the same time, it can be desirable to limit the use of such a proxy to a set of clients that have permission to use it, and that the proxy can identify through a secure communication association.
-
-  However, in order for OSCORE to be an applicable security mechanism for this scenario, OSCORE has to be terminated at the proxy. That is, it would be required for a client and the proxy to share a dedicated OSCORE Security Context and to use it for protecting their communication leg.
 
 * The method specified in {{I-D.ietf-core-coap-pm}} relies on the Performance Measurement Option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.
 
@@ -578,8 +586,6 @@ The approach defined in this document can be useful also in the following use ca
   In real-world deployments, an EST server issuing public-key certificates may reside outside a constrained network that includes devices acting as EST clients. In particular, the EST clients are expected to support only CoAP, while the EST server in a non-constrained network is expected to support only HTTP. This requires a CoAP-to-HTTP proxy to be deployed between the EST clients and the EST server, in order to map CoAP messages with HTTP messages across the two networks.
 
   Even in such a scenario, the EST server and every EST client can still effectively use OSCORE to protect their communications end-to-end. At the same time, it is desirable to have an additional secure association between the EST client and the CoAP-to-HTTP proxy, especially in order for the proxy to identify the EST client before forwarding EST messages out of the CoAP boundary of the constrained network and towards the EST server.
-
-* A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.
 
 * The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message.
 
@@ -1762,6 +1768,8 @@ request      +-----------------------------------------------+        |
   * Fixed generalization of Outer SCHC Compression.
 
   * Explicit distinction between Inner and Outer SCHC Compression Rules.
+
+* Improved visibility and discussion on two use cases: "Access Control to a Proxy" and "Access Control to the Origin Server" (via a pproxy).
 
 * Updated references.
 
