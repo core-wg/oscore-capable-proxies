@@ -1590,7 +1590,7 @@ After that, the endpoint does not take any further action.<a href="#section-2.4-
 <li class="normal" id="section-2.4-2.3.2.1">
                 <p id="section-2.4-2.3.2.1.1">REQ does not include an OSCORE Option.<a href="#section-2.4-2.3.2.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.1.2">
-If the endpoint does not have an application to handle REQ, it <span class="bcp14">MUST</span> stop processing the request and <span class="bcp14">MAY</span> respond with a 4.00 (Bad Request) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.1.2" class="pilcrow">¶</a></p>
+If the endpoint does not have an application to handle REQ, it <span class="bcp14">MUST</span> stop processing the request and <span class="bcp14">MAY</span> respond with a 4.04 (Not Found) error response to (the previous hop towards) the origin client. This may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.3.2.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.3.2.1.3">
 Otherwise, the endpoint delivers REQ to the application.<a href="#section-2.4-2.3.2.1.3" class="pilcrow">¶</a></p>
 </li>
@@ -4898,7 +4898,7 @@ Building on that, it is also possible to enable the operation of hidden services
                 <text x="492" y="1620">Return</text>
                 <text x="528" y="1620">:</text>
                 <text x="456" y="1636">:</text>
-                <text x="484" y="1636">4.00</text>
+                <text x="484" y="1636">4.04</text>
                 <text x="528" y="1636">:</text>
                 <text x="136" y="1652">YES</text>
                 <text x="492" y="1652">:........:</text>
@@ -4983,30 +4983,33 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.3.1">Defined meaning of "consumer" of a CoAP option.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.4">
-            <p id="appendix-E.1-1.4.1">Covered the use of the CoAP Uri-Path-Abbrev Option.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.4.1">Fixed use of error codes at the origin server.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.5">
-            <p id="appendix-E.1-1.5.1">Added requirements on including the Partial IV in the OSCORE Option of responses.<a href="#appendix-E.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.5.1">Covered the use of the CoAP Uri-Path-Abbrev Option.<a href="#appendix-E.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.6">
-            <p id="appendix-E.1-1.6.1">Use of SCHC Compression/Decompression:<a href="#appendix-E.1-1.6.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-E.1-1.6.2.1">
-                <p id="appendix-E.1-1.6.2.1.1">Fixed generalization of Outer SCHC Compression.<a href="#appendix-E.1-1.6.2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.6.1">Added requirements on including the Partial IV in the OSCORE Option of responses.<a href="#appendix-E.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-E.1-1.6.2.2">
-                <p id="appendix-E.1-1.6.2.2.1">Explicit distinction between Inner and Outer SCHC Compression Rules.<a href="#appendix-E.1-1.6.2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.1-1.7">
+            <p id="appendix-E.1-1.7.1">Use of SCHC Compression/Decompression:<a href="#appendix-E.1-1.7.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-E.1-1.7.2.1">
+                <p id="appendix-E.1-1.7.2.1.1">Fixed generalization of Outer SCHC Compression.<a href="#appendix-E.1-1.7.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-E.1-1.7.2.2">
+                <p id="appendix-E.1-1.7.2.2.1">Explicit distinction between Inner and Outer SCHC Compression Rules.<a href="#appendix-E.1-1.7.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-E.1-1.7">
-            <p id="appendix-E.1-1.7.1">Improved visibility and discussion on two use cases: "Access Control to a Proxy" and "Access Control to the Origin Server" (via a pproxy).<a href="#appendix-E.1-1.7.1" class="pilcrow">¶</a></p>
-</li>
           <li class="normal" id="appendix-E.1-1.8">
-            <p id="appendix-E.1-1.8.1">Updated references.<a href="#appendix-E.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.8.1">Improved visibility and discussion on two use cases: "Access Control to a Proxy" and "Access Control to the Origin Server" (via a pproxy).<a href="#appendix-E.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.9">
-            <p id="appendix-E.1-1.9.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.9.1">Updated references.<a href="#appendix-E.1-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.10">
+            <p id="appendix-E.1-1.10.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
