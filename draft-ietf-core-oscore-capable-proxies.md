@@ -485,7 +485,7 @@ If Group OSCORE is used over a communication leg and the group mode is used to a
 
 ## Preserving Location Anonymity
 
-As discussed in {{source-based-policies}}, a particularly sensitive server might use policies with strict creteria about what makes an OSCORE-protected request eligible to be decrypted and verified.
+As discussed in {{source-based-policies}}, a particularly sensitive server might use policies with strict criteria about what makes an OSCORE-protected request eligible to be decrypted and verified.
 
 When a server using such policies receives an OSCORE-protected request (see Step 3 in {{incoming-requests}}), the server proceeds only if the necessary OSCORE Security Contexts are not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.
 
