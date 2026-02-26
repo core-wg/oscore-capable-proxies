@@ -126,7 +126,7 @@ This document fills this gap and updates {{RFC8613}} as follows.
 
 Furthermore, this document updates {{RFC8768}}, by explicitly defining the CoAP Hop-Limit Option to be of Class U for OSCORE (see {{sec-hop-limit}}). In the case where the Hop-Limit Option is first added to a request by an origin client instead of an intermediary, this update avoids undesired overhead in terms of message size and ensures that the first intermediary in the chain enforces the intent of the origin client in detecting forwarding loops.
 
-This document does not specify any new signaling method to guide the message processing on the different endpoints. In particular, every endpoint is always able to understand what steps to take on an incoming message, depending on the presence of the CoAP OSCORE Option and of other CoAP options intended for an intermediary.
+This document does not introduce any new signaling to guide the message processing on the different endpoints. Instead, according to the presence of the CoAP OSCORE Option and of other CoAP options intended for an intermediary, every endpoint is always able to understand whether (and how often) to decrypt an incoming message or whether to forward it.
 
 The approach defined in this document can be seamlessly employed also when Group OSCORE is used for protecting CoAP messages in group communication scenarios that rely on intermediaries.
 
