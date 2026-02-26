@@ -1187,7 +1187,7 @@ Table of Contents
 
    [DAI-SNAC] Amsüss, C., "Discovery and capabilities of guard proxies
               for CoRE networks", December 2021,
-              <http://dx.doi.org/10.1145/3488661.349402>.
+              <http://dx.doi.org/10.1145/3488661.3494029>.
 
    [I-D.amsuess-t2trg-onion-coap]
               Amsüss, C., Tiloca, M., and R. Höglund, "Using onion
