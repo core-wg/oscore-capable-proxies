@@ -620,7 +620,7 @@ The presented examples build on the example shown in {{Section A.1 of RFC8613}},
 
 The abbreviations "REQ" and "RESP" are used to denote a request message and a response message, respectively.
 
-## With Forward-Proxy; OSCORE: C-S, C-P
+## With Forward-Proxy; OSCORE: C-S, C-P # {#sec-examples-1}
 
 In the example shown in {{fig-example-client-proxy}}, message exchanges are protected with OSCORE as follows.
 
@@ -939,6 +939,8 @@ In the example shown in {{fig-example-edhoc}}, message exchanges are protected a
 
 The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC {{RFC9528}}.
 
+After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in {{sec-examples-1}}.
+
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
   |       |       |
@@ -1159,6 +1161,8 @@ In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are pr
 The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC {{RFC9528}}.
 
 In particular, the client relies on the EDHOC + OSCORE request defined in {{RFC9668}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
+
+After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in {{sec-examples-1}}. In the example shown in the present section, the two phases partly overlap at the POST request sent by the client with Token 0x83 and forwarded by the proxy with Token 0xa6, as the EDHOC + OSCORE request that conveys both the last EDHOC message_3 from the client intended for the server and the first OSCORE-protected application CoAP request combined together.
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
