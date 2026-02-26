@@ -327,9 +327,9 @@ Instead, per-source-address lists of Security Contexts should be maintained. Thi
 
 The rules from {{general-rules}} apply when processing an outgoing response message, with the following additions.
 
-When a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer MUST be applied by using that Security Context.
-
 The sender endpoint protects the response by applying the same OSCORE layers that it removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.
+
+It follows that, when a source application endpoint applies multiple OSCORE layers in sequence to protect an outgoing response and it uses an OSCORE Security Context shared with the other application endpoint, then the first OSCORE layer is applied by using that Security Context.
 
 In case the response is an error response, the sender endpoint protects it by applying the same OSCORE layers that it successfully removed from the corresponding incoming request, but in the reverse order than the one according to which those layers were removed.
 
