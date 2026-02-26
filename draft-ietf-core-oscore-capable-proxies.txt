@@ -1947,6 +1947,10 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
    Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using
    the key exchange protocol EDHOC [RFC9528].
 
+   After a first phase where the OSCORE Security Contexts are
+   established, the second phase consists in a protected message
+   exchange equivalent to that shown in Appendix B.1.
+
    Client  Proxy  Server
      |       |       |
      +------>|       |     Code: 0.02 (POST)
@@ -2177,6 +2181,16 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
    defined in [RFC9668] and denoted as COMB_REQ, in order to transport
    the last EDHOC message_3 and the first OSCORE-protected application
    CoAP request combined together.
+
+   After a first phase where the OSCORE Security Contexts are
+   established, the second phase consists in a protected message
+   exchange equivalent to that shown in Appendix B.1.  In the example
+   shown in the present section, the two phases partly overlap at the
+   POST request sent by the client with Token 0x83 and forwarded by the
+   proxy with Token 0xa6, as the EDHOC + OSCORE request that conveys
+   both the last EDHOC message_3 from the client intended for the server
+   and the first OSCORE-protected application CoAP request combined
+   together.
 
    Client  Proxy  Server
      |       |       |

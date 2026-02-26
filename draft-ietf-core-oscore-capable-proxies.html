@@ -2158,7 +2158,7 @@ Building on that, it is also possible to enable the operation of hidden services
 <p id="appendix-B-1">This section provides a number of examples where the approach defined in this document is used to protect message exchanges.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <p id="appendix-B-2">The presented examples build on the example shown in <span><a href="https://rfc-editor.org/rfc/rfc8613#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, which illustrates an origin client requesting the alarm status from an origin server through a forward-proxy.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <p id="appendix-B-3">The abbreviations "REQ" and "RESP" are used to denote a request message and a response message, respectively.<a href="#appendix-B-3" class="pilcrow">¶</a></p>
-<div id="with-forward-proxy-oscore-c-s-c-p">
+<div id="sec-examples-1">
 <section id="appendix-B.1">
         <h3 id="name-with-forward-proxy-oscore-c">
 <a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-with-forward-proxy-oscore-c" class="section-name selfRef">With Forward-Proxy; OSCORE: C-S, C-P</a>
@@ -2872,10 +2872,11 @@ Building on that, it is also possible to enable the operation of hidden services
 </li>
         </ul>
 <p id="appendix-B.4-3">The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-B.4-3" class="pilcrow">¶</a></p>
+<p id="appendix-B.4-4">After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in <a href="#sec-examples-1" class="auto internal xref">Appendix B.1</a>.<a href="#appendix-B.4-4" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-s"></span><div id="fig-example-edhoc">
 <figure id="figure-4">
-          <div id="appendix-B.4-4.1">
-            <div class="alignLeft art-svg artwork" id="appendix-B.4-4.1.1">
+          <div id="appendix-B.4-5.1">
+            <div class="alignLeft art-svg artwork" id="appendix-B.4-5.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="3312" width="544" viewBox="0 0 544 3312" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                 <path d="M 24,48 L 24,240" fill="none" stroke="black"></path>
                 <path d="M 24,280 L 24,496" fill="none" stroke="black"></path>
@@ -3320,7 +3321,7 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="272" y="3300">and</text>
                   <text x="300" y="3300">B.</text>
                 </g>
-              </svg><a href="#appendix-B.4-4.1.1" class="pilcrow">¶</a>
+              </svg><a href="#appendix-B.4-5.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
@@ -3345,10 +3346,11 @@ Building on that, it is also possible to enable the operation of hidden services
         </ul>
 <p id="appendix-B.5-3">The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-B.5-3" class="pilcrow">¶</a></p>
 <p id="appendix-B.5-4">In particular, the client relies on the EDHOC + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> and denoted as COMB_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-B.5-4" class="pilcrow">¶</a></p>
+<p id="appendix-B.5-5">After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in <a href="#sec-examples-1" class="auto internal xref">Appendix B.1</a>. In the example shown in the present section, the two phases partly overlap at the POST request sent by the client with Token 0x83 and forwarded by the proxy with Token 0xa6, as the EDHOC + OSCORE request that conveys both the last EDHOC message_3 from the client intended for the server and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-B.5-5" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-se"></span><div id="fig-example-edhoc-comb-req">
 <figure id="figure-5">
-          <div id="appendix-B.5-5.1">
-            <div class="alignLeft art-svg artwork" id="appendix-B.5-5.1.1">
+          <div id="appendix-B.5-6.1">
+            <div class="alignLeft art-svg artwork" id="appendix-B.5-6.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="3040" width="544" viewBox="0 0 544 3040" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
                 <path d="M 24,48 L 24,240" fill="none" stroke="black"></path>
                 <path d="M 24,280 L 24,288" fill="none" stroke="black"></path>
@@ -3752,7 +3754,7 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="272" y="3028">and</text>
                   <text x="300" y="3028">B.</text>
                 </g>
-              </svg><a href="#appendix-B.5-5.1.1" class="pilcrow">¶</a>
+              </svg><a href="#appendix-B.5-6.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
