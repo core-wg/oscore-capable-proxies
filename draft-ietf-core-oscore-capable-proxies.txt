@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                        25 February 2026
-Expires: 29 August 2026
+Intended status: Standards Track                        26 February 2026
+Expires: 30 August 2026
 
 
                          OSCORE-capable Proxies
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 August 2026.
+   This Internet-Draft will expire on 30 August 2026.
 
 Copyright Notice
 
@@ -159,13 +159,13 @@ Table of Contents
 
    In such cases, and especially if the origin client already uses
    OSCORE to achieve end-to-end security with the origin server, it
-   would be convenient that OSCORE is used also to secure communications
+   would be convenient that OSCORE is also used to secure communications
    between the origin client and its next hop.
 
    However, the original specification [RFC8613] does not define how
    OSCORE can be used to protect CoAP messages in that communication
    leg, or how to generally process CoAP messages with OSCORE at an
-   intermediary.  In fact, this would require to consider also an
+   intermediary.  In fact, this would require also considering an
    intermediary as an "OSCORE endpoint".
 
    This document fills this gap and updates [RFC8613] as follows.
@@ -824,7 +824,7 @@ Table of Contents
    In particular, this approach requires both the origin client and the
    origin server to have already joined the correct OSCORE group.  Then,
    starting from the same plain CoAP request, different clients in the
-   OSCORE group are able to deterministically generate a same
+   OSCORE group are able to deterministically generate the same
    Deterministic Request protected with Group OSCORE, which is sent to a
    proxy for being forwarded to the origin server.  The proxy can
    effectively cache the resulting OSCORE-protected response from the
