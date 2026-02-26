@@ -1185,6 +1185,10 @@ Table of Contents
 
 9.2.  Informative References
 
+   [DAI-SNAC] Amsüss, C., "Discovery and capabilities of guard proxies
+              for CoRE networks", December 2021,
+              <http://dx.doi.org/10.1145/3488661.349402>.
+
    [I-D.amsuess-t2trg-onion-coap]
               Amsüss, C., Tiloca, M., and R. Höglund, "Using onion
               routing with CoAP", Work in Progress, Internet-Draft,
@@ -1483,12 +1487,18 @@ A.5.  Access Control to a Proxy
 A.6.  Access Control to the Origin Server
 
    A proxy may be deployed to act as an entry point to a firewalled
-   network that only authenticated clients can join.  In particular,
-   authentication can rely on the secure communication association used
-   between a client and the proxy.  If the proxy could share a different
-   OSCORE Security Context with each different client, then the proxy
-   can rely on it to identify a client before forwarding messages from
-   that client to other members of the firewalled network.
+   network that only authenticated clients can join.  As an alternative
+   to a hard firewall that can be either traversed or not, a proxy can
+   instead apply major rate limits on incoming traffic from
+   unauthenticated clients [DAI-SNAC] and lift those limits for
+   authenticated clients, possibly to different extents depending on the
+   specific client.
+
+   In particular, authentication can rely on the secure communication
+   association used between a client and the proxy.  If the proxy could
+   share a different OSCORE Security Context with each different client,
+   then the proxy can rely on it to identify a client before forwarding
+   messages from that client to other members of the firewalled network.
 
    Furthermore, if the client trusts the proxy to perform its tasks in a
    privacy-oriented way, the client can rely on their shared secure

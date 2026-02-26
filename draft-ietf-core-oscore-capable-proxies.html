@@ -1935,6 +1935,10 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="DAI-SNAC">[DAI-SNAC]</dt>
+        <dd>
+<span class="refAuthor">Amsüss, C.</span>, <span class="refTitle">"Discovery and capabilities of guard proxies for CoRE networks"</span>, <time datetime="2021-12" class="refDate">December 2021</time>, <span>&lt;<a href="http://dx.doi.org/10.1145/3488661.349402">http://dx.doi.org/10.1145/3488661.349402</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.amsuess-t2trg-onion-coap">[I-D.amsuess-t2trg-onion-coap]</dt>
         <dd>
 <span class="refAuthor">Amsüss, C.</span>, <span class="refAuthor">Tiloca, M.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Using onion routing with CoAP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-amsuess-t2trg-onion-coap-04</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-amsuess-t2trg-onion-coap-04">https://datatracker.ietf.org/doc/html/draft-amsuess-t2trg-onion-coap-04</a>&gt;</span>. </dd>
@@ -2094,8 +2098,9 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <h3 id="name-access-control-to-the-origi">
 <a href="#appendix-A.6" class="section-number selfRef">A.6. </a><a href="#name-access-control-to-the-origi" class="section-name selfRef">Access Control to the Origin Server</a>
         </h3>
-<p id="appendix-A.6-1">A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
-<p id="appendix-A.6-2">Furthermore, if the client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on their shared secure communication association to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.<a href="#appendix-A.6-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-1">A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. As an alternative to a hard firewall that can be either traversed or not, a proxy can instead apply major rate limits on incoming traffic from unauthenticated clients <span>[<a href="#DAI-SNAC" class="cite xref">DAI-SNAC</a>]</span> and lift those limits for authenticated clients, possibly to different extents depending on the specific client.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-2">In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.<a href="#appendix-A.6-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-3">Furthermore, if the client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on their shared secure communication association to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.<a href="#appendix-A.6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="further-use-cases">
