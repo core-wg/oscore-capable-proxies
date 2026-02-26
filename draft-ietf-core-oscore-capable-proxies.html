@@ -1248,7 +1248,13 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.10.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-lwm2m-gateway" class="internal xref">LwM2M Gateway</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.5">
-                <p id="section-toc.1-1.10.2.5.1"><a href="#appendix-A.5" class="auto internal xref">A.5</a>.  <a href="#name-further-use-cases" class="internal xref">Further Use Cases</a></p>
+                <p id="section-toc.1-1.10.2.5.1"><a href="#appendix-A.5" class="auto internal xref">A.5</a>.  <a href="#name-access-control-to-a-proxy" class="internal xref">Access Control to a Proxy</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.6">
+                <p id="section-toc.1-1.10.2.6.1"><a href="#appendix-A.6" class="auto internal xref">A.6</a>.  <a href="#name-access-control-to-the-origi" class="internal xref">Access Control to the Origin Server</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.7">
+                <p id="section-toc.1-1.10.2.7.1"><a href="#appendix-A.7" class="auto internal xref">A.7</a>.  <a href="#name-further-use-cases" class="internal xref">Further Use Cases</a></p>
 </li>
             </ul>
 </li>
@@ -2073,43 +2079,52 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <p id="appendix-A.4-4">As per Section 7 of <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, message exchanges between the LwM2M Server and the LwM2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as a reverse-proxy.<a href="#appendix-A.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="further-use-cases">
+<div id="access-control-to-a-proxy">
 <section id="appendix-A.5">
-        <h3 id="name-further-use-cases">
-<a href="#appendix-A.5" class="section-number selfRef">A.5. </a><a href="#name-further-use-cases" class="section-name selfRef">Further Use Cases</a>
+        <h3 id="name-access-control-to-a-proxy">
+<a href="#appendix-A.5" class="section-number selfRef">A.5. </a><a href="#name-access-control-to-a-proxy" class="section-name selfRef">Access Control to a Proxy</a>
         </h3>
-<p id="appendix-A.5-1">The approach defined in this document can be useful also in the following use cases relying on a proxy.<a href="#appendix-A.5-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.5-1">From a security point of view, it would be convenient if the proxy could provide suitable credentials to the client, as a general trusted proxy for the system. At the same time, it can be desirable to limit the use of such a proxy to a set of clients that have permission to use it, and that the proxy can identify through a secure communication association.<a href="#appendix-A.5-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.5-2">However, in order for OSCORE to be an applicable security mechanism for this scenario, OSCORE has to be terminated at the proxy. That is, it would be required for a client and the proxy to share a dedicated OSCORE Security Context and to use it for protecting their communication leg.<a href="#appendix-A.5-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.5-3">Combined with what is defined above, a server aware of a suitable cross-proxy can rely on it as a third-party service, in order to indicate transports for CoAP that are available for that server (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-09#section-5" class="relref">Section 5</a> of [<a href="#I-D.ietf-core-transport-indication" class="cite xref">I-D.ietf-core-transport-indication</a>]</span>).<a href="#appendix-A.5-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="access-control-to-the-origin-server">
+<section id="appendix-A.6">
+        <h3 id="name-access-control-to-the-origi">
+<a href="#appendix-A.6" class="section-number selfRef">A.6. </a><a href="#name-access-control-to-the-origi" class="section-name selfRef">Access Control to the Origin Server</a>
+        </h3>
+<p id="appendix-A.6-1">A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-2">Furthermore, if the client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on their shared secure communication association to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.<a href="#appendix-A.6-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="further-use-cases">
+<section id="appendix-A.7">
+        <h3 id="name-further-use-cases">
+<a href="#appendix-A.7" class="section-number selfRef">A.7. </a><a href="#name-further-use-cases" class="section-name selfRef">Further Use Cases</a>
+        </h3>
+<p id="appendix-A.7-1">The approach defined in this document can be useful also in the following use cases relying on a proxy.<a href="#appendix-A.7-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-A.5-2.1">
-            <p id="appendix-A.5-2.1.1">A server aware of a suitable cross-proxy can rely on it as a third-party service, in order to indicate transports for CoAP that are available for that server (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-09#section-5" class="relref">Section 5</a> of [<a href="#I-D.ietf-core-transport-indication" class="cite xref">I-D.ietf-core-transport-indication</a>]</span>).<a href="#appendix-A.5-2.1.1" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-2.1.2">
-From a security point of view, it would be convenient if the proxy could provide suitable credentials to the client, as a general trusted proxy for the system. At the same time, it can be desirable to limit the use of such a proxy to a set of clients that have permission to use it, and that the proxy can identify through a secure communication association.<a href="#appendix-A.5-2.1.2" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-2.1.3">
-However, in order for OSCORE to be an applicable security mechanism for this scenario, OSCORE has to be terminated at the proxy. That is, it would be required for a client and the proxy to share a dedicated OSCORE Security Context and to use it for protecting their communication leg.<a href="#appendix-A.5-2.1.3" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-A.7-2.1">
+            <p id="appendix-A.7-2.1.1">The method specified in <span>[<a href="#I-D.ietf-core-coap-pm" class="cite xref">I-D.ietf-core-coap-pm</a>]</span> relies on the Performance Measurement Option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.<a href="#appendix-A.7-2.1.1" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-2.1.2">
+When OSCORE is used in deployments including on-path probes, an inner Performance Measurement Option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement Option allows also hop-by-hop measurements to be performed by relying on an on-path probe.<a href="#appendix-A.7-2.1.2" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-2.1.3">
+Therefore, it is preferable to have a secure association with an on-path probe, in order to also ensure the integrity of the hop-by-hop measurements exchanged with the probe.<a href="#appendix-A.7-2.1.3" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.5-2.2">
-            <p id="appendix-A.5-2.2.1">The method specified in <span>[<a href="#I-D.ietf-core-coap-pm" class="cite xref">I-D.ietf-core-coap-pm</a>]</span> relies on the Performance Measurement Option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.<a href="#appendix-A.5-2.2.1" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-2.2.2">
-When OSCORE is used in deployments including on-path probes, an inner Performance Measurement Option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement Option allows also hop-by-hop measurements to be performed by relying on an on-path probe.<a href="#appendix-A.5-2.2.2" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-2.2.3">
-Therefore, it is preferable to have a secure association with an on-path probe, in order to also ensure the integrity of the hop-by-hop measurements exchanged with the probe.<a href="#appendix-A.5-2.2.3" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-A.7-2.2">
+            <p id="appendix-A.7-2.2.1">The method specified in <span>[<a href="#I-D.ietf-ace-coap-est-oscore" class="cite xref">I-D.ietf-ace-coap-est-oscore</a>]</span> enables public-key certificate enrollment for Internet of Things deployments. This leverages payload formats defined in Enrollment over Secure Transport (EST) <span>[<a href="#RFC7030" class="cite xref">RFC7030</a>]</span>, while relying on CoAP for message transfer and on OSCORE for message protection.<a href="#appendix-A.7-2.2.1" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-2.2.2">
+In real-world deployments, an EST server issuing public-key certificates may reside outside a constrained network that includes devices acting as EST clients. In particular, the EST clients are expected to support only CoAP, while the EST server in a non-constrained network is expected to support only HTTP. This requires a CoAP-to-HTTP proxy to be deployed between the EST clients and the EST server, in order to map CoAP messages with HTTP messages across the two networks.<a href="#appendix-A.7-2.2.2" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-2.2.3">
+Even in such a scenario, the EST server and every EST client can still effectively use OSCORE to protect their communications end-to-end. At the same time, it is desirable to have an additional secure association between the EST client and the CoAP-to-HTTP proxy, especially in order for the proxy to identify the EST client before forwarding EST messages out of the CoAP boundary of the constrained network and towards the EST server.<a href="#appendix-A.7-2.2.3" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.5-2.3">
-            <p id="appendix-A.5-2.3.1">The method specified in <span>[<a href="#I-D.ietf-ace-coap-est-oscore" class="cite xref">I-D.ietf-ace-coap-est-oscore</a>]</span> enables public-key certificate enrollment for Internet of Things deployments. This leverages payload formats defined in Enrollment over Secure Transport (EST) <span>[<a href="#RFC7030" class="cite xref">RFC7030</a>]</span>, while relying on CoAP for message transfer and on OSCORE for message protection.<a href="#appendix-A.5-2.3.1" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-2.3.2">
-In real-world deployments, an EST server issuing public-key certificates may reside outside a constrained network that includes devices acting as EST clients. In particular, the EST clients are expected to support only CoAP, while the EST server in a non-constrained network is expected to support only HTTP. This requires a CoAP-to-HTTP proxy to be deployed between the EST clients and the EST server, in order to map CoAP messages with HTTP messages across the two networks.<a href="#appendix-A.5-2.3.2" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-2.3.3">
-Even in such a scenario, the EST server and every EST client can still effectively use OSCORE to protect their communications end-to-end. At the same time, it is desirable to have an additional secure association between the EST client and the CoAP-to-HTTP proxy, especially in order for the proxy to identify the EST client before forwarding EST messages out of the CoAP boundary of the constrained network and towards the EST server.<a href="#appendix-A.5-2.3.3" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.5-2.4">
-            <p id="appendix-A.5-2.4.1">A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.<a href="#appendix-A.5-2.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.5-2.5">
-            <p id="appendix-A.5-2.5.1">The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message.<a href="#appendix-A.5-2.5.1" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-2.5.2">
-This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request first by using the OSCORE Security Context shared with the origin server, and then by using different OSCORE Security Contexts shared with the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.<a href="#appendix-A.5-2.5.2" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-2.5.3">
-Building on that, it is also possible to enable the operation of hidden services and clients through onion routing with CoAP <span>[<a href="#I-D.amsuess-t2trg-onion-coap" class="cite xref">I-D.amsuess-t2trg-onion-coap</a>]</span>, similarly to how Tor (The Onion Router) <span>[<a href="#TOR-SPEC" class="cite xref">TOR-SPEC</a>]</span> enables it for TCP-based protocols.<a href="#appendix-A.5-2.5.3" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-A.7-2.3">
+            <p id="appendix-A.7-2.3.1">The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message.<a href="#appendix-A.7-2.3.1" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-2.3.2">
+This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request first by using the OSCORE Security Context shared with the origin server, and then by using different OSCORE Security Contexts shared with the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.<a href="#appendix-A.7-2.3.2" class="pilcrow">¶</a></p>
+<p id="appendix-A.7-2.3.3">
+Building on that, it is also possible to enable the operation of hidden services and clients through onion routing with CoAP <span>[<a href="#I-D.amsuess-t2trg-onion-coap" class="cite xref">I-D.amsuess-t2trg-onion-coap</a>]</span>, similarly to how Tor (The Onion Router) <span>[<a href="#TOR-SPEC" class="cite xref">TOR-SPEC</a>]</span> enables it for TCP-based protocols.<a href="#appendix-A.7-2.3.3" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -4976,10 +4991,13 @@ Building on that, it is also possible to enable the operation of hidden services
             </ul>
 </li>
           <li class="normal" id="appendix-E.1-1.6">
-            <p id="appendix-E.1-1.6.1">Updated references.<a href="#appendix-E.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.6.1">Improved visibility and discussion on two use cases: "Access Control to a Proxy" and "Access Control to the Origin Server" (via a pproxy).<a href="#appendix-E.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.7">
-            <p id="appendix-E.1-1.7.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.7.1">Updated references.<a href="#appendix-E.1-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.8">
+            <p id="appendix-E.1-1.8.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
