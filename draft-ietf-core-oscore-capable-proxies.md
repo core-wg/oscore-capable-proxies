@@ -105,9 +105,9 @@ The security protocol Object Security for Constrained RESTful Environments (OSCO
 
 For a number of use cases (see {{sec-use-cases}}), it is required and/or beneficial that communications are secured between an application endpoint (i.e., a CoAP origin client/server) and an intermediary as well as between two adjacent intermediaries in a chain. This especially applies to the communication leg between the CoAP origin client and the adjacent intermediary acting as the next hop towards the CoAP origin server.
 
-In such cases, and especially if the origin client already uses OSCORE to achieve end-to-end security with the origin server, it would be convenient that OSCORE is used also to secure communications between the origin client and its next hop.
+In such cases, and especially if the origin client already uses OSCORE to achieve end-to-end security with the origin server, it would be convenient that OSCORE is also used to secure communications between the origin client and its next hop.
 
-However, the original specification {{RFC8613}} does not define how OSCORE can be used to protect CoAP messages in that communication leg, or how to generally process CoAP messages with OSCORE at an intermediary. In fact, this would require to consider also an intermediary as an "OSCORE endpoint".
+However, the original specification {{RFC8613}} does not define how OSCORE can be used to protect CoAP messages in that communication leg, or how to generally process CoAP messages with OSCORE at an intermediary. In fact, this would require also considering an intermediary as an "OSCORE endpoint".
 
 This document fills this gap and updates {{RFC8613}} as follows.
 
@@ -386,7 +386,7 @@ When OSCORE is used at proxies like it is defined in this document, the process 
 
 Although it is not possible as per the original OSCORE specification {{RFC8613}}, effective cacheability of OSCORE-protected responses at proxies can be achieved. To this end, the approach defined in {{I-D.ietf-core-cacheable-oscore}} can be used, as based on Deterministic Requests protected with the pairwise mode of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}} used end-to-end between an origin client and an origin server. The applicability of this approach is limited to requests that are safe to process (in the REST sense) and that do not yield side effects at the origin server.
 
-In particular, this approach requires both the origin client and the origin server to have already joined the correct OSCORE group. Then, starting from the same plain CoAP request, different clients in the OSCORE group are able to deterministically generate a same Deterministic Request protected with Group OSCORE, which is sent to a proxy for being forwarded to the origin server. The proxy can effectively cache the resulting OSCORE-protected response from the server, since the same plain CoAP request will result again in the same Deterministic Request and thus will produce a cache hit at the proxy.
+In particular, this approach requires both the origin client and the origin server to have already joined the correct OSCORE group. Then, starting from the same plain CoAP request, different clients in the OSCORE group are able to deterministically generate the same Deterministic Request protected with Group OSCORE, which is sent to a proxy for being forwarded to the origin server. The proxy can effectively cache the resulting OSCORE-protected response from the server, since the same plain CoAP request will result again in the same Deterministic Request and thus will produce a cache hit at the proxy.
 
 When using this approach, the following also applies in addition to what is defined in {{incoming-requests}} and {{incoming-responses}}, when processing incoming messages at a proxy that implements caching of responses.
 
