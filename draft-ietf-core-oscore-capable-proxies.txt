@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                             3 July 2026
-Expires: 4 January 2027
+Intended status: Standards Track                             4 July 2026
+Expires: 5 January 2027
 
 
                          OSCORE-capable Proxies
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 January 2027.
+   This Internet-Draft will expire on 5 January 2027.
 
 Copyright Notice
 
@@ -92,6 +92,7 @@ Table of Contents
    3.  OSCORE Processing of the Hop-Limit Option
    4.  Caching of OSCORE-Protected Responses
    5.  Establishment of OSCORE Security Contexts
+     5.1.  Guidelines for Proxies
    6.  CoAP Header Compression with SCHC
    7.  Security Considerations
      7.1.  Preserving Location Anonymity
@@ -922,6 +923,146 @@ Table of Contents
       Context is used by the origin application endpoints for protecting
       communications end-to-end.
 
+5.1.  Guidelines for Proxies
+
+   When considering an intermediary chain between an origin client and
+   an origin server, all proxies except for the one adjacent to the
+   origin server are expected to be configured as to the establishment
+   and use of OSCORE with the next hop towards the origin server.
+
+   Such a configuration might not be as practical and feasible to
+   enforce for a proxy P adjacent to an origin server S.  That is,
+   before forwarding a request to S, P might have to dynamically
+   determine whether to establish an OSCORE Security Context with S (if
+   none is established already) and whether to use it for protecting the
+   request.
+
+   The rest of this section provides guidelines that P can follow in
+   order to determine when to try to establish an OSCORE Security
+   Context with S and when to use an OSCORE Security Context shared with
+   S.
+
+   In order to come to such a determination, P can answer the three
+   following questions.  For all of them, the default answer is "no".
+
+   *  Q1: Does S wish to use OSCORE between itself and an adjacent
+      proxy?
+
+      For example, P can answer this question by relying on a dedicated
+      SvcParamKey within a DNS SVCB Resource Record (RR)
+      [RFC9460][RFC9461], which is retrieved from a DNS response that P
+      obtains in reply to a DNS query about S.
+
+      The SvcParamKey can have an empty value in its presentation format
+      and wire format, e.g., analogously to the SvcParamKey "no-default-
+      alpn" defined in Section 7.1.1 of [RFC9460].
+
+      If the SvcParamKey is present in an SVCB RR about S, then S wishes
+      to use (Group) OSCORE between itself and an adjacent proxy.
+
+   *  Q2: Does S support the use of multiple, nested OSCORE layers?
+
+      For example, P can answer this question by relying on a dedicated
+      SvcParamKey within a DNS SVCB RR, which is retrieved from a DNS
+      response that P obtains in reply to a DNS query about S.
+
+      The SvcParamKey can have an empty value in its presentation format
+      and wire format, e.g., analogously to the SvcParamKey "no-default-
+      alpn" defined in Section 7.1.1 of [RFC9460].
+
+      If the SvcParamKey is present in an SVCB RR about S, then S
+      supports the use of multiple, nested OSCORE layers, i.e., it is
+      able to handle messages that are protected by at least two (Group)
+      OSCORE layers.
+
+      This is not intended to indicate how many nested OSCORE layers S
+      supports exactly (although that is in principle possible to
+      express).  In fact, it is already the case that S has to be
+      configured with the maximum number of OSCORE layers that it is
+      able to apply (remove) when processing an outgoing (incoming) CoAP
+      message (see Section 2.1).
+
+   *  Q3: Does S support the key exchange protocol EDHOC [RFC9528]?
+
+      For example, P can answer this question by using the means
+      specified in [I-D.ietf-lake-app-profiles] that are not used during
+      an EDHOC session itself.
+
+   The examples above are not exhaustive and P can rely on alternative
+   means to answer the three questions about S.
+
+   Once P has the answers to Q1, Q2, and Q3, then P can determine when
+   to try to establish an OSCORE Security Context with S and when to use
+   an OSCORE Security Context shared with S, as shown in the state
+   diagram in Figure 1.
+
+    +-----------------+
+    | P has a request |
+    | to forward to S |
+    +-----------------+
+             |
+             |
+             v
+          +-----+             +----------------------------+
+          |     |  NO         |                            |
+          | Q1? +------------>|  Forward the request to S  |<--------+
+          |     |             |                            |         |
+          +-----+             +----------------------------+         |
+             |                  ^    ^                   ^           |
+             |                  |    |                   |           |
+             |                  |    |                   |           |
+             |                  |    |                   |           |
+             | YES              |    |                   |           |
+             v                  |    |                   |           |
+    +---------------------+     |  +-+------------+      |           |
+    | After that P has    |     |  | Protect the  |      |           |
+    | completed all the   |     |  | request with |      |           |
+    | decryptions and     |     |  | CTX_P_S      |      |           |
+    | verifications on    |     |  +--------------+      |           |
+    | the request, does   |     |    ^          ^        |           |
+    | the request include |     |    |          |        |           |
+    | an OSCORE Option?   |     |    |          |        |           |
+    +---------------------+     |    |          | YES    | NO        |
+        |          |            |    |          |        |           |
+        | NO       | YES        |    |    +-----+----+   |           |
+        |          |            |    |    |          |   |           |
+        |          |            |    |    | Success? +---+           |
+        |          |            |    |    |          |               |
+        |          v            |    |    +----------+               |
+        |       +-----+         |    |          ^                    |
+        |       |     |  NO     |    |          |                    |
+        |       | Q2? +---------+    |          |                    |
+        |       |     |              |    +-----+-----+              |
+        |       +-----+              |    | Run EDHOC |              |
+        |          |                 |    | with S    |              |
+        |          | YES             |    +-----------+              |
+        v          v                 |          ^                    |
+    +-------------------+            |          |                    |
+    |                   |  YES       |          | YES                |
+    | Is P currently    +------------+          |                    |
+    | sharing an OSCORE |                    +--+--+                 |
+    | Security Context  |                NO  |     |  NO             |
+    | CTX_P_S with S?   +------------------->| Q3? +-----------------+
+    |                   |                    |     |
+    +-------------------+                    +-----+
+
+      Figure 1: Establishment and Use of OSCORE between a Proxy and an
+                               Origin Server
+
+   If P is considering to use Group OSCORE with the server S or with a
+   set of origin servers comprising S, then the same as shown in
+   Figure 1 applies, with the following differences:
+
+   *  CTX_P_S denotes a Group OSCORE Security Context that P can use to
+      protect the request over the communication leg between itself and
+      the origin server(s).
+
+   *  The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced
+      by P joining the right OSCORE group.  A successful group joining
+      results in P establishing CTX_P_S, while a failure results in
+      forwarding the request to the origin server(s) without P
+      protecting the request using Group OSCORE.
+
 6.  CoAP Header Compression with SCHC
 
    The method defined in this document enables the possible protection
@@ -1306,6 +1447,14 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               transport-indication-10>.
 
+   [I-D.ietf-lake-app-profiles]
+              Tiloca, M. and R. Höglund, "Coordinating the Use of
+              Application Profiles for Ephemeral Diffie-Hellman Over
+              COSE (EDHOC)", Work in Progress, Internet-Draft, draft-
+              ietf-lake-app-profiles-04, 2 March 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
+              app-profiles-04>.
+
    [LwM2M-Core]
               Open Mobile Alliance, "Lightweight Machine to Machine
               Technical Specification - Core, Approved Version 1.2.2,
@@ -1355,6 +1504,15 @@ Table of Contents
               Constrained Environments Using the OAuth 2.0 Framework
               (ACE-OAuth)", RFC 9200, DOI 10.17487/RFC9200, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9200>.
+
+   [RFC9460]  Schwartz, B., Bishop, M., and E. Nygren, "Service Binding
+              and Parameter Specification via the DNS (SVCB and HTTPS
+              Resource Records)", RFC 9460, DOI 10.17487/RFC9460,
+              November 2023, <https://www.rfc-editor.org/rfc/rfc9460>.
+
+   [RFC9461]  Schwartz, B., "Service Binding Mapping for DNS Servers",
+              RFC 9461, DOI 10.17487/RFC9461, November 2023,
+              <https://www.rfc-editor.org/rfc/rfc9461>.
 
    [RFC9528]  Selander, G., Preuß Mattsson, J., and F. Palombini,
               "Ephemeral Diffie-Hellman Over COSE (EDHOC)", RFC 9528,
@@ -1616,7 +1774,7 @@ Appendix B.  Examples of Message Exchanges
 
 B.1.  With Forward-Proxy; OSCORE: C-S, C-P
 
-   In the example shown in Figure 1, message exchanges are protected
+   In the example shown in Figure 2, message exchanges are protected
    with OSCORE as follows.
 
    *  End-to-end, between the client and the server, using the OSCORE
@@ -1711,11 +1869,11 @@ B.1.  With Forward-Proxy; OSCORE: C-S, C-P
    Square brackets [ ... ] indicate content of compressed COSE object.
    Curly brackets { ... } indicate encrypted data.
 
-       Figure 1: Use of OSCORE between Client-Server and Client-Proxy
+       Figure 2: Use of OSCORE between Client-Server and Client-Proxy
 
 B.2.  With Forward-Proxy; OSCORE: C-S, P-S
 
-   In the example shown in Figure 2, message exchanges are protected
+   In the example shown in Figure 3, message exchanges are protected
    with OSCORE as follows.
 
    *  End-to-end between the client and the server, using the OSCORE
@@ -1809,11 +1967,11 @@ B.2.  With Forward-Proxy; OSCORE: C-S, P-S
    Square brackets [ ... ] indicate content of compressed COSE object.
    Curly brackets { ... } indicate encrypted data.
 
-       Figure 2: Use of OSCORE between Client-Server and Proxy-Server
+       Figure 3: Use of OSCORE between Client-Server and Proxy-Server
 
 B.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
 
-   In the example shown in Figure 3, message exchanges are protected
+   In the example shown in Figure 4, message exchanges are protected
    with OSCORE as follows.
 
    *  End-to-end between the client and the server, using the OSCORE
@@ -1935,12 +2093,12 @@ B.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
    Square brackets [ ... ] indicate content of compressed COSE object.
    Curly brackets { ... } indicate encrypted data.
 
-      Figure 3: Use of OSCORE between Client-Server, Client-Proxy, and
+      Figure 4: Use of OSCORE between Client-Server, Client-Proxy, and
                                 Proxy-Server
 
 B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
 
-   In the example shown in Figure 4, message exchanges are protected as
+   In the example shown in Figure 5, message exchanges are protected as
    follows.
 
    *  End-to-end, between the client and the server, using the OSCORE
@@ -2165,12 +2323,12 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
    (A, B) indicates a CBOR sequence [RFC8742]
           of two CBOR data items A and B.
 
-      Figure 4: Use of OSCORE between Client-Server and Proxy-Server,
+      Figure 5: Use of OSCORE between Client-Server and Proxy-Server,
           with OSCORE Security Contexts established through EDHOC
 
 B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
 
-   In the example shown in Figure 5, message exchanges are protected as
+   In the example shown in Figure 6, message exchanges are protected as
    follows.
 
    *  End-to-end, between the client and the server, using the OSCORE
@@ -2389,13 +2547,13 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
    (A, B) indicates a CBOR sequence [RFC8742]
           of two CBOR data items A and B.
 
-      Figure 5: Use of OSCORE between Client-Server and Proxy-Server,
+      Figure 6: Use of OSCORE between Client-Server and Proxy-Server,
      with OSCORE Security Contexts established through EDHOC using the
                            EDHOC + OSCORE request
 
 B.6.  With Reverse-Proxy; OSCORE: C-P, P-S
 
-   In the example shown in Figure 6, message exchanges are protected
+   In the example shown in Figure 7, message exchanges are protected
    with OSCORE as follows.
 
    *  Between the client and the proxy, using the OSCORE Security
@@ -2497,12 +2655,12 @@ B.6.  With Reverse-Proxy; OSCORE: C-P, P-S
    Square brackets [ ... ] indicate content of compressed COSE object.
    Curly brackets { ... } indicate encrypted data.
 
-       Figure 6: Use of OSCORE between Client-Proxy and Proxy-Server
+       Figure 7: Use of OSCORE between Client-Proxy and Proxy-Server
                        (the Proxy is a Reverse-Proxy)
 
 B.7.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
 
-   In the example shown in Figure 7, message exchanges are protected
+   In the example shown in Figure 8, message exchanges are protected
    with OSCORE as follows.
 
    *  End-to-end between the client and the server, using the OSCORE
@@ -2650,12 +2808,12 @@ B.7.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
    Square brackets [ ... ] indicate content of compressed COSE object.
    Curly brackets { ... } indicate encrypted data.
 
-       Figure 7: Use of OSCORE between Client-Proxy and Proxy-Server
+       Figure 8: Use of OSCORE between Client-Proxy and Proxy-Server
                        (the Proxy is a Reverse-Proxy)
 
 Appendix C.  State Diagram: Protection of CoAP Options
 
-   Figure 8 overviews the rules defined in Section 2.2, which are used
+   Figure 9 overviews the rules defined in Section 2.2, which are used
    to determine whether a CoAP option that is originally specified only
    as an outer option (Class U or I) for OSCORE has to be processed as
    Class E, when protecting an outgoing message.
@@ -2731,12 +2889,12 @@ Appendix C.  State Diagram: Protection of CoAP Options
      +------->| Process OPT as per its original Class U or I |<------+
               +----------------------------------------------+
 
-   Figure 8: Protection of CoAP Options Originally Specified only as
+   Figure 9: Protection of CoAP Options Originally Specified only as
                 Outer Options (Class U or I) for OSCORE
 
 Appendix D.  State Diagram: Processing of Incoming Requests
 
-   Figure 9 overviews the processing of an incoming request, which is
+   Figure 10 overviews the processing of an incoming request, which is
    specified in Section 2.4.  The dotted boxes indicate ending states
    where the processing terminates.
 
@@ -2854,7 +3012,7 @@ Appendix D.  State Diagram: Processing of Incoming Requests
  (#) This is determined according to the endpoint's configuration
      and a possible authorization enforcement.
 
-              Figure 9: Processing of an Incoming Request
+              Figure 10: Processing of an Incoming Request
 
 Appendix E.  Document Updates
 
@@ -2864,6 +3022,9 @@ E.1.  Version -06 to -07
 
    *  Revised presentation of the algorithm for processing incoming
       requests.
+
+   *  Guidelines for proxies on establishing/using OSCORE with an origin
+      server.
 
    *  Minor clarifications and editorial improvements.
 

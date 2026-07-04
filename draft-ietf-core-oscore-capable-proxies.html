@@ -1049,7 +1049,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tiloca &amp; Höglund</td>
-<td class="center">Expires 4 January 2027</td>
+<td class="center">Expires 5 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc8613" class="eref">8613</a>, <a href="https://www.rfc-editor.org/rfc/rfc8768" class="eref">8768</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-03" class="published">3 July 2026</time>
+<time datetime="2026-07-04" class="published">4 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-04">4 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-01-05">5 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1119,7 +1119,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1202,6 +1202,11 @@ svg {
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-establishment-of-oscore-sec" class="internal xref">Establishment of OSCORE Security Contexts</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-guidelines-for-proxies" class="internal xref">Guidelines for Proxies</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-coap-header-compression-wit" class="internal xref">CoAP Header Compression with SCHC</a></p>
@@ -1415,7 +1420,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       </h2>
 <p id="section-2-1">This section defines the processing of CoAP messages with OSCORE.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2"><a href="#sec-examples" class="auto internal xref">Appendix B</a> provides a number of examples where the approach defined in this document is used to protect message exchanges.<a href="#section-2-2" class="pilcrow">¶</a></p>
-<div id="deviations-from-the-original-message-processing">
+<div id="sec-deviations">
 <section id="section-2.1">
         <h3 id="name-deviations-from-the-origina">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-deviations-from-the-origina" class="section-name selfRef">Deviations from the Original Message Processing</a>
@@ -1755,6 +1760,213 @@ Furthermore, the additional use of the combined EDHOC + OSCORE request defined i
 For the purposes of this document, there is no need for a proxy to also be a member of the OSCORE group whose Group OSCORE Security Context is used by the origin application endpoints for protecting communications end-to-end.<a href="#section-5-3.2.2" class="pilcrow">¶</a></p>
 </li>
       </ul>
+<div id="guidelines-for-proxies">
+<section id="section-5.1">
+        <h3 id="name-guidelines-for-proxies">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-guidelines-for-proxies" class="section-name selfRef">Guidelines for Proxies</a>
+        </h3>
+<p id="section-5.1-1">When considering an intermediary chain between an origin client and an origin server, all proxies except for the one adjacent to the origin server are expected to be configured as to the establishment and use of OSCORE with the next hop towards the origin server.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">Such a configuration might not be as practical and feasible to enforce for a proxy P adjacent to an origin server S. That is, before forwarding a request to S, P might have to dynamically determine whether to establish an OSCORE Security Context with S (if none is established already) and whether to use it for protecting the request.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">The rest of this section provides guidelines that P can follow in order to determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">In order to come to such a determination, P can answer the three following questions. For all of them, the default answer is "no".<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.1-5.1">
+            <p id="section-5.1-5.1.1">Q1: Does S wish to use OSCORE between itself and an adjacent proxy?<a href="#section-5.1-5.1.1" class="pilcrow">¶</a></p>
+<p id="section-5.1-5.1.2">
+For example, P can answer this question by relying on a dedicated SvcParamKey within a DNS SVCB Resource Record (RR) <span>[<a href="#RFC9460" class="cite xref">RFC9460</a>]</span><span>[<a href="#RFC9461" class="cite xref">RFC9461</a>]</span>, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.<a href="#section-5.1-5.1.2" class="pilcrow">¶</a></p>
+<p id="section-5.1-5.1.3">
+The SvcParamKey can have an empty value in its presentation format and wire format, e.g., analogously to the SvcParamKey "no-default-alpn" defined in <span><a href="https://rfc-editor.org/rfc/rfc9460#section-7.1.1" class="relref">Section 7.1.1</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>.<a href="#section-5.1-5.1.3" class="pilcrow">¶</a></p>
+<p id="section-5.1-5.1.4">
+If the SvcParamKey is present in an SVCB RR about S, then S wishes to use (Group) OSCORE between itself and an adjacent proxy.<a href="#section-5.1-5.1.4" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-5.2">
+            <p id="section-5.1-5.2.1">Q2: Does S support the use of multiple, nested OSCORE layers?<a href="#section-5.1-5.2.1" class="pilcrow">¶</a></p>
+<p id="section-5.1-5.2.2">
+For example, P can answer this question by relying on a dedicated SvcParamKey within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.<a href="#section-5.1-5.2.2" class="pilcrow">¶</a></p>
+<p id="section-5.1-5.2.3">
+The SvcParamKey can have an empty value in its presentation format and wire format, e.g., analogously to the SvcParamKey "no-default-alpn" defined in <span><a href="https://rfc-editor.org/rfc/rfc9460#section-7.1.1" class="relref">Section 7.1.1</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>.<a href="#section-5.1-5.2.3" class="pilcrow">¶</a></p>
+<p id="section-5.1-5.2.4">
+If the SvcParamKey is present in an SVCB RR about S, then S supports the use of multiple, nested OSCORE layers, i.e., it is able to handle messages that are protected by at least two (Group) OSCORE layers.<a href="#section-5.1-5.2.4" class="pilcrow">¶</a></p>
+<p id="section-5.1-5.2.5">
+This is not intended to indicate how many nested OSCORE layers S supports exactly (although that is in principle possible to express). In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see <a href="#sec-deviations" class="auto internal xref">Section 2.1</a>).<a href="#section-5.1-5.2.5" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-5.3">
+            <p id="section-5.1-5.3.1">Q3: Does S support the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>?<a href="#section-5.1-5.3.1" class="pilcrow">¶</a></p>
+<p id="section-5.1-5.3.2">
+For example, P can answer this question by using the means specified in <span>[<a href="#I-D.ietf-lake-app-profiles" class="cite xref">I-D.ietf-lake-app-profiles</a>]</span> that are not used during an EDHOC session itself.<a href="#section-5.1-5.3.2" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.1-6">The examples above are not exhaustive and P can rely on alternative means to answer the three questions about S.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.1-7">Once P has the answers to Q1, Q2, and Q3, then P can determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S, as shown in the state diagram in <a href="#fig-oscore-p-s" class="auto internal xref">Figure 1</a>.<a href="#section-5.1-7" class="pilcrow">¶</a></p>
+<span id="name-establishment-and-use-of-os"></span><div id="fig-oscore-p-s">
+<figure id="figure-1">
+          <div id="section-5.1-8.1">
+            <div class="alignCenter art-svg artwork" id="section-5.1-8.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="816" width="536" viewBox="0 0 536 816" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,32 L 8,80" fill="none" stroke="black"></path>
+                <path d="M 8,320 L 8,448" fill="none" stroke="black"></path>
+                <path d="M 8,688 L 8,800" fill="none" stroke="black"></path>
+                <path d="M 40,456 L 40,680" fill="none" stroke="black"></path>
+                <path d="M 56,144 L 56,208" fill="none" stroke="black"></path>
+                <path d="M 80,88 L 80,136" fill="none" stroke="black"></path>
+                <path d="M 80,216 L 80,312" fill="none" stroke="black"></path>
+                <path d="M 104,144 L 104,208" fill="none" stroke="black"></path>
+                <path d="M 104,560 L 104,624" fill="none" stroke="black"></path>
+                <path d="M 128,456 L 128,552" fill="none" stroke="black"></path>
+                <path d="M 128,632 L 128,680" fill="none" stroke="black"></path>
+                <path d="M 152,32 L 152,80" fill="none" stroke="black"></path>
+                <path d="M 152,560 L 152,624" fill="none" stroke="black"></path>
+                <path d="M 168,688 L 168,800" fill="none" stroke="black"></path>
+                <path d="M 184,320 L 184,448" fill="none" stroke="black"></path>
+                <path d="M 216,144 L 216,208" fill="none" stroke="black"></path>
+                <path d="M 232,216 L 232,592" fill="none" stroke="black"></path>
+                <path d="M 256,320 L 256,384" fill="none" stroke="black"></path>
+                <path d="M 272,216 L 272,320" fill="none" stroke="black"></path>
+                <path d="M 272,392 L 272,720" fill="none" stroke="black"></path>
+                <path d="M 312,480 L 312,544" fill="none" stroke="black"></path>
+                <path d="M 312,608 L 312,656" fill="none" stroke="black"></path>
+                <path d="M 336,736 L 336,800" fill="none" stroke="black"></path>
+                <path d="M 360,392 L 360,480" fill="none" stroke="black"></path>
+                <path d="M 360,552 L 360,608" fill="none" stroke="black"></path>
+                <path d="M 360,664 L 360,736" fill="none" stroke="black"></path>
+                <path d="M 376,320 L 376,384" fill="none" stroke="black"></path>
+                <path d="M 384,736 L 384,800" fill="none" stroke="black"></path>
+                <path d="M 400,480 L 400,544" fill="none" stroke="black"></path>
+                <path d="M 408,608 L 408,656" fill="none" stroke="black"></path>
+                <path d="M 432,216 L 432,512" fill="none" stroke="black"></path>
+                <path d="M 448,144 L 448,208" fill="none" stroke="black"></path>
+                <path d="M 528,176 L 528,768" fill="none" stroke="black"></path>
+                <path d="M 8,32 L 152,32" fill="none" stroke="black"></path>
+                <path d="M 8,80 L 152,80" fill="none" stroke="black"></path>
+                <path d="M 56,144 L 104,144" fill="none" stroke="black"></path>
+                <path d="M 216,144 L 448,144" fill="none" stroke="black"></path>
+                <path d="M 104,176 L 208,176" fill="none" stroke="black"></path>
+                <path d="M 456,176 L 528,176" fill="none" stroke="black"></path>
+                <path d="M 56,208 L 104,208" fill="none" stroke="black"></path>
+                <path d="M 216,208 L 448,208" fill="none" stroke="black"></path>
+                <path d="M 8,320 L 184,320" fill="none" stroke="black"></path>
+                <path d="M 256,320 L 376,320" fill="none" stroke="black"></path>
+                <path d="M 256,384 L 376,384" fill="none" stroke="black"></path>
+                <path d="M 8,448 L 184,448" fill="none" stroke="black"></path>
+                <path d="M 312,480 L 400,480" fill="none" stroke="black"></path>
+                <path d="M 400,512 L 432,512" fill="none" stroke="black"></path>
+                <path d="M 312,544 L 400,544" fill="none" stroke="black"></path>
+                <path d="M 104,560 L 152,560" fill="none" stroke="black"></path>
+                <path d="M 152,592 L 232,592" fill="none" stroke="black"></path>
+                <path d="M 312,608 L 408,608" fill="none" stroke="black"></path>
+                <path d="M 104,624 L 152,624" fill="none" stroke="black"></path>
+                <path d="M 312,656 L 408,656" fill="none" stroke="black"></path>
+                <path d="M 8,688 L 168,688" fill="none" stroke="black"></path>
+                <path d="M 168,720 L 272,720" fill="none" stroke="black"></path>
+                <path d="M 336,736 L 384,736" fill="none" stroke="black"></path>
+                <path d="M 168,768 L 328,768" fill="none" stroke="black"></path>
+                <path d="M 384,768 L 528,768" fill="none" stroke="black"></path>
+                <path d="M 8,800 L 168,800" fill="none" stroke="black"></path>
+                <path d="M 336,800 L 384,800" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="464,176 452,170.4 452,181.6" fill="black" transform="rotate(180,456,176)"></polygon>
+                <polygon class="arrowhead" points="440,216 428,210.4 428,221.6" fill="black" transform="rotate(270,432,216)"></polygon>
+                <polygon class="arrowhead" points="368,664 356,658.4 356,669.6" fill="black" transform="rotate(270,360,664)"></polygon>
+                <polygon class="arrowhead" points="368,552 356,546.4 356,557.6" fill="black" transform="rotate(270,360,552)"></polygon>
+                <polygon class="arrowhead" points="368,392 356,386.4 356,397.6" fill="black" transform="rotate(270,360,392)"></polygon>
+                <polygon class="arrowhead" points="336,768 324,762.4 324,773.6" fill="black" transform="rotate(0,328,768)"></polygon>
+                <polygon class="arrowhead" points="280,392 268,386.4 268,397.6" fill="black" transform="rotate(270,272,392)"></polygon>
+                <polygon class="arrowhead" points="280,216 268,210.4 268,221.6" fill="black" transform="rotate(270,272,216)"></polygon>
+                <polygon class="arrowhead" points="240,216 228,210.4 228,221.6" fill="black" transform="rotate(270,232,216)"></polygon>
+                <polygon class="arrowhead" points="216,176 204,170.4 204,181.6" fill="black" transform="rotate(0,208,176)"></polygon>
+                <polygon class="arrowhead" points="136,680 124,674.4 124,685.6" fill="black" transform="rotate(90,128,680)"></polygon>
+                <polygon class="arrowhead" points="136,552 124,546.4 124,557.6" fill="black" transform="rotate(90,128,552)"></polygon>
+                <polygon class="arrowhead" points="88,312 76,306.4 76,317.6" fill="black" transform="rotate(90,80,312)"></polygon>
+                <polygon class="arrowhead" points="88,136 76,130.4 76,141.6" fill="black" transform="rotate(90,80,136)"></polygon>
+                <polygon class="arrowhead" points="48,680 36,674.4 36,685.6" fill="black" transform="rotate(90,40,680)"></polygon>
+                <g class="text">
+                  <text x="24" y="52">P</text>
+                  <text x="48" y="52">has</text>
+                  <text x="72" y="52">a</text>
+                  <text x="112" y="52">request</text>
+                  <text x="28" y="68">to</text>
+                  <text x="72" y="68">forward</text>
+                  <text x="116" y="68">to</text>
+                  <text x="136" y="68">S</text>
+                  <text x="132" y="164">NO</text>
+                  <text x="80" y="180">Q1?</text>
+                  <text x="264" y="180">Forward</text>
+                  <text x="312" y="180">the</text>
+                  <text x="360" y="180">request</text>
+                  <text x="404" y="180">to</text>
+                  <text x="424" y="180">S</text>
+                  <text x="104" y="292">YES</text>
+                  <text x="40" y="340">After</text>
+                  <text x="84" y="340">that</text>
+                  <text x="112" y="340">P</text>
+                  <text x="136" y="340">has</text>
+                  <text x="296" y="340">Protect</text>
+                  <text x="344" y="340">the</text>
+                  <text x="56" y="356">completed</text>
+                  <text x="112" y="356">all</text>
+                  <text x="144" y="356">the</text>
+                  <text x="296" y="356">request</text>
+                  <text x="348" y="356">with</text>
+                  <text x="64" y="372">decryptions</text>
+                  <text x="128" y="372">and</text>
+                  <text x="296" y="372">CTX_P_S</text>
+                  <text x="72" y="388">verifications</text>
+                  <text x="140" y="388">on</text>
+                  <text x="32" y="404">the</text>
+                  <text x="84" y="404">request,</text>
+                  <text x="140" y="404">does</text>
+                  <text x="32" y="420">the</text>
+                  <text x="80" y="420">request</text>
+                  <text x="144" y="420">include</text>
+                  <text x="28" y="436">an</text>
+                  <text x="68" y="436">OSCORE</text>
+                  <text x="128" y="436">Option?</text>
+                  <text x="384" y="452">YES</text>
+                  <text x="452" y="452">NO</text>
+                  <text x="60" y="484">NO</text>
+                  <text x="152" y="484">YES</text>
+                  <text x="356" y="516">Success?</text>
+                  <text x="180" y="580">NO</text>
+                  <text x="128" y="596">Q2?</text>
+                  <text x="336" y="628">Run</text>
+                  <text x="376" y="628">EDHOC</text>
+                  <text x="340" y="644">with</text>
+                  <text x="368" y="644">S</text>
+                  <text x="152" y="660">YES</text>
+                  <text x="200" y="708">YES</text>
+                  <text x="384" y="708">YES</text>
+                  <text x="28" y="724">Is</text>
+                  <text x="48" y="724">P</text>
+                  <text x="96" y="724">currently</text>
+                  <text x="48" y="740">sharing</text>
+                  <text x="92" y="740">an</text>
+                  <text x="132" y="740">OSCORE</text>
+                  <text x="52" y="756">Security</text>
+                  <text x="120" y="756">Context</text>
+                  <text x="308" y="756">NO</text>
+                  <text x="412" y="756">NO</text>
+                  <text x="48" y="772">CTX_P_S</text>
+                  <text x="100" y="772">with</text>
+                  <text x="132" y="772">S?</text>
+                  <text x="360" y="772">Q3?</text>
+                </g>
+              </svg><a href="#section-5.1-8.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-establishment-and-use-of-os" class="selfRef">Establishment and Use of OSCORE between a Proxy and an Origin Server</a>
+          </figcaption></figure>
+</div>
+<p id="section-5.1-9">If P is considering to use Group OSCORE with the server S or with a set of origin servers comprising S, then the same as shown in <a href="#fig-oscore-p-s" class="auto internal xref">Figure 1</a> applies, with the following differences:<a href="#section-5.1-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.1-10.1">
+            <p id="section-5.1-10.1.1">CTX_P_S denotes a Group OSCORE Security Context that P can use to protect the request over the communication leg between itself and the origin server(s).<a href="#section-5.1-10.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-10.2">
+            <p id="section-5.1-10.2.1">The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced by P joining the right OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.<a href="#section-5.1-10.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
 </section>
 </div>
 <div id="coap-header-compression-with-schc">
@@ -1996,6 +2208,10 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <dd>
 <span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. S. Lenders</span>, <span class="refTitle">"CoAP Transport Indication"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-transport-indication-10</span>, <time datetime="2026-04-30" class="refDate">30 April 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-10">https://datatracker.ietf.org/doc/html/draft-ietf-core-transport-indication-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="I-D.ietf-lake-app-profiles">[I-D.ietf-lake-app-profiles]</dt>
+        <dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Coordinating the Use of Application Profiles for Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-app-profiles-04</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-04">https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-04</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="LwM2M-Core">[LwM2M-Core]</dt>
         <dd>
 <span class="refAuthor">Open Mobile Alliance</span>, <span class="refTitle">"Lightweight Machine to Machine Technical Specification - Core, Approved Version 1.2.2, OMA-TS-LightweightM2M_Core-V1_2_2-20240613-A"</span>, <time datetime="2024-06" class="refDate">June 2024</time>, <span>&lt;<a href="https://www.openmobilealliance.org/release/LightweightM2M/V1_2_2-20240613-A/OMA-TS-LightweightM2M_Core-V1_2_2-20240613-A.pdf">https://www.openmobilealliance.org/release/LightweightM2M/V1_2_2-20240613-A/OMA-TS-LightweightM2M_Core-V1_2_2-20240613-A.pdf</a>&gt;</span>. </dd>
@@ -2027,6 +2243,14 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dt id="RFC9200">[RFC9200]</dt>
         <dd>
 <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Wahlstroem, E.</span>, <span class="refAuthor">Erdtman, S.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Authentication and Authorization for Constrained Environments Using the OAuth 2.0 Framework (ACE-OAuth)"</span>, <span class="seriesInfo">RFC 9200</span>, <span class="seriesInfo">DOI 10.17487/RFC9200</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9200">https://www.rfc-editor.org/rfc/rfc9200</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9460">[RFC9460]</dt>
+        <dd>
+<span class="refAuthor">Schwartz, B.</span>, <span class="refAuthor">Bishop, M.</span>, and <span class="refAuthor">E. Nygren</span>, <span class="refTitle">"Service Binding and Parameter Specification via the DNS (SVCB and HTTPS Resource Records)"</span>, <span class="seriesInfo">RFC 9460</span>, <span class="seriesInfo">DOI 10.17487/RFC9460</span>, <time datetime="2023-11" class="refDate">November 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9460">https://www.rfc-editor.org/rfc/rfc9460</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9461">[RFC9461]</dt>
+        <dd>
+<span class="refAuthor">Schwartz, B.</span>, <span class="refTitle">"Service Binding Mapping for DNS Servers"</span>, <span class="seriesInfo">RFC 9461</span>, <span class="seriesInfo">DOI 10.17487/RFC9461</span>, <time datetime="2023-11" class="refDate">November 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9461">https://www.rfc-editor.org/rfc/rfc9461</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9528">[RFC9528]</dt>
         <dd>
@@ -2162,7 +2386,7 @@ Building on that, it is also possible to enable the operation of hidden services
         <h3 id="name-with-forward-proxy-oscore-c">
 <a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-with-forward-proxy-oscore-c" class="section-name selfRef">With Forward-Proxy; OSCORE: C-S, C-P</a>
         </h3>
-<p id="appendix-B.1-1">In the example shown in <a href="#fig-example-client-proxy" class="auto internal xref">Figure 1</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-1">In the example shown in <a href="#fig-example-client-proxy" class="auto internal xref">Figure 2</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-2.1">
             <p id="appendix-B.1-2.1.1">End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-B.1-2.1.1" class="pilcrow">¶</a></p>
@@ -2172,7 +2396,7 @@ Building on that, it is also possible to enable the operation of hidden services
 </li>
         </ul>
 <span id="name-use-of-oscore-between-clien"></span><div id="fig-example-client-proxy">
-<figure id="figure-1">
+<figure id="figure-2">
           <div id="appendix-B.1-3.1">
             <div class="alignLeft art-svg artwork" id="appendix-B.1-3.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1360" width="544" viewBox="0 0 544 1360" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -2369,7 +2593,7 @@ Building on that, it is also possible to enable the operation of hidden services
               </svg><a href="#appendix-B.1-3.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
 <a href="#name-use-of-oscore-between-clien" class="selfRef">Use of OSCORE between Client-Server and Client-Proxy</a>
           </figcaption></figure>
 </div>
@@ -2380,7 +2604,7 @@ Building on that, it is also possible to enable the operation of hidden services
         <h3 id="name-with-forward-proxy-oscore-c-">
 <a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-with-forward-proxy-oscore-c-" class="section-name selfRef">With Forward-Proxy; OSCORE: C-S, P-S</a>
         </h3>
-<p id="appendix-B.2-1">In the example shown in <a href="#fig-example-proxy-server" class="auto internal xref">Figure 2</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-1">In the example shown in <a href="#fig-example-proxy-server" class="auto internal xref">Figure 3</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.2-2.1">
             <p id="appendix-B.2-2.1.1">End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-B.2-2.1.1" class="pilcrow">¶</a></p>
@@ -2390,7 +2614,7 @@ Building on that, it is also possible to enable the operation of hidden services
 </li>
         </ul>
 <span id="name-use-of-oscore-between-client"></span><div id="fig-example-proxy-server">
-<figure id="figure-2">
+<figure id="figure-3">
           <div id="appendix-B.2-3.1">
             <div class="alignLeft art-svg artwork" id="appendix-B.2-3.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1344" width="560" viewBox="0 0 560 1344" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -2586,7 +2810,7 @@ Building on that, it is also possible to enable the operation of hidden services
               </svg><a href="#appendix-B.2-3.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-use-of-oscore-between-client" class="selfRef">Use of OSCORE between Client-Server and Proxy-Server</a>
           </figcaption></figure>
 </div>
@@ -2597,7 +2821,7 @@ Building on that, it is also possible to enable the operation of hidden services
         <h3 id="name-with-forward-proxy-oscore-c-s">
 <a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-with-forward-proxy-oscore-c-s" class="section-name selfRef">With Forward-Proxy; OSCORE: C-S, C-P, P-S</a>
         </h3>
-<p id="appendix-B.3-1">In the example shown in <a href="#fig-example-client-proxy-server" class="auto internal xref">Figure 3</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.3-1">In the example shown in <a href="#fig-example-client-proxy-server" class="auto internal xref">Figure 4</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.3-2.1">
             <p id="appendix-B.3-2.1.1">End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-B.3-2.1.1" class="pilcrow">¶</a></p>
@@ -2610,7 +2834,7 @@ Building on that, it is also possible to enable the operation of hidden services
 </li>
         </ul>
 <span id="name-use-of-oscore-between-client-"></span><div id="fig-example-client-proxy-server">
-<figure id="figure-3">
+<figure id="figure-4">
           <div id="appendix-B.3-3.1">
             <div class="alignLeft art-svg artwork" id="appendix-B.3-3.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1728" width="544" viewBox="0 0 544 1728" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -2850,7 +3074,7 @@ Building on that, it is also possible to enable the operation of hidden services
               </svg><a href="#appendix-B.3-3.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-use-of-oscore-between-client-" class="selfRef">Use of OSCORE between Client-Server, Client-Proxy, and Proxy-Server</a>
           </figcaption></figure>
 </div>
@@ -2861,7 +3085,7 @@ Building on that, it is also possible to enable the operation of hidden services
         <h3 id="name-with-forward-proxy-and-edho">
 <a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-with-forward-proxy-and-edho" class="section-name selfRef">With Forward-Proxy and EDHOC; OSCORE: C-S, C-P</a>
         </h3>
-<p id="appendix-B.4-1">In the example shown in <a href="#fig-example-edhoc" class="auto internal xref">Figure 4</a>, message exchanges are protected as follows.<a href="#appendix-B.4-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.4-1">In the example shown in <a href="#fig-example-edhoc" class="auto internal xref">Figure 5</a>, message exchanges are protected as follows.<a href="#appendix-B.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.4-2.1">
             <p id="appendix-B.4-2.1.1">End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-B.4-2.1.1" class="pilcrow">¶</a></p>
@@ -2873,7 +3097,7 @@ Building on that, it is also possible to enable the operation of hidden services
 <p id="appendix-B.4-3">The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-B.4-3" class="pilcrow">¶</a></p>
 <p id="appendix-B.4-4">After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in <a href="#sec-examples-1" class="auto internal xref">Appendix B.1</a>.<a href="#appendix-B.4-4" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-s"></span><div id="fig-example-edhoc">
-<figure id="figure-4">
+<figure id="figure-5">
           <div id="appendix-B.4-5.1">
             <div class="alignLeft art-svg artwork" id="appendix-B.4-5.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="3312" width="544" viewBox="0 0 544 3312" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -3322,7 +3546,7 @@ Building on that, it is also possible to enable the operation of hidden services
               </svg><a href="#appendix-B.4-5.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
 <a href="#name-use-of-oscore-between-client-s" class="selfRef">Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC</a>
           </figcaption></figure>
 </div>
@@ -3333,7 +3557,7 @@ Building on that, it is also possible to enable the operation of hidden services
         <h3 id="name-with-forward-proxy-and-edhoc">
 <a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-with-forward-proxy-and-edhoc" class="section-name selfRef">With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P</a>
         </h3>
-<p id="appendix-B.5-1">In the example shown in <a href="#fig-example-edhoc-comb-req" class="auto internal xref">Figure 5</a>, message exchanges are protected as follows.<a href="#appendix-B.5-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.5-1">In the example shown in <a href="#fig-example-edhoc-comb-req" class="auto internal xref">Figure 6</a>, message exchanges are protected as follows.<a href="#appendix-B.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.5-2.1">
             <p id="appendix-B.5-2.1.1">End-to-end, between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-B.5-2.1.1" class="pilcrow">¶</a></p>
@@ -3346,7 +3570,7 @@ Building on that, it is also possible to enable the operation of hidden services
 <p id="appendix-B.5-4">In particular, the client relies on the EDHOC + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> and denoted as COMB_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-B.5-4" class="pilcrow">¶</a></p>
 <p id="appendix-B.5-5">After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in <a href="#sec-examples-1" class="auto internal xref">Appendix B.1</a>. In the example shown in the present section, the two phases partly overlap at the POST request sent by the client with Token 0x83 and forwarded by the proxy with Token 0xa6, as the EDHOC + OSCORE request that conveys both the last EDHOC message_3 from the client intended for the server and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-B.5-5" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-se"></span><div id="fig-example-edhoc-comb-req">
-<figure id="figure-5">
+<figure id="figure-6">
           <div id="appendix-B.5-6.1">
             <div class="alignLeft art-svg artwork" id="appendix-B.5-6.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="3040" width="544" viewBox="0 0 544 3040" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -3755,7 +3979,7 @@ Building on that, it is also possible to enable the operation of hidden services
               </svg><a href="#appendix-B.5-6.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-use-of-oscore-between-client-se" class="selfRef">Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC using the EDHOC + OSCORE request</a>
           </figcaption></figure>
 </div>
@@ -3766,7 +3990,7 @@ Building on that, it is also possible to enable the operation of hidden services
         <h3 id="name-with-reverse-proxy-oscore-c">
 <a href="#appendix-B.6" class="section-number selfRef">B.6. </a><a href="#name-with-reverse-proxy-oscore-c" class="section-name selfRef">With Reverse-Proxy; OSCORE: C-P, P-S</a>
         </h3>
-<p id="appendix-B.6-1">In the example shown in <a href="#fig-example-reverse-proxy-without-end-to-end" class="auto internal xref">Figure 6</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.6-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.6-1">In the example shown in <a href="#fig-example-reverse-proxy-without-end-to-end" class="auto internal xref">Figure 7</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.6-2.1">
             <p id="appendix-B.6-2.1.1">Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-B.6-2.1.1" class="pilcrow">¶</a></p>
@@ -3779,7 +4003,7 @@ Building on that, it is also possible to enable the operation of hidden services
 <p id="appendix-B.6-4">In order to determine where it has to forward an incoming request to, the proxy relies on the hostname that clients specify in the Uri-Host Option of their sent requests. In particular, upon receiving a request that includes the Uri-Host Option with value "dev.example", the proxy forwards the request to the origin server shown in the example.<a href="#appendix-B.6-4" class="pilcrow">¶</a></p>
 <p id="appendix-B.6-5">Furthermore, this example assumes that, in the URI identifying the target resource at the server, the host subcomponent represents the destination IP address of the request as an IP-literal. Therefore, the request from the proxy to the server does not include a Uri-Host Option (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-6.4" class="relref">Section 6.4</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#appendix-B.6-5" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-p"></span><div id="fig-example-reverse-proxy-without-end-to-end">
-<figure id="figure-6">
+<figure id="figure-7">
           <div id="appendix-B.6-6.1">
             <div class="alignLeft art-svg artwork" id="appendix-B.6-6.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1200" width="544" viewBox="0 0 544 1200" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -3948,7 +4172,7 @@ Building on that, it is also possible to enable the operation of hidden services
               </svg><a href="#appendix-B.6-6.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-use-of-oscore-between-client-p" class="selfRef">Use of OSCORE between Client-Proxy and Proxy-Server (the Proxy is a Reverse-Proxy)</a>
           </figcaption></figure>
 </div>
@@ -3959,7 +4183,7 @@ Building on that, it is also possible to enable the operation of hidden services
         <h3 id="name-with-reverse-proxy-oscore-c-">
 <a href="#appendix-B.7" class="section-number selfRef">B.7. </a><a href="#name-with-reverse-proxy-oscore-c-" class="section-name selfRef">With Reverse-Proxy; OSCORE: C-S, C-P, P-S</a>
         </h3>
-<p id="appendix-B.7-1">In the example shown in <a href="#fig-example-reverse-proxy-with-end-to-end" class="auto internal xref">Figure 7</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.7-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.7-1">In the example shown in <a href="#fig-example-reverse-proxy-with-end-to-end" class="auto internal xref">Figure 8</a>, message exchanges are protected with OSCORE as follows.<a href="#appendix-B.7-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B.7-2.1">
             <p id="appendix-B.7-2.1.1">End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.<a href="#appendix-B.7-2.1.1" class="pilcrow">¶</a></p>
@@ -3976,7 +4200,7 @@ Building on that, it is also possible to enable the operation of hidden services
 <p id="appendix-B.7-5">However, as shown in the example, the URI path segments that specify the target resource are hidden from the proxy, since they are protected by the additional use of OSCORE end-to-end between the client and the server.<a href="#appendix-B.7-5" class="pilcrow">¶</a></p>
 <p id="appendix-B.7-6">Furthermore, this example assumes that, in the URIs identifying the target resource at the proxy as well as in the URI identifying the target resource at the server, the host subcomponent represents the destination IP address of the request as an IP-literal. Therefore, both the request from the client to the proxy and the request from the proxy to the server do not include a Uri-Host Option (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-6.4" class="relref">Section 6.4</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#appendix-B.7-6" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-pr"></span><div id="fig-example-reverse-proxy-with-end-to-end">
-<figure id="figure-7">
+<figure id="figure-8">
           <div id="appendix-B.7-7.1">
             <div class="alignLeft art-svg artwork" id="appendix-B.7-7.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1696" width="544" viewBox="0 0 544 1696" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -4212,7 +4436,7 @@ Building on that, it is also possible to enable the operation of hidden services
               </svg><a href="#appendix-B.7-7.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-use-of-oscore-between-client-pr" class="selfRef">Use of OSCORE between Client-Proxy and Proxy-Server (the Proxy is a Reverse-Proxy)</a>
           </figcaption></figure>
 </div>
@@ -4225,9 +4449,9 @@ Building on that, it is also possible to enable the operation of hidden services
       <h2 id="name-state-diagram-protection-of">
 <a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-state-diagram-protection-of" class="section-name selfRef">State Diagram: Protection of CoAP Options</a>
       </h2>
-<p id="appendix-C-1"><a href="#fig-option-protection-diagram" class="auto internal xref">Figure 8</a> overviews the rules defined in <a href="#general-rules" class="auto internal xref">Section 2.2</a>, which are used to determine whether a CoAP option that is originally specified only as an outer option (Class U or I) for OSCORE has to be processed as Class E, when protecting an outgoing message.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-1"><a href="#fig-option-protection-diagram" class="auto internal xref">Figure 9</a> overviews the rules defined in <a href="#general-rules" class="auto internal xref">Section 2.2</a>, which are used to determine whether a CoAP option that is originally specified only as an outer option (Class U or I) for OSCORE has to be processed as Class E, when protecting an outgoing message.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <span id="name-protection-of-coap-options-"></span><div id="fig-option-protection-diagram">
-<figure id="figure-8">
+<figure id="figure-9">
         <div id="appendix-C-2.1">
           <div class="alignCenter art-svg artwork" id="appendix-C-2.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1152" width="576" viewBox="0 0 576 1152" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -4500,7 +4724,7 @@ Building on that, it is also possible to enable the operation of hidden services
             </svg><a href="#appendix-C-2.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-protection-of-coap-options-" class="selfRef">Protection of CoAP Options Originally Specified only as Outer Options (Class U or I) for OSCORE</a>
         </figcaption></figure>
 </div>
@@ -4511,9 +4735,9 @@ Building on that, it is also possible to enable the operation of hidden services
       <h2 id="name-state-diagram-processing-of">
 <a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-state-diagram-processing-of" class="section-name selfRef">State Diagram: Processing of Incoming Requests</a>
       </h2>
-<p id="appendix-D-1"><a href="#fig-incoming-request-diagram" class="auto internal xref">Figure 9</a> overviews the processing of an incoming request, which is specified in <a href="#incoming-requests" class="auto internal xref">Section 2.4</a>. The dotted boxes indicate ending states where the processing terminates.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1"><a href="#fig-incoming-request-diagram" class="auto internal xref">Figure 10</a> overviews the processing of an incoming request, which is specified in <a href="#incoming-requests" class="auto internal xref">Section 2.4</a>. The dotted boxes indicate ending states where the processing terminates.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 <span id="name-processing-of-an-incoming-req"></span><div id="fig-incoming-request-diagram">
-<figure id="figure-9">
+<figure id="figure-10">
         <div id="appendix-D-2.1">
           <div class="alignCenter art-svg artwork" id="appendix-D-2.1.1">
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1840" width="576" viewBox="0 0 576 1840" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
@@ -4911,7 +5135,7 @@ Building on that, it is also possible to enable the operation of hidden services
             </svg><a href="#appendix-D-2.1.1" class="pilcrow">¶</a>
 </div>
 </div>
-<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
 <a href="#name-processing-of-an-incoming-req" class="selfRef">Processing of an Incoming Request</a>
         </figcaption></figure>
 </div>
@@ -4933,7 +5157,10 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.1.1">Revised presentation of the algorithm for processing incoming requests.<a href="#appendix-E.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.2">
-            <p id="appendix-E.1-1.2.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.2.1">Guidelines for proxies on establishing/using OSCORE with an origin server.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.3">
+            <p id="appendix-E.1-1.3.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
