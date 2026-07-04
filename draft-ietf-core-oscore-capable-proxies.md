@@ -56,6 +56,8 @@ informative:
   RFC8742:
   RFC9147:
   RFC9200:
+  RFC9460:
+  RFC9461:
   RFC9528:
   RFC9668:
   I-D.ietf-core-groupcomm-bis:
@@ -68,6 +70,7 @@ informative:
   I-D.ietf-core-coap-pm:
   I-D.ietf-ace-coap-est-oscore:
   I-D.ietf-core-cacheable-oscore:
+  I-D.ietf-lake-app-profiles:
   I-D.amsuess-t2trg-onion-coap:
   LwM2M-Core:
     author:
@@ -173,7 +176,7 @@ This section defines the processing of CoAP messages with OSCORE.
 
 {{sec-examples}} provides a number of examples where the approach defined in this document is used to protect message exchanges.
 
-## Deviations from the Original Message Processing
+## Deviations from the Original Message Processing # {#sec-deviations}
 
 This document introduces the following two main deviations from the original OSCORE specification {{RFC8613}}.
 
@@ -430,6 +433,102 @@ At the same time, the following applies, depending on the two peers using OSCORE
 * The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework for Authentication and Authorization in constrained environments {{RFC9200}}.
 
   For the purposes of this document, there is no need for a proxy to also be a member of the OSCORE group whose Group OSCORE Security Context is used by the origin application endpoints for protecting communications end-to-end.
+
+## Guidelines for Proxies
+
+When considering an intermediary chain between an origin client and an origin server, all proxies except for the one adjacent to the origin server are expected to be configured as to the establishment and use of OSCORE with the next hop towards the origin server.
+
+Such a configuration might not be as practical and feasible to enforce for a proxy P adjacent to an origin server S. That is, before forwarding a request to S, P might have to dynamically determine whether to establish an OSCORE Security Context with S (if none is established already) and whether to use it for protecting the request.
+
+The rest of this section provides guidelines that P can follow in order to determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S.
+
+In order to come to such a determination, P can answer the three following questions. For all of them, the default answer is "no".
+
+* Q1: Does S wish to use OSCORE between itself and an adjacent proxy?
+
+  For example, P can answer this question by relying on a dedicated SvcParamKey within a DNS SVCB Resource Record (RR) {{RFC9460}}{{RFC9461}}, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
+
+  The SvcParamKey can have an empty value in its presentation format and wire format, e.g., analogously to the SvcParamKey "no-default-alpn" defined in {{Section 7.1.1 of RFC9460}}.
+
+  If the SvcParamKey is present in an SVCB RR about S, then S wishes to use (Group) OSCORE between itself and an adjacent proxy.
+
+* Q2: Does S support the use of multiple, nested OSCORE layers?
+
+  For example, P can answer this question by relying on a dedicated SvcParamKey within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
+
+  The SvcParamKey can have an empty value in its presentation format and wire format, e.g., analogously to the SvcParamKey "no-default-alpn" defined in {{Section 7.1.1 of RFC9460}}.
+
+  If the SvcParamKey is present in an SVCB RR about S, then S supports the use of multiple, nested OSCORE layers, i.e., it is able to handle messages that are protected by at least two (Group) OSCORE layers.
+
+  This is not intended to indicate how many nested OSCORE layers S supports exactly (although that is in principle possible to express). In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see {{sec-deviations}}).
+
+* Q3: Does S support the key exchange protocol EDHOC {{RFC9528}}?
+
+  For example, P can answer this question by using the means specified in {{I-D.ietf-lake-app-profiles}} that are not used during an EDHOC session itself.
+
+The examples above are not exhaustive and P can rely on alternative means to answer the three questions about S.
+
+Once P has the answers to Q1, Q2, and Q3, then P can determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S, as shown in the state diagram in {{fig-oscore-p-s}}.
+
+~~~~~~~~~~~ aasvg
++-----------------+
+| P has a request |
+| to forward to S |
++-----------------+
+         |
+         |
+         v
+      +-----+             +----------------------------+
+      |     |  NO         |                            |
+      | Q1? +------------>|  Forward the request to S  |<--------+
+      |     |             |                            |         |
+      +-----+             +----------------------------+         |
+         |                  ^    ^                   ^           |
+         |                  |    |                   |           |
+         |                  |    |                   |           |
+         |                  |    |                   |           |
+         | YES              |    |                   |           |
+         v                  |    |                   |           |
++---------------------+     |  +-+------------+      |           |
+| After that P has    |     |  | Protect the  |      |           |
+| completed all the   |     |  | request with |      |           |
+| decryptions and     |     |  | CTX_P_S      |      |           |
+| verifications on    |     |  +--------------+      |           |
+| the request, does   |     |    ^          ^        |           |
+| the request include |     |    |          |        |           |
+| an OSCORE Option?   |     |    |          |        |           |
++---------------------+     |    |          | YES    | NO        |
+    |          |            |    |          |        |           |
+    | NO       | YES        |    |    +-----+----+   |           |
+    |          |            |    |    |          |   |           |
+    |          |            |    |    | Success? +---+           |
+    |          |            |    |    |          |               |
+    |          v            |    |    +----------+               |
+    |       +-----+         |    |          ^                    |
+    |       |     |  NO     |    |          |                    |
+    |       | Q2? +---------+    |          |                    |
+    |       |     |              |    +-----+-----+              |
+    |       +-----+              |    | Run EDHOC |              |
+    |          |                 |    | with S    |              |
+    |          | YES             |    +-----------+              |
+    v          v                 |          ^                    |
++-------------------+            |          |                    |
+|                   |  YES       |          | YES                |
+| Is P currently    +------------+          |                    |
+| sharing an OSCORE |                    +--+--+                 |
+| Security Context  |                NO  |     |  NO             |
+| CTX_P_S with S?   +------------------->| Q3? +-----------------+
+|                   |                    |     |
++-------------------+                    +-----+
+~~~~~~~~~~~
+{: #fig-oscore-p-s title="Establishment and Use of OSCORE between a Proxy and an Origin Server" artwork-align="center"}
+
+If P is considering to use Group OSCORE with the server S or with a set of origin servers comprising S, then the same as shown in {{fig-oscore-p-s}} applies, with the following differences:
+
+* CTX_P_S denotes a Group OSCORE Security Context that P can use to protect the request over the communication leg between itself and the origin server(s).
+
+* The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced by P joining the right OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.
+
 
 # CoAP Header Compression with SCHC
 
@@ -1779,6 +1878,8 @@ request      +-----------------------------------------------+        |
 ## Version -06 to -07 ## {#sec-06-07}
 
 * Revised presentation of the algorithm for processing incoming requests.
+
+* Guidelines for proxies on establishing/using OSCORE with an origin server.
 
 * Minor clarifications and editorial improvements.
 
