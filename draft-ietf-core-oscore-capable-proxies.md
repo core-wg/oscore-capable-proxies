@@ -1455,6 +1455,173 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-edhoc-comb-req title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC using the EDHOC + OSCORE request"}
 
+## With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
+
+In the example shown in {{fig-example-client-two-proxies-server}}, message exchanges are protected with OSCORE as follows.
+
+* End-to-end between the client and the server, using the OSCORE Security Context CTX_C_S. The client uses the OSCORE Sender ID 0x5f when using OSCORE with the server.
+
+* Between the client and the proxy Proxy1 (P1), using the OSCORE Security Context CTX_C_P1. The client uses the OSCORE Sender ID 0x20 when using OSCORE with P1.
+
+* Between P1 and the proxy Proxy2 (P2), using the OSCORE Security Context CTX_P1_P2. P1 uses the OSCORE Sender ID 0xd4 when using OSCORE with P2.
+
+* Between P2 and the server, using the OSCORE Security Context CTX_P2_S. P2 uses the OSCORE Sender ID 0x77 when using OSCORE with the server.
+
+~~~~~~~~~~~ aasvg
+Client    P1      P2    Server
+  |       |       |       |
+Encrypt   |       |       |
+REQ with  |       |       |
+CTX_C_S   |       |       |
+  |       |       |       |
+Encrypt   |       |       |
+REQ with  |       |       |
+CTX_C_P1  |       |       |
+  |       |       |       |
+  +------>|       |       |     Code: 0.02 (POST)
+  | POST  |       |       |    Token: 0x8c
+  |       |       |       | Uri-Host: "example.com",
+  |       |       |       |   OSCORE: [kid:0x20, Partial IV:31]
+  |       |       |       |     0xff
+  |       |       |       |  Payload: {Code: 0.02 (POST),
+  |       |       |       |            OSCORE: [kid:0x5f,
+  |       |       |       |                     Partial IV:42],
+  |       |       |       |            Proxy-Scheme: "coap",
+  |       |       |       |            0xff,
+  |       |       |       |            {Code: 0.01 (GET),
+  |       |       |       |             Uri-Path: "alarm_status"
+  |       |       |       |            }   // Encrypted with CTX_C_S
+  |       |       |       |           } // Encrypted with CTX_C_P1
+  |       |       |       |
+  |     Decrypt   |       |
+  |     REQ with  |       |
+  |     CTX_C_P1  |       |
+  |       |       |       |
+  |     Encrypt   |       |
+  |     REQ with  |       |
+  |     CTX_P1_P2 |       |
+  |       |       |       |
+  |       +------>|       |    Code: 0.02 (POST)
+  |       | POST  |       |   Token: 0x7b
+  |       |       |       |  OSCORE: [kid:0xd4, Partial IV:53]
+  |       |       |       |    0xff
+  |       |       |       | Payload: {Code: 0.02 (POST),
+  |       |       |       |           Uri-Host: "example.com",
+  |       |       |       |           OSCORE: [kid:0x5f,
+  |       |       |       |                    Partial IV:42],
+  |       |       |       |           0xff,
+  |       |       |       |           {Code: 0.01 (GET),
+  |       |       |       |            Uri-Path: "alarm_status"
+  |       |       |       |           }   // Encrypted with CTX_C_S
+  |       |       |       |          } // Encrypted with CTX_P1_P2
+  |       |       |       |
+  |       |     Decrypt   |
+  |       |     REQ with  |
+  |       |     CTX_P1_P2 |
+  |       |       |       |
+  |       |     Encrypt   |
+  |       |     REQ with  |
+  |       |     CTX_P2_S  |
+  |       |       |       |
+  |       |       +------>|    Code: 0.02 (POST)
+  |       |       | POST  |   Token: 0x6a
+  |       |       |       |  OSCORE: [kid:0x77, Partial IV:75]
+  |       |       |       |    0xff
+  |       |       |       | Payload: {Code: 0.02 (POST),
+  |       |       |       |           Uri-Host: "example.com",
+  |       |       |       |           OSCORE: [kid:0x5f,
+  |       |       |       |                    Partial IV:42],
+  |       |       |       |           0xff,
+  |       |       |       |           {Code: 0.01 (GET),
+  |       |       |       |            Uri-Path: "alarm_status"
+  |       |       |       |           }   // Encrypted with CTX_C_S
+  |       |       |       |          } // Encrypted with CTX_P2_S
+  |       |       |       |
+  |       |       |     Decrypt
+  |       |       |     REQ with
+  |       |       |     CTX_P2_S
+  |       |       |       |
+  |       |       |     Decrypt
+  |       |       |     REQ with
+  |       |       |     CTX_C_S
+  |       |       |       |
+  |       |       |     Encrypt
+  |       |       |     RESP with
+  |       |       |     CTX_C_S
+  |       |       |       |
+  |       |       |     Encrypt
+  |       |       |     RESP with
+  |       |       |     CTX_P2_S
+  |       |       |       |
+  |       |       |<------+    Code: 2.04 (Changed)
+  |       |       |  2.04 |   Token: 0x6a
+  |       |       |       |  OSCORE: -
+  |       |       |       |    0xff
+  |       |       |       | Payload: {Code: 2.04 (Changed),
+  |       |       |       |           OSCORE: -,
+  |       |       |       |           0xff,
+  |       |       |       |           {Code: 2.05 (Content),
+  |       |       |       |            0xff,
+  |       |       |       |            "0"
+  |       |       |       |           }   // Encrypted with CTX_C_S
+  |       |       |       |          } // Encrypted with CTX_P2_S
+  |       |       |       |
+  |       |     Decrypt   |
+  |       |     RESP with |
+  |       |     CTX_P2_S  |
+  |       |       |       |
+  |       |     Encrypt   |
+  |       |     RESP with |
+  |       |     CTX_P1_P2 |
+  |       |       |       |
+  |       |<------+       |    Code: 2.04 (Changed)
+  |       |  2.04 |       |   Token: 0x7b
+  |       |       |       |  OSCORE: -
+  |       |       |       |    0xff
+  |       |       |       | Payload: {Code: 2.04 (Changed),
+  |       |       |       |           OSCORE: -,
+  |       |       |       |           0xff,
+  |       |       |       |           {Code: 2.05 (Content),
+  |       |       |       |            0xff,
+  |       |       |       |            "0"
+  |       |       |       |           }   // Encrypted with CTX_C_S
+  |       |       |       |          } // Encrypted with CTX_P1_P2
+  |       |       |       |
+  |     Decrypt   |       |
+  |     RESP with |       |
+  |     CTX_P1_P2 |       |
+  |       |       |       |
+  |     Encrypt   |       |
+  |     RESP with |       |
+  |     CTX_C_P1  |       |
+  |       |       |       |
+  |<------+       |       |    Code: 2.04 (Changed)
+  |  2.04 |       |       |   Token: 0x8c
+  |       |       |       |  OSCORE: -
+  |       |       |       |    0xff
+  |       |       |       | Payload: {Code: 2.04 (Changed),
+  |       |       |       |           OSCORE: -,
+  |       |       |       |           0xff,
+  |       |       |       |           {Code: 2.05 (Content),
+  |       |       |       |            0xff,
+  |       |       |       |            "0"
+  |       |       |       |           }   // Encrypted with CTX_C_S
+  |       |       |       |          } // Encrypted with CTX_C_P1
+  |       |       |       |
+Decrypt   |       |       |
+RESP with |       |       |
+CTX_C_P1  |       |       |
+  |       |       |       |
+Decrypt   |       |       |
+RESP with |       |       |
+CTX_C_S   |       |       |
+  |       |       |       |
+
+Square brackets [ ... ] indicate content of compressed COSE object.
+Curly brackets { ... } indicate encrypted data.
+~~~~~~~~~~~
+{: #fig-example-client-two-proxies-server title="Use of OSCORE between Client-Server, Client-Proxy1, Proxy1-Proxy2, and Proxy2-Server"}
+
 ## With Reverse-Proxy; OSCORE: C-P, P-S
 
 In the example shown in {{fig-example-reverse-proxy-without-end-to-end}}, message exchanges are protected with OSCORE as follows.
@@ -1879,7 +2046,9 @@ request      +-----------------------------------------------+        |
 
 * Revised presentation of the algorithm for processing incoming requests.
 
-* Guidelines for proxies on establishing/using OSCORE with an origin server.
+* Added guidelines for proxies on establishing/using OSCORE with an origin server.
+
+* Added example of message exchange with two forward-proxies.
 
 * Minor clarifications and editorial improvements.
 
