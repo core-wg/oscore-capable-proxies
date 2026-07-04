@@ -116,8 +116,9 @@ Table of Contents
      B.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
      B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
-     B.6.  With Reverse-Proxy; OSCORE: C-P, P-S
-     B.7.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
+     B.6.  With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
+     B.7.  With Reverse-Proxy; OSCORE: C-P, P-S
+     B.8.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
    Appendix C.  State Diagram: Protection of CoAP Options
    Appendix D.  State Diagram: Processing of Incoming Requests
    Appendix E.  Document Updates
@@ -2551,9 +2552,185 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      with OSCORE Security Contexts established through EDHOC using the
                            EDHOC + OSCORE request
 
-B.6.  With Reverse-Proxy; OSCORE: C-P, P-S
+B.6.  With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
 
    In the example shown in Figure 7, message exchanges are protected
+   with OSCORE as follows.
+
+   *  End-to-end between the client and the server, using the OSCORE
+      Security Context CTX_C_S.  The client uses the OSCORE Sender ID
+      0x5f when using OSCORE with the server.
+
+   *  Between the client and the proxy Proxy1 (P1), using the OSCORE
+      Security Context CTX_C_P1.  The client uses the OSCORE Sender ID
+      0x20 when using OSCORE with P1.
+
+   *  Between P1 and the proxy Proxy2 (P2), using the OSCORE Security
+      Context CTX_P1_P2.  P1 uses the OSCORE Sender ID 0xd4 when using
+      OSCORE with P2.
+
+   *  Between P2 and the server, using the OSCORE Security Context
+      CTX_P2_S.  P2 uses the OSCORE Sender ID 0x77 when using OSCORE
+      with the server.
+
+   Client    P1      P2    Server
+     |       |       |       |
+   Encrypt   |       |       |
+   REQ with  |       |       |
+   CTX_C_S   |       |       |
+     |       |       |       |
+   Encrypt   |       |       |
+   REQ with  |       |       |
+   CTX_C_P1  |       |       |
+     |       |       |       |
+     +------>|       |       |     Code: 0.02 (POST)
+     | POST  |       |       |    Token: 0x8c
+     |       |       |       | Uri-Host: "example.com",
+     |       |       |       |   OSCORE: [kid:0x20, Partial IV:31]
+     |       |       |       |     0xff
+     |       |       |       |  Payload: {Code: 0.02 (POST),
+     |       |       |       |            OSCORE: [kid:0x5f,
+     |       |       |       |                     Partial IV:42],
+     |       |       |       |            Proxy-Scheme: "coap",
+     |       |       |       |            0xff,
+     |       |       |       |            {Code: 0.01 (GET),
+     |       |       |       |             Uri-Path: "alarm_status"
+     |       |       |       |            }   // Encrypted with CTX_C_S
+     |       |       |       |           } // Encrypted with CTX_C_P1
+     |       |       |       |
+     |     Decrypt   |       |
+     |     REQ with  |       |
+     |     CTX_C_P1  |       |
+     |       |       |       |
+     |     Encrypt   |       |
+     |     REQ with  |       |
+     |     CTX_P1_P2 |       |
+     |       |       |       |
+     |       +------>|       |    Code: 0.02 (POST)
+     |       | POST  |       |   Token: 0x7b
+     |       |       |       |  OSCORE: [kid:0xd4, Partial IV:53]
+     |       |       |       |    0xff
+     |       |       |       | Payload: {Code: 0.02 (POST),
+     |       |       |       |           Uri-Host: "example.com",
+     |       |       |       |           OSCORE: [kid:0x5f,
+     |       |       |       |                    Partial IV:42],
+     |       |       |       |           0xff,
+     |       |       |       |           {Code: 0.01 (GET),
+     |       |       |       |            Uri-Path: "alarm_status"
+     |       |       |       |           }   // Encrypted with CTX_C_S
+     |       |       |       |          } // Encrypted with CTX_P1_P2
+     |       |       |       |
+     |       |     Decrypt   |
+     |       |     REQ with  |
+     |       |     CTX_P1_P2 |
+     |       |       |       |
+     |       |     Encrypt   |
+     |       |     REQ with  |
+     |       |     CTX_P2_S  |
+     |       |       |       |
+     |       |       +------>|    Code: 0.02 (POST)
+     |       |       | POST  |   Token: 0x6a
+     |       |       |       |  OSCORE: [kid:0x77, Partial IV:75]
+     |       |       |       |    0xff
+     |       |       |       | Payload: {Code: 0.02 (POST),
+     |       |       |       |           Uri-Host: "example.com",
+     |       |       |       |           OSCORE: [kid:0x5f,
+     |       |       |       |                    Partial IV:42],
+     |       |       |       |           0xff,
+     |       |       |       |           {Code: 0.01 (GET),
+     |       |       |       |            Uri-Path: "alarm_status"
+     |       |       |       |           }   // Encrypted with CTX_C_S
+     |       |       |       |          } // Encrypted with CTX_P2_S
+     |       |       |       |
+     |       |       |     Decrypt
+     |       |       |     REQ with
+     |       |       |     CTX_P2_S
+     |       |       |       |
+     |       |       |     Decrypt
+     |       |       |     REQ with
+     |       |       |     CTX_C_S
+     |       |       |       |
+     |       |       |     Encrypt
+     |       |       |     RESP with
+     |       |       |     CTX_C_S
+     |       |       |       |
+     |       |       |     Encrypt
+     |       |       |     RESP with
+     |       |       |     CTX_P2_S
+     |       |       |       |
+     |       |       |<------+    Code: 2.04 (Changed)
+     |       |       |  2.04 |   Token: 0x6a
+     |       |       |       |  OSCORE: -
+     |       |       |       |    0xff
+     |       |       |       | Payload: {Code: 2.04 (Changed),
+     |       |       |       |           OSCORE: -,
+     |       |       |       |           0xff,
+     |       |       |       |           {Code: 2.05 (Content),
+     |       |       |       |            0xff,
+     |       |       |       |            "0"
+     |       |       |       |           }   // Encrypted with CTX_C_S
+     |       |       |       |          } // Encrypted with CTX_P2_S
+     |       |       |       |
+     |       |     Decrypt   |
+     |       |     RESP with |
+     |       |     CTX_P2_S  |
+     |       |       |       |
+     |       |     Encrypt   |
+     |       |     RESP with |
+     |       |     CTX_P1_P2 |
+     |       |       |       |
+     |       |<------+       |    Code: 2.04 (Changed)
+     |       |  2.04 |       |   Token: 0x7b
+     |       |       |       |  OSCORE: -
+     |       |       |       |    0xff
+     |       |       |       | Payload: {Code: 2.04 (Changed),
+     |       |       |       |           OSCORE: -,
+     |       |       |       |           0xff,
+     |       |       |       |           {Code: 2.05 (Content),
+     |       |       |       |            0xff,
+     |       |       |       |            "0"
+     |       |       |       |           }   // Encrypted with CTX_C_S
+     |       |       |       |          } // Encrypted with CTX_P1_P2
+     |       |       |       |
+     |     Decrypt   |       |
+     |     RESP with |       |
+     |     CTX_P1_P2 |       |
+     |       |       |       |
+     |     Encrypt   |       |
+     |     RESP with |       |
+     |     CTX_C_P1  |       |
+     |       |       |       |
+     |<------+       |       |    Code: 2.04 (Changed)
+     |  2.04 |       |       |   Token: 0x8c
+     |       |       |       |  OSCORE: -
+     |       |       |       |    0xff
+     |       |       |       | Payload: {Code: 2.04 (Changed),
+     |       |       |       |           OSCORE: -,
+     |       |       |       |           0xff,
+     |       |       |       |           {Code: 2.05 (Content),
+     |       |       |       |            0xff,
+     |       |       |       |            "0"
+     |       |       |       |           }   // Encrypted with CTX_C_S
+     |       |       |       |          } // Encrypted with CTX_C_P1
+     |       |       |       |
+   Decrypt   |       |       |
+   RESP with |       |       |
+   CTX_C_P1  |       |       |
+     |       |       |       |
+   Decrypt   |       |       |
+   RESP with |       |       |
+   CTX_C_S   |       |       |
+     |       |       |       |
+
+   Square brackets [ ... ] indicate content of compressed COSE object.
+   Curly brackets { ... } indicate encrypted data.
+
+       Figure 7: Use of OSCORE between Client-Server, Client-Proxy1,
+                      Proxy1-Proxy2, and Proxy2-Server
+
+B.7.  With Reverse-Proxy; OSCORE: C-P, P-S
+
+   In the example shown in Figure 8, message exchanges are protected
    with OSCORE as follows.
 
    *  Between the client and the proxy, using the OSCORE Security
@@ -2655,12 +2832,12 @@ B.6.  With Reverse-Proxy; OSCORE: C-P, P-S
    Square brackets [ ... ] indicate content of compressed COSE object.
    Curly brackets { ... } indicate encrypted data.
 
-       Figure 7: Use of OSCORE between Client-Proxy and Proxy-Server
+       Figure 8: Use of OSCORE between Client-Proxy and Proxy-Server
                        (the Proxy is a Reverse-Proxy)
 
-B.7.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
+B.8.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
 
-   In the example shown in Figure 8, message exchanges are protected
+   In the example shown in Figure 9, message exchanges are protected
    with OSCORE as follows.
 
    *  End-to-end between the client and the server, using the OSCORE
@@ -2808,12 +2985,12 @@ B.7.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
    Square brackets [ ... ] indicate content of compressed COSE object.
    Curly brackets { ... } indicate encrypted data.
 
-       Figure 8: Use of OSCORE between Client-Proxy and Proxy-Server
+       Figure 9: Use of OSCORE between Client-Proxy and Proxy-Server
                        (the Proxy is a Reverse-Proxy)
 
 Appendix C.  State Diagram: Protection of CoAP Options
 
-   Figure 9 overviews the rules defined in Section 2.2, which are used
+   Figure 10 overviews the rules defined in Section 2.2, which are used
    to determine whether a CoAP option that is originally specified only
    as an outer option (Class U or I) for OSCORE has to be processed as
    Class E, when protecting an outgoing message.
@@ -2889,12 +3066,12 @@ Appendix C.  State Diagram: Protection of CoAP Options
      +------->| Process OPT as per its original Class U or I |<------+
               +----------------------------------------------+
 
-   Figure 9: Protection of CoAP Options Originally Specified only as
-                Outer Options (Class U or I) for OSCORE
+    Figure 10: Protection of CoAP Options Originally Specified only
+               as Outer Options (Class U or I) for OSCORE
 
 Appendix D.  State Diagram: Processing of Incoming Requests
 
-   Figure 10 overviews the processing of an incoming request, which is
+   Figure 11 overviews the processing of an incoming request, which is
    specified in Section 2.4.  The dotted boxes indicate ending states
    where the processing terminates.
 
@@ -3012,7 +3189,7 @@ Appendix D.  State Diagram: Processing of Incoming Requests
  (#) This is determined according to the endpoint's configuration
      and a possible authorization enforcement.
 
-              Figure 10: Processing of an Incoming Request
+              Figure 11: Processing of an Incoming Request
 
 Appendix E.  Document Updates
 
@@ -3023,8 +3200,10 @@ E.1.  Version -06 to -07
    *  Revised presentation of the algorithm for processing incoming
       requests.
 
-   *  Guidelines for proxies on establishing/using OSCORE with an origin
-      server.
+   *  Added guidelines for proxies on establishing/using OSCORE with an
+      origin server.
+
+   *  Added example of message exchange with two forward-proxies.
 
    *  Minor clarifications and editorial improvements.
 
