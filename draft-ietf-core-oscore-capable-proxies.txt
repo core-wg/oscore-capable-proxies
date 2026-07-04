@@ -1801,8 +1801,8 @@ B.1.  With Forward-Proxy; OSCORE: C-S, C-P
      |       |       |   OSCORE: [kid:0x20, Partial IV:31]
      |       |       |     0xff
      |       |       |  Payload: {Code: 0.02 (POST),
-     |       |       |            OSCORE: [kid:0x5f, Partial IV:42],
      |       |       |            Uri-Host: "example.com",
+     |       |       |            OSCORE: [kid:0x5f, Partial IV:42],
      |       |       |            Proxy-Scheme: "coap",
      |       |       |            0xff,
      |       |       |            {Code: 0.01 (GET),
@@ -1894,8 +1894,8 @@ B.2.  With Forward-Proxy; OSCORE: C-S, P-S
      +------>|       |         Code: 0.02 (POST)
      | POST  |       |        Token: 0x8c
      |       |       |     Uri-Host: "example.com"
-     |       |       | Proxy-Scheme: "coap"
      |       |       |       OSCORE: [kid:0x5f, Partial IV:42]
+     |       |       | Proxy-Scheme: "coap"
      |       |       |         0xff
      |       |       |      Payload: {Code: 0.01 (GET),
      |       |       |                Uri-Path: "alarm_status"
@@ -1999,10 +1999,10 @@ B.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
      |       |       |
      +------>|       |     Code: 0.02 (POST)
      | POST  |       |    Token: 0x8c
-     |       |       | Uri-Host: "example.com",
      |       |       |   OSCORE: [kid:0x20, Partial IV:31]
      |       |       |     0xff
      |       |       |  Payload: {Code: 0.02 (POST),
+     |       |       |            Uri-Host: "example.com",
      |       |       |            OSCORE: [kid:0x5f, Partial IV:42],
      |       |       |            Proxy-Scheme: "coap",
      |       |       |            0xff,
@@ -2019,18 +2019,18 @@ B.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
      |     REQ with  |
      |     CTX_P_S   |
      |       |       |
-     |       +------>|    Code: 0.02 (POST)
-     |       | POST  |   Token: 0x7b
-     |       |       |  OSCORE: [kid:0xd4, Partial IV:53]
-     |       |       |    0xff
-     |       |       | Payload: {Code: 0.02 (POST),
-     |       |       |           Uri-Host: "example.com",
-     |       |       |           OSCORE: [kid:0x5f, Partial IV:42],
-     |       |       |           0xff,
-     |       |       |           {Code: 0.01 (GET),
-     |       |       |            Uri-Path: "alarm_status"
-     |       |       |           }   // Encrypted with CTX_C_S
-     |       |       |          } // Encrypted with CTX_P_S
+     |       +------>|     Code: 0.02 (POST)
+     |       | POST  |    Token: 0x7b
+     |       |       | Uri-Host: "example.com",
+     |       |       |   OSCORE: [kid:0xd4, Partial IV:53]
+     |       |       |     0xff
+     |       |       |  Payload: {Code: 0.02 (POST),
+     |       |       |            OSCORE: [kid:0x5f, Partial IV:42],
+     |       |       |            0xff,
+     |       |       |            {Code: 0.01 (GET),
+     |       |       |             Uri-Path: "alarm_status"
+     |       |       |            }   // Encrypted with CTX_C_S
+     |       |       |           } // Encrypted with CTX_P_S
      |       |       |
      |       |     Decrypt
      |       |     REQ with
@@ -2253,8 +2253,8 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       |   OSCORE: [kid:0x20, Partial IV:2]
      |       |       |     0xff
      |       |       |  Payload: {Code: 0.02 (POST),
-     |       |       |            OSCORE: [kid:0x5f, Partial IV:0],
      |       |       |            Uri-Host: "example.com",
+     |       |       |            OSCORE: [kid:0x5f, Partial IV:0],
      |       |       |            Proxy-Scheme: "coap",
      |       |       |            0xff,
      |       |       |            {Code: 0.01 (GET),
@@ -2585,10 +2585,10 @@ B.6.  With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
      |       |       |       |
      +------>|       |       |     Code: 0.02 (POST)
      | POST  |       |       |    Token: 0x8c
-     |       |       |       | Uri-Host: "example.com",
      |       |       |       |   OSCORE: [kid:0x20, Partial IV:31]
      |       |       |       |     0xff
      |       |       |       |  Payload: {Code: 0.02 (POST),
+     |       |       |       |            Uri-Host: "example.com",
      |       |       |       |            OSCORE: [kid:0x5f,
      |       |       |       |                     Partial IV:42],
      |       |       |       |            Proxy-Scheme: "coap",
@@ -2614,6 +2614,7 @@ B.6.  With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
      |       |       |       |           Uri-Host: "example.com",
      |       |       |       |           OSCORE: [kid:0x5f,
      |       |       |       |                    Partial IV:42],
+     |       |       |       |           Proxy-Scheme: "coap",
      |       |       |       |           0xff,
      |       |       |       |           {Code: 0.01 (GET),
      |       |       |       |            Uri-Path: "alarm_status"
@@ -2628,19 +2629,19 @@ B.6.  With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
      |       |     REQ with  |
      |       |     CTX_P2_S  |
      |       |       |       |
-     |       |       +------>|    Code: 0.02 (POST)
-     |       |       | POST  |   Token: 0x6a
-     |       |       |       |  OSCORE: [kid:0x77, Partial IV:75]
-     |       |       |       |    0xff
-     |       |       |       | Payload: {Code: 0.02 (POST),
-     |       |       |       |           Uri-Host: "example.com",
-     |       |       |       |           OSCORE: [kid:0x5f,
-     |       |       |       |                    Partial IV:42],
-     |       |       |       |           0xff,
-     |       |       |       |           {Code: 0.01 (GET),
-     |       |       |       |            Uri-Path: "alarm_status"
-     |       |       |       |           }   // Encrypted with CTX_C_S
-     |       |       |       |          } // Encrypted with CTX_P2_S
+     |       |       +------>|     Code: 0.02 (POST)
+     |       |       | POST  |    Token: 0x6a
+     |       |       |       | Uri-Host: "example.com",
+     |       |       |       |   OSCORE: [kid:0x77, Partial IV:75]
+     |       |       |       |     0xff
+     |       |       |       |  Payload: {Code: 0.02 (POST),
+     |       |       |       |            OSCORE: [kid:0x5f,
+     |       |       |       |                     Partial IV:42],
+     |       |       |       |            0xff,
+     |       |       |       |            {Code: 0.01 (GET),
+     |       |       |       |             Uri-Path: "alarm_status"
+     |       |       |       |            }   // Encrypted with CTX_C_S
+     |       |       |       |           } // Encrypted with CTX_P2_S
      |       |       |       |
      |       |       |     Decrypt
      |       |       |     REQ with
@@ -3204,6 +3205,8 @@ E.1.  Version -06 to -07
       origin server.
 
    *  Added example of message exchange with two forward-proxies.
+
+   *  Fixes in the examples of message exchange.
 
    *  Minor clarifications and editorial improvements.
 
