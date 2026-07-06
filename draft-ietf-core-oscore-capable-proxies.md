@@ -312,7 +312,7 @@ Upon receiving a request REQ, the recipient endpoint performs the following step
 
    If the endpoint uses policies such as those discussed in {{source-based-policies}}, the endpoint retrieves CTX from a specific list of Security Contexts. The endpoint searches for such list by using the source addressing information of REQ, i.e., the addressing information of the (previous hop towards the) origin client.
 
-   If the OSCORE processing results in an error, the endpoint MUST stop processing REQ and performs error handling as per {{Section 8.2 of RFC8613}} or {{Sections 7.2 and 8.4 of I-D.ietf-core-oscore-groupcomm}}, in the case that OSCORE or Group OSCORE is used, respectively. If the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
+   If the OSCORE processing results in an error, the endpoint MUST stop processing REQ and perform error handling as per {{Section 8.2 of RFC8613}} or {{Sections 7.2 and 8.4 of I-D.ietf-core-oscore-groupcomm}}, in the case that OSCORE or Group OSCORE is used, respectively. If the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per {{outgoing-responses}}.
 
    Otherwise, if the OSCORE processing is successful, REQ takes REQ\* and this algorithm moves to Step 1.
 
@@ -442,7 +442,7 @@ Such a configuration might not be as practical and feasible to enforce for a pro
 
 The rest of this section provides guidelines that P can follow in order to determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S.
 
-In order to come to such a determination, P can answer the three following questions. For all of them, the default answer is "no".
+In order to come to such a determination, P can answer the following three questions. For all of them, the default answer is "no".
 
 * Q1: Does S wish to use OSCORE between itself and an adjacent proxy?
 
@@ -523,11 +523,11 @@ Once P has the answers to Q1, Q2, and Q3, then P can determine when to try to es
 ~~~~~~~~~~~
 {: #fig-oscore-p-s title="Establishment and Use of OSCORE between a Proxy and an Origin Server" artwork-align="center"}
 
-If P is considering to use Group OSCORE with the server S or with a set of origin servers comprising S, then the same as shown in {{fig-oscore-p-s}} applies, with the following differences:
+If P is considering using Group OSCORE with the server S or with a set of origin servers comprising S, then the same as shown in {{fig-oscore-p-s}} applies, with the following differences:
 
 * CTX_P_S denotes a Group OSCORE Security Context that P can use to protect the request over the communication leg between itself and the origin server(s).
 
-* The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced by P joining the right OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.
+* The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced by P joining the correct OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.
 
 
 # CoAP Header Compression with SCHC
