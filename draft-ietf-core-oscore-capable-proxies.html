@@ -1049,7 +1049,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tiloca &amp; Höglund</td>
-<td class="center">Expires 5 January 2027</td>
+<td class="center">Expires 7 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc8613" class="eref">8613</a>, <a href="https://www.rfc-editor.org/rfc/rfc8768" class="eref">8768</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-04" class="published">4 July 2026</time>
+<time datetime="2026-07-06" class="published">6 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-05">5 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1119,7 +1119,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1611,7 +1611,7 @@ Otherwise, the endpoint delivers REQ to the application and terminates this algo
 <p id="section-2.4-2.6.2">
 If the endpoint uses policies such as those discussed in <a href="#source-based-policies" class="auto internal xref">Section 2.4.1</a>, the endpoint retrieves CTX from a specific list of Security Contexts. The endpoint searches for such list by using the source addressing information of REQ, i.e., the addressing information of the (previous hop towards the) origin client.<a href="#section-2.4-2.6.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.6.3">
-If the OSCORE processing results in an error, the endpoint <span class="bcp14">MUST</span> stop processing REQ and performs error handling as per <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-7.2" class="relref">7.2</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-8.4" class="relref">8.4</a> of <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, in the case that OSCORE or Group OSCORE is used, respectively. If the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.6.3" class="pilcrow">¶</a></p>
+If the OSCORE processing results in an error, the endpoint <span class="bcp14">MUST</span> stop processing REQ and perform error handling as per <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> or Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-7.2" class="relref">7.2</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-8.4" class="relref">8.4</a> of <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, in the case that OSCORE or Group OSCORE is used, respectively. If the endpoint sends an error response to (the previous hop towards) the origin client, this may result in protecting the error response over that communication leg, as per <a href="#outgoing-responses" class="auto internal xref">Section 2.5</a>.<a href="#section-2.4-2.6.3" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.6.4">
 Otherwise, if the OSCORE processing is successful, REQ takes REQ* and this algorithm moves to Step 1.<a href="#section-2.4-2.6.4" class="pilcrow">¶</a></p>
 </li>
@@ -1771,7 +1771,7 @@ For the purposes of this document, there is no need for a proxy to also be a mem
 <p id="section-5.1-1">When considering an intermediary chain between an origin client and an origin server, all proxies except for the one adjacent to the origin server are expected to be configured as to the establishment and use of OSCORE with the next hop towards the origin server.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">Such a configuration might not be as practical and feasible to enforce for a proxy P adjacent to an origin server S. That is, before forwarding a request to S, P might have to dynamically determine whether to establish an OSCORE Security Context with S (if none is established already) and whether to use it for protecting the request.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">The rest of this section provides guidelines that P can follow in order to determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">In order to come to such a determination, P can answer the three following questions. For all of them, the default answer is "no".<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">In order to come to such a determination, P can answer the following three questions. For all of them, the default answer is "no".<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.1-5.1">
             <p id="section-5.1-5.1.1">Q1: Does S wish to use OSCORE between itself and an adjacent proxy?<a href="#section-5.1-5.1.1" class="pilcrow">¶</a></p>
@@ -1959,13 +1959,13 @@ For example, P can answer this question by using the means specified in <span>[<
 <a href="#name-establishment-and-use-of-os" class="selfRef">Establishment and Use of OSCORE between a Proxy and an Origin Server</a>
           </figcaption></figure>
 </div>
-<p id="section-5.1-9">If P is considering to use Group OSCORE with the server S or with a set of origin servers comprising S, then the same as shown in <a href="#fig-oscore-p-s" class="auto internal xref">Figure 1</a> applies, with the following differences:<a href="#section-5.1-9" class="pilcrow">¶</a></p>
+<p id="section-5.1-9">If P is considering using Group OSCORE with the server S or with a set of origin servers comprising S, then the same as shown in <a href="#fig-oscore-p-s" class="auto internal xref">Figure 1</a> applies, with the following differences:<a href="#section-5.1-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.1-10.1">
             <p id="section-5.1-10.1.1">CTX_P_S denotes a Group OSCORE Security Context that P can use to protect the request over the communication leg between itself and the origin server(s).<a href="#section-5.1-10.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-10.2">
-            <p id="section-5.1-10.2.1">The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced by P joining the right OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.<a href="#section-5.1-10.2.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-10.2.1">The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced by P joining the correct OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.<a href="#section-5.1-10.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
