@@ -965,7 +965,7 @@ Table of Contents
 
       For the SvcParamKey "oscore-with-proxy", the presentation and
       wire-format values MUST be empty.  When the SvcParamKey "oscore-
-      with-proxy" is specified in an SVCB RR about S, it indiscates that
+      with-proxy" is specified in an SVCB RR about S, it indicates that
       S wishes to use (Group) OSCORE between itself and an adjacent
       proxy.  The SvcParamKey "oscore-with-proxy" is registered in
       Section 8.2.
@@ -980,7 +980,7 @@ Table of Contents
 
       For the SvcParamKey "nested-oscore", the presentation and wire-
       format values MUST be empty.  When the SvcParamKey "nested-oscore"
-      is specified in an SVCB RR about S, it indiscates that S supports
+      is specified in an SVCB RR about S, it indicates that S supports
       the use of multiple, nested (Group) OSCORE layers, i.e., S is able
       to handle messages that are protected by at least two (Group)
       OSCORE layers as defined in this document.  The SvcParamKey
