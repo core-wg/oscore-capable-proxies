@@ -99,6 +99,7 @@ Table of Contents
      7.2.  Hop-Limit Option
    8.  IANA Considerations
      8.1.  CoAP Option Numbers Registry
+     8.2.  DNS SVCB Service Parameter Keys (SvcParamKeys)
    9.  References
      9.1.  Normative References
      9.2.  Informative References
@@ -957,39 +958,38 @@ Table of Contents
    *  Q1: Does S wish to use OSCORE between itself and an adjacent
       proxy?
 
-      For example, P can answer this question by relying on a dedicated
-      SvcParamKey within a DNS SVCB Resource Record (RR)
-      [RFC9460][RFC9461], which is retrieved from a DNS response that P
-      obtains in reply to a DNS query about S.
+      For example, P can answer this question by relying on the
+      SvcParamKey "oscore-with-proxy" within a DNS SVCB Resource Record
+      (RR) [RFC9460][RFC9461], which is retrieved from a DNS response
+      that P obtains in reply to a DNS query about S.
 
-      The SvcParamKey can have an empty value in its presentation format
-      and wire format, e.g., analogously to the SvcParamKey "no-default-
-      alpn" defined in Section 7.1.1 of [RFC9460].
-
-      If the SvcParamKey is present in an SVCB RR about S, then S wishes
-      to use (Group) OSCORE between itself and an adjacent proxy.
+      For the SvcParamKey "oscore-with-proxy", the presentation and
+      wire-format values MUST be empty.  When the SvcParamKey "oscore-
+      with-proxy" is specified in an SVCB RR about S, then S wishes to
+      use (Group) OSCORE between itself and an adjacent proxy.  The
+      SvcParamKey "oscore-with-proxy" is registered in Section 8.2.
 
    *  Q2: Does S support the use of multiple, nested OSCORE layers?
 
-      For example, P can answer this question by relying on a dedicated
-      SvcParamKey within a DNS SVCB RR, which is retrieved from a DNS
-      response that P obtains in reply to a DNS query about S.
+      For example, P can answer this question by relying on the
+      SvcParamKey "nested-oscore" within a DNS SVCB RR, which is
+      retrieved from a DNS response that P obtains in reply to a DNS
+      query about S.
 
-      The SvcParamKey can have an empty value in its presentation format
-      and wire format, e.g., analogously to the SvcParamKey "no-default-
-      alpn" defined in Section 7.1.1 of [RFC9460].
+      For the SvcParamKey "nested-oscore", the presentation and wire-
+      format values MUST be empty.  When the SvcParamKey "nested-oscore"
+      is specified in an SVCB RR about S, then S supports the use of
+      multiple, nested OSCORE layers, i.e., it is able to handle
+      messages that are protected by at least two (Group) OSCORE layers
+      as defined in this document.  The SvcParamKey "nested-oscore" is
+      registered in Section 8.2.
 
-      If the SvcParamKey is present in an SVCB RR about S, then S
-      supports the use of multiple, nested OSCORE layers, i.e., it is
-      able to handle messages that are protected by at least two (Group)
-      OSCORE layers.
-
-      This is not intended to indicate how many nested OSCORE layers S
-      supports exactly (although that is in principle possible to
-      express).  In fact, it is already the case that S has to be
-      configured with the maximum number of OSCORE layers that it is
-      able to apply (remove) when processing an outgoing (incoming) CoAP
-      message (see Section 2.1).
+      The SvcParamKey "nested-oscore" does not indicate how many nested
+      OSCORE layers S supports exactly, which is in principle possible
+      to express in an SVCB RR.  In fact, it is already the case that S
+      has to be configured with the maximum number of OSCORE layers that
+      it is able to apply (remove) when processing an outgoing
+      (incoming) CoAP message (see Section 2.1).
 
    *  Q3: Does S support the key exchange protocol LAKE [RFC9528]?
 
@@ -1287,16 +1287,57 @@ Table of Contents
 
    This document has the following actions for IANA.
 
+   Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
+   with the RFC number of this specification and delete this paragraph.
+
 8.1.  CoAP Option Numbers Registry
 
    IANA is asked to add this document as an additional reference for the
    Hop-Limit Option in the "CoAP Option Numbers" registry
-   [IANA.CoAP.Option.Numbers] within the "Constrained RESTful
-   Environments (CoRE) Parameters" registry group.
+   [CoAP.Option.Numbers] within the "Constrained RESTful Environments
+   (CoRE) Parameters" registry group.
+
+8.2.  DNS SVCB Service Parameter Keys (SvcParamKeys)
+
+   IANA is asked to add the following entries to the "DNS SVCB Service
+   Parameter Keys (SvcParamKeys)" registry [DNS.SVCB.SvcParamKeys]
+   within the "DNS Service Bindings (SVCB)" registry group.
+
+   *  Number: TBD1
+
+   *  Name: oscore-with-proxy
+
+   *  Meaning: Supported use of (Group) OSCORE with an adjacent proxy
+
+   *  Change Controller: IETF
+
+   *  Reference: [RFC-XXXX, Section 5.1]
+
+
+
+   *  Number: TBD2
+
+   *  Name: nested-oscore
+
+   *  Meaning: Supported use of nested (Group) OSCORE layers
+
+   *  Change Controller: IETF
+
+   *  Reference: [RFC-XXXX, Section 5.1]
 
 9.  References
 
 9.1.  Normative References
+
+   [CoAP.Option.Numbers]
+              IANA, "CoAP Option Numbers",
+              <https://www.iana.org/assignments/core-parameters/core-
+              parameters.xhtml#option-numbers>.
+
+   [DNS.SVCB.SvcParamKeys]
+              IANA, "DNS SVCB Service Parameter Keys (SvcParamKeys)",
+              <https://www.iana.org/assignments/dns-svcb/dns-
+              svcb.xhtml#dns-svcparamkeys>.
 
    [I-D.ietf-core-href]
               Bormann, C. and H. Birkholz, "Constrained Resource
@@ -1328,11 +1369,6 @@ Table of Contents
               26 July 2026, <https://datatracker.ietf.org/doc/html/
               draft-ietf-schc-8824-update-10>.
 
-   [IANA.CoAP.Option.Numbers]
-              IANA, "CoAP Option Numbers",
-              <https://www.iana.org/assignments/core-parameters/core-
-              parameters.xhtml#option-numbers>.
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1362,6 +1398,15 @@ Table of Contents
               Application Protocol (CoAP) Hop-Limit Option", RFC 8768,
               DOI 10.17487/RFC8768, March 2020,
               <https://www.rfc-editor.org/rfc/rfc8768>.
+
+   [RFC9460]  Schwartz, B., Bishop, M., and E. Nygren, "Service Binding
+              and Parameter Specification via the DNS (SVCB and HTTPS
+              Resource Records)", RFC 9460, DOI 10.17487/RFC9460,
+              November 2023, <https://www.rfc-editor.org/rfc/rfc9460>.
+
+   [RFC9461]  Schwartz, B., "Service Binding Mapping for DNS Servers",
+              RFC 9461, DOI 10.17487/RFC9461, November 2023,
+              <https://www.rfc-editor.org/rfc/rfc9461>.
 
 9.2.  Informative References
 
@@ -1505,15 +1550,6 @@ Table of Contents
               Constrained Environments Using the OAuth 2.0 Framework
               (ACE-OAuth)", RFC 9200, DOI 10.17487/RFC9200, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9200>.
-
-   [RFC9460]  Schwartz, B., Bishop, M., and E. Nygren, "Service Binding
-              and Parameter Specification via the DNS (SVCB and HTTPS
-              Resource Records)", RFC 9460, DOI 10.17487/RFC9460,
-              November 2023, <https://www.rfc-editor.org/rfc/rfc9460>.
-
-   [RFC9461]  Schwartz, B., "Service Binding Mapping for DNS Servers",
-              RFC 9461, DOI 10.17487/RFC9461, November 2023,
-              <https://www.rfc-editor.org/rfc/rfc9461>.
 
    [RFC9528]  Selander, G., Preuß Mattsson, J., and F. Palombini,
               "Ephemeral Diffie-Hellman Over COSE (EDHOC)", RFC 9528,
@@ -3187,6 +3223,8 @@ E.1.  Version -07 to -08
    *  Renamed EDHOC to LAKE as appropriate.
 
    *  More precise step for escalating the protection of CoAP options.
+
+   *  Registration of DNS SVCB SvcParamKeys.
 
    *  Removed one item from "Further Use Cases".
 

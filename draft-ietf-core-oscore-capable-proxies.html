@@ -1225,6 +1225,9 @@ svg {
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
                 <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-coap-option-numbers-registr" class="internal xref">CoAP Option Numbers Registry</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-dns-svcb-service-parameter-" class="internal xref">DNS SVCB Service Parameter Keys (SvcParamKeys)</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
@@ -1764,7 +1767,7 @@ Furthermore, the additional use of the combined LAKE + OSCORE request defined in
 For the purposes of this document, there is no need for a proxy to also be a member of the OSCORE group whose Group OSCORE Security Context is used by the origin application endpoints for protecting communications end-to-end.<a href="#section-5-3.2.2" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<div id="guidelines-for-proxies">
+<div id="guidelines-proxies">
 <section id="section-5.1">
         <h3 id="name-guidelines-for-proxies">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-guidelines-for-proxies" class="section-name selfRef">Guidelines for Proxies</a>
@@ -1777,22 +1780,18 @@ For the purposes of this document, there is no need for a proxy to also be a mem
 <li class="normal" id="section-5.1-5.1">
             <p id="section-5.1-5.1.1">Q1: Does S wish to use OSCORE between itself and an adjacent proxy?<a href="#section-5.1-5.1.1" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.1.2">
-For example, P can answer this question by relying on a dedicated SvcParamKey within a DNS SVCB Resource Record (RR) <span>[<a href="#RFC9460" class="cite xref">RFC9460</a>]</span><span>[<a href="#RFC9461" class="cite xref">RFC9461</a>]</span>, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.<a href="#section-5.1-5.1.2" class="pilcrow">¶</a></p>
+For example, P can answer this question by relying on the SvcParamKey "oscore-with-proxy" within a DNS SVCB Resource Record (RR) <span>[<a href="#RFC9460" class="cite xref">RFC9460</a>]</span><span>[<a href="#RFC9461" class="cite xref">RFC9461</a>]</span>, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.<a href="#section-5.1-5.1.2" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.1.3">
-The SvcParamKey can have an empty value in its presentation format and wire format, e.g., analogously to the SvcParamKey "no-default-alpn" defined in <span><a href="https://rfc-editor.org/rfc/rfc9460#section-7.1.1" class="relref">Section 7.1.1</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>.<a href="#section-5.1-5.1.3" class="pilcrow">¶</a></p>
-<p id="section-5.1-5.1.4">
-If the SvcParamKey is present in an SVCB RR about S, then S wishes to use (Group) OSCORE between itself and an adjacent proxy.<a href="#section-5.1-5.1.4" class="pilcrow">¶</a></p>
+For the SvcParamKey "oscore-with-proxy", the presentation and wire-format values <span class="bcp14">MUST</span> be empty. When the SvcParamKey "oscore-with-proxy" is specified in an SVCB RR about S, then S wishes to use (Group) OSCORE between itself and an adjacent proxy. The SvcParamKey "oscore-with-proxy" is registered in <a href="#iana-svcb" class="auto internal xref">Section 8.2</a>.<a href="#section-5.1-5.1.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-5.2">
             <p id="section-5.1-5.2.1">Q2: Does S support the use of multiple, nested OSCORE layers?<a href="#section-5.1-5.2.1" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.2.2">
-For example, P can answer this question by relying on a dedicated SvcParamKey within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.<a href="#section-5.1-5.2.2" class="pilcrow">¶</a></p>
+For example, P can answer this question by relying on the SvcParamKey "nested-oscore" within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.<a href="#section-5.1-5.2.2" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.2.3">
-The SvcParamKey can have an empty value in its presentation format and wire format, e.g., analogously to the SvcParamKey "no-default-alpn" defined in <span><a href="https://rfc-editor.org/rfc/rfc9460#section-7.1.1" class="relref">Section 7.1.1</a> of [<a href="#RFC9460" class="cite xref">RFC9460</a>]</span>.<a href="#section-5.1-5.2.3" class="pilcrow">¶</a></p>
+For the SvcParamKey "nested-oscore", the presentation and wire-format values <span class="bcp14">MUST</span> be empty. When the SvcParamKey "nested-oscore" is specified in an SVCB RR about S, then S supports the use of multiple, nested OSCORE layers, i.e., it is able to handle messages that are protected by at least two (Group) OSCORE layers as defined in this document. The SvcParamKey "nested-oscore" is registered in <a href="#iana-svcb" class="auto internal xref">Section 8.2</a>.<a href="#section-5.1-5.2.3" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.2.4">
-If the SvcParamKey is present in an SVCB RR about S, then S supports the use of multiple, nested OSCORE layers, i.e., it is able to handle messages that are protected by at least two (Group) OSCORE layers.<a href="#section-5.1-5.2.4" class="pilcrow">¶</a></p>
-<p id="section-5.1-5.2.5">
-This is not intended to indicate how many nested OSCORE layers S supports exactly (although that is in principle possible to express). In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see <a href="#sec-deviations" class="auto internal xref">Section 2.1</a>).<a href="#section-5.1-5.2.5" class="pilcrow">¶</a></p>
+The SvcParamKey "nested-oscore" does not indicate how many nested OSCORE layers S supports exactly, which is in principle possible to express in an SVCB RR. In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see <a href="#sec-deviations" class="auto internal xref">Section 2.1</a>).<a href="#section-5.1-5.2.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-5.3">
             <p id="section-5.1-5.3.1">Q3: Does S support the key exchange protocol LAKE <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>?<a href="#section-5.1-5.3.1" class="pilcrow">¶</a></p>
@@ -2090,12 +2089,56 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
 <p id="section-8-1">This document has the following actions for IANA.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]" with the RFC number of this specification and delete this paragraph.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <div id="iana-coap-options">
 <section id="section-8.1">
         <h3 id="name-coap-option-numbers-registr">
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-coap-option-numbers-registr" class="section-name selfRef">CoAP Option Numbers Registry</a>
         </h3>
-<p id="section-8.1-1">IANA is asked to add this document as an additional reference for the Hop-Limit Option in the "CoAP Option Numbers" registry <span>[<a href="#IANA.CoAP.Option.Numbers" class="cite xref">IANA.CoAP.Option.Numbers</a>]</span> within the "Constrained RESTful Environments (CoRE) Parameters" registry group.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-1">IANA is asked to add this document as an additional reference for the Hop-Limit Option in the "CoAP Option Numbers" registry <span>[<a href="#CoAP.Option.Numbers" class="cite xref">CoAP.Option.Numbers</a>]</span> within the "Constrained RESTful Environments (CoRE) Parameters" registry group.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-svcb">
+<section id="section-8.2">
+        <h3 id="name-dns-svcb-service-parameter-">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-dns-svcb-service-parameter-" class="section-name selfRef">DNS SVCB Service Parameter Keys (SvcParamKeys)</a>
+        </h3>
+<p id="section-8.2-1">IANA is asked to add the following entries to the "DNS SVCB Service Parameter Keys (SvcParamKeys)" registry <span>[<a href="#DNS.SVCB.SvcParamKeys" class="cite xref">DNS.SVCB.SvcParamKeys</a>]</span> within the "DNS Service Bindings (SVCB)" registry group.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.1">
+            <p id="section-8.2-2.1.1">Number: TBD1<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-2.2">
+            <p id="section-8.2-2.2.1">Name: oscore-with-proxy<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-2.3">
+            <p id="section-8.2-2.3.1">Meaning: Supported use of (Group) OSCORE with an adjacent proxy<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-2.4">
+            <p id="section-8.2-2.4.1">Change Controller: IETF<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-2.5">
+            <p id="section-8.2-2.5.1">Reference: [RFC-XXXX, <a href="#guidelines-proxies" class="auto internal xref">Section 5.1</a>]<a href="#section-8.2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-8.2-3"><br></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-4.1">
+            <p id="section-8.2-4.1.1">Number: TBD2<a href="#section-8.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-4.2">
+            <p id="section-8.2-4.2.1">Name: nested-oscore<a href="#section-8.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-4.3">
+            <p id="section-8.2-4.3.1">Meaning: Supported use of nested (Group) OSCORE layers<a href="#section-8.2-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-4.4">
+            <p id="section-8.2-4.4.1">Change Controller: IETF<a href="#section-8.2-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.2-4.5">
+            <p id="section-8.2-4.5.1">Reference: [RFC-XXXX, <a href="#guidelines-proxies" class="auto internal xref">Section 5.1</a>]<a href="#section-8.2-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 </section>
@@ -2111,6 +2154,14 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="CoAP.Option.Numbers">[CoAP.Option.Numbers]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"CoAP Option Numbers"</span>, <span>&lt;<a href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DNS.SVCB.SvcParamKeys">[DNS.SVCB.SvcParamKeys]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"DNS SVCB Service Parameter Keys (SvcParamKeys)"</span>, <span>&lt;<a href="https://www.iana.org/assignments/dns-svcb/dns-svcb.xhtml#dns-svcparamkeys">https://www.iana.org/assignments/dns-svcb/dns-svcb.xhtml#dns-svcparamkeys</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-core-href">[I-D.ietf-core-href]</dt>
         <dd>
 <span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"Constrained Resource Identifiers"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-href-30</span>, <time datetime="2025-11-21" class="refDate">21 November 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-href-30">https://datatracker.ietf.org/doc/html/draft-ietf-core-href-30</a>&gt;</span>. </dd>
@@ -2126,10 +2177,6 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dt id="I-D.ietf-schc-8824-update">[I-D.ietf-schc-8824-update]</dt>
         <dd>
 <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Toutain, L.</span>, <span class="refAuthor">Martínez, I.</span>, and <span class="refAuthor">A. Minaburo</span>, <span class="refTitle">"Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-schc-8824-update-10</span>, <time datetime="2026-07-26" class="refDate">26 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-10">https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-10</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="IANA.CoAP.Option.Numbers">[IANA.CoAP.Option.Numbers]</dt>
-        <dd>
-<span class="refAuthor">IANA</span>, <span class="refTitle">"CoAP Option Numbers"</span>, <span>&lt;<a href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -2152,8 +2199,16 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <span class="refAuthor">Minaburo, A.</span>, <span class="refAuthor">Toutain, L.</span>, <span class="refAuthor">Gomez, C.</span>, <span class="refAuthor">Barthel, D.</span>, and <span class="refAuthor">JC. Zuniga</span>, <span class="refTitle">"SCHC: Generic Framework for Static Context Header Compression and Fragmentation"</span>, <span class="seriesInfo">RFC 8724</span>, <span class="seriesInfo">DOI 10.17487/RFC8724</span>, <time datetime="2020-04" class="refDate">April 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8724">https://www.rfc-editor.org/rfc/rfc8724</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8768">[RFC8768]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Boucadair, M.</span>, <span class="refAuthor">Reddy.K, T.</span>, and <span class="refAuthor">J. Shallow</span>, <span class="refTitle">"Constrained Application Protocol (CoAP) Hop-Limit Option"</span>, <span class="seriesInfo">RFC 8768</span>, <span class="seriesInfo">DOI 10.17487/RFC8768</span>, <time datetime="2020-03" class="refDate">March 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8768">https://www.rfc-editor.org/rfc/rfc8768</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9460">[RFC9460]</dt>
+        <dd>
+<span class="refAuthor">Schwartz, B.</span>, <span class="refAuthor">Bishop, M.</span>, and <span class="refAuthor">E. Nygren</span>, <span class="refTitle">"Service Binding and Parameter Specification via the DNS (SVCB and HTTPS Resource Records)"</span>, <span class="seriesInfo">RFC 9460</span>, <span class="seriesInfo">DOI 10.17487/RFC9460</span>, <time datetime="2023-11" class="refDate">November 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9460">https://www.rfc-editor.org/rfc/rfc9460</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9461">[RFC9461]</dt>
+      <dd>
+<span class="refAuthor">Schwartz, B.</span>, <span class="refTitle">"Service Binding Mapping for DNS Servers"</span>, <span class="seriesInfo">RFC 9461</span>, <span class="seriesInfo">DOI 10.17487/RFC9461</span>, <time datetime="2023-11" class="refDate">November 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9461">https://www.rfc-editor.org/rfc/rfc9461</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -2243,14 +2298,6 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dt id="RFC9200">[RFC9200]</dt>
         <dd>
 <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Wahlstroem, E.</span>, <span class="refAuthor">Erdtman, S.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Authentication and Authorization for Constrained Environments Using the OAuth 2.0 Framework (ACE-OAuth)"</span>, <span class="seriesInfo">RFC 9200</span>, <span class="seriesInfo">DOI 10.17487/RFC9200</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9200">https://www.rfc-editor.org/rfc/rfc9200</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC9460">[RFC9460]</dt>
-        <dd>
-<span class="refAuthor">Schwartz, B.</span>, <span class="refAuthor">Bishop, M.</span>, and <span class="refAuthor">E. Nygren</span>, <span class="refTitle">"Service Binding and Parameter Specification via the DNS (SVCB and HTTPS Resource Records)"</span>, <span class="seriesInfo">RFC 9460</span>, <span class="seriesInfo">DOI 10.17487/RFC9460</span>, <time datetime="2023-11" class="refDate">November 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9460">https://www.rfc-editor.org/rfc/rfc9460</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC9461">[RFC9461]</dt>
-        <dd>
-<span class="refAuthor">Schwartz, B.</span>, <span class="refTitle">"Service Binding Mapping for DNS Servers"</span>, <span class="seriesInfo">RFC 9461</span>, <span class="seriesInfo">DOI 10.17487/RFC9461</span>, <time datetime="2023-11" class="refDate">November 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9461">https://www.rfc-editor.org/rfc/rfc9461</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9528">[RFC9528]</dt>
         <dd>
@@ -5520,10 +5567,13 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.2.1">More precise step for escalating the protection of CoAP options.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.3">
-            <p id="appendix-E.1-1.3.1">Removed one item from "Further Use Cases".<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.3.1">Registration of DNS SVCB SvcParamKeys.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.4">
-            <p id="appendix-E.1-1.4.1">Editorial fixes and improvements.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.4.1">Removed one item from "Further Use Cases".<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.5">
+            <p id="appendix-E.1-1.5.1">Editorial fixes and improvements.<a href="#appendix-E.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
