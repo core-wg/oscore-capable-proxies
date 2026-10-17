@@ -39,16 +39,24 @@ normative:
   RFC8613:
   RFC8724:
   RFC8768:
+  RFC9460:
+  RFC9461:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-core-href:
   I-D.ietf-schc-8824-update:
   I-D.ietf-core-uri-path-abbrev:
-  IANA.CoAP.Option.Numbers:
+  CoAP.Option.Numbers:
     author:
       org: IANA
     date: false
     title: CoAP Option Numbers
     target: https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers
+  DNS.SVCB.SvcParamKeys:
+    author:
+      org: IANA
+    date: false
+    title: DNS SVCB Service Parameter Keys (SvcParamKeys)
+    target: https://www.iana.org/assignments/dns-svcb/dns-svcb.xhtml#dns-svcparamkeys
 
 informative:
   RFC7030:
@@ -56,8 +64,6 @@ informative:
   RFC8742:
   RFC9147:
   RFC9200:
-  RFC9460:
-  RFC9461:
   RFC9528:
   RFC9668:
   I-D.ietf-core-groupcomm-bis:
@@ -103,6 +109,9 @@ informative:
     title: "Discovery and capabilities of guard proxies for CoRE networks"
     date: 2021-12
     target: http://dx.doi.org/10.1145/3488661.3494029
+
+entity:
+  SELF: "[RFC-XXXX]"
 
 --- abstract
 
@@ -434,7 +443,7 @@ At the same time, the following applies, depending on the two peers using OSCORE
 
   For the purposes of this document, there is no need for a proxy to also be a member of the OSCORE group whose Group OSCORE Security Context is used by the origin application endpoints for protecting communications end-to-end.
 
-## Guidelines for Proxies
+## Guidelines for Proxies # {#guidelines-proxies}
 
 When considering an intermediary chain between an origin client and an origin server, all proxies except for the one adjacent to the origin server are expected to be configured as to the establishment and use of OSCORE with the next hop towards the origin server.
 
@@ -446,21 +455,17 @@ In order to come to such a determination, P can answer the following three quest
 
 * Q1: Does S wish to use OSCORE between itself and an adjacent proxy?
 
-  For example, P can answer this question by relying on a dedicated SvcParamKey within a DNS SVCB Resource Record (RR) {{RFC9460}}{{RFC9461}}, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
+  For example, P can answer this question by relying on the SvcParamKey "oscore-with-proxy" within a DNS SVCB Resource Record (RR) {{RFC9460}}{{RFC9461}}, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
 
-  The SvcParamKey can have an empty value in its presentation format and wire format, e.g., analogously to the SvcParamKey "no-default-alpn" defined in {{Section 7.1.1 of RFC9460}}.
-
-  If the SvcParamKey is present in an SVCB RR about S, then S wishes to use (Group) OSCORE between itself and an adjacent proxy.
+  For the SvcParamKey "oscore-with-proxy", the presentation and wire-format values MUST be empty. When the SvcParamKey "oscore-with-proxy" is specified in an SVCB RR about S, then S wishes to use (Group) OSCORE between itself and an adjacent proxy. The SvcParamKey "oscore-with-proxy" is registered in {{iana-svcb}}.
 
 * Q2: Does S support the use of multiple, nested OSCORE layers?
 
-  For example, P can answer this question by relying on a dedicated SvcParamKey within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
+  For example, P can answer this question by relying on the SvcParamKey "nested-oscore" within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
 
-  The SvcParamKey can have an empty value in its presentation format and wire format, e.g., analogously to the SvcParamKey "no-default-alpn" defined in {{Section 7.1.1 of RFC9460}}.
+  For the SvcParamKey "nested-oscore", the presentation and wire-format values MUST be empty. When the SvcParamKey "nested-oscore" is specified in an SVCB RR about S, then S supports the use of multiple, nested OSCORE layers, i.e., it is able to handle messages that are protected by at least two (Group) OSCORE layers as defined in this document. The SvcParamKey "nested-oscore" is registered in {{iana-svcb}}.
 
-  If the SvcParamKey is present in an SVCB RR about S, then S supports the use of multiple, nested OSCORE layers, i.e., it is able to handle messages that are protected by at least two (Group) OSCORE layers.
-
-  This is not intended to indicate how many nested OSCORE layers S supports exactly (although that is in principle possible to express). In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see {{sec-deviations}}).
+  The SvcParamKey "nested-oscore" does not indicate how many nested OSCORE layers S supports exactly, which is in principle possible to express in an SVCB RR. In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see {{sec-deviations}}).
 
 * Q3: Does S support the key exchange protocol LAKE {{RFC9528}}?
 
@@ -624,9 +629,29 @@ If the Hop-Limit Option is transported unprotected over the communication leg be
 
 This document has the following actions for IANA.
 
+Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with the RFC number of this specification and delete this paragraph.
+
 ## CoAP Option Numbers Registry ## {#iana-coap-options}
 
-IANA is asked to add this document as an additional reference for the Hop-Limit Option in the "CoAP Option Numbers" registry {{IANA.CoAP.Option.Numbers}} within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
+IANA is asked to add this document as an additional reference for the Hop-Limit Option in the "CoAP Option Numbers" registry {{CoAP.Option.Numbers}} within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
+
+## DNS SVCB Service Parameter Keys (SvcParamKeys) ## {#iana-svcb}
+
+IANA is asked to add the following entries to the "DNS SVCB Service Parameter Keys (SvcParamKeys)" registry {{DNS.SVCB.SvcParamKeys}} within the "DNS Service Bindings (SVCB)" registry group.
+
+* Number: TBD1
+* Name: oscore-with-proxy
+* Meaning: Supported use of (Group) OSCORE with an adjacent proxy
+* Change Controller: IETF
+* Reference: \[RFC-XXXX, {{guidelines-proxies}}\]
+
+<br>
+
+* Number: TBD2
+* Name: nested-oscore
+* Meaning: Supported use of nested (Group) OSCORE layers
+* Change Controller: IETF
+* Reference: \[RFC-XXXX, {{guidelines-proxies}}\]
 
 --- back
 
@@ -2045,6 +2070,8 @@ request      +-----------------------------------------------+        |
 * Renamed EDHOC to LAKE as appropriate.
 
 * More precise step for escalating the protection of CoAP options.
+
+* Registration of DNS SVCB SvcParamKeys.
 
 * Removed one item from "Further Use Cases".
 
