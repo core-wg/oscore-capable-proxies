@@ -1280,7 +1280,7 @@ svg {
                 <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-with-forward-proxy-and-lake" class="internal xref">With Forward-Proxy and LAKE; OSCORE: C-S, C-P</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.5">
-                <p id="section-toc.1-1.11.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-with-forward-proxy-and-lake-" class="internal xref">With Forward-Proxy and LAKE (optimized); OSCORE: C-S, C-P</a></p>
+                <p id="section-toc.1-1.11.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-with-forward-proxy-and-lake-" class="internal xref">With Forward-Proxy and LAKE (Optimized); OSCORE: C-S, C-P</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.6">
                 <p id="section-toc.1-1.11.2.6.1"><a href="#appendix-B.6" class="auto internal xref">B.6</a>.  <a href="#name-with-two-forward-proxies-os" class="internal xref">With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S</a></p>
@@ -1383,7 +1383,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
             <p id="section-1.1-4.2.1">Destination application endpoint: an origin server intended to consume a request or an origin client intended to consume a response.<a href="#section-1.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.1-4.3">
-            <p id="section-1.1-4.3.1">Application endpoint: a source or destination application endpoint.<a href="#section-1.1-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-1.1-4.3.1">Application endpoint: a source application endpoint or destination application endpoint.<a href="#section-1.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.1-4.4">
             <p id="section-1.1-4.4.1">Source OSCORE endpoint: an endpoint protecting a message with OSCORE or Group OSCORE.<a href="#section-1.1-4.4.1" class="pilcrow">¶</a></p>
@@ -1392,7 +1392,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
             <p id="section-1.1-4.5.1">Destination OSCORE endpoint: an endpoint unprotecting a message with OSCORE or Group OSCORE.<a href="#section-1.1-4.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.1-4.6">
-            <p id="section-1.1-4.6.1">OSCORE endpoint: a source or destination OSCORE endpoint. An OSCORE endpoint is not necessarily also an application endpoint with respect to a certain message.<a href="#section-1.1-4.6.1" class="pilcrow">¶</a></p>
+            <p id="section-1.1-4.6.1">OSCORE endpoint: a source OSCORE endpoint or destination OSCORE endpoint. An OSCORE endpoint is not necessarily also an application endpoint with respect to a certain message.<a href="#section-1.1-4.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.1-4.7">
             <p id="section-1.1-4.7.1">Hop: an endpoint in the end-to-end path between two application endpoints included.<a href="#section-1.1-4.7.1" class="pilcrow">¶</a></p>
@@ -1583,14 +1583,14 @@ If the check fails, the endpoint <span class="bcp14">MUST</span> stop processing
 Instead, if the check succeeds, the following applies.<a href="#section-2.4-2.4.3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.4-2.4.4.1">
-                <p id="section-2.4-2.4.4.1.1">In the case that the previous step in this algorithm was Step 2, hence the endpoint is meant to process REQ as a forward-proxy, then the endpoint consumes the proxy-related options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.2" class="relref">Section 5.7.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-2.4-2.4.4.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.4-2.4.4.1.1">In the case that the previous step in the present execution of this algorithm was Step 2, hence the endpoint is meant to process REQ as a forward-proxy, then the endpoint consumes the proxy-related options as per <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.2" class="relref">Section 5.7.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-2.4-2.4.4.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.4.4.1.2">
 In particular, the endpoint checks whether the authority component (host and port) of the request URI identifies the endpoint itself. In such a case, REQ has to be treated as a local (non-proxied) request and this algorithm moves to Step 1.<a href="#section-2.4-2.4.4.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.4.4.1.3">
 Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-02#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>).<a href="#section-2.4-2.4.4.1.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.4-2.4.4.2">
-                <p id="section-2.4-2.4.4.2.1">In the case that the previous step in this algorithm was Step 3, hence the endpoint is meant to process REQ as a reverse-proxy, then the endpoint consumes the included Uri-Host, Uri-Port, Uri-Path, and Uri-Path-Abbrev Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-2.4-2.4.4.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.4-2.4.4.2.1">In the case that the previous step in the present execution of this algorithm was Step 3, hence the endpoint is meant to process REQ as a reverse-proxy, then the endpoint consumes the included Uri-Host, Uri-Port, Uri-Path, and Uri-Path-Abbrev Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-2.4-2.4.4.2.1" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.4.4.2.2">
 Note that, when forwarding REQ, the endpoint might not remove the Uri-Path-Abbrev-Option or all the Uri-Path Options originally included, e.g., if the next hop towards the origin server is a reverse-proxy.<a href="#section-2.4-2.4.4.2.2" class="pilcrow">¶</a></p>
 </li>
@@ -1730,7 +1730,7 @@ Note that, when OSCORE is used, sending Observe notifications is the only way fo
 <p id="section-4-3">When using this approach, the following also applies in addition to what is defined in <a href="#incoming-requests" class="auto internal xref">Section 2.4</a> and <a href="#incoming-responses" class="auto internal xref">Section 2.6</a>, when processing incoming messages at a proxy that implements caching of responses.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4-4.1">
-          <p id="section-4-4.1.1">Upon receiving a request from (the previous hop towards) the origin client, the proxy checks if specifically the message available during the execution of Step 2 in <a href="#incoming-requests" class="auto internal xref">Section 2.4</a> produces a cache hit.<a href="#section-4-4.1.1" class="pilcrow">¶</a></p>
+          <p id="section-4-4.1.1">Upon receiving a request from (the previous hop towards) the origin client, the proxy checks if specifically the message available during the execution of Step 4 in <a href="#incoming-requests" class="auto internal xref">Section 2.4</a> produces a cache hit.<a href="#section-4-4.1.1" class="pilcrow">¶</a></p>
 <p id="section-4-4.1.2">
 That is, such a message: i) is the one to be forwarded to (the next hop towards) the origin server, if no cache hit occurs; and ii) is the result of an OSCORE decryption and verification at the proxy, if OSCORE is used on the communication leg between the proxy and (the previous hop towards) the origin client.<a href="#section-4-4.1.2" class="pilcrow">¶</a></p>
 </li>
@@ -1759,7 +1759,7 @@ Assuming that OSCORE has to be used between the two origin application endpoints
 Furthermore, the additional use of the combined LAKE + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> (denoted therein as "EDHOC + OSCORE request") is particularly beneficial in this case (see the example in <a href="#sec-example-edhoc-comb-req" class="auto internal xref">Appendix B.5</a>) and especially when relying on a long chain of proxies.<a href="#section-5-3.1.3" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-5-3.2">
-          <p id="section-5-3.2.1">The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in <span>[<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span> and based on the ACE framework for Authentication and Authorization in constrained environments <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-5-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-5-3.2.1">The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in <span>[<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span> and based on the Authentication and Authorization for Constrained Environments (ACE) framework <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-5-3.2.1" class="pilcrow">¶</a></p>
 <p id="section-5-3.2.2">
 For the purposes of this document, there is no need for a proxy to also be a member of the OSCORE group whose Group OSCORE Security Context is used by the origin application endpoints for protecting communications end-to-end.<a href="#section-5-3.2.2" class="pilcrow">¶</a></p>
 </li>
@@ -1797,11 +1797,11 @@ This is not intended to indicate how many nested OSCORE layers S supports exactl
           <li class="normal" id="section-5.1-5.3">
             <p id="section-5.1-5.3.1">Q3: Does S support the key exchange protocol LAKE <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>?<a href="#section-5.1-5.3.1" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.3.2">
-For example, P can answer this question by using the means specified in <span>[<a href="#I-D.ietf-lake-app-profiles" class="cite xref">I-D.ietf-lake-app-profiles</a>]</span> that are not used during an LAKE session itself.<a href="#section-5.1-5.3.2" class="pilcrow">¶</a></p>
+For example, P can answer this question by using the means specified in <span>[<a href="#I-D.ietf-lake-app-profiles" class="cite xref">I-D.ietf-lake-app-profiles</a>]</span> that are not used during a LAKE session itself.<a href="#section-5.1-5.3.2" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-5.1-6">The examples above are not exhaustive and P can rely on alternative means to answer the three questions about S.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
-<p id="section-5.1-7">Once P has the answers to Q1, Q2, and Q3, then P can determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S, as shown in the state diagram in <a href="#fig-oscore-p-s" class="auto internal xref">Figure 1</a>.<a href="#section-5.1-7" class="pilcrow">¶</a></p>
+<p id="section-5.1-7">Once P has the answers to the questions Q1, Q2, and Q3, then P can determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S, as shown in the state diagram in <a href="#fig-oscore-p-s" class="auto internal xref">Figure 1</a>.<a href="#section-5.1-7" class="pilcrow">¶</a></p>
 <span id="name-establishment-and-use-of-os"></span><div id="fig-oscore-p-s">
 <figure id="figure-1">
           <div id="section-5.1-8.1">
@@ -1825,8 +1825,8 @@ For example, P can answer this question by using the means specified in <span>[<
                 <path d="M 216,144 L 216,208" fill="none" stroke="black"></path>
                 <path d="M 232,216 L 232,592" fill="none" stroke="black"></path>
                 <path d="M 256,320 L 256,384" fill="none" stroke="black"></path>
-                <path d="M 272,216 L 272,320" fill="none" stroke="black"></path>
                 <path d="M 272,392 L 272,720" fill="none" stroke="black"></path>
+                <path d="M 312,216 L 312,320" fill="none" stroke="black"></path>
                 <path d="M 312,480 L 312,544" fill="none" stroke="black"></path>
                 <path d="M 312,608 L 312,656" fill="none" stroke="black"></path>
                 <path d="M 336,736 L 336,800" fill="none" stroke="black"></path>
@@ -1873,8 +1873,8 @@ For example, P can answer this question by using the means specified in <span>[<
                 <polygon class="arrowhead" points="368,552 356,546.4 356,557.6" fill="black" transform="rotate(270,360,552)"></polygon>
                 <polygon class="arrowhead" points="368,392 356,386.4 356,397.6" fill="black" transform="rotate(270,360,392)"></polygon>
                 <polygon class="arrowhead" points="336,768 324,762.4 324,773.6" fill="black" transform="rotate(0,328,768)"></polygon>
+                <polygon class="arrowhead" points="320,216 308,210.4 308,221.6" fill="black" transform="rotate(270,312,216)"></polygon>
                 <polygon class="arrowhead" points="280,392 268,386.4 268,397.6" fill="black" transform="rotate(270,272,392)"></polygon>
-                <polygon class="arrowhead" points="280,216 268,210.4 268,221.6" fill="black" transform="rotate(270,272,216)"></polygon>
                 <polygon class="arrowhead" points="240,216 228,210.4 228,221.6" fill="black" transform="rotate(270,232,216)"></polygon>
                 <polygon class="arrowhead" points="216,176 204,170.4 204,181.6" fill="black" transform="rotate(0,208,176)"></polygon>
                 <polygon class="arrowhead" points="136,680 124,674.4 124,685.6" fill="black" transform="rotate(90,128,680)"></polygon>
@@ -2045,7 +2045,7 @@ This occurs after having performed all the intended OSCORE protections of the ou
 <p id="section-7.1-1">As discussed in <a href="#source-based-policies" class="auto internal xref">Section 2.4.1</a>, a particularly sensitive server might use policies with strict criteria about what makes an OSCORE-protected request eligible to be decrypted and verified.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <p id="section-7.1-2">When a server using such policies receives an OSCORE-protected request (see Step 6 in <a href="#incoming-requests" class="auto internal xref">Section 2.4</a>), the server proceeds only if the necessary OSCORE Security Contexts are not only available to use, but also present in a local list of OSCORE Security Contexts that are usable to decrypt a request from the alleged request sender.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
 <p id="section-7.1-3">This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.1-4">In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C and S are sharing. Making such an association would compromise the location anonymity of the origin server, as otherwise afforded by the reverse-proxy.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.1-4">In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C and S are sharing. Making such an association would compromise the location anonymity of the origin server, as otherwise afforded by leveraging the reverse-proxy.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
 <p id="section-7.1-5">That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 <p id="section-7.1-6">However, after performing and failing the check on the received request, S replies with a 4.01 (Unauthorized) error response that is not protected with CTX, hence preserving the location anonymity of the origin server.<a href="#section-7.1-6" class="pilcrow">¶</a></p>
 </section>
@@ -2316,7 +2316,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         </h3>
 <p id="appendix-A.4-1">The specification <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span> extends the LwM2M architecture by defining the LwM2M Gateway functionality. That is, a LwM2M Server can manage end IoT devices that are deployed "behind" the LwM2M Gateway. While it is outside the scope of that specification, it is possible for the LwM2M Gateway to use any suitable protocol with its connected end IoT devices, as well as to carry out any required protocol translation.<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.4-2">Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to forward the request to an end IoT device. With particular reference to CoAP and the related transport binding specified in <span>[<a href="#LwM2M-Transport" class="cite xref">LwM2M-Transport</a>]</span>, the LwM2M Server acting as a CoAP client sends its request to the LwM2M Gateway acting as a CoAP server.<a href="#appendix-A.4-2" class="pilcrow">¶</a></p>
-<p id="appendix-A.4-3">If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.3" class="relref">Section 5.7.3</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>). That is, in addition to its own resources, the LwM2M Gateway serves the resources hosted by each end IoT device that stands behind it, as exposed by the LwM2M Gateway under a dedicated URI path. As per <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, the first URI path segment is used as a "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.<a href="#appendix-A.4-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.4-3">If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.7.3" class="relref">Section 5.7.3</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>). That is, in addition to its own resources, the LwM2M Gateway serves the resources hosted by each end IoT device that stands behind it, as exposed by the LwM2M Gateway under a dedicated URI path. As per <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, the first URI path segment is used as a "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at that IoT device.<a href="#appendix-A.4-3" class="pilcrow">¶</a></p>
 <p id="appendix-A.4-4">As per Section 7 of <span>[<a href="#LwM2M-Gateway" class="cite xref">LwM2M-Gateway</a>]</span>, message exchanges between the LwM2M Server and the LwM2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as a reverse-proxy.<a href="#appendix-A.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2337,7 +2337,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         </h3>
 <p id="appendix-A.6-1">A proxy may be deployed to act as an entry point to a firewalled network that only authenticated clients can join. As an alternative to a hard firewall that can be either traversed or not, a proxy can instead apply major rate limits on incoming traffic from unauthenticated clients <span>[<a href="#DAI-SNAC" class="cite xref">DAI-SNAC</a>]</span> and lift those limits for authenticated clients, possibly to different extents depending on the specific client.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.6-2">In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.<a href="#appendix-A.6-2" class="pilcrow">¶</a></p>
-<p id="appendix-A.6-3">Furthermore, if the client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on their shared secure communication association to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.<a href="#appendix-A.6-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.6-3">Furthermore, if a client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on its secure communication association shared with the proxy in order to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.<a href="#appendix-A.6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="further-use-cases">
@@ -3548,7 +3548,7 @@ Building on that, it is also possible to enable the operation of hidden services
 <div id="sec-example-edhoc-comb-req">
 <section id="appendix-B.5">
         <h3 id="name-with-forward-proxy-and-lake-">
-<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-with-forward-proxy-and-lake-" class="section-name selfRef">With Forward-Proxy and LAKE (optimized); OSCORE: C-S, C-P</a>
+<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-with-forward-proxy-and-lake-" class="section-name selfRef">With Forward-Proxy and LAKE (Optimized); OSCORE: C-S, C-P</a>
         </h3>
 <p id="appendix-B.5-1">In the example shown in <a href="#fig-example-edhoc-comb-req" class="auto internal xref">Figure 6</a>, message exchanges are protected as follows.<a href="#appendix-B.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -4552,7 +4552,7 @@ Building on that, it is also possible to enable the operation of hidden services
 </li>
         </ul>
 <p id="appendix-B.8-3">In this example, the proxy is specifically a reverse-proxy. However, unlike typically expected, the client is aware to communicate with a reverse-proxy. This is the case, e.g., in the LwM2M scenario considered in <a href="#ssec-uc4" class="auto internal xref">Appendix A.4</a>, where the LwM2M Server acts as a CoAP client and uses a LwM2M Gateway acting as a CoAP-to-CoAP reverse-proxy in order to reach an end IoT device.<a href="#appendix-B.8-3" class="pilcrow">¶</a></p>
-<p id="appendix-B.8-4">In order to determine where it has to forward an incoming request to, the proxy relies on the URI path components that are specified as value of the Uri-Path Options included in the request. In particular, the proxy relies on the first URI path segment to identify the specific IoT device to which the request has to be forwarded, while the remaining URI path segments specify the target resource at the IoT device.<a href="#appendix-B.8-4" class="pilcrow">¶</a></p>
+<p id="appendix-B.8-4">In order to determine where it has to forward an incoming request to, the proxy relies on the URI path components that are specified as value of the Uri-Path Options included in the request. In particular, the proxy relies on the first URI path segment to identify the specific IoT device to which the request has to be forwarded, while the remaining URI path segments specify the target resource at that IoT device.<a href="#appendix-B.8-4" class="pilcrow">¶</a></p>
 <p id="appendix-B.8-5">However, as shown in the example, the URI path segments that specify the target resource are hidden from the proxy, since they are protected by the additional use of OSCORE end-to-end between the client and the server.<a href="#appendix-B.8-5" class="pilcrow">¶</a></p>
 <p id="appendix-B.8-6">Furthermore, this example assumes that, in the URIs identifying the target resource at the proxy as well as in the URI identifying the target resource at the server, the host subcomponent represents the destination IP address of the request as an IP-literal. Therefore, both the request from the client to the proxy and the request from the proxy to the server do not include a Uri-Host Option (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-6.4" class="relref">Section 6.4</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#appendix-B.8-6" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-pr"></span><div id="fig-example-reverse-proxy-with-end-to-end">
@@ -5523,7 +5523,7 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.3.1">Removed one item from "Further Use Cases".<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.4">
-            <p id="appendix-E.1-1.4.1">Editorial improvements.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.4.1">Editorial fixes and improvements.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
