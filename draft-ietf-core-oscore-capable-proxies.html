@@ -1478,7 +1478,7 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
                 <p id="section-2.2-7.4.2.1.1">To the best of the sender endpoint's knowledge, X is the next hop for the sender endpoint; or<a href="#section-2.2-7.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.2-7.4.2.2">
-                <p id="section-2.2-7.4.2.2.1">To the best of the sender endpoint's knowledge, the next hop for the sender endpoint is not the immediately next consumer of OPT.<a href="#section-2.2-7.4.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.2-7.4.2.2.1">To the best of the sender endpoint's knowledge, the immediately next consumer of OPT is not a hop in between itself and X.<a href="#section-2.2-7.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -4810,41 +4810,41 @@ Building on that, it is also possible to enable the operation of hidden services
 <figure id="figure-10">
         <div id="appendix-C-2.1">
           <div class="alignCenter art-svg artwork" id="appendix-C-2.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1152" width="576" viewBox="0 0 576 1152" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1168" width="576" viewBox="0 0 576 1168" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
               <path d="M 8,160 L 8,272" fill="none" stroke="black"></path>
               <path d="M 8,336 L 8,384" fill="none" stroke="black"></path>
-              <path d="M 24,496 L 24,656" fill="none" stroke="black"></path>
+              <path d="M 24,496 L 24,672" fill="none" stroke="black"></path>
               <path d="M 40,280 L 40,328" fill="none" stroke="black"></path>
               <path d="M 40,392 L 40,432" fill="none" stroke="black"></path>
               <path d="M 40,464 L 40,488" fill="none" stroke="black"></path>
-              <path d="M 40,704 L 40,1120" fill="none" stroke="black"></path>
-              <path d="M 64,1024 L 64,1056" fill="none" stroke="black"></path>
-              <path d="M 80,784 L 80,816" fill="none" stroke="black"></path>
-              <path d="M 80,848 L 80,1016" fill="none" stroke="black"></path>
+              <path d="M 40,720 L 40,1136" fill="none" stroke="black"></path>
+              <path d="M 64,1040 L 64,1072" fill="none" stroke="black"></path>
+              <path d="M 80,800 L 80,832" fill="none" stroke="black"></path>
+              <path d="M 80,864 L 80,1032" fill="none" stroke="black"></path>
               <path d="M 104,336 L 104,384" fill="none" stroke="black"></path>
-              <path d="M 112,752 L 112,800" fill="none" stroke="black"></path>
-              <path d="M 112,896 L 112,944" fill="none" stroke="black"></path>
-              <path d="M 112,1104 L 112,1136" fill="none" stroke="black"></path>
+              <path d="M 112,912 L 112,960" fill="none" stroke="black"></path>
+              <path d="M 112,1120 L 112,1152" fill="none" stroke="black"></path>
+              <path d="M 120,768 L 120,816" fill="none" stroke="black"></path>
               <path d="M 184,336 L 184,400" fill="none" stroke="black"></path>
-              <path d="M 208,408 L 208,432" fill="none" stroke="black"></path>
-              <path d="M 208,464 L 208,488" fill="none" stroke="black"></path>
-              <path d="M 208,992 L 208,1016" fill="none" stroke="black"></path>
-              <path d="M 216,704 L 216,744" fill="none" stroke="black"></path>
-              <path d="M 232,496 L 232,656" fill="none" stroke="black"></path>
-              <path d="M 264,1024 L 264,1056" fill="none" stroke="black"></path>
-              <path d="M 312,496 L 312,576" fill="none" stroke="black"></path>
-              <path d="M 328,624 L 328,744" fill="none" stroke="black"></path>
-              <path d="M 328,848 L 328,888" fill="none" stroke="black"></path>
-              <path d="M 328,992 L 328,1096" fill="none" stroke="black"></path>
+              <path d="M 208,1008 L 208,1032" fill="none" stroke="black"></path>
+              <path d="M 224,408 L 224,432" fill="none" stroke="black"></path>
+              <path d="M 224,464 L 224,488" fill="none" stroke="black"></path>
+              <path d="M 224,720 L 224,760" fill="none" stroke="black"></path>
+              <path d="M 240,496 L 240,672" fill="none" stroke="black"></path>
+              <path d="M 264,1040 L 264,1072" fill="none" stroke="black"></path>
+              <path d="M 320,496 L 320,576" fill="none" stroke="black"></path>
               <path d="M 336,336 L 336,400" fill="none" stroke="black"></path>
-              <path d="M 344,752 L 344,800" fill="none" stroke="black"></path>
+              <path d="M 336,624 L 336,760" fill="none" stroke="black"></path>
+              <path d="M 336,864 L 336,904" fill="none" stroke="black"></path>
+              <path d="M 336,1008 L 336,1112" fill="none" stroke="black"></path>
+              <path d="M 352,768 L 352,816" fill="none" stroke="black"></path>
               <path d="M 416,336 L 416,416" fill="none" stroke="black"></path>
-              <path d="M 440,896 L 440,944" fill="none" stroke="black"></path>
-              <path d="M 472,464 L 472,488" fill="none" stroke="black"></path>
-              <path d="M 472,624 L 472,1096" fill="none" stroke="black"></path>
-              <path d="M 488,496 L 488,576" fill="none" stroke="black"></path>
-              <path d="M 488,1104 L 488,1136" fill="none" stroke="black"></path>
-              <path d="M 552,464 L 552,1120" fill="none" stroke="black"></path>
+              <path d="M 440,912 L 440,960" fill="none" stroke="black"></path>
+              <path d="M 472,624 L 472,1112" fill="none" stroke="black"></path>
+              <path d="M 480,464 L 480,488" fill="none" stroke="black"></path>
+              <path d="M 488,1120 L 488,1152" fill="none" stroke="black"></path>
+              <path d="M 496,496 L 496,576" fill="none" stroke="black"></path>
+              <path d="M 552,464 L 552,1136" fill="none" stroke="black"></path>
               <path d="M 568,160 L 568,272" fill="none" stroke="black"></path>
               <path d="M 568,336 L 568,416" fill="none" stroke="black"></path>
               <path d="M 8,160 L 88,160" fill="none" stroke="black"></path>
@@ -4860,34 +4860,34 @@ Building on that, it is also possible to enable the operation of hidden services
               <path d="M 8,384 L 104,384" fill="none" stroke="black"></path>
               <path d="M 184,400 L 336,400" fill="none" stroke="black"></path>
               <path d="M 416,416 L 568,416" fill="none" stroke="black"></path>
-              <path d="M 24,496 L 232,496" fill="none" stroke="black"></path>
-              <path d="M 312,496 L 488,496" fill="none" stroke="black"></path>
-              <path d="M 312,576 L 488,576" fill="none" stroke="black"></path>
-              <path d="M 24,656 L 232,656" fill="none" stroke="black"></path>
-              <path d="M 112,752 L 344,752" fill="none" stroke="black"></path>
-              <path d="M 80,784 L 104,784" fill="none" stroke="black"></path>
-              <path d="M 112,800 L 344,800" fill="none" stroke="black"></path>
-              <path d="M 112,896 L 440,896" fill="none" stroke="black"></path>
-              <path d="M 112,944 L 440,944" fill="none" stroke="black"></path>
-              <path d="M 64,1024 L 264,1024" fill="none" stroke="black"></path>
-              <path d="M 64,1056 L 264,1056" fill="none" stroke="black"></path>
-              <path d="M 112,1104 L 488,1104" fill="none" stroke="black"></path>
-              <path d="M 40,1120 L 104,1120" fill="none" stroke="black"></path>
-              <path d="M 496,1120 L 552,1120" fill="none" stroke="black"></path>
-              <path d="M 112,1136 L 488,1136" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="504,1120 492,1114.4 492,1125.6" fill="black" transform="rotate(180,496,1120)"></polygon>
-              <polygon class="arrowhead" points="480,1096 468,1090.4 468,1101.6" fill="black" transform="rotate(90,472,1096)"></polygon>
-              <polygon class="arrowhead" points="480,488 468,482.4 468,493.6" fill="black" transform="rotate(90,472,488)"></polygon>
+              <path d="M 24,496 L 240,496" fill="none" stroke="black"></path>
+              <path d="M 320,496 L 496,496" fill="none" stroke="black"></path>
+              <path d="M 320,576 L 496,576" fill="none" stroke="black"></path>
+              <path d="M 24,672 L 240,672" fill="none" stroke="black"></path>
+              <path d="M 120,768 L 352,768" fill="none" stroke="black"></path>
+              <path d="M 80,800 L 112,800" fill="none" stroke="black"></path>
+              <path d="M 120,816 L 352,816" fill="none" stroke="black"></path>
+              <path d="M 112,912 L 440,912" fill="none" stroke="black"></path>
+              <path d="M 112,960 L 440,960" fill="none" stroke="black"></path>
+              <path d="M 64,1040 L 264,1040" fill="none" stroke="black"></path>
+              <path d="M 64,1072 L 264,1072" fill="none" stroke="black"></path>
+              <path d="M 112,1120 L 488,1120" fill="none" stroke="black"></path>
+              <path d="M 40,1136 L 104,1136" fill="none" stroke="black"></path>
+              <path d="M 496,1136 L 552,1136" fill="none" stroke="black"></path>
+              <path d="M 112,1152 L 488,1152" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="504,1136 492,1130.4 492,1141.6" fill="black" transform="rotate(180,496,1136)"></polygon>
+              <polygon class="arrowhead" points="488,488 476,482.4 476,493.6" fill="black" transform="rotate(90,480,488)"></polygon>
+              <polygon class="arrowhead" points="480,1112 468,1106.4 468,1117.6" fill="black" transform="rotate(90,472,1112)"></polygon>
               <polygon class="arrowhead" points="416,352 404,346.4 404,357.6" fill="black" transform="rotate(0,408,352)"></polygon>
-              <polygon class="arrowhead" points="336,1096 324,1090.4 324,1101.6" fill="black" transform="rotate(90,328,1096)"></polygon>
-              <polygon class="arrowhead" points="336,888 324,882.4 324,893.6" fill="black" transform="rotate(90,328,888)"></polygon>
-              <polygon class="arrowhead" points="336,744 324,738.4 324,749.6" fill="black" transform="rotate(90,328,744)"></polygon>
-              <polygon class="arrowhead" points="224,744 212,738.4 212,749.6" fill="black" transform="rotate(90,216,744)"></polygon>
-              <polygon class="arrowhead" points="216,1016 204,1010.4 204,1021.6" fill="black" transform="rotate(90,208,1016)"></polygon>
-              <polygon class="arrowhead" points="216,488 204,482.4 204,493.6" fill="black" transform="rotate(90,208,488)"></polygon>
+              <polygon class="arrowhead" points="344,1112 332,1106.4 332,1117.6" fill="black" transform="rotate(90,336,1112)"></polygon>
+              <polygon class="arrowhead" points="344,904 332,898.4 332,909.6" fill="black" transform="rotate(90,336,904)"></polygon>
+              <polygon class="arrowhead" points="344,760 332,754.4 332,765.6" fill="black" transform="rotate(90,336,760)"></polygon>
+              <polygon class="arrowhead" points="232,760 220,754.4 220,765.6" fill="black" transform="rotate(90,224,760)"></polygon>
+              <polygon class="arrowhead" points="232,488 220,482.4 220,493.6" fill="black" transform="rotate(90,224,488)"></polygon>
+              <polygon class="arrowhead" points="216,1032 204,1026.4 204,1037.6" fill="black" transform="rotate(90,208,1032)"></polygon>
               <polygon class="arrowhead" points="184,352 172,346.4 172,357.6" fill="black" transform="rotate(0,176,352)"></polygon>
-              <polygon class="arrowhead" points="112,1120 100,1114.4 100,1125.6" fill="black" transform="rotate(0,104,1120)"></polygon>
-              <polygon class="arrowhead" points="88,1016 76,1010.4 76,1021.6" fill="black" transform="rotate(90,80,1016)"></polygon>
+              <polygon class="arrowhead" points="112,1136 100,1130.4 100,1141.6" fill="black" transform="rotate(0,104,1136)"></polygon>
+              <polygon class="arrowhead" points="88,1032 76,1026.4 76,1037.6" fill="black" transform="rotate(90,80,1032)"></polygon>
               <polygon class="arrowhead" points="48,488 36,482.4 36,493.6" fill="black" transform="rotate(90,40,488)"></polygon>
               <polygon class="arrowhead" points="48,328 36,322.4 36,333.6" fill="black" transform="rotate(90,40,328)"></polygon>
               <circle cx="40" cy="512" r="6" class="closeddot" fill="black"></circle>
@@ -4977,11 +4977,11 @@ Building on that, it is also possible to enable the operation of hidden services
                 <text x="460" y="404">consumer</text>
                 <text x="508" y="404">of</text>
                 <text x="540" y="404">OPT?</text>
-                <text x="472" y="436">|</text>
+                <text x="480" y="436">|</text>
                 <text x="552" y="436">|</text>
                 <text x="44" y="452">NO</text>
-                <text x="212" y="452">NO</text>
-                <text x="472" y="452">YES</text>
+                <text x="228" y="452">NO</text>
+                <text x="480" y="452">YES</text>
                 <text x="556" y="452">NO</text>
                 <text x="60" y="516">As</text>
                 <text x="88" y="516">far</text>
@@ -4989,93 +4989,97 @@ Building on that, it is also possible to enable the operation of hidden services
                 <text x="136" y="516">I</text>
                 <text x="160" y="516">can</text>
                 <text x="200" y="516">tell,</text>
-                <text x="340" y="516">Does</text>
-                <text x="368" y="516">X</text>
-                <text x="396" y="516">need</text>
-                <text x="428" y="516">to</text>
+                <text x="348" y="516">Does</text>
+                <text x="376" y="516">X</text>
+                <text x="404" y="516">need</text>
+                <text x="436" y="516">to</text>
                 <text x="56" y="532">X</text>
                 <text x="76" y="532">is</text>
                 <text x="100" y="532">my</text>
                 <text x="132" y="532">next</text>
-                <text x="172" y="532">hop;</text>
-                <text x="348" y="532">access</text>
-                <text x="392" y="532">OPT</text>
-                <text x="436" y="532">before</text>
-                <text x="364" y="548">decrypting</text>
-                <text x="416" y="548">M</text>
-                <text x="436" y="548">or</text>
-                <text x="460" y="548">in</text>
+                <text x="168" y="532">hop</text>
+                <text x="356" y="532">access</text>
+                <text x="400" y="532">OPT</text>
+                <text x="444" y="532">before</text>
+                <text x="372" y="548">decrypting</text>
+                <text x="424" y="548">M</text>
+                <text x="444" y="548">or</text>
+                <text x="468" y="548">in</text>
                 <text x="44" y="564">OR</text>
-                <text x="344" y="564">order</text>
-                <text x="380" y="564">to</text>
-                <text x="424" y="564">decrypt</text>
-                <text x="468" y="564">M?</text>
+                <text x="352" y="564">order</text>
+                <text x="388" y="564">to</text>
+                <text x="432" y="564">decrypt</text>
+                <text x="476" y="564">M?</text>
                 <text x="60" y="596">As</text>
                 <text x="88" y="596">far</text>
                 <text x="116" y="596">as</text>
                 <text x="136" y="596">I</text>
                 <text x="160" y="596">can</text>
                 <text x="200" y="596">tell,</text>
-                <text x="328" y="596">|</text>
+                <text x="336" y="596">|</text>
                 <text x="472" y="596">|</text>
-                <text x="60" y="612">my</text>
-                <text x="92" y="612">next</text>
-                <text x="128" y="612">hop</text>
-                <text x="156" y="612">is</text>
-                <text x="184" y="612">not</text>
-                <text x="332" y="612">NO</text>
-                <text x="472" y="612">YES</text>
-                <text x="64" y="628">the</text>
-                <text x="128" y="628">immediately</text>
-                <text x="196" y="628">next</text>
-                <text x="84" y="644">consumer</text>
-                <text x="132" y="644">of</text>
-                <text x="160" y="644">OPT</text>
-                <text x="40" y="676">|</text>
-                <text x="216" y="676">|</text>
-                <text x="44" y="692">NO</text>
-                <text x="216" y="692">YES</text>
-                <text x="132" y="772">Is</text>
-                <text x="160" y="772">OPT</text>
-                <text x="192" y="772">the</text>
-                <text x="244" y="772">Uri-Host</text>
-                <text x="308" y="772">Option</text>
-                <text x="132" y="788">or</text>
-                <text x="160" y="788">the</text>
-                <text x="212" y="788">Uri-Port</text>
-                <text x="280" y="788">Option?</text>
-                <text x="328" y="820">|</text>
-                <text x="84" y="836">NO</text>
-                <text x="328" y="836">YES</text>
-                <text x="140" y="916">Does</text>
-                <text x="168" y="916">M</text>
-                <text x="208" y="916">include</text>
-                <text x="256" y="916">the</text>
-                <text x="324" y="916">Proxy-Scheme</text>
-                <text x="404" y="916">Option</text>
-                <text x="132" y="932">or</text>
-                <text x="160" y="932">the</text>
-                <text x="256" y="932">Proxy-Scheme-Number</text>
-                <text x="368" y="932">Option?</text>
-                <text x="208" y="964">|</text>
-                <text x="328" y="964">|</text>
-                <text x="208" y="980">YES</text>
-                <text x="332" y="980">NO</text>
-                <text x="104" y="1044">Process</text>
-                <text x="152" y="1044">OPT</text>
-                <text x="180" y="1044">as</text>
-                <text x="216" y="1044">Class</text>
-                <text x="248" y="1044">E</text>
-                <text x="152" y="1124">Process</text>
-                <text x="200" y="1124">OPT</text>
-                <text x="228" y="1124">as</text>
-                <text x="256" y="1124">per</text>
-                <text x="288" y="1124">its</text>
-                <text x="340" y="1124">original</text>
-                <text x="400" y="1124">Class</text>
-                <text x="432" y="1124">U</text>
-                <text x="452" y="1124">or</text>
-                <text x="472" y="1124">I</text>
+                <text x="64" y="612">the</text>
+                <text x="128" y="612">immediately</text>
+                <text x="196" y="612">next</text>
+                <text x="340" y="612">NO</text>
+                <text x="480" y="612">YES</text>
+                <text x="84" y="628">consumer</text>
+                <text x="132" y="628">of</text>
+                <text x="160" y="628">OPT</text>
+                <text x="188" y="628">is</text>
+                <text x="216" y="628">not</text>
+                <text x="56" y="644">a</text>
+                <text x="80" y="644">hop</text>
+                <text x="108" y="644">in</text>
+                <text x="152" y="644">between</text>
+                <text x="76" y="660">myself</text>
+                <text x="120" y="660">and</text>
+                <text x="144" y="660">X</text>
+                <text x="40" y="692">|</text>
+                <text x="224" y="692">|</text>
+                <text x="44" y="708">NO</text>
+                <text x="224" y="708">YES</text>
+                <text x="140" y="788">Is</text>
+                <text x="168" y="788">OPT</text>
+                <text x="200" y="788">the</text>
+                <text x="252" y="788">Uri-Host</text>
+                <text x="316" y="788">Option</text>
+                <text x="140" y="804">or</text>
+                <text x="168" y="804">the</text>
+                <text x="220" y="804">Uri-Port</text>
+                <text x="288" y="804">Option?</text>
+                <text x="336" y="836">|</text>
+                <text x="84" y="852">NO</text>
+                <text x="336" y="852">YES</text>
+                <text x="140" y="932">Does</text>
+                <text x="168" y="932">M</text>
+                <text x="208" y="932">include</text>
+                <text x="256" y="932">the</text>
+                <text x="324" y="932">Proxy-Scheme</text>
+                <text x="404" y="932">Option</text>
+                <text x="132" y="948">or</text>
+                <text x="160" y="948">the</text>
+                <text x="256" y="948">Proxy-Scheme-Number</text>
+                <text x="368" y="948">Option?</text>
+                <text x="208" y="980">|</text>
+                <text x="336" y="980">|</text>
+                <text x="208" y="996">YES</text>
+                <text x="340" y="996">NO</text>
+                <text x="104" y="1060">Process</text>
+                <text x="152" y="1060">OPT</text>
+                <text x="180" y="1060">as</text>
+                <text x="216" y="1060">Class</text>
+                <text x="248" y="1060">E</text>
+                <text x="152" y="1140">Process</text>
+                <text x="200" y="1140">OPT</text>
+                <text x="228" y="1140">as</text>
+                <text x="256" y="1140">per</text>
+                <text x="288" y="1140">its</text>
+                <text x="340" y="1140">original</text>
+                <text x="400" y="1140">Class</text>
+                <text x="432" y="1140">U</text>
+                <text x="452" y="1140">or</text>
+                <text x="472" y="1140">I</text>
               </g>
             </svg><a href="#appendix-C-2.1.1" class="pilcrow">¶</a>
 </div>
@@ -5513,10 +5517,13 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.1.1">Renamed EDHOC to LAKE as appropriate.<a href="#appendix-E.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.2">
-            <p id="appendix-E.1-1.2.1">Removed one item from "Further Use Cases".<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.2.1">More precise step for escalating the protection of CoAP options.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.3">
-            <p id="appendix-E.1-1.3.1">Editorial improvements.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.3.1">Removed one item from "Further Use Cases".<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.4">
+            <p id="appendix-E.1-1.4.1">Editorial improvements.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
