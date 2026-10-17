@@ -541,13 +541,13 @@ The method defined in this document enables the possible protection of the same 
 
 To this end, it is possible to use the Static Context Header Compression and fragmentation (SCHC) framework {{RFC8724}}. In particular, {{I-D.ietf-schc-8824-update}} specifies how to use SCHC for compressing headers of CoAP messages, also when messages are protected with OSCORE. The SCHC Compression/Decompression is applicable also in the presence of CoAP proxies and especially in the two following cases.
 
-* If OSCORE is not used at all, the SCHC processing occurs hop-by-hop, by relying on SCHC Rules that are shared between two adjacent hops.
+* If OSCORE is not used at all, the SCHC processing occurs hop-by-hop, by relying on SCHC Rules that are consistently shared between two adjacent hops, i.e., by relying on a SCHC Context shared by the SCHC Instances hosted at the two adjacent hops and taking part in the same SCHC Session.
 
 * If OSCORE is used only end-to-end between the application endpoints, then an Inner SCHC Compression/Decompression and an Outer SCHC Compression/Decompression are performed (see {{Section 8.2 of I-D.ietf-schc-8824-update}}). In particular, the following holds.
 
-  The SCHC processing occurs end-to-end as to the Inner SCHC Compression/Decompression. This relies on Inner SCHC Rules that are shared between the two application endpoints, which act as OSCORE endpoints and share the OSCORE Security Context used.
+  The SCHC processing occurs end-to-end as to the Inner SCHC Compression/Decompression, by relying on Inner SCHC Rules that are consistently shared between the two application endpoints acting as OSCORE endpoints and sharing the OSCORE Security Context used. The Inner SCHC Rules belong to a SCHC Context shared end-to-end by the SCHC Instances hosted at the two application endpoints and taking part in the same SCHC Session.
 
-  The SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompression. This relies on Outer SCHC Rules that are shared between two adjacent hops.
+  Instead, the SCHC processing occurs hop-by-hop as to the Outer SCHC Compression/Decompression, by relying on Outer SCHC Rules that are consistently shared between two adjacent hops, i.e., by relying on a per-leg SCHC Context shared by the SCHC Instances hosted at the two adjacent hops and taking part in a distinct SCHC Session.
 
 When using the method defined in this document, thus enabling also an intermediary proxy to be an OSCORE endpoint, the SCHC processing above is generalized as specified below.
 
@@ -555,11 +555,11 @@ When processing an outgoing CoAP message, a sender endpoint proceeds as follows.
 
 * The sender endpoint performs one Inner SCHC Compression for each OSCORE layer applied to the outgoing message.
 
-  Each Inner SCHC Compression occurs before protecting the message with that OSCORE layer and relies on the Inner SCHC Rules that are shared with the other OSCORE endpoint.
+  Each Inner SCHC Compression occurs before protecting the message with that OSCORE layer and relies on the Inner SCHC Rules that are consistently shared with the other OSCORE endpoint. The Inner SCHC Rules belong to a SCHC Context shared by the SCHC Instances hosted at the two OSCORE endpoints and communicating using a SCHC Session.
 
 * The sender endpoint performs exactly one Outer SCHC Compression.
 
-  This occurs after having performed all the intended OSCORE protections of the outgoing message and relies on the Outer SCHC Rules that are shared with the (next hop towards the) destination application endpoint.
+  This occurs after having performed all the intended OSCORE protections of the outgoing message and relies on the Outer SCHC Rules that are consistently shared with the (next hop towards the) destination application endpoint. The Outer SCHC Rules belong to a SCHC Context shared by the SCHC Instances hosted at the two adjacent hops and communicating using a SCHC Session.
 
 That is, with respect to the SCHC Compression/Decompression processing, the following holds.
 
@@ -2070,6 +2070,8 @@ request      +-----------------------------------------------+        |
 * Renamed EDHOC to LAKE as appropriate.
 
 * More precise step for escalating the protection of CoAP options.
+
+* Aligned SCHC terminology with that of draft-ietf-schc-8824-update.
 
 * Registration of DNS SVCB SvcParamKeys.
 
