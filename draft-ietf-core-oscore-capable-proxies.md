@@ -453,19 +453,19 @@ The rest of this section provides guidelines that P can follow in order to deter
 
 In order to come to such a determination, P can answer the following three questions. For all of them, the default answer is "no".
 
-* Q1: Does S wish to use OSCORE between itself and an adjacent proxy?
+* Q1: Does S wish to use (Group) OSCORE between itself and an adjacent proxy?
 
   For example, P can answer this question by relying on the SvcParamKey "oscore-with-proxy" within a DNS SVCB Resource Record (RR) {{RFC9460}}{{RFC9461}}, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
 
-  For the SvcParamKey "oscore-with-proxy", the presentation and wire-format values MUST be empty. When the SvcParamKey "oscore-with-proxy" is specified in an SVCB RR about S, then S wishes to use (Group) OSCORE between itself and an adjacent proxy. The SvcParamKey "oscore-with-proxy" is registered in {{iana-svcb}}.
+  For the SvcParamKey "oscore-with-proxy", the presentation and wire-format values MUST be empty. When the SvcParamKey "oscore-with-proxy" is specified in an SVCB RR about S, it indiscates that S wishes to use (Group) OSCORE between itself and an adjacent proxy. The SvcParamKey "oscore-with-proxy" is registered in {{iana-svcb}}.
 
-* Q2: Does S support the use of multiple, nested OSCORE layers?
+* Q2: Does S support the use of multiple, nested (Group) OSCORE layers?
 
   For example, P can answer this question by relying on the SvcParamKey "nested-oscore" within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
 
-  For the SvcParamKey "nested-oscore", the presentation and wire-format values MUST be empty. When the SvcParamKey "nested-oscore" is specified in an SVCB RR about S, then S supports the use of multiple, nested OSCORE layers, i.e., it is able to handle messages that are protected by at least two (Group) OSCORE layers as defined in this document. The SvcParamKey "nested-oscore" is registered in {{iana-svcb}}.
+  For the SvcParamKey "nested-oscore", the presentation and wire-format values MUST be empty. When the SvcParamKey "nested-oscore" is specified in an SVCB RR about S, it indiscates that S supports the use of multiple, nested (Group) OSCORE layers, i.e., S is able to handle messages that are protected by at least two (Group) OSCORE layers as defined in this document. The SvcParamKey "nested-oscore" is registered in {{iana-svcb}}.
 
-  The SvcParamKey "nested-oscore" does not indicate how many nested OSCORE layers S supports exactly, which is in principle possible to express in an SVCB RR. In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see {{sec-deviations}}).
+  The SvcParamKey "nested-oscore" does not indicate how many nested (Group) OSCORE layers S supports exactly, which is in principle possible to express in an SVCB RR. In fact, it is already the case that S has to be configured with the maximum number of (Group) OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see {{sec-deviations}}).
 
 * Q3: Does S support the key exchange protocol LAKE {{RFC9528}}?
 
