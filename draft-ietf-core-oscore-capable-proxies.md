@@ -1867,6 +1867,7 @@ Curly brackets { ... } indicate encrypted data.
     |                      |                               |        |
     NO                     NO                             YES       NO
     |                      |                               |        |
+    |                      |                               |        |
     v                      v                               v        |
   +--------------------------+         +---------------------+      |
   | * As far as I can tell,  |         | Does X need to      |      |
@@ -1874,42 +1875,43 @@ Curly brackets { ... } indicate encrypted data.
   |                          |         | decrypting M or in  |      |
   | OR                       |         | order to decrypt M? |      |
   |                          |         +---------------------+      |
-  | * As far as I can tell,  |           |                |         |
+  | * As far as I can tell,  |           |                 |        |
   |   the immediately next   |           NO               YES       |
-  |   consumer of OPT is not |           |                |         |
-  |   a hop in between       |           |                |         |
-  |   myself and X           |           |                |         |
-  +--------------------------+           |                |         |
-    |                      |             |                |         |
-    NO                    YES            |                |         |
-    |                      |             |                |         |
-    |                      |             |                |         |
-    |                      v             v                |         |
-    |         +----------------------------+              |         |
-    |         | Is OPT the Uri-Host Option |              |         |
-    |    +----| or the Uri-Port Option?    |              |         |
-    |    |    +----------------------------+              |         |
-    |    |                               |                |         |
-    |    NO                             YES               |         |
-    |    |                               |                |         |
-    |    |                               |                |         |
-    |    |                               v                |         |
-    |    |   +----------------------------------------+   |         |
-    |    |   | Does M include the Proxy-Scheme Option |   |         |
-    |    |   | or the Proxy-Scheme-Number Option?     |   |         |
-    |    |   +----------------------------------------+   |         |
-    |    |               |               |                |         |
-    |    |              YES              NO               |         |
-    |    |               |               |                |         |
-    |    v               v               |                |         |
-    |  +------------------------+        |                |         |
-    |  | Process OPT as Class E |        |                |         |
-    |  +------------------------+        |                |         |
-    |                                    |                |         |
-    |                                    v                v         |
-    |        +----------------------------------------------+       |
-    +------->| Process OPT as per its original Class U or I |<------+
-             +----------------------------------------------+
+  |   consumer of OPT is not |           |                 |        |
+  |   a hop in between       |           |                 |        |
+  |   myself and X           |           |                 |        |
+  +--------------------------+           |                 |        |
+    |                      |             |                 |        |
+    NO                    YES            |                 |        |
+    |                      |             |                 |        |
+    |                      |             |                 |        |
+    |                      v             v                 |        |
+    |         +----------------------------+               |        |
+    |         | Is OPT the Uri-Host Option |               |        |
+    |    +----| or the Uri-Port Option?    |               |        |
+    |    |    +----------------------------+               |        |
+    |    |                               |                 |        |
+    |    NO                             YES                |        |
+    |    |                               |                 |        |
+    |    |                               |                 |        |
+    |    |                               v                 |        |
+    |    |   +----------------------------------------+    |        |
+    |    |   | Does M include the Proxy-Scheme Option |    |        |
+    |    |   | or the Proxy-Scheme-Number Option?     |    |        |
+    |    |   +----------------------------------------+    |        |
+    |    |                 |             |                 |        |
+    |    |                YES            NO                |        |
+    |    |                 |             |                 |        |
+    |    |                 |             |                 |        |
+    |    v                 v             |                 |        |
+    |  +------------------------+        |                 |        |
+    |  | Process OPT as Class E |        |                 |        |
+    |  +------------------------+        |                 |        |
+    |                                    |                 |        |
+    |                                    v                 v        |
+    |        +-----------------------------------------------+      |
+    +------->| Process OPT as per its original Class U or I  |<-----+
+             +-----------------------------------------------+
 ~~~~~~~~~~~
 {: #fig-option-protection-diagram title="Protection of CoAP Options Originally Specified only as Outer Options (Class U or I) for OSCORE" artwork-align="center"}
 
