@@ -169,6 +169,7 @@ In addition, this document uses the following terms:
 
   - The set of CoAP options consisting in a combination of any among the Uri-Host Option, the Uri-Port Option, and the mutually exclusive Uri-Path Option and Uri-Path-Abbrev Option, when those are not used together with the Proxy-Scheme Option or the Proxy-Scheme-Number Option. This is relevant when using a reverse-proxy.
 
+This document uses the acronym LAKE, expanded to Lightweight Authenticated Key Exchange, to denote the protocol specified as EDHOC in {{RFC9528}}. Identifiers defined literally in {{RFC9528}} or in IANA registries (e.g., the names of the EDHOC registries themselves) are unchanged.
 
 # Message Processing # {#sec-message-processing}
 
@@ -424,11 +425,11 @@ Like the original OSCORE specification {{RFC8613}}, this document is not devoted
 
 At the same time, the following applies, depending on the two peers using OSCORE or Group OSCORE {{I-D.ietf-core-oscore-groupcomm}} to protect their communications.
 
-* When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key exchange protocol Ephemeral Diffie-Hellman Over COSE (EDHOC) {{RFC9528}}.
+* When using OSCORE, the establishment of the OSCORE Security Context can rely on the Lightweight Authenticated Key Exchange (LAKE) protocol {{RFC9528}}.
 
-  Assuming that OSCORE has to be used between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
+  Assuming that OSCORE has to be used between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs LAKE with the first proxy in the chain and then with the origin server through the chain of proxies (see the example in {{sec-example-edhoc}}).
 
-  Furthermore, the additional use of the combined EDHOC + OSCORE request defined in {{RFC9668}} is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}) and especially when relying on a long chain of proxies.
+  Furthermore, the additional use of the combined LAKE + OSCORE request defined in {{RFC9668}} (denoted therein as "EDHOC + OSCORE request") is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}) and especially when relying on a long chain of proxies.
 
 * The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework for Authentication and Authorization in constrained environments {{RFC9200}}.
 
@@ -462,9 +463,9 @@ In order to come to such a determination, P can answer the following three quest
 
   This is not intended to indicate how many nested OSCORE layers S supports exactly (although that is in principle possible to express). In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see {{sec-deviations}}).
 
-* Q3: Does S support the key exchange protocol EDHOC {{RFC9528}}?
+* Q3: Does S support the key exchange protocol LAKE {{RFC9528}}?
 
-  For example, P can answer this question by using the means specified in {{I-D.ietf-lake-app-profiles}} that are not used during an EDHOC session itself.
+  For example, P can answer this question by using the means specified in {{I-D.ietf-lake-app-profiles}} that are not used during an LAKE session itself.
 
 The examples above are not exhaustive and P can rely on alternative means to answer the three questions about S.
 
@@ -507,10 +508,10 @@ Once P has the answers to Q1, Q2, and Q3, then P can determine when to try to es
     |       +-----+         |    |          ^                    |
     |       |     |  NO     |    |          |                    |
     |       | Q2? +---------+    |          |                    |
-    |       |     |              |    +-----+-----+              |
-    |       +-----+              |    | Run EDHOC |              |
-    |          |                 |    | with S    |              |
-    |          | YES             |    +-----------+              |
+    |       |     |              |    +-----+----+               |
+    |       +-----+              |    | Run LAKE |               |
+    |          |                 |    | with S   |               |
+    |          | YES             |    +----------+               |
     v          v                 |          ^                    |
 +-------------------+            |          |                    |
 |                   |  YES       |          | YES                |
@@ -527,7 +528,7 @@ If P is considering using Group OSCORE with the server S or with a set of origin
 
 * CTX_P_S denotes a Group OSCORE Security Context that P can use to protect the request over the communication leg between itself and the origin server(s).
 
-* The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced by P joining the correct OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.
+* The steps "Q3?", "Run LAKE with S", and "Success?" are replaced by P joining the correct OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.
 
 
 # CoAP Header Compression with SCHC
@@ -1028,7 +1029,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-client-proxy-server title="Use of OSCORE between Client-Server, Client-Proxy, and Proxy-Server"}
 
-## With Forward-Proxy and EDHOC; OSCORE: C-S, C-P # {#sec-example-edhoc}
+## With Forward-Proxy and LAKE; OSCORE: C-S, C-P # {#sec-example-edhoc}
 
 In the example shown in {{fig-example-edhoc}}, message exchanges are protected as follows.
 
@@ -1036,7 +1037,7 @@ In the example shown in {{fig-example-edhoc}}, message exchanges are protected a
 
 * Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
-The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC {{RFC9528}}.
+The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol LAKE {{RFC9528}}.
 
 After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in {{sec-examples-1}}.
 
@@ -1048,12 +1049,12 @@ Client  Proxy  Server
   |       |       | Uri-Path: ".well-known"
   |       |       | Uri-Path: "edhoc"
   |       |       |     0xff
-  |       |       |  Payload: (true, EDHOC message_1)
+  |       |       |  Payload: (true, LAKE message_1)
   |       |       |
   |<------+       |     Code: 2.04 (Changed)
   |  2.04 |       |    Token: 0xf3
   |       |       |     0xff
-  |       |       |  Payload: EDHOC message_2
+  |       |       |  Payload: LAKE message_2
   |       |       |
 Establish |       |
 CTX_C_P   |       |
@@ -1063,7 +1064,7 @@ CTX_C_P   |       |
   |       |       | Uri-Path: ".well-known"
   |       |       | Uri-Path: "edhoc"
   |       |       |     0xff
-  |       |       |  Payload: (C_R, EDHOC message_3)
+  |       |       |  Payload: (C_R, LAKE message_3)
   |       |       |
   |     Establish |
   |     CTX_C_P   |
@@ -1085,7 +1086,7 @@ CTX_C_P   |       |
   |       |       |            Uri-Path: "edhoc",
   |       |       |            Proxy-Scheme: "coap",
   |       |       |            0xff,
-  |       |       |            (true, EDHOC message_1)
+  |       |       |            (true, LAKE message_1)
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
@@ -1098,12 +1099,12 @@ CTX_C_P   |       |
   |       |       | Uri-Path: ".well-known"
   |       |       | Uri-Path: "edhoc"
   |       |       |     0xff
-  |       |       |  Payload: (true, EDHOC message_1)
+  |       |       |  Payload: (true, LAKE message_1)
   |       |       |
   |       |<------+     Code: 2.04 (Changed)
   |       |  2.04 |    Token: 0xa5
   |       |       |     0xff
-  |       |       |  Payload: EDHOC message_2
+  |       |       |  Payload: LAKE message_2
   |       |       |
   |     Encrypt   |
   |     RESP with |
@@ -1115,7 +1116,7 @@ CTX_C_P   |       |
   |       |       |     0xff
   |       |       |  Payload: {Code: 2.04 (Changed),
   |       |       |            0xff,
-  |       |       |            EDHOC message_2
+  |       |       |            LAKE message_2
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
@@ -1139,7 +1140,7 @@ CTX_C_P   |       |
   |       |       |            Uri-Path: "edhoc",
   |       |       |            Proxy-Scheme: "coap",
   |       |       |            0xff,
-  |       |       |            (C_R, EDHOC message_3)
+  |       |       |            (C_R, LAKE message_3)
   |       |       |           }    // Encrypted with CTX_C_P
   |       |       |
   |     Decrypt   |
@@ -1152,7 +1153,7 @@ CTX_C_P   |       |
   |       |       | Uri-Path: ".well-known"
   |       |       | Uri-Path: "edhoc"
   |       |       |     0xff
-  |       |       |  Payload: (C_R, EDHOC message_3)
+  |       |       |  Payload: (C_R, LAKE message_3)
   |       |       |
   |       |     Establish
   |       |     CTX_C_S
@@ -1247,9 +1248,9 @@ Curly brackets { ... } indicate encrypted data.
 (A, B) indicates a CBOR sequence [RFC8742]
        of two CBOR data items A and B.
 ~~~~~~~~~~~
-{: #fig-example-edhoc title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC"}
+{: #fig-example-edhoc title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through LAKE"}
 
-## With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P # {#sec-example-edhoc-comb-req}
+## With Forward-Proxy and LAKE (optimized); OSCORE: C-S, C-P # {#sec-example-edhoc-comb-req}
 
 In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are protected as follows.
 
@@ -1257,11 +1258,11 @@ In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are pr
 
 * Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.
 
-The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC {{RFC9528}}.
+The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol LAKE {{RFC9528}}.
 
-In particular, the client relies on the EDHOC + OSCORE request defined in {{RFC9668}} and denoted as COMB\_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.
+In particular, the client relies on the LAKE + OSCORE request defined in {{RFC9668}} (denoted therein as "EDHOC + OSCORE request") and indicated as COMB\_REQ, in order to transport the last LAKE message_3 and the first OSCORE-protected application CoAP request combined together.
 
-After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in {{sec-examples-1}}. In the example shown in the present section, the two phases partly overlap at the POST request sent by the client with Token 0x83 and forwarded by the proxy with Token 0xa6, as the EDHOC + OSCORE request that conveys both the last EDHOC message_3 from the client intended for the server and the first OSCORE-protected application CoAP request combined together.
+After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in {{sec-examples-1}}. In the example shown in the present section, the two phases partly overlap at the POST request sent by the client with Token 0x83 and forwarded by the proxy with Token 0xa6, as the LAKE + OSCORE request that conveys both the last LAKE message_3 from the client intended for the server and the first OSCORE-protected application CoAP request combined together.
 
 ~~~~~~~~~~~ aasvg
 Client  Proxy  Server
@@ -1271,12 +1272,12 @@ Client  Proxy  Server
   |       |       | Uri-Path: ".well-known"
   |       |       | Uri-Path: "edhoc"
   |       |       |     0xff
-  |       |       |  Payload: (true, EDHOC message_1)
+  |       |       |  Payload: (true, LAKE message_1)
   |       |       |
   |<------+       |    Code: 2.04 (Changed)
   |  2.04 |       |   Token: 0xf3
   |       |       |    0xff
-  |       |       | Payload: EDHOC message_2
+  |       |       | Payload: LAKE message_2
   |       |       |
 Establish |       |
 CTX_C_P   |       |
@@ -1295,14 +1296,14 @@ from REQ  |       |
   |       |       |   OSCORE: [kid:0x20, Partial IV:0]
   |       |       |    EDHOC: -
   |       |       |     0xff
-  |       |       |  Payload: EDHOC message_3, // Intended for P
+  |       |       |  Payload: LAKE message_3, // Intended for P
   |       |       |           {Code: 0.02 (POST),
   |       |       |            Uri-Host: "example.com",
   |       |       |            Uri-Path: ".well-known",
   |       |       |            Uri-Path: "edhoc",
   |       |       |            Proxy-Scheme: "coap",
   |       |       |            0xff,
-  |       |       |            (true, EDHOC message_1)
+  |       |       |            (true, LAKE message_1)
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
   |     Establish |
@@ -1322,12 +1323,12 @@ from REQ  |       |
   |       |       | Uri-Path: ".well-known"
   |       |       | Uri-Path: "edhoc"
   |       |       |     0xff
-  |       |       |  Payload: (true, EDHOC message_1)
+  |       |       |  Payload: (true, LAKE message_1)
   |       |       |
   |       |<------+    Code: 2.04 (Changed)
   |       |  2.04 |   Token: 0xa5
   |       |       |    0xff
-  |       |       | Payload: EDHOC message_2
+  |       |       | Payload: LAKE message_2
   |       |       |
   |     Encrypt   |
   |     RESP with |
@@ -1339,7 +1340,7 @@ from REQ  |       |
   |       |       |     0xff
   |       |       |  Payload: {Code: 2.04 (Changed),
   |       |       |            0xff,
-  |       |       |            EDHOC message_2
+  |       |       |            LAKE message_2
   |       |       |           } // Encrypted with CTX_C_P
   |       |       |
 Decrypt   |       |
@@ -1373,7 +1374,7 @@ CTX_C_P   |       |
   |       |       |            EDHOC: -,
   |       |       |            Proxy-Scheme: "coap",
   |       |       |            0xff,
-  |       |       |            EDHOC message_3, // Intended for S
+  |       |       |            LAKE message_3, // Intended for S
   |       |       |            {
   |       |       |             Code: 0.01 (GET),
   |       |       |             Uri-Path:"alarm_status"
@@ -1391,7 +1392,7 @@ CTX_C_P   |       |
   |       |       |   OSCORE: [kid:0x5f, Partial IV:0]
   |       |       |    EDHOC: -
   |       |       |     0xff
-  |       |       |  Payload: EDHOC message_3, // Intended for S
+  |       |       |  Payload: LAKE message_3, // Intended for S
   |       |       |           {
   |       |       |            Code: 0.01 (GET),
   |       |       |            Uri-Path: "alarm_status"
@@ -1453,7 +1454,7 @@ Curly brackets { ... } indicate encrypted data.
 (A, B) indicates a CBOR sequence [RFC8742]
        of two CBOR data items A and B.
 ~~~~~~~~~~~
-{: #fig-example-edhoc-comb-req title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC using the EDHOC + OSCORE request"}
+{: #fig-example-edhoc-comb-req title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through LAKE using the LAKE + OSCORE request"}
 
 ## With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
 
@@ -2042,6 +2043,12 @@ request      +-----------------------------------------------+        |
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -07 to -08 ## {#sec-07-08}
+
+* Renamed EDHOC to LAKE as appropriate.
+
+* Editorial improvements.
 
 ## Version -06 to -07 ## {#sec-06-07}
 
