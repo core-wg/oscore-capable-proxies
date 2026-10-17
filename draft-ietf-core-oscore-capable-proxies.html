@@ -2184,10 +2184,6 @@ Fundamentally, this is not worse then when applying the default behavior mention
         <dd>
 <span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"End-to-End Protected and Cacheable CoAP Responses using Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-cacheable-oscore-02</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-cacheable-oscore-02">https://datatracker.ietf.org/doc/html/draft-ietf-core-cacheable-oscore-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.ietf-core-coap-pm">[I-D.ietf-core-coap-pm]</dt>
-        <dd>
-<span class="refAuthor">Fioccola, G.</span>, <span class="refAuthor">Zhou, T.</span>, <span class="refAuthor">Cociglio, M.</span>, <span class="refAuthor">Bulgarella, F.</span>, and <span class="refAuthor">Y. Zhu</span>, <span class="refTitle">"Constrained Application Protocol (CoAP) Performance Measurement Option"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pm-05</span>, <time datetime="2025-10-20" class="refDate">20 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pm-05">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pm-05</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
         <dd>
 <span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-21</span>, <time datetime="2026-07-02" class="refDate">2 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21</a>&gt;</span>. </dd>
@@ -2352,25 +2348,18 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <p id="appendix-A.7-1">The approach defined in this document can be useful also in the following use cases relying on a proxy.<a href="#appendix-A.7-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.7-2.1">
-            <p id="appendix-A.7-2.1.1">The method specified in <span>[<a href="#I-D.ietf-core-coap-pm" class="cite xref">I-D.ietf-core-coap-pm</a>]</span> relies on the Performance Measurement Option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.<a href="#appendix-A.7-2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.7-2.1.1">The method specified in <span>[<a href="#I-D.ietf-ace-coap-est-oscore" class="cite xref">I-D.ietf-ace-coap-est-oscore</a>]</span> enables public-key certificate enrollment for Internet of Things deployments. This leverages payload formats defined in Enrollment over Secure Transport (EST) <span>[<a href="#RFC7030" class="cite xref">RFC7030</a>]</span>, while relying on CoAP for message transfer and on OSCORE for message protection.<a href="#appendix-A.7-2.1.1" class="pilcrow">¶</a></p>
 <p id="appendix-A.7-2.1.2">
-When OSCORE is used in deployments including on-path probes, an inner Performance Measurement Option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement Option allows also hop-by-hop measurements to be performed by relying on an on-path probe.<a href="#appendix-A.7-2.1.2" class="pilcrow">¶</a></p>
+In real-world deployments, an EST server issuing public-key certificates may reside outside a constrained network that includes devices acting as EST clients. In particular, the EST clients are expected to support only CoAP, while the EST server in a non-constrained network is expected to support only HTTP. This requires a CoAP-to-HTTP proxy to be deployed between the EST clients and the EST server, in order to map CoAP messages with HTTP messages across the two networks.<a href="#appendix-A.7-2.1.2" class="pilcrow">¶</a></p>
 <p id="appendix-A.7-2.1.3">
-Therefore, it is preferable to have a secure association with an on-path probe, in order to also ensure the integrity of the hop-by-hop measurements exchanged with the probe.<a href="#appendix-A.7-2.1.3" class="pilcrow">¶</a></p>
+Even in such a scenario, the EST server and every EST client can still effectively use OSCORE to protect their communications end-to-end. At the same time, it is desirable to have an additional secure association between the EST client and the CoAP-to-HTTP proxy, especially in order for the proxy to identify the EST client before forwarding EST messages out of the CoAP boundary of the constrained network and towards the EST server.<a href="#appendix-A.7-2.1.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.7-2.2">
-            <p id="appendix-A.7-2.2.1">The method specified in <span>[<a href="#I-D.ietf-ace-coap-est-oscore" class="cite xref">I-D.ietf-ace-coap-est-oscore</a>]</span> enables public-key certificate enrollment for Internet of Things deployments. This leverages payload formats defined in Enrollment over Secure Transport (EST) <span>[<a href="#RFC7030" class="cite xref">RFC7030</a>]</span>, while relying on CoAP for message transfer and on OSCORE for message protection.<a href="#appendix-A.7-2.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.7-2.2.1">The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message.<a href="#appendix-A.7-2.2.1" class="pilcrow">¶</a></p>
 <p id="appendix-A.7-2.2.2">
-In real-world deployments, an EST server issuing public-key certificates may reside outside a constrained network that includes devices acting as EST clients. In particular, the EST clients are expected to support only CoAP, while the EST server in a non-constrained network is expected to support only HTTP. This requires a CoAP-to-HTTP proxy to be deployed between the EST clients and the EST server, in order to map CoAP messages with HTTP messages across the two networks.<a href="#appendix-A.7-2.2.2" class="pilcrow">¶</a></p>
+This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request first by using the OSCORE Security Context shared with the origin server, and then by using different OSCORE Security Contexts shared with the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.<a href="#appendix-A.7-2.2.2" class="pilcrow">¶</a></p>
 <p id="appendix-A.7-2.2.3">
-Even in such a scenario, the EST server and every EST client can still effectively use OSCORE to protect their communications end-to-end. At the same time, it is desirable to have an additional secure association between the EST client and the CoAP-to-HTTP proxy, especially in order for the proxy to identify the EST client before forwarding EST messages out of the CoAP boundary of the constrained network and towards the EST server.<a href="#appendix-A.7-2.2.3" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.7-2.3">
-            <p id="appendix-A.7-2.3.1">The approach defined in this document does not pose a limit to the number of OSCORE protections applied to the same CoAP message.<a href="#appendix-A.7-2.3.1" class="pilcrow">¶</a></p>
-<p id="appendix-A.7-2.3.2">
-This enables more privacy-oriented scenarios based on proxy chains, where the origin client protects a CoAP request first by using the OSCORE Security Context shared with the origin server, and then by using different OSCORE Security Contexts shared with the different hops in the chain. Once received at a chain hop, the request would be stripped of the OSCORE protection associated with that hop before being forwarded to the next one.<a href="#appendix-A.7-2.3.2" class="pilcrow">¶</a></p>
-<p id="appendix-A.7-2.3.3">
-Building on that, it is also possible to enable the operation of hidden services and clients through onion routing with CoAP <span>[<a href="#I-D.amsuess-t2trg-onion-coap" class="cite xref">I-D.amsuess-t2trg-onion-coap</a>]</span>, similarly to how Tor (The Onion Router) <span>[<a href="#TOR-SPEC" class="cite xref">TOR-SPEC</a>]</span> enables it for TCP-based protocols.<a href="#appendix-A.7-2.3.3" class="pilcrow">¶</a></p>
+Building on that, it is also possible to enable the operation of hidden services and clients through onion routing with CoAP <span>[<a href="#I-D.amsuess-t2trg-onion-coap" class="cite xref">I-D.amsuess-t2trg-onion-coap</a>]</span>, similarly to how Tor (The Onion Router) <span>[<a href="#TOR-SPEC" class="cite xref">TOR-SPEC</a>]</span> enables it for TCP-based protocols.<a href="#appendix-A.7-2.2.3" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -5524,7 +5513,10 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.1.1">Renamed EDHOC to LAKE as appropriate.<a href="#appendix-E.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.2">
-            <p id="appendix-E.1-1.2.1">Editorial improvements.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.2.1">Removed one item from "Further Use Cases".<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.3">
+            <p id="appendix-E.1-1.3.1">Editorial improvements.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
