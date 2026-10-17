@@ -218,7 +218,7 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
    - To the best of the sender endpoint's knowledge, X is the next hop for the sender endpoint; or
 
-   - To the best of the sender endpoint's knowledge, the next hop for the sender endpoint is not the immediately next consumer of OPT.
+   - To the best of the sender endpoint's knowledge, the immediately next consumer of OPT is not a hop in between itself and X.
 
 5. If X needs to access OPT before having removed the i-th OSCORE layer or in order to remove the i-th OSCORE layer, then this algorithm moves to Step 9. Otherwise, this algorithm moves to Step 6.
 
@@ -1863,49 +1863,50 @@ Curly brackets { ... } indicate encrypted data.
 | OPT to M? |         | tell, is X a     |         | tell, is X the   |
 +-----------+         | consumer of OPT? |         | immediately next |
     |                 +------------------+         | consumer of OPT? |
-    |                    |                         +------------------+
-    |                    |                                |         |
-    NO                   NO                              YES        NO
-    |                    |                                |         |
-    v                    v                                v         |
-  +-------------------------+         +---------------------+       |
-  | * As far as I can tell, |         | Does X need to      |       |
-  |   X is my next hop;     |         | access OPT before   |       |
-  |                         |         | decrypting M or in  |       |
-  | OR                      |         | order to decrypt M? |       |
-  |                         |         +---------------------+       |
-  | * As far as I can tell, |           |                 |         |
-  |   my next hop is not    |           NO               YES        |
-  |   the immediately next  |           |                 |         |
-  |   consumer of OPT       |           |                 |         |
-  +-------------------------+           |                 |         |
-    |                     |             |                 |         |
-    NO                   YES            |                 |         |
-    |                     |             |                 |         |
-    |                     |             |                 |         |
-    |                     v             v                 |         |
-    |        +----------------------------+               |         |
-    |        | Is OPT the Uri-Host Option |               |         |
-    |    +---| or the Uri-Port Option?    |               |         |
-    |    |   +----------------------------+               |         |
-    |    |                              |                 |         |
-    |    NO                            YES                |         |
-    |    |                              |                 |         |
-    |    |                              |                 |         |
-    |    |                              v                 |         |
+    |                      |                       +------------------+
+    |                      |                               |        |
+    NO                     NO                             YES       NO
+    |                      |                               |        |
+    v                      v                               v        |
+  +--------------------------+         +---------------------+      |
+  | * As far as I can tell,  |         | Does X need to      |      |
+  |   X is my next hop       |         | access OPT before   |      |
+  |                          |         | decrypting M or in  |      |
+  | OR                       |         | order to decrypt M? |      |
+  |                          |         +---------------------+      |
+  | * As far as I can tell,  |           |                |         |
+  |   the immediately next   |           NO               YES       |
+  |   consumer of OPT is not |           |                |         |
+  |   a hop in between       |           |                |         |
+  |   myself and X           |           |                |         |
+  +--------------------------+           |                |         |
+    |                      |             |                |         |
+    NO                    YES            |                |         |
+    |                      |             |                |         |
+    |                      |             |                |         |
+    |                      v             v                |         |
+    |         +----------------------------+              |         |
+    |         | Is OPT the Uri-Host Option |              |         |
+    |    +----| or the Uri-Port Option?    |              |         |
+    |    |    +----------------------------+              |         |
+    |    |                               |                |         |
+    |    NO                             YES               |         |
+    |    |                               |                |         |
+    |    |                               |                |         |
+    |    |                               v                |         |
     |    |   +----------------------------------------+   |         |
     |    |   | Does M include the Proxy-Scheme Option |   |         |
     |    |   | or the Proxy-Scheme-Number Option?     |   |         |
     |    |   +----------------------------------------+   |         |
-    |    |               |              |                 |         |
-    |    |              YES             NO                |         |
-    |    |               |              |                 |         |
-    |    v               v              |                 |         |
-    |  +------------------------+       |                 |         |
-    |  | Process OPT as Class E |       |                 |         |
-    |  +------------------------+       |                 |         |
-    |                                   |                 |         |
-    |                                   v                 v         |
+    |    |               |               |                |         |
+    |    |              YES              NO               |         |
+    |    |               |               |                |         |
+    |    v               v               |                |         |
+    |  +------------------------+        |                |         |
+    |  | Process OPT as Class E |        |                |         |
+    |  +------------------------+        |                |         |
+    |                                    |                |         |
+    |                                    v                v         |
     |        +----------------------------------------------+       |
     +------->| Process OPT as per its original Class U or I |<------+
              +----------------------------------------------+
@@ -2040,6 +2041,8 @@ request      +-----------------------------------------------+        |
 ## Version -07 to -08 ## {#sec-07-08}
 
 * Renamed EDHOC to LAKE as appropriate.
+
+* More precise step for escalating the protection of CoAP options.
 
 * Removed one item from "Further Use Cases".
 
