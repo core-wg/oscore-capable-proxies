@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                             6 July 2026
-Expires: 7 January 2027
+Intended status: Standards Track                         17 October 2026
+Expires: 20 April 2027
 
 
                          OSCORE-capable Proxies
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2027.
+   This Internet-Draft will expire on 20 April 2027.
 
 Copyright Notice
 
@@ -114,21 +114,22 @@ Table of Contents
      B.1.  With Forward-Proxy; OSCORE: C-S, C-P
      B.2.  With Forward-Proxy; OSCORE: C-S, P-S
      B.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
-     B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
-     B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
+     B.4.  With Forward-Proxy and LAKE; OSCORE: C-S, C-P
+     B.5.  With Forward-Proxy and LAKE (optimized); OSCORE: C-S, C-P
      B.6.  With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
      B.7.  With Reverse-Proxy; OSCORE: C-P, P-S
      B.8.  With Reverse-Proxy; OSCORE: C-S, C-P, P-S
    Appendix C.  State Diagram: Protection of CoAP Options
    Appendix D.  State Diagram: Processing of Incoming Requests
    Appendix E.  Document Updates
-     E.1.  Version -06 to -07
-     E.2.  Version -05 to -06
-     E.3.  Version -04 to -05
-     E.4.  Version -03 to -04
-     E.5.  Version -02 to -03
-     E.6.  Version -01 to -02
-     E.7.  Version -00 to -01
+     E.1.  Version -07 to -08
+     E.2.  Version -06 to -07
+     E.3.  Version -05 to -06
+     E.4.  Version -04 to -05
+     E.5.  Version -03 to -04
+     E.6.  Version -02 to -03
+     E.7.  Version -01 to -02
+     E.8.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -275,6 +276,12 @@ Table of Contents
          when those are not used together with the Proxy-Scheme Option
          or the Proxy-Scheme-Number Option.  This is relevant when using
          a reverse-proxy.
+
+   This document uses the acronym LAKE, expanded to Lightweight
+   Authenticated Key Exchange, to denote the protocol specified as EDHOC
+   in [RFC9528].  Identifiers defined literally in [RFC9528] or in IANA
+   registries (e.g., the names of the EDHOC registries themselves) are
+   unchanged.
 
 2.  Message Processing
 
@@ -895,20 +902,21 @@ Table of Contents
    protect their communications.
 
    *  When using OSCORE, the establishment of the OSCORE Security
-      Context can rely on the authenticated key exchange protocol
-      Ephemeral Diffie-Hellman Over COSE (EDHOC) [RFC9528].
+      Context can rely on the Lightweight Authenticated Key Exchange
+      (LAKE) protocol [RFC9528].
 
       Assuming that OSCORE has to be used between the two origin
       application endpoints as well as between the origin client and the
       first proxy in the chain, it is expected that the origin client
-      first runs EDHOC with the first proxy in the chain and then with
+      first runs LAKE with the first proxy in the chain and then with
       the origin server through the chain of proxies (see the example in
       Appendix B.4).
 
-      Furthermore, the additional use of the combined EDHOC + OSCORE
-      request defined in [RFC9668] is particularly beneficial in this
-      case (see the example in Appendix B.5) and especially when relying
-      on a long chain of proxies.
+      Furthermore, the additional use of the combined LAKE + OSCORE
+      request defined in [RFC9668] (denoted therein as "EDHOC + OSCORE
+      request") is particularly beneficial in this case (see the example
+      in Appendix B.5) and especially when relying on a long chain of
+      proxies.
 
    *  The use of Group OSCORE is expected to be limited between the
       origin application endpoints, e.g., between the origin client and
@@ -983,11 +991,11 @@ Table of Contents
       able to apply (remove) when processing an outgoing (incoming) CoAP
       message (see Section 2.1).
 
-   *  Q3: Does S support the key exchange protocol EDHOC [RFC9528]?
+   *  Q3: Does S support the key exchange protocol LAKE [RFC9528]?
 
       For example, P can answer this question by using the means
       specified in [I-D.ietf-lake-app-profiles] that are not used during
-      an EDHOC session itself.
+      an LAKE session itself.
 
    The examples above are not exhaustive and P can rely on alternative
    means to answer the three questions about S.
@@ -1033,10 +1041,10 @@ Table of Contents
         |       +-----+         |    |          ^                    |
         |       |     |  NO     |    |          |                    |
         |       | Q2? +---------+    |          |                    |
-        |       |     |              |    +-----+-----+              |
-        |       +-----+              |    | Run EDHOC |              |
-        |          |                 |    | with S    |              |
-        |          | YES             |    +-----------+              |
+        |       |     |              |    +-----+----+               |
+        |       +-----+              |    | Run LAKE |               |
+        |          |                 |    | with S   |               |
+        |          | YES             |    +----------+               |
         v          v                 |          ^                    |
     +-------------------+            |          |                    |
     |                   |  YES       |          | YES                |
@@ -1058,8 +1066,8 @@ Table of Contents
       protect the request over the communication leg between itself and
       the origin server(s).
 
-   *  The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced
-      by P joining the correct OSCORE group.  A successful group joining
+   *  The steps "Q3?", "Run LAKE with S", and "Success?" are replaced by
+      P joining the correct OSCORE group.  A successful group joining
       results in P establishing CTX_P_S, while a failure results in
       forwarding the request to the origin server(s) without P
       protecting the request using Group OSCORE.
@@ -1305,19 +1313,19 @@ Table of Contents
               draft-ietf-core-oscore-groupcomm-28>.
 
    [I-D.ietf-core-uri-path-abbrev]
-              Amsüss, C. and M. Richardson, "URI-Path abbreviation in
+              Amsüss, C. and M. Richardson, "URI Path abbreviation in
               CoAP", Work in Progress, Internet-Draft, draft-ietf-core-
-              uri-path-abbrev-04, 19 March 2026,
+              uri-path-abbrev-05, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              uri-path-abbrev-04>.
+              uri-path-abbrev-05>.
 
    [I-D.ietf-schc-8824-update]
               Tiloca, M., Toutain, L., Martínez, I., and A. Minaburo,
               "Static Context Header Compression (SCHC) for the
               Constrained Application Protocol (CoAP)", Work in
-              Progress, Internet-Draft, draft-ietf-schc-8824-update-08,
-              3 June 2026, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-schc-8824-update-08>.
+              Progress, Internet-Draft, draft-ietf-schc-8824-update-10,
+              26 July 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-schc-8824-update-10>.
 
    [IANA.CoAP.Option.Numbers]
               IANA, "CoAP Option Numbers",
@@ -1385,13 +1393,12 @@ Table of Contents
 
    [I-D.ietf-core-cacheable-oscore]
               Amsüss, C. and M. Tiloca, "End-to-End Protected and
-              Cacheable Responses for the Constrained Application
-              Protocol (CoAP) using Group Object Security for
+              Cacheable CoAP Responses using Group Object Security for
               Constrained RESTful Environments (Group OSCORE)", Work in
               Progress, Internet-Draft, draft-ietf-core-cacheable-
-              oscore-01, 2 March 2026,
+              oscore-02, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              cacheable-oscore-01>.
+              cacheable-oscore-02>.
 
    [I-D.ietf-core-coap-pm]
               Fioccola, G., Zhou, T., Cociglio, M., Bulgarella, F., and
@@ -1421,25 +1428,25 @@ Table of Contents
               Tiloca, M. and E. Dijk, "Proxy Operations in Group
               Communication for the Constrained Application Protocol
               (CoAP)", Work in Progress, Internet-Draft, draft-ietf-
-              core-groupcomm-proxy-06, 2 March 2026,
+              core-groupcomm-proxy-07, 2 September 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-proxy-06>.
+              groupcomm-proxy-07>.
 
    [I-D.ietf-core-multicast-notifications-proxy]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Using Proxies for Observe Notifications as CoAP Multicast
               Responses", Work in Progress, Internet-Draft, draft-ietf-
-              core-multicast-notifications-proxy-01, 22 April 2026,
+              core-multicast-notifications-proxy-02, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              multicast-notifications-proxy-01>.
+              multicast-notifications-proxy-02>.
 
    [I-D.ietf-core-observe-multicast-notifications]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Observe Notifications as CoAP Multicast Responses", Work
               in Progress, Internet-Draft, draft-ietf-core-observe-
-              multicast-notifications-14, 22 April 2026,
+              multicast-notifications-15, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              observe-multicast-notifications-14>.
+              observe-multicast-notifications-15>.
 
    [I-D.ietf-core-transport-indication]
               Amsüss, C. and M. S. Lenders, "CoAP Transport Indication",
@@ -1452,9 +1459,9 @@ Table of Contents
               Tiloca, M. and R. Höglund, "Coordinating the Use of
               Application Profiles for Ephemeral Diffie-Hellman Over
               COSE (EDHOC)", Work in Progress, Internet-Draft, draft-
-              ietf-lake-app-profiles-04, 2 March 2026,
+              ietf-lake-app-profiles-05, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
-              app-profiles-04>.
+              app-profiles-05>.
 
    [LwM2M-Core]
               Open Mobile Alliance, "Lightweight Machine to Machine
@@ -2097,7 +2104,7 @@ B.3.  With Forward-Proxy; OSCORE: C-S, C-P, P-S
       Figure 4: Use of OSCORE between Client-Server, Client-Proxy, and
                                 Proxy-Server
 
-B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
+B.4.  With Forward-Proxy and LAKE; OSCORE: C-S, C-P
 
    In the example shown in Figure 5, message exchanges are protected as
    follows.
@@ -2112,7 +2119,7 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
 
    The example also shows how the client establishes the OSCORE Security
    Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using
-   the key exchange protocol EDHOC [RFC9528].
+   the key exchange protocol LAKE [RFC9528].
 
    After a first phase where the OSCORE Security Contexts are
    established, the second phase consists in a protected message
@@ -2125,12 +2132,12 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       | Uri-Path: ".well-known"
      |       |       | Uri-Path: "edhoc"
      |       |       |     0xff
-     |       |       |  Payload: (true, EDHOC message_1)
+     |       |       |  Payload: (true, LAKE message_1)
      |       |       |
      |<------+       |     Code: 2.04 (Changed)
      |  2.04 |       |    Token: 0xf3
      |       |       |     0xff
-     |       |       |  Payload: EDHOC message_2
+     |       |       |  Payload: LAKE message_2
      |       |       |
    Establish |       |
    CTX_C_P   |       |
@@ -2140,7 +2147,7 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       | Uri-Path: ".well-known"
      |       |       | Uri-Path: "edhoc"
      |       |       |     0xff
-     |       |       |  Payload: (C_R, EDHOC message_3)
+     |       |       |  Payload: (C_R, LAKE message_3)
      |       |       |
      |     Establish |
      |     CTX_C_P   |
@@ -2162,7 +2169,7 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       |            Uri-Path: "edhoc",
      |       |       |            Proxy-Scheme: "coap",
      |       |       |            0xff,
-     |       |       |            (true, EDHOC message_1)
+     |       |       |            (true, LAKE message_1)
      |       |       |           } // Encrypted with CTX_C_P
      |       |       |
      |     Decrypt   |
@@ -2175,12 +2182,12 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       | Uri-Path: ".well-known"
      |       |       | Uri-Path: "edhoc"
      |       |       |     0xff
-     |       |       |  Payload: (true, EDHOC message_1)
+     |       |       |  Payload: (true, LAKE message_1)
      |       |       |
      |       |<------+     Code: 2.04 (Changed)
      |       |  2.04 |    Token: 0xa5
      |       |       |     0xff
-     |       |       |  Payload: EDHOC message_2
+     |       |       |  Payload: LAKE message_2
      |       |       |
      |     Encrypt   |
      |     RESP with |
@@ -2192,7 +2199,7 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       |     0xff
      |       |       |  Payload: {Code: 2.04 (Changed),
      |       |       |            0xff,
-     |       |       |            EDHOC message_2
+     |       |       |            LAKE message_2
      |       |       |           } // Encrypted with CTX_C_P
      |       |       |
    Decrypt   |       |
@@ -2216,7 +2223,7 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       |            Uri-Path: "edhoc",
      |       |       |            Proxy-Scheme: "coap",
      |       |       |            0xff,
-     |       |       |            (C_R, EDHOC message_3)
+     |       |       |            (C_R, LAKE message_3)
      |       |       |           }    // Encrypted with CTX_C_P
      |       |       |
      |     Decrypt   |
@@ -2229,7 +2236,7 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
      |       |       | Uri-Path: ".well-known"
      |       |       | Uri-Path: "edhoc"
      |       |       |     0xff
-     |       |       |  Payload: (C_R, EDHOC message_3)
+     |       |       |  Payload: (C_R, LAKE message_3)
      |       |       |
      |       |     Establish
      |       |     CTX_C_S
@@ -2325,9 +2332,9 @@ B.4.  With Forward-Proxy and EDHOC; OSCORE: C-S, C-P
           of two CBOR data items A and B.
 
       Figure 5: Use of OSCORE between Client-Server and Proxy-Server,
-          with OSCORE Security Contexts established through EDHOC
+           with OSCORE Security Contexts established through LAKE
 
-B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
+B.5.  With Forward-Proxy and LAKE (optimized); OSCORE: C-S, C-P
 
    In the example shown in Figure 6, message exchanges are protected as
    follows.
@@ -2342,21 +2349,22 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
 
    The example also shows how the client establishes the OSCORE Security
    Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using
-   the key exchange protocol EDHOC [RFC9528].
+   the key exchange protocol LAKE [RFC9528].
 
-   In particular, the client relies on the EDHOC + OSCORE request
-   defined in [RFC9668] and denoted as COMB_REQ, in order to transport
-   the last EDHOC message_3 and the first OSCORE-protected application
-   CoAP request combined together.
+   In particular, the client relies on the LAKE + OSCORE request defined
+   in [RFC9668] (denoted therein as "EDHOC + OSCORE request") and
+   indicated as COMB_REQ, in order to transport the last LAKE message_3
+   and the first OSCORE-protected application CoAP request combined
+   together.
 
    After a first phase where the OSCORE Security Contexts are
    established, the second phase consists in a protected message
    exchange equivalent to that shown in Appendix B.1.  In the example
    shown in the present section, the two phases partly overlap at the
    POST request sent by the client with Token 0x83 and forwarded by the
-   proxy with Token 0xa6, as the EDHOC + OSCORE request that conveys
-   both the last EDHOC message_3 from the client intended for the server
-   and the first OSCORE-protected application CoAP request combined
+   proxy with Token 0xa6, as the LAKE + OSCORE request that conveys both
+   the last LAKE message_3 from the client intended for the server and
+   the first OSCORE-protected application CoAP request combined
    together.
 
    Client  Proxy  Server
@@ -2366,12 +2374,12 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      |       |       | Uri-Path: ".well-known"
      |       |       | Uri-Path: "edhoc"
      |       |       |     0xff
-     |       |       |  Payload: (true, EDHOC message_1)
+     |       |       |  Payload: (true, LAKE message_1)
      |       |       |
      |<------+       |    Code: 2.04 (Changed)
      |  2.04 |       |   Token: 0xf3
      |       |       |    0xff
-     |       |       | Payload: EDHOC message_2
+     |       |       | Payload: LAKE message_2
      |       |       |
    Establish |       |
    CTX_C_P   |       |
@@ -2390,14 +2398,14 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      |       |       |   OSCORE: [kid:0x20, Partial IV:0]
      |       |       |    EDHOC: -
      |       |       |     0xff
-     |       |       |  Payload: EDHOC message_3, // Intended for P
+     |       |       |  Payload: LAKE message_3, // Intended for P
      |       |       |           {Code: 0.02 (POST),
      |       |       |            Uri-Host: "example.com",
      |       |       |            Uri-Path: ".well-known",
      |       |       |            Uri-Path: "edhoc",
      |       |       |            Proxy-Scheme: "coap",
      |       |       |            0xff,
-     |       |       |            (true, EDHOC message_1)
+     |       |       |            (true, LAKE message_1)
      |       |       |           } // Encrypted with CTX_C_P
      |       |       |
      |     Establish |
@@ -2417,12 +2425,12 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      |       |       | Uri-Path: ".well-known"
      |       |       | Uri-Path: "edhoc"
      |       |       |     0xff
-     |       |       |  Payload: (true, EDHOC message_1)
+     |       |       |  Payload: (true, LAKE message_1)
      |       |       |
      |       |<------+    Code: 2.04 (Changed)
      |       |  2.04 |   Token: 0xa5
      |       |       |    0xff
-     |       |       | Payload: EDHOC message_2
+     |       |       | Payload: LAKE message_2
      |       |       |
      |     Encrypt   |
      |     RESP with |
@@ -2434,7 +2442,7 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      |       |       |     0xff
      |       |       |  Payload: {Code: 2.04 (Changed),
      |       |       |            0xff,
-     |       |       |            EDHOC message_2
+     |       |       |            LAKE message_2
      |       |       |           } // Encrypted with CTX_C_P
      |       |       |
    Decrypt   |       |
@@ -2468,7 +2476,7 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      |       |       |            EDHOC: -,
      |       |       |            Proxy-Scheme: "coap",
      |       |       |            0xff,
-     |       |       |            EDHOC message_3, // Intended for S
+     |       |       |            LAKE message_3, // Intended for S
      |       |       |            {
      |       |       |             Code: 0.01 (GET),
      |       |       |             Uri-Path:"alarm_status"
@@ -2486,7 +2494,7 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
      |       |       |   OSCORE: [kid:0x5f, Partial IV:0]
      |       |       |    EDHOC: -
      |       |       |     0xff
-     |       |       |  Payload: EDHOC message_3, // Intended for S
+     |       |       |  Payload: LAKE message_3, // Intended for S
      |       |       |           {
      |       |       |            Code: 0.01 (GET),
      |       |       |            Uri-Path: "alarm_status"
@@ -2549,8 +2557,8 @@ B.5.  With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P
           of two CBOR data items A and B.
 
       Figure 6: Use of OSCORE between Client-Server and Proxy-Server,
-     with OSCORE Security Contexts established through EDHOC using the
-                           EDHOC + OSCORE request
+      with OSCORE Security Contexts established through LAKE using the
+                           LAKE + OSCORE request
 
 B.6.  With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S
 
@@ -3196,7 +3204,13 @@ Appendix E.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-E.1.  Version -06 to -07
+E.1.  Version -07 to -08
+
+   *  Renamed EDHOC to LAKE as appropriate.
+
+   *  Editorial improvements.
+
+E.2.  Version -06 to -07
 
    *  Revised presentation of the algorithm for processing incoming
       requests.
@@ -3210,7 +3224,7 @@ E.1.  Version -06 to -07
 
    *  Minor clarifications and editorial improvements.
 
-E.2.  Version -05 to -06
+E.3.  Version -05 to -06
 
    *  Removed normative language when behavior is not new.
 
@@ -3243,13 +3257,13 @@ E.2.  Version -05 to -06
 
    *  Minor clarifications and editorial improvements.
 
-E.3.  Version -04 to -05
+E.4.  Version -04 to -05
 
    *  Fixes in the examples of message exchange.
 
    *  Minor clarifications and editorial improvements.
 
-E.4.  Version -03 to -04
+E.5.  Version -03 to -04
 
    *  Removed definition and use of "OSCORE-in-OSCORE".
 
@@ -3265,7 +3279,7 @@ E.4.  Version -03 to -04
 
    *  Editorial improvements.
 
-E.5.  Version -02 to -03
+E.6.  Version -02 to -03
 
    *  Clarified motivation for updating RFC 8768 in the introduction.
 
@@ -3281,7 +3295,7 @@ E.5.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-E.6.  Version -01 to -02
+E.7.  Version -01 to -02
 
    *  Revised escalation of CoAP option protection.
 
@@ -3294,7 +3308,7 @@ E.6.  Version -01 to -02
 
    *  Clarifications and editorial improvements.
 
-E.7.  Version -00 to -01
+E.8.  Version -00 to -01
 
    *  Escalation of option protection as explicit update point to RFC
       8613.

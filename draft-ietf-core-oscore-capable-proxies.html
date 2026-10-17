@@ -10,23 +10,23 @@
 <meta content="
        When using the Constrained Application Protocol (CoAP), messages exchanged between two endpoints can be protected end-to-end at the application layer by means of Object Security for Constrained RESTful Environments (OSCORE), also in the presence of intermediaries such as proxies. This document defines how to use OSCORE for protecting CoAP messages also between an origin application endpoint and an intermediary, or between two intermediaries. Also, it defines rules to escalate the protection of a CoAP option, in order to encrypt and integrity-protect it whenever possible. Finally, it defines how to secure a CoAP message by applying multiple, nested OSCORE protections, e.g., both end-to-end between origin application endpoints; and between an application endpoint and an intermediary or between two intermediaries. Therefore, this document updates RFC 8613. Furthermore, this document updates RFC 8768, by explicitly defining the processing with OSCORE for the CoAP Hop-Limit Option. The approach defined in this document can be seamlessly employed also with Group OSCORE, for protecting CoAP messages when group communication is used in the presence of intermediaries. 
     " name="description">
-<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="xml2rfc 3.34.1" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-core-oscore-capable-proxies-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.34.0
-    Python 3.14.5
-    ConfigArgParse 1.7.5
+  xml2rfc 3.34.1
+    Python 3.14.8
+    ConfigArgParse 1.8.0
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.0
+    platformdirs 4.12.2
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.2
+    wcwidth 0.9.1
 -->
 <link href="draft-ietf-core-oscore-capable-proxies.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -62,7 +62,6 @@
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -111,7 +110,6 @@
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -176,7 +174,6 @@
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1045,11 +1042,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">OSCORE-capable Proxies</td>
-<td class="right">July 2026</td>
+<td class="right">October 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tiloca &amp; Höglund</td>
-<td class="center">Expires 7 January 2027</td>
+<td class="center">Expires 20 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1062,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc8613" class="eref">8613</a>, <a href="https://www.rfc-editor.org/rfc/rfc8768" class="eref">8768</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-06" class="published">6 July 2026</time>
+<time datetime="2026-10-17" class="published">17 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-20">20 April 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1119,7 +1116,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 20 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1280,10 +1277,10 @@ svg {
                 <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-with-forward-proxy-oscore-c-s" class="internal xref">With Forward-Proxy; OSCORE: C-S, C-P, P-S</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.4">
-                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-with-forward-proxy-and-edho" class="internal xref">With Forward-Proxy and EDHOC; OSCORE: C-S, C-P</a></p>
+                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-with-forward-proxy-and-lake" class="internal xref">With Forward-Proxy and LAKE; OSCORE: C-S, C-P</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.5">
-                <p id="section-toc.1-1.11.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-with-forward-proxy-and-edhoc" class="internal xref">With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P</a></p>
+                <p id="section-toc.1-1.11.2.5.1"><a href="#appendix-B.5" class="auto internal xref">B.5</a>.  <a href="#name-with-forward-proxy-and-lake-" class="internal xref">With Forward-Proxy and LAKE (optimized); OSCORE: C-S, C-P</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.6">
                 <p id="section-toc.1-1.11.2.6.1"><a href="#appendix-B.6" class="auto internal xref">B.6</a>.  <a href="#name-with-two-forward-proxies-os" class="internal xref">With Two Forward-Proxies; OSCORE: C-S, C-P1, P1-P2, P2-S</a></p>
@@ -1306,25 +1303,28 @@ svg {
             <p id="section-toc.1-1.14.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1">
-                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-version-06-to-07" class="internal xref">Version -06 to -07</a></p>
+                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-version-07-to-08" class="internal xref">Version -07 to -08</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2">
-                <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-version-05-to-06" class="internal xref">Version -05 to -06</a></p>
+                <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-version-06-to-07" class="internal xref">Version -06 to -07</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.3">
-                <p id="section-toc.1-1.14.2.3.1"><a href="#appendix-E.3" class="auto internal xref">E.3</a>.  <a href="#name-version-04-to-05" class="internal xref">Version -04 to -05</a></p>
+                <p id="section-toc.1-1.14.2.3.1"><a href="#appendix-E.3" class="auto internal xref">E.3</a>.  <a href="#name-version-05-to-06" class="internal xref">Version -05 to -06</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.4">
-                <p id="section-toc.1-1.14.2.4.1"><a href="#appendix-E.4" class="auto internal xref">E.4</a>.  <a href="#name-version-03-to-04" class="internal xref">Version -03 to -04</a></p>
+                <p id="section-toc.1-1.14.2.4.1"><a href="#appendix-E.4" class="auto internal xref">E.4</a>.  <a href="#name-version-04-to-05" class="internal xref">Version -04 to -05</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.5">
-                <p id="section-toc.1-1.14.2.5.1"><a href="#appendix-E.5" class="auto internal xref">E.5</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
+                <p id="section-toc.1-1.14.2.5.1"><a href="#appendix-E.5" class="auto internal xref">E.5</a>.  <a href="#name-version-03-to-04" class="internal xref">Version -03 to -04</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.6">
-                <p id="section-toc.1-1.14.2.6.1"><a href="#appendix-E.6" class="auto internal xref">E.6</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
+                <p id="section-toc.1-1.14.2.6.1"><a href="#appendix-E.6" class="auto internal xref">E.6</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.7">
-                <p id="section-toc.1-1.14.2.7.1"><a href="#appendix-E.7" class="auto internal xref">E.7</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+                <p id="section-toc.1-1.14.2.7.1"><a href="#appendix-E.7" class="auto internal xref">E.7</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.8">
+                <p id="section-toc.1-1.14.2.8.1"><a href="#appendix-E.8" class="auto internal xref">E.8</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
 </li>
             </ul>
 </li>
@@ -1401,7 +1401,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
             <p id="section-1.1-4.8.1">Proxy-related options: either of the following (set of) CoAP options that a proxy can use to understand where to forward a CoAP request. These CoAP options are defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, <span>[<a href="#I-D.ietf-core-href" class="cite xref">I-D.ietf-core-href</a>]</span>, and <span>[<a href="#I-D.ietf-core-uri-path-abbrev" class="cite xref">I-D.ietf-core-uri-path-abbrev</a>]</span>.<a href="#section-1.1-4.8.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1.1-4.8.2.1">
-                <p id="section-1.1-4.8.2.1.1">The Proxy-Uri Option or the Proxy-Cri Option, possibly in combination with the Uri-Path-Abbrev Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-uri-path-abbrev-04#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-uri-path-abbrev" class="cite xref">I-D.ietf-core-uri-path-abbrev</a>]</span>). These are relevant when using a forward-proxy.<a href="#section-1.1-4.8.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-1.1-4.8.2.1.1">The Proxy-Uri Option or the Proxy-Cri Option, possibly in combination with the Uri-Path-Abbrev Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-uri-path-abbrev-05#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-uri-path-abbrev" class="cite xref">I-D.ietf-core-uri-path-abbrev</a>]</span>). These are relevant when using a forward-proxy.<a href="#section-1.1-4.8.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-1.1-4.8.2.2">
                 <p id="section-1.1-4.8.2.2.1">The set of CoAP options comprising the Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with a combination of any among the Uri-Host Option, the Uri-Port Option, and the mutually exclusive Uri-Path Option and Uri-Path-Abbrev Option. This is relevant when using a forward-proxy.<a href="#section-1.1-4.8.2.2.1" class="pilcrow">¶</a></p>
@@ -1412,6 +1412,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
             </ul>
 </li>
         </ul>
+<p id="section-1.1-5">This document uses the acronym LAKE, expanded to Lightweight Authenticated Key Exchange, to denote the protocol specified as EDHOC in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. Identifiers defined literally in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span> or in IANA registries (e.g., the names of the EDHOC registries themselves) are unchanged.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1534,7 +1535,7 @@ If its defined limit is reached when processing a CoAP message, an OSCORE endpoi
             <p id="section-2.4-2.2.1">If REQ includes either of the following (set) of CoAP options, the endpoint proceeds as defined below. Otherwise, this algorithm moves to Step 3.<a href="#section-2.4-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.4-2.2.2.1">
-                <p id="section-2.4-2.2.2.1.1">The Proxy-Uri Option or the Proxy-Cri Option, possibly in combination with the Uri-Path-Abbrev Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-uri-path-abbrev-04#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-uri-path-abbrev" class="cite xref">I-D.ietf-core-uri-path-abbrev</a>]</span>).<a href="#section-2.4-2.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.4-2.2.2.1.1">The Proxy-Uri Option or the Proxy-Cri Option, possibly in combination with the Uri-Path-Abbrev Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-uri-path-abbrev-05#section-2.4" class="relref">Section 2.4</a> of [<a href="#I-D.ietf-core-uri-path-abbrev" class="cite xref">I-D.ietf-core-uri-path-abbrev</a>]</span>).<a href="#section-2.4-2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.4-2.2.2.2">
                 <p id="section-2.4-2.2.2.2.1">The Proxy-Scheme Option or the Proxy-Scheme-Number Option, together with a combination of:<a href="#section-2.4-2.2.2.2.1" class="pilcrow">¶</a></p>
@@ -1586,7 +1587,7 @@ Instead, if the check succeeds, the following applies.<a href="#section-2.4-2.4.
 <p id="section-2.4-2.4.4.1.2">
 In particular, the endpoint checks whether the authority component (host and port) of the request URI identifies the endpoint itself. In such a case, REQ has to be treated as a local (non-proxied) request and this algorithm moves to Step 1.<a href="#section-2.4-2.4.4.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.4-2.4.4.1.3">
-Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-01#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>).<a href="#section-2.4-2.4.4.1.3" class="pilcrow">¶</a></p>
+Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses Option (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-02#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>).<a href="#section-2.4-2.4.4.1.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.4-2.4.4.2">
                 <p id="section-2.4-2.4.4.2.1">In the case that the previous step in this algorithm was Step 3, hence the endpoint is meant to process REQ as a reverse-proxy, then the endpoint consumes the included Uri-Host, Uri-Port, Uri-Path, and Uri-Path-Abbrev Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.<a href="#section-2.4-2.4.4.2.1" class="pilcrow">¶</a></p>
@@ -1739,7 +1740,7 @@ That is, such a message: i) is the one to be forwarded to (the next hop towards)
 Then, the proxy stores specifically that resulting response message in its cache. That is, such a stored message is the one to be forwarded to (the previous hop towards) the origin client.<a href="#section-4-4.2.2" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-4-5">The above is orthogonal to the actual process of serving a request with a cached response, for which rules are defined in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.6" class="relref">Section 5.6</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> as well as in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-18#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span> for group communication scenarios. When using the realization of proxy for group communication specified in <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>, such rules are further specialized in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-06#section-7" class="relref">Section 7</a> of [<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>.<a href="#section-4-5" class="pilcrow">¶</a></p>
+<p id="section-4-5">The above is orthogonal to the actual process of serving a request with a cached response, for which rules are defined in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.6" class="relref">Section 5.6</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> as well as in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-18#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span> for group communication scenarios. When using the realization of proxy for group communication specified in <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>, such rules are further specialized in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-07#section-7" class="relref">Section 7</a> of [<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>.<a href="#section-4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="establishment-of-oscore-security-contexts">
@@ -1751,11 +1752,11 @@ Then, the proxy stores specifically that resulting response message in its cache
 <p id="section-5-2">At the same time, the following applies, depending on the two peers using OSCORE or Group OSCORE <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span> to protect their communications.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5-3.1">
-          <p id="section-5-3.1.1">When using OSCORE, the establishment of the OSCORE Security Context can rely on the authenticated key exchange protocol Ephemeral Diffie-Hellman Over COSE (EDHOC) <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-5-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-5-3.1.1">When using OSCORE, the establishment of the OSCORE Security Context can rely on the Lightweight Authenticated Key Exchange (LAKE) protocol <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-5-3.1.1" class="pilcrow">¶</a></p>
 <p id="section-5-3.1.2">
-Assuming that OSCORE has to be used between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs EDHOC with the first proxy in the chain and then with the origin server through the chain of proxies (see the example in <a href="#sec-example-edhoc" class="auto internal xref">Appendix B.4</a>).<a href="#section-5-3.1.2" class="pilcrow">¶</a></p>
+Assuming that OSCORE has to be used between the two origin application endpoints as well as between the origin client and the first proxy in the chain, it is expected that the origin client first runs LAKE with the first proxy in the chain and then with the origin server through the chain of proxies (see the example in <a href="#sec-example-edhoc" class="auto internal xref">Appendix B.4</a>).<a href="#section-5-3.1.2" class="pilcrow">¶</a></p>
 <p id="section-5-3.1.3">
-Furthermore, the additional use of the combined EDHOC + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> is particularly beneficial in this case (see the example in <a href="#sec-example-edhoc-comb-req" class="auto internal xref">Appendix B.5</a>) and especially when relying on a long chain of proxies.<a href="#section-5-3.1.3" class="pilcrow">¶</a></p>
+Furthermore, the additional use of the combined LAKE + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> (denoted therein as "EDHOC + OSCORE request") is particularly beneficial in this case (see the example in <a href="#sec-example-edhoc-comb-req" class="auto internal xref">Appendix B.5</a>) and especially when relying on a long chain of proxies.<a href="#section-5-3.1.3" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-5-3.2">
           <p id="section-5-3.2.1">The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in <span>[<a href="#I-D.ietf-ace-key-groupcomm-oscore" class="cite xref">I-D.ietf-ace-key-groupcomm-oscore</a>]</span> and based on the ACE framework for Authentication and Authorization in constrained environments <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-5-3.2.1" class="pilcrow">¶</a></p>
@@ -1794,9 +1795,9 @@ If the SvcParamKey is present in an SVCB RR about S, then S supports the use of 
 This is not intended to indicate how many nested OSCORE layers S supports exactly (although that is in principle possible to express). In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see <a href="#sec-deviations" class="auto internal xref">Section 2.1</a>).<a href="#section-5.1-5.2.5" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-5.3">
-            <p id="section-5.1-5.3.1">Q3: Does S support the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>?<a href="#section-5.1-5.3.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-5.3.1">Q3: Does S support the key exchange protocol LAKE <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>?<a href="#section-5.1-5.3.1" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.3.2">
-For example, P can answer this question by using the means specified in <span>[<a href="#I-D.ietf-lake-app-profiles" class="cite xref">I-D.ietf-lake-app-profiles</a>]</span> that are not used during an EDHOC session itself.<a href="#section-5.1-5.3.2" class="pilcrow">¶</a></p>
+For example, P can answer this question by using the means specified in <span>[<a href="#I-D.ietf-lake-app-profiles" class="cite xref">I-D.ietf-lake-app-profiles</a>]</span> that are not used during an LAKE session itself.<a href="#section-5.1-5.3.2" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-5.1-6">The examples above are not exhaustive and P can rely on alternative means to answer the three questions about S.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
@@ -1835,7 +1836,7 @@ For example, P can answer this question by using the means specified in <span>[<
                 <path d="M 376,320 L 376,384" fill="none" stroke="black"></path>
                 <path d="M 384,736 L 384,800" fill="none" stroke="black"></path>
                 <path d="M 400,480 L 400,544" fill="none" stroke="black"></path>
-                <path d="M 408,608 L 408,656" fill="none" stroke="black"></path>
+                <path d="M 400,608 L 400,656" fill="none" stroke="black"></path>
                 <path d="M 432,216 L 432,512" fill="none" stroke="black"></path>
                 <path d="M 448,144 L 448,208" fill="none" stroke="black"></path>
                 <path d="M 528,176 L 528,768" fill="none" stroke="black"></path>
@@ -1856,9 +1857,9 @@ For example, P can answer this question by using the means specified in <span>[<
                 <path d="M 312,544 L 400,544" fill="none" stroke="black"></path>
                 <path d="M 104,560 L 152,560" fill="none" stroke="black"></path>
                 <path d="M 152,592 L 232,592" fill="none" stroke="black"></path>
-                <path d="M 312,608 L 408,608" fill="none" stroke="black"></path>
+                <path d="M 312,608 L 400,608" fill="none" stroke="black"></path>
                 <path d="M 104,624 L 152,624" fill="none" stroke="black"></path>
-                <path d="M 312,656 L 408,656" fill="none" stroke="black"></path>
+                <path d="M 312,656 L 400,656" fill="none" stroke="black"></path>
                 <path d="M 8,688 L 168,688" fill="none" stroke="black"></path>
                 <path d="M 168,720 L 272,720" fill="none" stroke="black"></path>
                 <path d="M 336,736 L 384,736" fill="none" stroke="black"></path>
@@ -1931,7 +1932,7 @@ For example, P can answer this question by using the means specified in <span>[<
                   <text x="180" y="580">NO</text>
                   <text x="128" y="596">Q2?</text>
                   <text x="336" y="628">Run</text>
-                  <text x="376" y="628">EDHOC</text>
+                  <text x="372" y="628">LAKE</text>
                   <text x="340" y="644">with</text>
                   <text x="368" y="644">S</text>
                   <text x="152" y="660">YES</text>
@@ -1965,7 +1966,7 @@ For example, P can answer this question by using the means specified in <span>[<
             <p id="section-5.1-10.1.1">CTX_P_S denotes a Group OSCORE Security Context that P can use to protect the request over the communication leg between itself and the origin server(s).<a href="#section-5.1-10.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-10.2">
-            <p id="section-5.1-10.2.1">The steps "Q3?", "Run EDHOC with S", and "Success?" are replaced by P joining the correct OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.<a href="#section-5.1-10.2.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-10.2.1">The steps "Q3?", "Run LAKE with S", and "Success?" are replaced by P joining the correct OSCORE group. A successful group joining results in P establishing CTX_P_S, while a failure results in forwarding the request to the origin server(s) without P protecting the request using Group OSCORE.<a href="#section-5.1-10.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1984,7 +1985,7 @@ For example, P can answer this question by using the means specified in <span>[<
           <p id="section-6-3.1.1">If OSCORE is not used at all, the SCHC processing occurs hop-by-hop, by relying on SCHC Rules that are shared between two adjacent hops.<a href="#section-6-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-3.2">
-          <p id="section-6-3.2.1">If OSCORE is used only end-to-end between the application endpoints, then an Inner SCHC Compression/Decompression and an Outer SCHC Compression/Decompression are performed (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-08#section-8.2" class="relref">Section 8.2</a> of [<a href="#I-D.ietf-schc-8824-update" class="cite xref">I-D.ietf-schc-8824-update</a>]</span>). In particular, the following holds.<a href="#section-6-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-6-3.2.1">If OSCORE is used only end-to-end between the application endpoints, then an Inner SCHC Compression/Decompression and an Outer SCHC Compression/Decompression are performed (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-10#section-8.2" class="relref">Section 8.2</a> of [<a href="#I-D.ietf-schc-8824-update" class="cite xref">I-D.ietf-schc-8824-update</a>]</span>). In particular, the following holds.<a href="#section-6-3.2.1" class="pilcrow">¶</a></p>
 <p id="section-6-3.2.2">
 The SCHC processing occurs end-to-end as to the Inner SCHC Compression/Decompression. This relies on Inner SCHC Rules that are shared between the two application endpoints, which act as OSCORE endpoints and share the OSCORE Security Context used.<a href="#section-6-3.2.2" class="pilcrow">¶</a></p>
 <p id="section-6-3.2.3">
@@ -2120,11 +2121,11 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-uri-path-abbrev">[I-D.ietf-core-uri-path-abbrev]</dt>
         <dd>
-<span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"URI-Path abbreviation in CoAP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-uri-path-abbrev-04</span>, <time datetime="2026-03-19" class="refDate">19 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-uri-path-abbrev-04">https://datatracker.ietf.org/doc/html/draft-ietf-core-uri-path-abbrev-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"URI Path abbreviation in CoAP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-uri-path-abbrev-05</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-uri-path-abbrev-05">https://datatracker.ietf.org/doc/html/draft-ietf-core-uri-path-abbrev-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-schc-8824-update">[I-D.ietf-schc-8824-update]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Toutain, L.</span>, <span class="refAuthor">Martínez, I.</span>, and <span class="refAuthor">A. Minaburo</span>, <span class="refTitle">"Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-schc-8824-update-08</span>, <time datetime="2026-06-03" class="refDate">3 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-08">https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-08</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Toutain, L.</span>, <span class="refAuthor">Martínez, I.</span>, and <span class="refAuthor">A. Minaburo</span>, <span class="refTitle">"Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-schc-8824-update-10</span>, <time datetime="2026-07-26" class="refDate">26 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-10">https://datatracker.ietf.org/doc/html/draft-ietf-schc-8824-update-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IANA.CoAP.Option.Numbers">[IANA.CoAP.Option.Numbers]</dt>
         <dd>
@@ -2181,7 +2182,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-cacheable-oscore">[I-D.ietf-core-cacheable-oscore]</dt>
         <dd>
-<span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"End-to-End Protected and Cacheable Responses for the Constrained Application Protocol (CoAP) using Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-cacheable-oscore-01</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-cacheable-oscore-01">https://datatracker.ietf.org/doc/html/draft-ietf-core-cacheable-oscore-01</a>&gt;</span>. </dd>
+<span class="refAuthor">Amsüss, C.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"End-to-End Protected and Cacheable CoAP Responses using Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-cacheable-oscore-02</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-cacheable-oscore-02">https://datatracker.ietf.org/doc/html/draft-ietf-core-cacheable-oscore-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-coap-pm">[I-D.ietf-core-coap-pm]</dt>
         <dd>
@@ -2197,15 +2198,15 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-groupcomm-proxy">[I-D.ietf-core-groupcomm-proxy]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">E. Dijk</span>, <span class="refTitle">"Proxy Operations in Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-proxy-06</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-06">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-06</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">E. Dijk</span>, <span class="refTitle">"Proxy Operations in Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-proxy-07</span>, <time datetime="2026-09-02" class="refDate">2 September 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-07">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-multicast-notifications-proxy">[I-D.ietf-core-multicast-notifications-proxy]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Using Proxies for Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-multicast-notifications-proxy-01</span>, <time datetime="2026-04-22" class="refDate">22 April 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-01">https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-01</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Using Proxies for Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-multicast-notifications-proxy-02</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-02">https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-observe-multicast-notifications">[I-D.ietf-core-observe-multicast-notifications]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-14</span>, <time datetime="2026-04-22" class="refDate">22 April 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-14">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-14</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-15</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-15">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-15</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-transport-indication">[I-D.ietf-core-transport-indication]</dt>
         <dd>
@@ -2213,7 +2214,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
 <dd class="break"></dd>
 <dt id="I-D.ietf-lake-app-profiles">[I-D.ietf-lake-app-profiles]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Coordinating the Use of Application Profiles for Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-app-profiles-04</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-04">https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Coordinating the Use of Application Profiles for Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-app-profiles-05</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-05">https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="LwM2M-Core">[LwM2M-Core]</dt>
         <dd>
@@ -2285,7 +2286,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
         </h3>
 <p id="appendix-A.1-1">CoAP also supports one-to-many group communication <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>, e.g., over IP multicast, which can be protected end-to-end between origin client and origin servers by using Group OSCORE <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.1-2">This communication model can be assisted by intermediaries such as a CoAP forward-proxy or reverse-proxy, which relays a group request to the origin servers. If Group OSCORE is used, the proxy is intentionally not a member of the OSCORE group. Furthermore, <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span> defines a signaling protocol between origin client and proxy, to ensure that responses from the different origin servers are forwarded back to the origin client within a time interval set by the client and that those responses can be distinguished from one another.<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
-<p id="appendix-A.1-3">That signaling protocol requires that the proxy identifies the origin client as allowed-listed, before forwarding a group request to the servers (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-06#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>). In turn, this requires a security association between the origin client and the proxy, which would be convenient to provide with a dedicated OSCORE Security Context shared between the two, since the client is possibly using also Group OSCORE with the origin servers.<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-3">That signaling protocol requires that the proxy identifies the origin client as allowed-listed, before forwarding a group request to the servers (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-07#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span>). In turn, this requires a security association between the origin client and the proxy, which would be convenient to provide with a dedicated OSCORE Security Context shared between the two, since the client is possibly using also Group OSCORE with the origin servers.<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ssec-uc2">
@@ -2295,8 +2296,8 @@ Fundamentally, this is not worse then when applying the default behavior mention
         </h3>
 <p id="appendix-A.2-1">The Observe extension for CoAP <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> allows a client to register its interest in "observing" a resource at a server. The server can then send back notification responses upon changes in the resource representation, all matching with the original observation request.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.2-2">In some applications, such as based on publish-subscribe communication <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>, multiple clients are interested in observing the same resource at the same server. In the interest of such applications, <span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span> defines a method that allows the server to send a single notification response to all the observer clients at once, e.g., over IP multicast. To this end, the server synchronizes the clients by providing them with a common "phantom observation request", against which the following multicast notifications will match.<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-A.2-3">If the clients and the server use Group OSCORE for end-to-end security and a proxy is also involved, an additional step is required (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-01#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>). That is, clients are in turn required to provide the proxy with the obtained "phantom observation request", thus enabling the proxy to receive the multicast notifications from the server.<a href="#appendix-A.2-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.2-4">Therefore, it is preferable to have a security association also between each client and the proxy, in order to ensure the integrity of that information provided to the proxy (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-01#section-10.1" class="relref">Section 10.1</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>). Like for the use case in <a href="#ssec-uc1" class="auto internal xref">Appendix A.1</a>, this would be conveniently achieved with a dedicated OSCORE Security Context shared between a client and the proxy, since the client is also using Group OSCORE with the origin server.<a href="#appendix-A.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-3">If the clients and the server use Group OSCORE for end-to-end security and a proxy is also involved, an additional step is required (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-02#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>). That is, clients are in turn required to provide the proxy with the obtained "phantom observation request", thus enabling the proxy to receive the multicast notifications from the server.<a href="#appendix-A.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-4">Therefore, it is preferable to have a security association also between each client and the proxy, in order to ensure the integrity of that information provided to the proxy (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-multicast-notifications-proxy-02#section-10.1" class="relref">Section 10.1</a> of [<a href="#I-D.ietf-core-multicast-notifications-proxy" class="cite xref">I-D.ietf-core-multicast-notifications-proxy</a>]</span>). Like for the use case in <a href="#ssec-uc1" class="auto internal xref">Appendix A.1</a>, this would be conveniently achieved with a dedicated OSCORE Security Context shared between a client and the proxy, since the client is also using Group OSCORE with the origin server.<a href="#appendix-A.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ssec-uc3">
@@ -3085,8 +3086,8 @@ Building on that, it is also possible to enable the operation of hidden services
 </div>
 <div id="sec-example-edhoc">
 <section id="appendix-B.4">
-        <h3 id="name-with-forward-proxy-and-edho">
-<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-with-forward-proxy-and-edho" class="section-name selfRef">With Forward-Proxy and EDHOC; OSCORE: C-S, C-P</a>
+        <h3 id="name-with-forward-proxy-and-lake">
+<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-with-forward-proxy-and-lake" class="section-name selfRef">With Forward-Proxy and LAKE; OSCORE: C-S, C-P</a>
         </h3>
 <p id="appendix-B.4-1">In the example shown in <a href="#fig-example-edhoc" class="auto internal xref">Figure 5</a>, message exchanges are protected as follows.<a href="#appendix-B.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -3097,7 +3098,7 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-B.4-2.2.1">Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-B.4-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="appendix-B.4-3">The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-B.4-3" class="pilcrow">¶</a></p>
+<p id="appendix-B.4-3">The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol LAKE <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-B.4-3" class="pilcrow">¶</a></p>
 <p id="appendix-B.4-4">After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in <a href="#sec-examples-1" class="auto internal xref">Appendix B.1</a>.<a href="#appendix-B.4-4" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-s"></span><div id="fig-example-edhoc">
 <figure id="figure-5">
@@ -3174,8 +3175,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="212" y="132">0xff</text>
                   <text x="204" y="148">Payload:</text>
                   <text x="268" y="148">(true,</text>
-                  <text x="320" y="148">EDHOC</text>
-                  <text x="388" y="148">message_1)</text>
+                  <text x="316" y="148">LAKE</text>
+                  <text x="380" y="148">message_1)</text>
                   <text x="216" y="180">Code:</text>
                   <text x="260" y="180">2.04</text>
                   <text x="320" y="180">(Changed)</text>
@@ -3184,8 +3185,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="260" y="196">0xf3</text>
                   <text x="212" y="212">0xff</text>
                   <text x="204" y="228">Payload:</text>
-                  <text x="264" y="228">EDHOC</text>
-                  <text x="328" y="228">message_2</text>
+                  <text x="260" y="228">LAKE</text>
+                  <text x="320" y="228">message_2</text>
                   <text x="40" y="260">Establish</text>
                   <text x="32" y="276">CTX_C_P</text>
                   <text x="216" y="308">Code:</text>
@@ -3201,8 +3202,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="212" y="372">0xff</text>
                   <text x="204" y="388">Payload:</text>
                   <text x="264" y="388">(C_R,</text>
-                  <text x="312" y="388">EDHOC</text>
-                  <text x="380" y="388">message_3)</text>
+                  <text x="308" y="388">LAKE</text>
+                  <text x="372" y="388">message_3)</text>
                   <text x="104" y="420">Establish</text>
                   <text x="96" y="436">CTX_C_P</text>
                   <text x="56" y="484">ACK</text>
@@ -3235,8 +3236,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="392" y="708">"coap",</text>
                   <text x="272" y="724">0xff,</text>
                   <text x="276" y="740">(true,</text>
-                  <text x="328" y="740">EDHOC</text>
-                  <text x="396" y="740">message_1)</text>
+                  <text x="324" y="740">LAKE</text>
+                  <text x="388" y="740">message_1)</text>
                   <text x="248" y="756">}</text>
                   <text x="268" y="756">//</text>
                   <text x="320" y="756">Encrypted</text>
@@ -3261,8 +3262,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="212" y="932">0xff</text>
                   <text x="204" y="948">Payload:</text>
                   <text x="268" y="948">(true,</text>
-                  <text x="320" y="948">EDHOC</text>
-                  <text x="388" y="948">message_1)</text>
+                  <text x="316" y="948">LAKE</text>
+                  <text x="380" y="948">message_1)</text>
                   <text x="216" y="980">Code:</text>
                   <text x="260" y="980">2.04</text>
                   <text x="320" y="980">(Changed)</text>
@@ -3271,8 +3272,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="260" y="996">0xa5</text>
                   <text x="212" y="1012">0xff</text>
                   <text x="204" y="1028">Payload:</text>
-                  <text x="264" y="1028">EDHOC</text>
-                  <text x="328" y="1028">message_2</text>
+                  <text x="260" y="1028">LAKE</text>
+                  <text x="320" y="1028">message_2</text>
                   <text x="96" y="1060">Encrypt</text>
                   <text x="84" y="1076">RESP</text>
                   <text x="124" y="1076">with</text>
@@ -3291,8 +3292,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="316" y="1188">2.04</text>
                   <text x="380" y="1188">(Changed),</text>
                   <text x="272" y="1204">0xff,</text>
-                  <text x="272" y="1220">EDHOC</text>
-                  <text x="336" y="1220">message_2</text>
+                  <text x="268" y="1220">LAKE</text>
+                  <text x="328" y="1220">message_2</text>
                   <text x="248" y="1236">}</text>
                   <text x="268" y="1236">//</text>
                   <text x="320" y="1236">Encrypted</text>
@@ -3333,8 +3334,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="392" y="1572">"coap",</text>
                   <text x="272" y="1588">0xff,</text>
                   <text x="272" y="1604">(C_R,</text>
-                  <text x="320" y="1604">EDHOC</text>
-                  <text x="388" y="1604">message_3)</text>
+                  <text x="316" y="1604">LAKE</text>
+                  <text x="380" y="1604">message_3)</text>
                   <text x="248" y="1620">}</text>
                   <text x="292" y="1620">//</text>
                   <text x="344" y="1620">Encrypted</text>
@@ -3359,8 +3360,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="212" y="1796">0xff</text>
                   <text x="204" y="1812">Payload:</text>
                   <text x="264" y="1812">(C_R,</text>
-                  <text x="312" y="1812">EDHOC</text>
-                  <text x="380" y="1812">message_3)</text>
+                  <text x="308" y="1812">LAKE</text>
+                  <text x="372" y="1812">message_3)</text>
                   <text x="168" y="1844">Establish</text>
                   <text x="160" y="1860">CTX_C_S</text>
                   <text x="120" y="1908">ACK</text>
@@ -3550,15 +3551,15 @@ Building on that, it is also possible to enable the operation of hidden services
 </div>
 </div>
 <figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
-<a href="#name-use-of-oscore-between-client-s" class="selfRef">Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC</a>
+<a href="#name-use-of-oscore-between-client-s" class="selfRef">Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through LAKE</a>
           </figcaption></figure>
 </div>
 </section>
 </div>
 <div id="sec-example-edhoc-comb-req">
 <section id="appendix-B.5">
-        <h3 id="name-with-forward-proxy-and-edhoc">
-<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-with-forward-proxy-and-edhoc" class="section-name selfRef">With Forward-Proxy and EDHOC (optimized); OSCORE: C-S, C-P</a>
+        <h3 id="name-with-forward-proxy-and-lake-">
+<a href="#appendix-B.5" class="section-number selfRef">B.5. </a><a href="#name-with-forward-proxy-and-lake-" class="section-name selfRef">With Forward-Proxy and LAKE (optimized); OSCORE: C-S, C-P</a>
         </h3>
 <p id="appendix-B.5-1">In the example shown in <a href="#fig-example-edhoc-comb-req" class="auto internal xref">Figure 6</a>, message exchanges are protected as follows.<a href="#appendix-B.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -3569,9 +3570,9 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-B.5-2.2.1">Between the client and the proxy, using the OSCORE Security Context CTX_C_P. The client uses the OSCORE Sender ID 0x20 when using OSCORE with the proxy.<a href="#appendix-B.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="appendix-B.5-3">The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-B.5-3" class="pilcrow">¶</a></p>
-<p id="appendix-B.5-4">In particular, the client relies on the EDHOC + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> and denoted as COMB_REQ, in order to transport the last EDHOC message_3 and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-B.5-4" class="pilcrow">¶</a></p>
-<p id="appendix-B.5-5">After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in <a href="#sec-examples-1" class="auto internal xref">Appendix B.1</a>. In the example shown in the present section, the two phases partly overlap at the POST request sent by the client with Token 0x83 and forwarded by the proxy with Token 0xa6, as the EDHOC + OSCORE request that conveys both the last EDHOC message_3 from the client intended for the server and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-B.5-5" class="pilcrow">¶</a></p>
+<p id="appendix-B.5-3">The example also shows how the client establishes the OSCORE Security Contexts CTX_C_P with the proxy and CTX_C_S with the server, by using the key exchange protocol LAKE <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#appendix-B.5-3" class="pilcrow">¶</a></p>
+<p id="appendix-B.5-4">In particular, the client relies on the LAKE + OSCORE request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span> (denoted therein as "EDHOC + OSCORE request") and indicated as COMB_REQ, in order to transport the last LAKE message_3 and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-B.5-4" class="pilcrow">¶</a></p>
+<p id="appendix-B.5-5">After a first phase where the OSCORE Security Contexts are established, the second phase consists in a protected message exchange equivalent to that shown in <a href="#sec-examples-1" class="auto internal xref">Appendix B.1</a>. In the example shown in the present section, the two phases partly overlap at the POST request sent by the client with Token 0x83 and forwarded by the proxy with Token 0xa6, as the LAKE + OSCORE request that conveys both the last LAKE message_3 from the client intended for the server and the first OSCORE-protected application CoAP request combined together.<a href="#appendix-B.5-5" class="pilcrow">¶</a></p>
 <span id="name-use-of-oscore-between-client-se"></span><div id="fig-example-edhoc-comb-req">
 <figure id="figure-6">
           <div id="appendix-B.5-6.1">
@@ -3634,8 +3635,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="212" y="132">0xff</text>
                   <text x="204" y="148">Payload:</text>
                   <text x="268" y="148">(true,</text>
-                  <text x="320" y="148">EDHOC</text>
-                  <text x="388" y="148">message_1)</text>
+                  <text x="316" y="148">LAKE</text>
+                  <text x="380" y="148">message_1)</text>
                   <text x="208" y="180">Code:</text>
                   <text x="252" y="180">2.04</text>
                   <text x="312" y="180">(Changed)</text>
@@ -3644,8 +3645,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="252" y="196">0xf3</text>
                   <text x="204" y="212">0xff</text>
                   <text x="196" y="228">Payload:</text>
-                  <text x="256" y="228">EDHOC</text>
-                  <text x="320" y="228">message_2</text>
+                  <text x="252" y="228">LAKE</text>
+                  <text x="312" y="228">message_2</text>
                   <text x="40" y="260">Establish</text>
                   <text x="32" y="276">CTX_C_P</text>
                   <text x="32" y="308">Encrypt</text>
@@ -3672,12 +3673,12 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="248" y="500">-</text>
                   <text x="212" y="516">0xff</text>
                   <text x="204" y="532">Payload:</text>
-                  <text x="264" y="532">EDHOC</text>
-                  <text x="332" y="532">message_3,</text>
-                  <text x="388" y="532">//</text>
-                  <text x="436" y="532">Intended</text>
-                  <text x="488" y="532">for</text>
-                  <text x="512" y="532">P</text>
+                  <text x="260" y="532">LAKE</text>
+                  <text x="324" y="532">message_3,</text>
+                  <text x="380" y="532">//</text>
+                  <text x="428" y="532">Intended</text>
+                  <text x="480" y="532">for</text>
+                  <text x="504" y="532">P</text>
                   <text x="268" y="548">{Code:</text>
                   <text x="316" y="548">0.02</text>
                   <text x="368" y="548">(POST),</text>
@@ -3691,8 +3692,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="392" y="612">"coap",</text>
                   <text x="272" y="628">0xff,</text>
                   <text x="276" y="644">(true,</text>
-                  <text x="328" y="644">EDHOC</text>
-                  <text x="396" y="644">message_1)</text>
+                  <text x="324" y="644">LAKE</text>
+                  <text x="388" y="644">message_1)</text>
                   <text x="248" y="660">}</text>
                   <text x="268" y="660">//</text>
                   <text x="320" y="660">Encrypted</text>
@@ -3724,8 +3725,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="212" y="948">0xff</text>
                   <text x="204" y="964">Payload:</text>
                   <text x="268" y="964">(true,</text>
-                  <text x="320" y="964">EDHOC</text>
-                  <text x="388" y="964">message_1)</text>
+                  <text x="316" y="964">LAKE</text>
+                  <text x="380" y="964">message_1)</text>
                   <text x="208" y="996">Code:</text>
                   <text x="252" y="996">2.04</text>
                   <text x="312" y="996">(Changed)</text>
@@ -3734,8 +3735,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="252" y="1012">0xa5</text>
                   <text x="204" y="1028">0xff</text>
                   <text x="196" y="1044">Payload:</text>
-                  <text x="256" y="1044">EDHOC</text>
-                  <text x="320" y="1044">message_2</text>
+                  <text x="252" y="1044">LAKE</text>
+                  <text x="312" y="1044">message_2</text>
                   <text x="96" y="1076">Encrypt</text>
                   <text x="84" y="1092">RESP</text>
                   <text x="124" y="1092">with</text>
@@ -3754,8 +3755,8 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="316" y="1204">2.04</text>
                   <text x="380" y="1204">(Changed),</text>
                   <text x="272" y="1220">0xff,</text>
-                  <text x="272" y="1236">EDHOC</text>
-                  <text x="336" y="1236">message_2</text>
+                  <text x="268" y="1236">LAKE</text>
+                  <text x="328" y="1236">message_2</text>
                   <text x="248" y="1252">}</text>
                   <text x="268" y="1252">//</text>
                   <text x="320" y="1252">Encrypted</text>
@@ -3808,12 +3809,12 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="304" y="1748">Proxy-Scheme:</text>
                   <text x="392" y="1748">"coap",</text>
                   <text x="272" y="1764">0xff,</text>
-                  <text x="272" y="1780">EDHOC</text>
-                  <text x="340" y="1780">message_3,</text>
-                  <text x="396" y="1780">//</text>
-                  <text x="444" y="1780">Intended</text>
-                  <text x="496" y="1780">for</text>
-                  <text x="520" y="1780">S</text>
+                  <text x="268" y="1780">LAKE</text>
+                  <text x="332" y="1780">message_3,</text>
+                  <text x="388" y="1780">//</text>
+                  <text x="436" y="1780">Intended</text>
+                  <text x="488" y="1780">for</text>
+                  <text x="512" y="1780">S</text>
                   <text x="256" y="1796">{</text>
                   <text x="280" y="1812">Code:</text>
                   <text x="324" y="1812">0.01</text>
@@ -3849,12 +3850,12 @@ Building on that, it is also possible to enable the operation of hidden services
                   <text x="248" y="2036">-</text>
                   <text x="212" y="2052">0xff</text>
                   <text x="204" y="2068">Payload:</text>
-                  <text x="264" y="2068">EDHOC</text>
-                  <text x="332" y="2068">message_3,</text>
-                  <text x="388" y="2068">//</text>
-                  <text x="436" y="2068">Intended</text>
-                  <text x="488" y="2068">for</text>
-                  <text x="512" y="2068">S</text>
+                  <text x="260" y="2068">LAKE</text>
+                  <text x="324" y="2068">message_3,</text>
+                  <text x="380" y="2068">//</text>
+                  <text x="428" y="2068">Intended</text>
+                  <text x="480" y="2068">for</text>
+                  <text x="504" y="2068">S</text>
                   <text x="248" y="2084">{</text>
                   <text x="272" y="2100">Code:</text>
                   <text x="316" y="2100">0.01</text>
@@ -3983,7 +3984,7 @@ Building on that, it is also possible to enable the operation of hidden services
 </div>
 </div>
 <figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
-<a href="#name-use-of-oscore-between-client-se" class="selfRef">Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through EDHOC using the EDHOC + OSCORE request</a>
+<a href="#name-use-of-oscore-between-client-se" class="selfRef">Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through LAKE using the LAKE + OSCORE request</a>
           </figcaption></figure>
 </div>
 </section>
@@ -5513,226 +5514,241 @@ Building on that, it is also possible to enable the operation of hidden services
 <a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
 <p id="appendix-E-1">This section is to be removed before publishing as an RFC.<a href="#appendix-E-1" class="pilcrow">¶</a></p>
-<div id="sec-06-07">
+<div id="sec-07-08">
 <section id="appendix-E.1">
-        <h3 id="name-version-06-to-07">
-<a href="#appendix-E.1" class="section-number selfRef">E.1. </a><a href="#name-version-06-to-07" class="section-name selfRef">Version -06 to -07</a>
+        <h3 id="name-version-07-to-08">
+<a href="#appendix-E.1" class="section-number selfRef">E.1. </a><a href="#name-version-07-to-08" class="section-name selfRef">Version -07 to -08</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-E.1-1.1">
-            <p id="appendix-E.1-1.1.1">Revised presentation of the algorithm for processing incoming requests.<a href="#appendix-E.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.1.1">Renamed EDHOC to LAKE as appropriate.<a href="#appendix-E.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.2">
-            <p id="appendix-E.1-1.2.1">Added guidelines for proxies on establishing/using OSCORE with an origin server.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.2.1">Editorial improvements.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.1-1.3">
-            <p id="appendix-E.1-1.3.1">Added example of message exchange with two forward-proxies.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
+        </ul>
+</section>
+</div>
+<div id="sec-06-07">
+<section id="appendix-E.2">
+        <h3 id="name-version-06-to-07">
+<a href="#appendix-E.2" class="section-number selfRef">E.2. </a><a href="#name-version-06-to-07" class="section-name selfRef">Version -06 to -07</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="appendix-E.2-1.1">
+            <p id="appendix-E.2-1.1.1">Revised presentation of the algorithm for processing incoming requests.<a href="#appendix-E.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.1-1.4">
-            <p id="appendix-E.1-1.4.1">Fixes in the examples of message exchange.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.2-1.2">
+            <p id="appendix-E.2-1.2.1">Added guidelines for proxies on establishing/using OSCORE with an origin server.<a href="#appendix-E.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.1-1.5">
-            <p id="appendix-E.1-1.5.1">Minor clarifications and editorial improvements.<a href="#appendix-E.1-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.2-1.3">
+            <p id="appendix-E.2-1.3.1">Added example of message exchange with two forward-proxies.<a href="#appendix-E.2-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.2-1.4">
+            <p id="appendix-E.2-1.4.1">Fixes in the examples of message exchange.<a href="#appendix-E.2-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.2-1.5">
+            <p id="appendix-E.2-1.5.1">Minor clarifications and editorial improvements.<a href="#appendix-E.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-05-06">
-<section id="appendix-E.2">
+<section id="appendix-E.3">
         <h3 id="name-version-05-to-06">
-<a href="#appendix-E.2" class="section-number selfRef">E.2. </a><a href="#name-version-05-to-06" class="section-name selfRef">Version -05 to -06</a>
+<a href="#appendix-E.3" class="section-number selfRef">E.3. </a><a href="#name-version-05-to-06" class="section-name selfRef">Version -05 to -06</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-E.2-1.1">
-            <p id="appendix-E.2-1.1.1">Removed normative language when behavior is not new.<a href="#appendix-E.2-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-E.3-1.1">
+            <p id="appendix-E.3-1.1.1">Removed normative language when behavior is not new.<a href="#appendix-E.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.2">
-            <p id="appendix-E.2-1.2.1">Removed inappropriate references to RFC 7252.<a href="#appendix-E.2-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.2">
+            <p id="appendix-E.3-1.2.1">Removed inappropriate references to RFC 7252.<a href="#appendix-E.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.3">
-            <p id="appendix-E.2-1.3.1">Defined meaning of "consumer" of a CoAP option.<a href="#appendix-E.2-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.3">
+            <p id="appendix-E.3-1.3.1">Defined meaning of "consumer" of a CoAP option.<a href="#appendix-E.3-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.4">
-            <p id="appendix-E.2-1.4.1">Fixed use of error codes at the origin server.<a href="#appendix-E.2-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.4">
+            <p id="appendix-E.3-1.4.1">Fixed use of error codes at the origin server.<a href="#appendix-E.3-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.5">
-            <p id="appendix-E.2-1.5.1">Reorganized text on policies for source-based processing of incoming requests.<a href="#appendix-E.2-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.5">
+            <p id="appendix-E.3-1.5.1">Reorganized text on policies for source-based processing of incoming requests.<a href="#appendix-E.3-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.6">
-            <p id="appendix-E.2-1.6.1">Covered the use of the CoAP Uri-Path-Abbrev Option.<a href="#appendix-E.2-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.6">
+            <p id="appendix-E.3-1.6.1">Covered the use of the CoAP Uri-Path-Abbrev Option.<a href="#appendix-E.3-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.7">
-            <p id="appendix-E.2-1.7.1">Added requirements on including the Partial IV in the OSCORE Option of responses.<a href="#appendix-E.2-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.7">
+            <p id="appendix-E.3-1.7.1">Added requirements on including the Partial IV in the OSCORE Option of responses.<a href="#appendix-E.3-1.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.8">
-            <p id="appendix-E.2-1.8.1">Use of SCHC Compression/Decompression:<a href="#appendix-E.2-1.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.8">
+            <p id="appendix-E.3-1.8.1">Use of SCHC Compression/Decompression:<a href="#appendix-E.3-1.8.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E.2-1.8.2.1">
-                <p id="appendix-E.2-1.8.2.1.1">Fixed generalization of Outer SCHC Compression.<a href="#appendix-E.2-1.8.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-E.3-1.8.2.1">
+                <p id="appendix-E.3-1.8.2.1.1">Fixed generalization of Outer SCHC Compression.<a href="#appendix-E.3-1.8.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-E.2-1.8.2.2">
-                <p id="appendix-E.2-1.8.2.2.1">Explicit distinction between Inner and Outer SCHC Compression Rules.<a href="#appendix-E.2-1.8.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-E.3-1.8.2.2">
+                <p id="appendix-E.3-1.8.2.2.1">Explicit distinction between Inner and Outer SCHC Compression Rules.<a href="#appendix-E.3-1.8.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-E.2-1.9">
-            <p id="appendix-E.2-1.9.1">Improved visibility and discussion on two use cases: "Access Control to a Proxy" and "Access Control to the Origin Server" (via a pproxy).<a href="#appendix-E.2-1.9.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.9">
+            <p id="appendix-E.3-1.9.1">Improved visibility and discussion on two use cases: "Access Control to a Proxy" and "Access Control to the Origin Server" (via a pproxy).<a href="#appendix-E.3-1.9.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.10">
-            <p id="appendix-E.2-1.10.1">Updated references.<a href="#appendix-E.2-1.10.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.10">
+            <p id="appendix-E.3-1.10.1">Updated references.<a href="#appendix-E.3-1.10.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.2-1.11">
-            <p id="appendix-E.2-1.11.1">Minor clarifications and editorial improvements.<a href="#appendix-E.2-1.11.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.3-1.11">
+            <p id="appendix-E.3-1.11.1">Minor clarifications and editorial improvements.<a href="#appendix-E.3-1.11.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-04-05">
-<section id="appendix-E.3">
+<section id="appendix-E.4">
         <h3 id="name-version-04-to-05">
-<a href="#appendix-E.3" class="section-number selfRef">E.3. </a><a href="#name-version-04-to-05" class="section-name selfRef">Version -04 to -05</a>
+<a href="#appendix-E.4" class="section-number selfRef">E.4. </a><a href="#name-version-04-to-05" class="section-name selfRef">Version -04 to -05</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-E.3-1.1">
-            <p id="appendix-E.3-1.1.1">Fixes in the examples of message exchange.<a href="#appendix-E.3-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-E.4-1.1">
+            <p id="appendix-E.4-1.1.1">Fixes in the examples of message exchange.<a href="#appendix-E.4-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.3-1.2">
-            <p id="appendix-E.3-1.2.1">Minor clarifications and editorial improvements.<a href="#appendix-E.3-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.4-1.2">
+            <p id="appendix-E.4-1.2.1">Minor clarifications and editorial improvements.<a href="#appendix-E.4-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-03-04">
-<section id="appendix-E.4">
+<section id="appendix-E.5">
         <h3 id="name-version-03-to-04">
-<a href="#appendix-E.4" class="section-number selfRef">E.4. </a><a href="#name-version-03-to-04" class="section-name selfRef">Version -03 to -04</a>
+<a href="#appendix-E.5" class="section-number selfRef">E.5. </a><a href="#name-version-03-to-04" class="section-name selfRef">Version -03 to -04</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-E.4-1.1">
-            <p id="appendix-E.4-1.1.1">Removed definition and use of "OSCORE-in-OSCORE".<a href="#appendix-E.4-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-E.5-1.1">
+            <p id="appendix-E.5-1.1.1">Removed definition and use of "OSCORE-in-OSCORE".<a href="#appendix-E.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.4-1.2">
-            <p id="appendix-E.4-1.2.1">Moved use cases to an appendix.<a href="#appendix-E.4-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.5-1.2">
+            <p id="appendix-E.5-1.2.1">Moved use cases to an appendix.<a href="#appendix-E.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.4-1.3">
-            <p id="appendix-E.4-1.3.1">Explain deviations from RFC 8613 as an actual subsection.<a href="#appendix-E.4-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.5-1.3">
+            <p id="appendix-E.5-1.3.1">Explain deviations from RFC 8613 as an actual subsection.<a href="#appendix-E.5-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.4-1.4">
-            <p id="appendix-E.4-1.4.1">More precise indication of outer or inner CoAP options.<a href="#appendix-E.4-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.5-1.4">
+            <p id="appendix-E.5-1.4.1">More precise indication of outer or inner CoAP options.<a href="#appendix-E.5-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.4-1.5">
-            <p id="appendix-E.4-1.5.1">Added security consideration on membership of OSCORE groups.<a href="#appendix-E.4-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.5-1.5">
+            <p id="appendix-E.5-1.5.1">Added security consideration on membership of OSCORE groups.<a href="#appendix-E.5-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.4-1.6">
-            <p id="appendix-E.4-1.6.1">Updated references.<a href="#appendix-E.4-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.5-1.6">
+            <p id="appendix-E.5-1.6.1">Updated references.<a href="#appendix-E.5-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.4-1.7">
-            <p id="appendix-E.4-1.7.1">Editorial improvements.<a href="#appendix-E.4-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.5-1.7">
+            <p id="appendix-E.5-1.7.1">Editorial improvements.<a href="#appendix-E.5-1.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-02-03">
-<section id="appendix-E.5">
+<section id="appendix-E.6">
         <h3 id="name-version-02-to-03">
-<a href="#appendix-E.5" class="section-number selfRef">E.5. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
+<a href="#appendix-E.6" class="section-number selfRef">E.6. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-E.5-1.1">
-            <p id="appendix-E.5-1.1.1">Clarified motivation for updating RFC 8768 in the introduction.<a href="#appendix-E.5-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-E.6-1.1">
+            <p id="appendix-E.6-1.1.1">Clarified motivation for updating RFC 8768 in the introduction.<a href="#appendix-E.6-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.5-1.2">
-            <p id="appendix-E.5-1.2.1">Explained that OSCORE-capable proxies have to recognize CoAP options included in outgoing messages to protect.<a href="#appendix-E.5-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.6-1.2">
+            <p id="appendix-E.6-1.2.1">Explained that OSCORE-capable proxies have to recognize CoAP options included in outgoing messages to protect.<a href="#appendix-E.6-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.5-1.3">
-            <p id="appendix-E.5-1.3.1">Fixed typo about the intended class of Hop-Limit option for OSCORE.<a href="#appendix-E.5-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.6-1.3">
+            <p id="appendix-E.6-1.3.1">Fixed typo about the intended class of Hop-Limit option for OSCORE.<a href="#appendix-E.6-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.5-1.4">
-            <p id="appendix-E.5-1.4.1">Fixed protection of the Uri-Host option in examples.<a href="#appendix-E.5-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.6-1.4">
+            <p id="appendix-E.6-1.4.1">Fixed protection of the Uri-Host option in examples.<a href="#appendix-E.6-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.5-1.5">
-            <p id="appendix-E.5-1.5.1">Added security considerations about the Hop-Limit option.<a href="#appendix-E.5-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.6-1.5">
+            <p id="appendix-E.6-1.5.1">Added security considerations about the Hop-Limit option.<a href="#appendix-E.6-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.5-1.6">
-            <p id="appendix-E.5-1.6.1">Clarifications and editorial improvements.<a href="#appendix-E.5-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.6-1.6">
+            <p id="appendix-E.6-1.6.1">Clarifications and editorial improvements.<a href="#appendix-E.6-1.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-01-02">
-<section id="appendix-E.6">
+<section id="appendix-E.7">
         <h3 id="name-version-01-to-02">
-<a href="#appendix-E.6" class="section-number selfRef">E.6. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
+<a href="#appendix-E.7" class="section-number selfRef">E.7. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-E.6-1.1">
-            <p id="appendix-E.6-1.1.1">Revised escalation of CoAP option protection.<a href="#appendix-E.6-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-E.7-1.1">
+            <p id="appendix-E.7-1.1.1">Revised escalation of CoAP option protection.<a href="#appendix-E.7-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.6-1.2">
-            <p id="appendix-E.6-1.2.1">Specified general ordering for protecting outgoing requests.<a href="#appendix-E.6-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.7-1.2">
+            <p id="appendix-E.7-1.2.1">Specified general ordering for protecting outgoing requests.<a href="#appendix-E.7-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.6-1.3">
-            <p id="appendix-E.6-1.3.1">Explicit definition of OSCORE processing for the Hop-Limit option (update to RFC 8768).<a href="#appendix-E.6-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.7-1.3">
+            <p id="appendix-E.7-1.3.1">Explicit definition of OSCORE processing for the Hop-Limit option (update to RFC 8768).<a href="#appendix-E.7-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.6-1.4">
-            <p id="appendix-E.6-1.4.1">Added examples of message exchange with a reverse-proxy.<a href="#appendix-E.6-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.7-1.4">
+            <p id="appendix-E.7-1.4.1">Added examples of message exchange with a reverse-proxy.<a href="#appendix-E.7-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.6-1.5">
-            <p id="appendix-E.6-1.5.1">Clarifications and editorial improvements.<a href="#appendix-E.6-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.7-1.5">
+            <p id="appendix-E.7-1.5.1">Clarifications and editorial improvements.<a href="#appendix-E.7-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00-01">
-<section id="appendix-E.7">
+<section id="appendix-E.8">
         <h3 id="name-version-00-to-01">
-<a href="#appendix-E.7" class="section-number selfRef">E.7. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
+<a href="#appendix-E.8" class="section-number selfRef">E.8. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-E.7-1.1">
-            <p id="appendix-E.7-1.1.1">Escalation of option protection as explicit update point to RFC 8613.<a href="#appendix-E.7-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-E.8-1.1">
+            <p id="appendix-E.8-1.1.1">Escalation of option protection as explicit update point to RFC 8613.<a href="#appendix-E.8-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.2">
-            <p id="appendix-E.7-1.2.1">Clarified examples of Class U/I CoAP options that become encrypted.<a href="#appendix-E.7-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.2">
+            <p id="appendix-E.8-1.2.1">Clarified examples of Class U/I CoAP options that become encrypted.<a href="#appendix-E.8-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.3">
-            <p id="appendix-E.7-1.3.1">Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-Number.<a href="#appendix-E.7-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.3">
+            <p id="appendix-E.8-1.3.1">Considered also the CoAP Options Proxy-Cri and Proxy-Scheme-Number.<a href="#appendix-E.8-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.4">
-            <p id="appendix-E.7-1.4.1">Added reference to Onion CoAP as use case.<a href="#appendix-E.7-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.4">
+            <p id="appendix-E.8-1.4.1">Added reference to Onion CoAP as use case.<a href="#appendix-E.8-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.5">
-            <p id="appendix-E.7-1.5.1">Required to set a limit on OSCORE layers that can be added/removed.<a href="#appendix-E.7-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.5">
+            <p id="appendix-E.8-1.5.1">Required to set a limit on OSCORE layers that can be added/removed.<a href="#appendix-E.8-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.6">
-            <p id="appendix-E.7-1.6.1">Revised general rules on protecting CoAP options.<a href="#appendix-E.7-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.6">
+            <p id="appendix-E.8-1.6.1">Revised general rules on protecting CoAP options.<a href="#appendix-E.8-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.7">
-            <p id="appendix-E.7-1.7.1">A forward-proxy consumes a request when the request URI identifies the proxy itself.<a href="#appendix-E.7-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.7">
+            <p id="appendix-E.8-1.7.1">A forward-proxy consumes a request when the request URI identifies the proxy itself.<a href="#appendix-E.8-1.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.8">
-            <p id="appendix-E.7-1.8.1">Consistency fix: a reverse-proxy can forward based on Uri-Host, Uri-Port or Uri-Path.<a href="#appendix-E.7-1.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.8">
+            <p id="appendix-E.8-1.8.1">Consistency fix: a reverse-proxy can forward based on Uri-Host, Uri-Port or Uri-Path.<a href="#appendix-E.8-1.8.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.9">
-            <p id="appendix-E.7-1.9.1">Generalized authorization checks as acceptability checks.<a href="#appendix-E.7-1.9.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.9">
+            <p id="appendix-E.8-1.9.1">Generalized authorization checks as acceptability checks.<a href="#appendix-E.8-1.9.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.10">
-            <p id="appendix-E.7-1.10.1">Added acceptability check before decrypting a request.<a href="#appendix-E.7-1.10.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.10">
+            <p id="appendix-E.8-1.10.1">Added acceptability check before decrypting a request.<a href="#appendix-E.8-1.10.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.11">
-            <p id="appendix-E.7-1.11.1">Fixes in the examples of message exchange.<a href="#appendix-E.7-1.11.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.11">
+            <p id="appendix-E.8-1.11.1">Fixes in the examples of message exchange.<a href="#appendix-E.8-1.11.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.12">
-            <p id="appendix-E.7-1.12.1">Updated state diagram of the incoming request processing.<a href="#appendix-E.7-1.12.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.12">
+            <p id="appendix-E.8-1.12.1">Updated state diagram of the incoming request processing.<a href="#appendix-E.8-1.12.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.13">
-            <p id="appendix-E.7-1.13.1">Added state diagram on the protection of CoAP options of Class U/I.<a href="#appendix-E.7-1.13.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.13">
+            <p id="appendix-E.8-1.13.1">Added state diagram on the protection of CoAP options of Class U/I.<a href="#appendix-E.8-1.13.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.14">
-            <p id="appendix-E.7-1.14.1">Updated references.<a href="#appendix-E.7-1.14.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.14">
+            <p id="appendix-E.8-1.14.1">Updated references.<a href="#appendix-E.8-1.14.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-E.7-1.15">
-            <p id="appendix-E.7-1.15.1">Editorial fixes and improvements.<a href="#appendix-E.7-1.15.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-E.8-1.15">
+            <p id="appendix-E.8-1.15.1">Editorial fixes and improvements.<a href="#appendix-E.8-1.15.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
