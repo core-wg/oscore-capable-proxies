@@ -218,7 +218,7 @@ Note that the sender endpoint can assess some conditions only "to the best of it
 
    - To the best of the sender endpoint's knowledge, X is the next hop for the sender endpoint; or
 
-   - To the best of the sender endpoint's knowledge, the immediately next consumer of OPT is not a hop in between itself and X.
+   - To the best of the sender endpoint's knowledge, the immediately next consumer of OPT is not a hop in between the sender endpoint and X.
 
 5. If X needs to access OPT before having removed the i-th OSCORE layer or in order to remove the i-th OSCORE layer, then this algorithm moves to Step 9. Otherwise, this algorithm moves to Step 6.
 
