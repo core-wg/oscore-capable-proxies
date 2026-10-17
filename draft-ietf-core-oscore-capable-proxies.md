@@ -67,7 +67,6 @@ informative:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-core-transport-indication:
   I-D.ietf-ace-key-groupcomm-oscore:
-  I-D.ietf-core-coap-pm:
   I-D.ietf-ace-coap-est-oscore:
   I-D.ietf-core-cacheable-oscore:
   I-D.ietf-lake-app-profiles:
@@ -693,12 +692,6 @@ Furthermore, if the client trusts the proxy to perform its tasks in a privacy-or
 ## Further Use Cases
 
 The approach defined in this document can be useful also in the following use cases relying on a proxy.
-
-* The method specified in {{I-D.ietf-core-coap-pm}} relies on the Performance Measurement Option to enable network telemetry for CoAP communications. This makes it possible to efficiently measure Round-Trip Time and message losses, both end-to-end and hop-by-hop. In particular, on-path probes such as intermediary proxies can be deployed to perform measurements hop-by-hop.
-
-  When OSCORE is used in deployments including on-path probes, an inner Performance Measurement Option is protected end-to-end between the two application endpoints and enables end-to-end measurements between those. At the same time, an outer Performance Measurement Option allows also hop-by-hop measurements to be performed by relying on an on-path probe.
-
-  Therefore, it is preferable to have a secure association with an on-path probe, in order to also ensure the integrity of the hop-by-hop measurements exchanged with the probe.
 
 * The method specified in {{I-D.ietf-ace-coap-est-oscore}} enables public-key certificate enrollment for Internet of Things deployments. This leverages payload formats defined in Enrollment over Secure Transport (EST) {{RFC7030}}, while relying on CoAP for message transfer and on OSCORE for message protection.
 
@@ -2047,6 +2040,8 @@ request      +-----------------------------------------------+        |
 ## Version -07 to -08 ## {#sec-07-08}
 
 * Renamed EDHOC to LAKE as appropriate.
+
+* Removed one item from "Further Use Cases".
 
 * Editorial improvements.
 
