@@ -150,13 +150,13 @@ In addition, this document uses the following terms:
 
 * Destination application endpoint: an origin server intended to consume a request or an origin client intended to consume a response.
 
-* Application endpoint: a source or destination application endpoint.
+* Application endpoint: a source application endpoint or destination application endpoint.
 
 * Source OSCORE endpoint: an endpoint protecting a message with OSCORE or Group OSCORE.
 
 * Destination OSCORE endpoint: an endpoint unprotecting a message with OSCORE or Group OSCORE.
 
-* OSCORE endpoint: a source or destination OSCORE endpoint. An OSCORE endpoint is not necessarily also an application endpoint with respect to a certain message.
+* OSCORE endpoint: a source OSCORE endpoint or destination OSCORE endpoint. An OSCORE endpoint is not necessarily also an application endpoint with respect to a certain message.
 
 * Hop: an endpoint in the end-to-end path between two application endpoints included.
 
@@ -288,13 +288,13 @@ Upon receiving a request REQ, the recipient endpoint performs the following step
 
    Instead, if the check succeeds, the following applies.
 
-   * In the case that the previous step in this algorithm was Step 2, hence the endpoint is meant to process REQ as a forward-proxy, then the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}.
+   * In the case that the previous step in the present execution of this algorithm was Step 2, hence the endpoint is meant to process REQ as a forward-proxy, then the endpoint consumes the proxy-related options as per {{Section 5.7.2 of RFC7252}}.
 
      In particular, the endpoint checks whether the authority component (host and port) of the request URI identifies the endpoint itself. In such a case, REQ has to be treated as a local (non-proxied) request and this algorithm moves to Step 1.
 
      Otherwise, the endpoint forwards REQ to (the next hop towards) the origin server according to the request URI, unless differently indicated in REQ, e.g., by means of any of its CoAP options. For instance, a forward-proxy does not forward a request that includes proxy-related options together with the Listen-To-Multicast-Responses Option (see {{Section 4 of I-D.ietf-core-multicast-notifications-proxy}}).
 
-   * In the case that the previous step in this algorithm was Step 3, hence the endpoint is meant to process REQ as a reverse-proxy, then the endpoint consumes the included Uri-Host, Uri-Port, Uri-Path, and Uri-Path-Abbrev Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
+   * In the case that the previous step in the present execution of this algorithm was Step 3, hence the endpoint is meant to process REQ as a reverse-proxy, then the endpoint consumes the included Uri-Host, Uri-Port, Uri-Path, and Uri-Path-Abbrev Options, and forwards REQ to (the next hop towards) the origin server, unless differently indicated in REQ, e.g., by means of any of its CoAP options.
 
      Note that, when forwarding REQ, the endpoint might not remove the Uri-Path-Abbrev-Option or all the Uri-Path Options originally included, e.g., if the next hop towards the origin server is a reverse-proxy.
 
@@ -408,7 +408,7 @@ In particular, this approach requires both the origin client and the origin serv
 
 When using this approach, the following also applies in addition to what is defined in {{incoming-requests}} and {{incoming-responses}}, when processing incoming messages at a proxy that implements caching of responses.
 
-* Upon receiving a request from (the previous hop towards) the origin client, the proxy checks if specifically the message available during the execution of Step 2 in {{incoming-requests}} produces a cache hit.
+* Upon receiving a request from (the previous hop towards) the origin client, the proxy checks if specifically the message available during the execution of Step 4 in {{incoming-requests}} produces a cache hit.
 
   That is, such a message: i) is the one to be forwarded to (the next hop towards) the origin server, if no cache hit occurs; and ii) is the result of an OSCORE decryption and verification at the proxy, if OSCORE is used on the communication leg between the proxy and (the previous hop towards) the origin client.
 
@@ -430,7 +430,7 @@ At the same time, the following applies, depending on the two peers using OSCORE
 
   Furthermore, the additional use of the combined LAKE + OSCORE request defined in {{RFC9668}} (denoted therein as "EDHOC + OSCORE request") is particularly beneficial in this case (see the example in {{sec-example-edhoc-comb-req}}) and especially when relying on a long chain of proxies.
 
-* The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework for Authentication and Authorization in constrained environments {{RFC9200}}.
+* The use of Group OSCORE is expected to be limited between the origin application endpoints, e.g., between the origin client and multiple origin servers. In order to join the same OSCORE group and obtain the corresponding Group OSCORE Security Context, those endpoints can use the approach defined in {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}.
 
   For the purposes of this document, there is no need for a proxy to also be a member of the OSCORE group whose Group OSCORE Security Context is used by the origin application endpoints for protecting communications end-to-end.
 
@@ -464,11 +464,11 @@ In order to come to such a determination, P can answer the following three quest
 
 * Q3: Does S support the key exchange protocol LAKE {{RFC9528}}?
 
-  For example, P can answer this question by using the means specified in {{I-D.ietf-lake-app-profiles}} that are not used during an LAKE session itself.
+  For example, P can answer this question by using the means specified in {{I-D.ietf-lake-app-profiles}} that are not used during a LAKE session itself.
 
 The examples above are not exhaustive and P can rely on alternative means to answer the three questions about S.
 
-Once P has the answers to Q1, Q2, and Q3, then P can determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S, as shown in the state diagram in {{fig-oscore-p-s}}.
+Once P has the answers to the questions Q1, Q2, and Q3, then P can determine when to try to establish an OSCORE Security Context with S and when to use an OSCORE Security Context shared with S, as shown in the state diagram in {{fig-oscore-p-s}}.
 
 ~~~~~~~~~~~ aasvg
 +-----------------+
@@ -483,13 +483,13 @@ Once P has the answers to Q1, Q2, and Q3, then P can determine when to try to es
       | Q1? +------------>|  Forward the request to S  |<--------+
       |     |             |                            |         |
       +-----+             +----------------------------+         |
-         |                  ^    ^                   ^           |
-         |                  |    |                   |           |
-         |                  |    |                   |           |
-         |                  |    |                   |           |
-         | YES              |    |                   |           |
-         v                  |    |                   |           |
-+---------------------+     |  +-+------------+      |           |
+         |                  ^         ^              ^           |
+         |                  |         |              |           |
+         |                  |         |              |           |
+         |                  |         |              |           |
+         | YES              |         |              |           |
+         v                  |         |              |           |
++---------------------+     |  +------+-------+      |           |
 | After that P has    |     |  | Protect the  |      |           |
 | completed all the   |     |  | request with |      |           |
 | decryptions and     |     |  | CTX_P_S      |      |           |
@@ -590,7 +590,7 @@ When a server using such policies receives an OSCORE-protected request (see Step
 
 This is particularly relevant for an origin server that expects to receive messages protected end-to-end by origin clients, but only if sent by a reverse-proxy as its adjacent hop.
 
-In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C and S are sharing. Making such an association would compromise the location anonymity of the origin server, as otherwise afforded by the reverse-proxy.
+In such a setup, that check prevents a malicious sender endpoint C from associating the addressing information of the origin server S with the OSCORE Security Context CTX that C and S are sharing. Making such an association would compromise the location anonymity of the origin server, as otherwise afforded by leveraging the reverse-proxy.
 
 That is, if C gains knowledge of some addressing information ADDR, then C might send a request directly addressed to ADDR and protected with CTX. A response protected with CTX would prove that ADDR is in fact the addressing information of S.
 
@@ -669,7 +669,7 @@ The specification {{LwM2M-Gateway}} extends the LwM2M architecture by defining t
 
 Practically, the LwM2M Server can send a request to the LwM2M Gateway, asking to forward the request to an end IoT device. With particular reference to CoAP and the related transport binding specified in {{LwM2M-Transport}}, the LwM2M Server acting as a CoAP client sends its request to the LwM2M Gateway acting as a CoAP server.
 
-If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see {{Section 5.7.3 of RFC7252}}). That is, in addition to its own resources, the LwM2M Gateway serves the resources hosted by each end IoT device that stands behind it, as exposed by the LwM2M Gateway under a dedicated URI path. As per {{LwM2M-Gateway}}, the first URI path segment is used as a "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at the IoT device.
+If CoAP is used in the communication leg between the LwM2M Gateway and the end IoT devices, then the LwM2M Gateway fundamentally acts as a CoAP reverse-proxy (see {{Section 5.7.3 of RFC7252}}). That is, in addition to its own resources, the LwM2M Gateway serves the resources hosted by each end IoT device that stands behind it, as exposed by the LwM2M Gateway under a dedicated URI path. As per {{LwM2M-Gateway}}, the first URI path segment is used as a "prefix" to identify the specific IoT device, while the remaining URI path segments specify the target resource at that IoT device.
 
 As per Section 7 of {{LwM2M-Gateway}}, message exchanges between the LwM2M Server and the LwM2M Gateway are secured using the LwM2M-defined technologies, while the LwM2M protocol does not provide end-to-end security between the LwM2M Server and the end IoT devices. However, the approach defined in this document makes it possible to achieve both goals, by allowing the LwM2M Server to use OSCORE for protecting a message both end-to-end with the targeted end IoT device and with the LwM2M Gateway acting as a reverse-proxy.
 
@@ -687,7 +687,7 @@ A proxy may be deployed to act as an entry point to a firewalled network that on
 
 In particular, authentication can rely on the secure communication association used between a client and the proxy. If the proxy could share a different OSCORE Security Context with each different client, then the proxy can rely on it to identify a client before forwarding messages from that client to other members of the firewalled network.
 
-Furthermore, if the client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on their shared secure communication association to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.
+Furthermore, if a client trusts the proxy to perform its tasks in a privacy-oriented way, the client can rely on its secure communication association shared with the proxy in order to conceal what origin servers it is communicating with, by hiding that information from further possible intermediaries or on-path passive adversaries on the communication leg between the client and the proxy.
 
 ## Further Use Cases
 
@@ -1243,7 +1243,7 @@ Curly brackets { ... } indicate encrypted data.
 ~~~~~~~~~~~
 {: #fig-example-edhoc title="Use of OSCORE between Client-Server and Proxy-Server, with OSCORE Security Contexts established through LAKE"}
 
-## With Forward-Proxy and LAKE (optimized); OSCORE: C-S, C-P # {#sec-example-edhoc-comb-req}
+## With Forward-Proxy and LAKE (Optimized); OSCORE: C-S, C-P # {#sec-example-edhoc-comb-req}
 
 In the example shown in {{fig-example-edhoc-comb-req}}, message exchanges are protected as follows.
 
@@ -1720,7 +1720,7 @@ In the example shown in {{fig-example-reverse-proxy-with-end-to-end}}, message e
 
 In this example, the proxy is specifically a reverse-proxy. However, unlike typically expected, the client is aware to communicate with a reverse-proxy. This is the case, e.g., in the LwM2M scenario considered in {{ssec-uc4}}, where the LwM2M Server acts as a CoAP client and uses a LwM2M Gateway acting as a CoAP-to-CoAP reverse-proxy in order to reach an end IoT device.
 
-In order to determine where it has to forward an incoming request to, the proxy relies on the URI path components that are specified as value of the Uri-Path Options included in the request. In particular, the proxy relies on the first URI path segment to identify the specific IoT device to which the request has to be forwarded, while the remaining URI path segments specify the target resource at the IoT device.
+In order to determine where it has to forward an incoming request to, the proxy relies on the URI path components that are specified as value of the Uri-Path Options included in the request. In particular, the proxy relies on the first URI path segment to identify the specific IoT device to which the request has to be forwarded, while the remaining URI path segments specify the target resource at that IoT device.
 
 However, as shown in the example, the URI path segments that specify the target resource are hidden from the proxy, since they are protected by the additional use of OSCORE end-to-end between the client and the server.
 
@@ -2048,7 +2048,7 @@ request      +-----------------------------------------------+        |
 
 * Removed one item from "Further Use Cases".
 
-* Editorial improvements.
+* Editorial fixes and improvements.
 
 ## Version -06 to -07 ## {#sec-06-07}
 
