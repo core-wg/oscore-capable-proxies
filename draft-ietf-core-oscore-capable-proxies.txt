@@ -1092,8 +1092,10 @@ Table of Contents
    two following cases.
 
    *  If OSCORE is not used at all, the SCHC processing occurs hop-by-
-      hop, by relying on SCHC Rules that are shared between two adjacent
-      hops.
+      hop, by relying on SCHC Rules that are consistently shared between
+      two adjacent hops, i.e., by relying on a SCHC Context shared by
+      the SCHC Instances hosted at the two adjacent hops and taking part
+      in the same SCHC Session.
 
    *  If OSCORE is used only end-to-end between the application
       endpoints, then an Inner SCHC Compression/Decompression and an
@@ -1102,13 +1104,19 @@ Table of Contents
       following holds.
 
       The SCHC processing occurs end-to-end as to the Inner SCHC
-      Compression/Decompression.  This relies on Inner SCHC Rules that
-      are shared between the two application endpoints, which act as
-      OSCORE endpoints and share the OSCORE Security Context used.
+      Compression/Decompression, by relying on Inner SCHC Rules that are
+      consistently shared between the two application endpoints acting
+      as OSCORE endpoints and sharing the OSCORE Security Context used.
+      The Inner SCHC Rules belong to a SCHC Context shared end-to-end by
+      the SCHC Instances hosted at the two application endpoints and
+      taking part in the same SCHC Session.
 
-      The SCHC processing occurs hop-by-hop as to the Outer SCHC
-      Compression/Decompression.  This relies on Outer SCHC Rules that
-      are shared between two adjacent hops.
+      Instead, the SCHC processing occurs hop-by-hop as to the Outer
+      SCHC Compression/Decompression, by relying on Outer SCHC Rules
+      that are consistently shared between two adjacent hops, i.e., by
+      relying on a per-leg SCHC Context shared by the SCHC Instances
+      hosted at the two adjacent hops and taking part in a distinct SCHC
+      Session.
 
    When using the method defined in this document, thus enabling also an
    intermediary proxy to be an OSCORE endpoint, the SCHC processing
@@ -1122,14 +1130,19 @@ Table of Contents
 
       Each Inner SCHC Compression occurs before protecting the message
       with that OSCORE layer and relies on the Inner SCHC Rules that are
-      shared with the other OSCORE endpoint.
+      consistently shared with the other OSCORE endpoint.  The Inner
+      SCHC Rules belong to a SCHC Context shared by the SCHC Instances
+      hosted at the two OSCORE endpoints and communicating using a SCHC
+      Session.
 
    *  The sender endpoint performs exactly one Outer SCHC Compression.
 
       This occurs after having performed all the intended OSCORE
       protections of the outgoing message and relies on the Outer SCHC
-      Rules that are shared with the (next hop towards the) destination
-      application endpoint.
+      Rules that are consistently shared with the (next hop towards the)
+      destination application endpoint.  The Outer SCHC Rules belong to
+      a SCHC Context shared by the SCHC Instances hosted at the two
+      adjacent hops and communicating using a SCHC Session.
 
    That is, with respect to the SCHC Compression/Decompression
    processing, the following holds.
@@ -3225,6 +3238,8 @@ E.1.  Version -07 to -08
    *  Renamed EDHOC to LAKE as appropriate.
 
    *  More precise step for escalating the protection of CoAP options.
+
+   *  Aligned SCHC terminology with that of draft-ietf-schc-8824-update.
 
    *  Registration of DNS SVCB SvcParamKeys.
 
