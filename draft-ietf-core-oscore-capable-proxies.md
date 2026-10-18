@@ -367,7 +367,7 @@ The recipient endpoint removes the same OSCORE layers that it added when protect
 
 When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the corresponding outgoing request. In such a case, the endpoint MUST stop processing the response.
 
-### Partial IV in the OSCORE Option
+### Partial IV in the OSCORE Option {#incoming-responses-piv}
 
 There are circumstances by which, after sending a request, the sender endpoint might receive multiple responses as replies from a given other endpoint. For example, this is the case:
 
@@ -390,6 +390,24 @@ In the following cases, what is described above is in fact already guaranteed:
 The requirement defined above additionally covers the case where the source OSCORE endpoint protected the response with OSCORE and Observe is not used. Note that having multiple such responses to the same request implies that the source OSCORE endpoint is not an origin server.
 
 The same example mentioned in {{partial-iv-response-sender}} holds as relevant, with an origin client using OSCORE to protect a unicast request to a proxy, which forwards the request to a group of origin servers and relays the collected responses back to the origin client.
+
+## Replay Protection and Ordering of Responses
+
+The following applies when the destination OSCORE endpoint that receives the response is specifically the destination application endpoint (i.e., the origin client) and the OSCORE layer to remove from the response was applied by a source OSCORE endpoint that is specifically a source application endpoint (i.e., an origin server):
+
+* If OSCORE is used to remove the OSCORE layer, the processing of the response in terms of replay protection and ordering occurs according to the method specified in {{Sections 7.4, 7.4.1, and 4.1.3.5.2 of RFC8613}}.
+
+* If Group OSCORE is used to remove the OSCORE layer, the processing of the response in terms of replay protection and ordering occurs according to the method specified in {{Section 5.3.1 of I-D.ietf-core-oscore-groupcomm}}.
+
+Instead, the following applies in any other case, i.e., when the source OSCORE endpoint A that applied the OSCORE layer to remove and the destination OSCORE endpoint B are not both application endpoints: Irrespective of whether OSCORE or Group OSCORE is used to remove the OSCORE layer, the processing of the response in terms of replay protection and ordering occurs according to the method specified in {{Section 5.3.1 of I-D.ietf-core-oscore-groupcomm}}, with the following differences:
+
+* The "server" in {{Section 5.3.1 of I-D.ietf-core-oscore-groupcomm}} corresponds to the source OSCORE endpoint A that applied the OSCORE layer to remove from the response.
+
+* The "client" in {{Section 5.3.1 of I-D.ietf-core-oscore-groupcomm}} corresponds to the destination OSCORE endpoint B that has to remove the OSCORE layer from the response.
+
+* The "long exchange" in {{Section 5.3.1 of I-D.ietf-core-oscore-groupcomm}} is further generalized to encompass a message exchange such that: the exchange pertains to the request to which the response under processing replies to; and, when previously sending the request, the destination OSCORE endpoint B willingly opted-in for receiving multiple responses to that request (e.g., see the circumstances compiled in {{incoming-responses-piv}} of the present document).
+
+* The destination OSCORE endpoint B does not stop processing a response solely on the basis that the Partial IV of the response (when included) is not greater than the Response Number associated with the source OSCORE endpoint A in the message exchange.
 
 # OSCORE Processing of the Hop-Limit Option # {#sec-hop-limit}
 
@@ -459,13 +477,13 @@ In order to come to such a determination, P can answer the following three quest
 
   For the SvcParamKey "oscore-with-proxy", the presentation and wire-format values MUST be empty. When the SvcParamKey "oscore-with-proxy" is specified in an SVCB RR about S, it indicates that S wishes to use (Group) OSCORE between itself and an adjacent proxy. The SvcParamKey "oscore-with-proxy" is registered in {{iana-svcb}}.
 
-* Q2: Does S support the use of multiple, nested (Group) OSCORE layers?
+* Q2: Does S support the use of multiple, nested OSCORE layers?
 
   For example, P can answer this question by relying on the SvcParamKey "nested-oscore" within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.
 
-  For the SvcParamKey "nested-oscore", the presentation and wire-format values MUST be empty. When the SvcParamKey "nested-oscore" is specified in an SVCB RR about S, it indicates that S supports the use of multiple, nested (Group) OSCORE layers, i.e., S is able to handle messages that are protected by at least two (Group) OSCORE layers as defined in this document. The SvcParamKey "nested-oscore" is registered in {{iana-svcb}}.
+  For the SvcParamKey "nested-oscore", the presentation and wire-format values MUST be empty. When the SvcParamKey "nested-oscore" is specified in an SVCB RR about S, it indicates that S supports the use of multiple, nested OSCORE layers, i.e., S is able to handle messages that are protected by at least two OSCORE layers as defined in this document. The SvcParamKey "nested-oscore" is registered in {{iana-svcb}}.
 
-  The SvcParamKey "nested-oscore" does not indicate how many nested (Group) OSCORE layers S supports exactly, which is in principle possible to express in an SVCB RR. In fact, it is already the case that S has to be configured with the maximum number of (Group) OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see {{sec-deviations}}).
+  The SvcParamKey "nested-oscore" does not indicate how many nested OSCORE layers S supports exactly, which is in principle possible to express in an SVCB RR. In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see {{sec-deviations}}).
 
 * Q3: Does S support the key exchange protocol LAKE {{RFC9528}}?
 
@@ -649,7 +667,7 @@ IANA is asked to add the following entries to the "DNS SVCB Service Parameter Ke
 
 * Number: TBD2
 * Name: nested-oscore
-* Meaning: Supported use of nested (Group) OSCORE layers
+* Meaning: Supported use of nested OSCORE layers
 * Change Controller: IETF
 * Reference: \[RFC-XXXX, {{guidelines-proxies}}\]
 
@@ -2070,6 +2088,8 @@ request      +-----------------------------------------------+        |
 * Renamed EDHOC to LAKE as appropriate.
 
 * More precise step for escalating the protection of CoAP options.
+
+* Added section on replay protection and ordering of responses.
 
 * Aligned SCHC terminology with that of draft-ietf-schc-8824-update.
 
