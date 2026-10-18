@@ -64,6 +64,7 @@ informative:
   RFC8742:
   RFC9147:
   RFC9200:
+  RFC9203:
   RFC9528:
   RFC9668:
   I-D.ietf-core-groupcomm-bis:
@@ -72,8 +73,11 @@ informative:
   I-D.ietf-core-multicast-notifications-proxy:
   I-D.ietf-core-coap-pubsub:
   I-D.ietf-core-transport-indication:
+  I-D.ietf-core-oscore-key-update:
   I-D.ietf-ace-key-groupcomm-oscore:
   I-D.ietf-ace-coap-est-oscore:
+  I-D.ietf-ace-edhoc-oscore-profile:
+  I-D.ietf-ace-group-oscore-profile:
   I-D.ietf-core-cacheable-oscore:
   I-D.ietf-lake-app-profiles:
   I-D.amsuess-t2trg-onion-coap:
@@ -594,6 +598,66 @@ An Outer SCHC Compression is intended for the (next hop towards the) destination
 2. Unless it is the destination application endpoint, it performs a new Outer SCHC Compression after having performed all the intended OSCORE protections of an outgoing message, by relying on the Outer SCHC Rules shared with the (next hop towards the) destination application endpoint. Then, it sends the result to the (next-hop towards the) destination application endpoint.
 
 Note that the generalization above does not alter the core approach, design choices, and features of the SCHC Compression/Decompression applied to CoAP headers.
+
+
+# Operational Considerations
+
+This section compiles the operational considerations that hold for this document.
+
+## Logging
+
+In some use cases, it can be desirable that a proxy produces timestamped logs about the successful or failed forwarding of a request to (the next hop towards) the intended application endpoint(s).
+
+An attempted request forwarding can be effectively characterized by the transport-specific information of the request to forward that the proxy receives from (the previous hop towards) the source application endpoint and of the request forwarded to (the next hop towards) the intended application endpoint(s), together with the secure communication associations used by the proxy in the two communication legs.
+
+Although log entries are produced by the proxy, the storage, management, controlled sharing, and disposal of logs could be entrusted to a designated storage point that can be the proxy itself or instead a separate trusted entity.
+
+Besides what is compiled above, the proxy could produce additional information to log. Further details about what the proxy logs, with what granularity, and based on what triggering events and conditions are application-specific and left to operators to define.
+
+Like for possible logging occurring at the application endpoints, the proxy MUST NOT log any secret or confidential information pertaining to its forwarding operations. For example, this includes information from its (Group) OSCORE Security Contexts such as the OSCORE Master Secret and keying material derived thereof, or own private keys associated with its authentication credentials used for establishing secure communication associations with other hops.
+
+It is up to the application to specify for how long a log entry is retained from the time of its creation and until its deletion. Different retention policies could be enforced, for example, depending on the successful/failed request forwarding, the transport-specific information of the adjacent hops, or the secure communication association shared with other hops. For a given set of log entries that are grouped together according to certain criteria, the oldest log entries are expected to be those deleted first.
+
+It is out of the scope of this document what specific semantics and data model are used by the proxy for producing and processing the logs. Specific semantics and data models can be defined by applications and future specifications.
+
+It is expected that the logs produced are made available for secure access by authorized external management applications and operators.
+
+In particular, logged information could be retrieved in the following ways.
+
+* By accessing logs at the designated storage point through polling. This can occur in an occasional, regular, or event-driven way.
+
+* Through notifications sent by the designated storage point according to an operator-defined frequency.
+
+* Through notifications asynchronously sent by the designated storage point, throttling them in order to prevent congestion and duplication and to not create attack vectors.
+
+From the perspective of an individual management application or network operator, knowledge gained from the logged information can be useful for planning, adjusting, and (fine-)tuning the allocation of network resources, including the amount of available proxies. Also, it can help understand and possibly  troubleshoot the reasons why a proxy has failed to forward certain incoming requests. For example, a request to forward could have been received from a legitimate hop that, contrary to expectation, the proxy fails to identify among those included in an allow-list as a prerequirement to forward the request.
+
+Some of the logged information can be privacy-sensitive. This especially holds for the metadata about application endpoints, i.e., their addressing information and, when applicable, (identifiers of) their authentication credentials that are used to authenticate with the proxy when establishing and using a secure communication association. If external management applications and operators obtain such metadata, they become able to track a given application endpoint, as to its interactions with one or multiple other application endpoints.
+
+Therefore, the logged information that is effectively provided to external management applications and operators SHOULD be redacted by the designated storage point, by omitting any privacy-sensitive information element that could enable or facilitate the impairment of application endpoints' privacy, e.g., by tracking origin clients as they interact with different origin servers. Exceptions could apply, e.g., if the designated storage point can verify that the management application or operator in question is specifically authorized to obtain such privacy-sensitive information and appropriately entitled to obtain it according to enforced privacy policies.
+
+## Management and Distribution of Keying Material
+
+The approaches used to manage and distribute keying material depend on whether any two OSCORE endpoints use OSCORE or Group OSCORE.
+
+If OSCORE is used, the two OSCORE endpoints can establish an OSCORE Security Context in different ways, e.g., by using the key exchange protocol LAKE {{RFC9528}}. While sharing a still valid OSCORE Security Context, the two OSCORE endpoints could update it, for example by running a key update protocol such as Key Update for OSCORE (KUDOS) {{I-D.ietf-core-oscore-key-update}}.
+
+If Group OSCORE is used, the management and distribution of the keying material used in the OSCORE group is entrusted to the Group Manager that is responsible for the group (see {{Section 12 of I-D.ietf-core-oscore-groupcomm}}. A possible realization of Group Manager is the one defined {{I-D.ietf-ace-key-groupcomm-oscore}} and based on the ACE framework {{RFC9200}}.
+
+## Access Control
+
+The enforcement of access control at a proxy makes it possible that only certain origin clients are able to have their requests proxied towards the targeted origin server(s).
+
+In order to enforce such access control, it is fundamentally required that a proxy receiving a request to forward has a secure communication association with the origin client and/or with the request sender when those are not the same. This allows the proxy to authenticate the hops that originate/send a request to forward, and to verify whether they are in an allow-list. Depending on the result of such verification, the proxy can unconditionally forward or not forward the request, or instead forward the request according to specific forwarding and traffic policies that apply to the identified originator/sender of the request.
+
+If unable to authenticate the originator/sender of the request, the proxy can be configured to unconditionally forward or not forward the request, or instead to forward the request according to rate limits, potentially taking into account the source-addressing information of the request sender.
+
+The enforcement of access control at proxies complements but does not replace the enforcement of access control at an origin server for accessing its target resources. In order to enforce access control for an origin client accessing a target resource, it is fundamentally required that secure communication is used between such a requesting client and the origin server hosting the resource.
+
+When receiving a request protected by the requesting client, the origin server can enforce access control after having successfully authenticated the requesting client, according to the access rights that are granted to the client's identity.
+
+In particular, access control at the origin server can be enforced by using the ACE framework {{RFC9200}}, with a granularity that takes into account the resource specifically targeted at the origin server, the operation requested by sending a request to that resource, and the specific permission(s) that the requesting client is authorized to have according to its corresponding access token. Furthermore, the interactions between the requesting client and the origin server are secured as per the specific transport profile of ACE used, for example {{RFC9203}}, {{I-D.ietf-ace-edhoc-oscore-profile}}, or {{I-D.ietf-ace-group-oscore-profile}}.
+
 
 # Security Considerations
 
@@ -2092,6 +2156,8 @@ request      +-----------------------------------------------+        |
 * Added section on replay protection and ordering of responses.
 
 * Aligned SCHC terminology with that of draft-ietf-schc-8824-update.
+
+* Added "Operational Considerations" section.
 
 * Registration of DNS SVCB SvcParamKeys.
 
