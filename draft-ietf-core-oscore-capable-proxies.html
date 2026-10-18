@@ -22,11 +22,11 @@
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.12.2
+    platformdirs 4.13.4
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.9.1
+    wcwidth 0.9.2
 -->
 <link href="draft-ietf-core-oscore-capable-proxies.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1046,7 +1046,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tiloca &amp; Höglund</td>
-<td class="center">Expires 20 April 2027</td>
+<td class="center">Expires 21 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1062,12 +1062,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc8613" class="eref">8613</a>, <a href="https://www.rfc-editor.org/rfc/rfc8768" class="eref">8768</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-10-17" class="published">17 October 2026</time>
+<time datetime="2026-10-18" class="published">18 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-04-20">20 April 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-21">21 April 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1116,7 +1116,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1188,6 +1188,9 @@ svg {
                     <p id="section-toc.1-1.2.2.6.2.1.1"><a href="#section-2.6.1" class="auto internal xref">2.6.1</a>.  <a href="#name-partial-iv-in-the-oscore-opt" class="internal xref">Partial IV in the OSCORE Option</a></p>
 </li>
                 </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.7">
+                <p id="section-toc.1-1.2.2.7.1"><a href="#section-2.7" class="auto internal xref">2.7</a>.  <a href="#name-replay-protection-and-order" class="internal xref">Replay Protection and Ordering of Responses</a></p>
 </li>
             </ul>
 </li>
@@ -1672,7 +1675,7 @@ Note that, when OSCORE is used, sending Observe notifications is the only way fo
         </h3>
 <p id="section-2.6-1">The recipient endpoint removes the same OSCORE layers that it added when protecting the corresponding outgoing request, but in the reverse order than the one according to which those layers were added.<a href="#section-2.6-1" class="pilcrow">¶</a></p>
 <p id="section-2.6-2">When doing so, the possible presence of an OSCORE Option in the decrypted response following the removal of an OSCORE layer is not treated as an error situation, unless it occurs after having removed as many OSCORE layers as were added in the corresponding outgoing request. In such a case, the endpoint <span class="bcp14">MUST</span> stop processing the response.<a href="#section-2.6-2" class="pilcrow">¶</a></p>
-<div id="partial-iv-in-the-oscore-option">
+<div id="incoming-responses-piv">
 <section id="section-2.6.1">
           <h4 id="name-partial-iv-in-the-oscore-opt">
 <a href="#section-2.6.1" class="section-number selfRef">2.6.1. </a><a href="#name-partial-iv-in-the-oscore-opt" class="section-name selfRef">Partial IV in the OSCORE Option</a>
@@ -1704,6 +1707,37 @@ Note that, when OSCORE is used, sending Observe notifications is the only way fo
 <p id="section-2.6.1-8">The same example mentioned in <a href="#partial-iv-response-sender" class="auto internal xref">Section 2.5.1</a> holds as relevant, with an origin client using OSCORE to protect a unicast request to a proxy, which forwards the request to a group of origin servers and relays the collected responses back to the origin client.<a href="#section-2.6.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
+</section>
+</div>
+<div id="replay-protection-and-ordering-of-responses">
+<section id="section-2.7">
+        <h3 id="name-replay-protection-and-order">
+<a href="#section-2.7" class="section-number selfRef">2.7. </a><a href="#name-replay-protection-and-order" class="section-name selfRef">Replay Protection and Ordering of Responses</a>
+        </h3>
+<p id="section-2.7-1">The following applies when the destination OSCORE endpoint that receives the response is specifically the destination application endpoint (i.e., the origin client) and the OSCORE layer to remove from the response was applied by a source OSCORE endpoint that is specifically a source application endpoint (i.e., an origin server):<a href="#section-2.7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.7-2.1">
+            <p id="section-2.7-2.1.1">If OSCORE is used to remove the OSCORE layer, the processing of the response in terms of replay protection and ordering occurs according to the method specified in Sections <a href="https://rfc-editor.org/rfc/rfc8613#section-7.4" class="relref">7.4</a>, <a href="https://rfc-editor.org/rfc/rfc8613#section-7.4.1" class="relref">7.4.1</a>, and <a href="https://rfc-editor.org/rfc/rfc8613#section-4.1.3.5.2" class="relref">4.1.3.5.2</a> of <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.<a href="#section-2.7-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.7-2.2">
+            <p id="section-2.7-2.2.1">If Group OSCORE is used to remove the OSCORE layer, the processing of the response in terms of replay protection and ordering occurs according to the method specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>.<a href="#section-2.7-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-2.7-3">Instead, the following applies in any other case, i.e., when the source OSCORE endpoint A that applied the OSCORE layer to remove and the destination OSCORE endpoint B are not both application endpoints: Irrespective of whether OSCORE or Group OSCORE is used to remove the OSCORE layer, the processing of the response in terms of replay protection and ordering occurs according to the method specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>, with the following differences:<a href="#section-2.7-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.7-4.1">
+            <p id="section-2.7-4.1.1">The "server" in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span> corresponds to the source OSCORE endpoint A that applied the OSCORE layer to remove from the response.<a href="#section-2.7-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.7-4.2">
+            <p id="section-2.7-4.2.1">The "client" in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span> corresponds to the destination OSCORE endpoint B that has to remove the OSCORE layer from the response.<a href="#section-2.7-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.7-4.3">
+            <p id="section-2.7-4.3.1">The "long exchange" in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28#section-5.3.1" class="relref">Section 5.3.1</a> of [<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span> is further generalized to encompass a message exchange such that: the exchange pertains to the request to which the response under processing replies to; and, when previously sending the request, the destination OSCORE endpoint B willingly opted-in for receiving multiple responses to that request (e.g., see the circumstances compiled in <a href="#incoming-responses-piv" class="auto internal xref">Section 2.6.1</a> of the present document).<a href="#section-2.7-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.7-4.4">
+            <p id="section-2.7-4.4.1">The destination OSCORE endpoint B does not stop processing a response solely on the basis that the Partial IV of the response (when included) is not greater than the Response Number associated with the source OSCORE endpoint A in the message exchange.<a href="#section-2.7-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 </section>
@@ -1785,13 +1819,13 @@ For example, P can answer this question by relying on the SvcParamKey "oscore-wi
 For the SvcParamKey "oscore-with-proxy", the presentation and wire-format values <span class="bcp14">MUST</span> be empty. When the SvcParamKey "oscore-with-proxy" is specified in an SVCB RR about S, it indicates that S wishes to use (Group) OSCORE between itself and an adjacent proxy. The SvcParamKey "oscore-with-proxy" is registered in <a href="#iana-svcb" class="auto internal xref">Section 8.2</a>.<a href="#section-5.1-5.1.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-5.2">
-            <p id="section-5.1-5.2.1">Q2: Does S support the use of multiple, nested (Group) OSCORE layers?<a href="#section-5.1-5.2.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-5.2.1">Q2: Does S support the use of multiple, nested OSCORE layers?<a href="#section-5.1-5.2.1" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.2.2">
 For example, P can answer this question by relying on the SvcParamKey "nested-oscore" within a DNS SVCB RR, which is retrieved from a DNS response that P obtains in reply to a DNS query about S.<a href="#section-5.1-5.2.2" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.2.3">
-For the SvcParamKey "nested-oscore", the presentation and wire-format values <span class="bcp14">MUST</span> be empty. When the SvcParamKey "nested-oscore" is specified in an SVCB RR about S, it indicates that S supports the use of multiple, nested (Group) OSCORE layers, i.e., S is able to handle messages that are protected by at least two (Group) OSCORE layers as defined in this document. The SvcParamKey "nested-oscore" is registered in <a href="#iana-svcb" class="auto internal xref">Section 8.2</a>.<a href="#section-5.1-5.2.3" class="pilcrow">¶</a></p>
+For the SvcParamKey "nested-oscore", the presentation and wire-format values <span class="bcp14">MUST</span> be empty. When the SvcParamKey "nested-oscore" is specified in an SVCB RR about S, it indicates that S supports the use of multiple, nested OSCORE layers, i.e., S is able to handle messages that are protected by at least two OSCORE layers as defined in this document. The SvcParamKey "nested-oscore" is registered in <a href="#iana-svcb" class="auto internal xref">Section 8.2</a>.<a href="#section-5.1-5.2.3" class="pilcrow">¶</a></p>
 <p id="section-5.1-5.2.4">
-The SvcParamKey "nested-oscore" does not indicate how many nested (Group) OSCORE layers S supports exactly, which is in principle possible to express in an SVCB RR. In fact, it is already the case that S has to be configured with the maximum number of (Group) OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see <a href="#sec-deviations" class="auto internal xref">Section 2.1</a>).<a href="#section-5.1-5.2.4" class="pilcrow">¶</a></p>
+The SvcParamKey "nested-oscore" does not indicate how many nested OSCORE layers S supports exactly, which is in principle possible to express in an SVCB RR. In fact, it is already the case that S has to be configured with the maximum number of OSCORE layers that it is able to apply (remove) when processing an outgoing (incoming) CoAP message (see <a href="#sec-deviations" class="auto internal xref">Section 2.1</a>).<a href="#section-5.1-5.2.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-5.3">
             <p id="section-5.1-5.3.1">Q3: Does S support the key exchange protocol LAKE <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>?<a href="#section-5.1-5.3.1" class="pilcrow">¶</a></p>
@@ -2130,7 +2164,7 @@ Fundamentally, this is not worse then when applying the default behavior mention
             <p id="section-8.2-4.2.1">Name: nested-oscore<a href="#section-8.2-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-8.2-4.3">
-            <p id="section-8.2-4.3.1">Meaning: Supported use of nested (Group) OSCORE layers<a href="#section-8.2-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-4.3.1">Meaning: Supported use of nested OSCORE layers<a href="#section-8.2-4.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-8.2-4.4">
             <p id="section-8.2-4.4.1">Change Controller: IETF<a href="#section-8.2-4.4.1" class="pilcrow">¶</a></p>
@@ -5567,16 +5601,19 @@ Building on that, it is also possible to enable the operation of hidden services
             <p id="appendix-E.1-1.2.1">More precise step for escalating the protection of CoAP options.<a href="#appendix-E.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.3">
-            <p id="appendix-E.1-1.3.1">Aligned SCHC terminology with that of draft-ietf-schc-8824-update.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.3.1">Added section on replay protection and ordering of responses.<a href="#appendix-E.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.4">
-            <p id="appendix-E.1-1.4.1">Registration of DNS SVCB SvcParamKeys.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.4.1">Aligned SCHC terminology with that of draft-ietf-schc-8824-update.<a href="#appendix-E.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.5">
-            <p id="appendix-E.1-1.5.1">Removed one item from "Further Use Cases".<a href="#appendix-E.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.5.1">Registration of DNS SVCB SvcParamKeys.<a href="#appendix-E.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-E.1-1.6">
-            <p id="appendix-E.1-1.6.1">Editorial fixes and improvements.<a href="#appendix-E.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-E.1-1.6.1">Removed one item from "Further Use Cases".<a href="#appendix-E.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-E.1-1.7">
+            <p id="appendix-E.1-1.7.1">Editorial fixes and improvements.<a href="#appendix-E.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

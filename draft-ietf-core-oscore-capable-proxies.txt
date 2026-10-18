@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                         17 October 2026
-Expires: 20 April 2027
+Intended status: Standards Track                         18 October 2026
+Expires: 21 April 2027
 
 
                          OSCORE-capable Proxies
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2027.
+   This Internet-Draft will expire on 21 April 2027.
 
 Copyright Notice
 
@@ -89,6 +89,7 @@ Table of Contents
        2.5.1.  Partial IV in the OSCORE Option
      2.6.  Processing of an Incoming Response
        2.6.1.  Partial IV in the OSCORE Option
+     2.7.  Replay Protection and Ordering of Responses
    3.  OSCORE Processing of the Hop-Limit Option
    4.  Caching of OSCORE-Protected Responses
    5.  Establishment of OSCORE Security Contexts
@@ -775,6 +776,55 @@ Table of Contents
    proxy, which forwards the request to a group of origin servers and
    relays the collected responses back to the origin client.
 
+2.7.  Replay Protection and Ordering of Responses
+
+   The following applies when the destination OSCORE endpoint that
+   receives the response is specifically the destination application
+   endpoint (i.e., the origin client) and the OSCORE layer to remove
+   from the response was applied by a source OSCORE endpoint that is
+   specifically a source application endpoint (i.e., an origin server):
+
+   *  If OSCORE is used to remove the OSCORE layer, the processing of
+      the response in terms of replay protection and ordering occurs
+      according to the method specified in Sections 7.4, 7.4.1, and
+      4.1.3.5.2 of [RFC8613].
+
+   *  If Group OSCORE is used to remove the OSCORE layer, the processing
+      of the response in terms of replay protection and ordering occurs
+      according to the method specified in Section 5.3.1 of
+      [I-D.ietf-core-oscore-groupcomm].
+
+   Instead, the following applies in any other case, i.e., when the
+   source OSCORE endpoint A that applied the OSCORE layer to remove and
+   the destination OSCORE endpoint B are not both application endpoints:
+   Irrespective of whether OSCORE or Group OSCORE is used to remove the
+   OSCORE layer, the processing of the response in terms of replay
+   protection and ordering occurs according to the method specified in
+   Section 5.3.1 of [I-D.ietf-core-oscore-groupcomm], with the following
+   differences:
+
+   *  The "server" in Section 5.3.1 of [I-D.ietf-core-oscore-groupcomm]
+      corresponds to the source OSCORE endpoint A that applied the
+      OSCORE layer to remove from the response.
+
+   *  The "client" in Section 5.3.1 of [I-D.ietf-core-oscore-groupcomm]
+      corresponds to the destination OSCORE endpoint B that has to
+      remove the OSCORE layer from the response.
+
+   *  The "long exchange" in Section 5.3.1 of
+      [I-D.ietf-core-oscore-groupcomm] is further generalized to
+      encompass a message exchange such that: the exchange pertains to
+      the request to which the response under processing replies to;
+      and, when previously sending the request, the destination OSCORE
+      endpoint B willingly opted-in for receiving multiple responses to
+      that request (e.g., see the circumstances compiled in
+      Section 2.6.1 of the present document).
+
+   *  The destination OSCORE endpoint B does not stop processing a
+      response solely on the basis that the Partial IV of the response
+      (when included) is not greater than the Response Number associated
+      with the source OSCORE endpoint A in the message exchange.
+
 3.  OSCORE Processing of the Hop-Limit Option
 
    The CoAP Hop-Limit Option is defined in [RFC8768] and can be used to
@@ -970,8 +1020,7 @@ Table of Contents
       proxy.  The SvcParamKey "oscore-with-proxy" is registered in
       Section 8.2.
 
-   *  Q2: Does S support the use of multiple, nested (Group) OSCORE
-      layers?
+   *  Q2: Does S support the use of multiple, nested OSCORE layers?
 
       For example, P can answer this question by relying on the
       SvcParamKey "nested-oscore" within a DNS SVCB RR, which is
@@ -981,17 +1030,17 @@ Table of Contents
       For the SvcParamKey "nested-oscore", the presentation and wire-
       format values MUST be empty.  When the SvcParamKey "nested-oscore"
       is specified in an SVCB RR about S, it indicates that S supports
-      the use of multiple, nested (Group) OSCORE layers, i.e., S is able
-      to handle messages that are protected by at least two (Group)
-      OSCORE layers as defined in this document.  The SvcParamKey
-      "nested-oscore" is registered in Section 8.2.
+      the use of multiple, nested OSCORE layers, i.e., S is able to
+      handle messages that are protected by at least two OSCORE layers
+      as defined in this document.  The SvcParamKey "nested-oscore" is
+      registered in Section 8.2.
 
       The SvcParamKey "nested-oscore" does not indicate how many nested
-      (Group) OSCORE layers S supports exactly, which is in principle
-      possible to express in an SVCB RR.  In fact, it is already the
-      case that S has to be configured with the maximum number of
-      (Group) OSCORE layers that it is able to apply (remove) when
-      processing an outgoing (incoming) CoAP message (see Section 2.1).
+      OSCORE layers S supports exactly, which is in principle possible
+      to express in an SVCB RR.  In fact, it is already the case that S
+      has to be configured with the maximum number of OSCORE layers that
+      it is able to apply (remove) when processing an outgoing
+      (incoming) CoAP message (see Section 2.1).
 
    *  Q3: Does S support the key exchange protocol LAKE [RFC9528]?
 
@@ -1334,7 +1383,7 @@ Table of Contents
 
    *  Name: nested-oscore
 
-   *  Meaning: Supported use of nested (Group) OSCORE layers
+   *  Meaning: Supported use of nested OSCORE layers
 
    *  Change Controller: IETF
 
@@ -3238,6 +3287,8 @@ E.1.  Version -07 to -08
    *  Renamed EDHOC to LAKE as appropriate.
 
    *  More precise step for escalating the protection of CoAP options.
+
+   *  Added section on replay protection and ordering of responses.
 
    *  Aligned SCHC terminology with that of draft-ietf-schc-8824-update.
 
