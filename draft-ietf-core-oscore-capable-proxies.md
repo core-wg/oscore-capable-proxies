@@ -600,6 +600,113 @@ An Outer SCHC Compression is intended for the (next hop towards the) destination
 Note that the generalization above does not alter the core approach, design choices, and features of the SCHC Compression/Decompression applied to CoAP headers.
 
 
+# Implementation Status
+{:removeinrfc}
+
+Note to RFC Editor: when deleting this section, please also delete RFC 7942 from the references of this document.
+
+{::boilerplate rfc7942info}
+
+## Implementation \#1 # {#sec-implementation-1}
+
+* Author: Lucas Åhl
+
+* Responsible organization: RISE Research Institutes of Sweden AB
+
+* Implementation's name: OSCORE-capable proxy for Eclipse Californium
+
+* Available at: https://github.com/rikard-sics/californium/tree/oscore_capable_proxies
+
+* Description: Implementation in Java, building on Eclipse Californium, see:
+
+  * https://github.com/eclipse-californium/californium
+
+  * http://eclipse.dev/californium/
+
+* Implementation's level of maturity: prototype
+
+* The implementation provides the client, the OSCORE-capable forward-proxy, and the server.
+
+  OSCORE is supported:
+
+  * Between a client and a server (end-to-end through a proxy); and/or
+  * Between a client and an OSCORE-capable forward-proxy; and/or
+  * Between an OSCORE-capable forward-proxy and a server.
+
+  Supported use also together with other features from the same codebase:
+
+  * CoAP Observe {{RFC7641}}, when independently using OSCORE or not in any of the communication legs above.
+  * For any pair of OSCORE endpoints above, an OSCORE Security Context can be dynamically established by running LAKE {{RFC9528}}.
+
+* Version compatibility: From version -07 onwards.
+
+* Licensing: according to the same dual license of Eclipse Californium, i.e., according to the "Eclipse Distribution License 1.0" and the "Eclipse Public License 2.0". See:
+
+  * https://github.com/eclipse-californium/californium/blob/main/LICENSE
+  * https://www.eclipse.org/org/documents/edl-v10.php
+  * https://www.eclipse.org/legal/epl-2.0/
+
+* Contact information: Rikard Höglund - rikard.hoglund@ri.se
+
+* Information last updated on: 2026-10-19
+
+## Implementation \#2 # {#sec-implementation-2}
+
+* Author: Manassanan Vongprai
+
+* Responsible organization: RISE Research Institutes of Sweden AB
+
+* Implementation's name: OSCORE-capable proxy for Contiki-NG
+
+* Available at: https://github.com/rikard-sics/contiki-ng/tree/oscore_capable_proxies
+
+* Description: Implementation in Contiki-NG, see:
+
+  * https://github.com/contiki-ng/contiki-ng
+
+  * https://www.contiki-ng.org/
+
+* Implementation's level of maturity: prototype
+
+* The implementation provides the client and the server.
+
+  OSCORE is supported:
+
+  * Between a client and a server (end-to-end through a proxy); and/or
+  * Between a client and an OSCORE-capable forward-proxy (externally provided).
+
+* Version compatibility: From version -07 onwards.
+
+* Licensing: according to "3-clause BSD" license. See:
+
+  * https://github.com/contiki-ng/contiki-ng/blob/develop/LICENSE.md
+
+* Contact information: Rikard Höglund - rikard.hoglund@ri.se
+
+* Information last updated on: 2026-10-19
+
+## Interoperability
+
+The two implementations mentioned in {{sec-implementation-1}} and {{sec-implementation-2}} have successfully completed interoperability tests.
+
+The scenarios considered during the interoperability tests are as follows:
+
+* Java client and Java server
+* Java client and Contiki-NG server
+* Contiki-NG client and Java server
+* Contiki-NG client and Contiki-NG server
+
+For every test scenario:
+
+* The Java OSCORE-capable forward-proxy is deployed between the client and the server.
+* The client and the server share an OSCORE Security Context CTX_C_S.
+* The client and the forward-proxy share an OSCORE Security Context CTX_C_P.
+* The client sends requests to a target resource hosted at the server, through the forward-proxy. The server replies to every request by sending a response.
+* All requests and responses are protected with OSCORE as follows:
+  * With CTX_C_S (innermost layer) and with CTX_C_P (outermost layer) when transferred over the communication leg between the client and the proxy.
+  * With CTX_C_S (single layer) when transferred over the communication leg between the proxy and the server.
+
+
 # Operational Considerations
 
 This section compiles the operational considerations that hold for this document.
@@ -2156,6 +2263,8 @@ request      +-----------------------------------------------+        |
 * Added section on replay protection and ordering of responses.
 
 * Aligned SCHC terminology with that of draft-ietf-schc-8824-update.
+
+* Added "Implementation Status" section.
 
 * Added "Operational Considerations" section.
 
