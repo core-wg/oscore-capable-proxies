@@ -5,8 +5,8 @@
 CoRE Working Group                                             M. Tiloca
 Internet-Draft                                                R. Höglund
 Updates: 8613, 8768 (if approved)                                RISE AB
-Intended status: Standards Track                         18 October 2026
-Expires: 21 April 2027
+Intended status: Standards Track                         19 October 2026
+Expires: 22 April 2027
 
 
                          OSCORE-capable Proxies
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 April 2027.
+   This Internet-Draft will expire on 22 April 2027.
 
 Copyright Notice
 
@@ -95,19 +95,23 @@ Table of Contents
    5.  Establishment of OSCORE Security Contexts
      5.1.  Guidelines for Proxies
    6.  CoAP Header Compression with SCHC
-   7.  Operational Considerations
-     7.1.  Logging
-     7.2.  Management and Distribution of Keying Material
-     7.3.  Access Control
-   8.  Security Considerations
-     8.1.  Preserving Location Anonymity
-     8.2.  Hop-Limit Option
-   9.  IANA Considerations
-     9.1.  CoAP Option Numbers Registry
-     9.2.  DNS SVCB Service Parameter Keys (SvcParamKeys)
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+   7.  Implementation Status
+     7.1.  Implementation #1
+     7.2.  Implementation #2
+     7.3.  Interoperability
+   8.  Operational Considerations
+     8.1.  Logging
+     8.2.  Management and Distribution of Keying Material
+     8.3.  Access Control
+   9.  Security Considerations
+     9.1.  Preserving Location Anonymity
+     9.2.  Hop-Limit Option
+   10. IANA Considerations
+     10.1.  CoAP Option Numbers Registry
+     10.2.  DNS SVCB Service Parameter Keys (SvcParamKeys)
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  Use Cases
      A.1.  CoAP Group Communication with Proxies
      A.2.  CoAP Observe Notifications over Multicast
@@ -1022,7 +1026,7 @@ Table of Contents
       with-proxy" is specified in an SVCB RR about S, it indicates that
       S wishes to use (Group) OSCORE between itself and an adjacent
       proxy.  The SvcParamKey "oscore-with-proxy" is registered in
-      Section 9.2.
+      Section 10.2.
 
    *  Q2: Does S support the use of multiple, nested OSCORE layers?
 
@@ -1037,7 +1041,7 @@ Table of Contents
       the use of multiple, nested OSCORE layers, i.e., S is able to
       handle messages that are protected by at least two OSCORE layers
       as defined in this document.  The SvcParamKey "nested-oscore" is
-      registered in Section 9.2.
+      registered in Section 10.2.
 
       The SvcParamKey "nested-oscore" does not indicate how many nested
       OSCORE layers S supports exactly, which is in principle possible
@@ -1228,12 +1232,181 @@ Table of Contents
    design choices, and features of the SCHC Compression/Decompression
    applied to CoAP headers.
 
-7.  Operational Considerations
+7.  Implementation Status
+
+   This section is to be removed before publishing as an RFC.
+
+   Note to RFC Editor: when deleting this section, please also delete
+   RFC 7942 from the references of this document.
+
+   (Boilerplate as per Section 2.1 of [RFC7942]:)
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in [RFC7942].
+   The description of implementations in this section is intended to
+   assist the IETF in its decision processes in progressing drafts to
+   RFCs.  Please note that the listing of any individual implementation
+   here does not imply endorsement by the IETF.  Furthermore, no effort
+   has been spent to verify the information presented here that was
+   supplied by IETF contributors.  This is not intended as, and must not
+   be construed to be, a catalog of available implementations or their
+   features.  Readers are advised to note that other implementations may
+   exist.
+
+   According to [RFC7942], "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+7.1.  Implementation #1
+
+   *  Author: Lucas Åhl
+
+   *  Responsible organization: RISE Research Institutes of Sweden AB
+
+   *  Implementation's name: OSCORE-capable proxy for Eclipse
+      Californium
+
+   *  Available at: https://github.com/rikard-sics/californium/tree/
+      oscore_capable_proxies
+
+   *  Description: Implementation in Java, building on Eclipse
+      Californium, see:
+
+      -  https://github.com/eclipse-californium/californium
+
+      -  http://eclipse.dev/californium/
+
+   *  Implementation's level of maturity: prototype
+
+   *  The implementation provides the client, the OSCORE-capable
+      forward-proxy, and the server.
+
+      OSCORE is supported:
+
+      -  Between a client and a server (end-to-end through a proxy);
+         and/or
+
+      -  Between a client and an OSCORE-capable forward-proxy; and/or
+
+      -  Between an OSCORE-capable forward-proxy and a server.
+
+      Supported use also together with other features from the same
+      codebase:
+
+      -  CoAP Observe [RFC7641], when independently using OSCORE or not
+         in any of the communication legs above.
+
+      -  For any pair of OSCORE endpoints above, an OSCORE Security
+         Context can be dynamically established by running LAKE
+         [RFC9528].
+
+   *  Version compatibility: From version -07 onwards.
+
+   *  Licensing: according to the same dual license of Eclipse
+      Californium, i.e., according to the "Eclipse Distribution License
+      1.0" and the "Eclipse Public License 2.0".  See:
+
+      -  https://github.com/eclipse-californium/californium/blob/main/
+         LICENSE
+
+      -  https://www.eclipse.org/org/documents/edl-v10.php
+
+      -  https://www.eclipse.org/legal/epl-2.0/
+
+   *  Contact information: Rikard Höglund - rikard.hoglund@ri.se
+
+   *  Information last updated on: 2026-10-19
+
+7.2.  Implementation #2
+
+   *  Author: Manassanan Vongprai
+
+   *  Responsible organization: RISE Research Institutes of Sweden AB
+
+   *  Implementation's name: OSCORE-capable proxy for Contiki-NG
+
+   *  Available at: https://github.com/rikard-sics/contiki-ng/tree/
+      oscore_capable_proxies
+
+   *  Description: Implementation in Contiki-NG, see:
+
+      -  https://github.com/contiki-ng/contiki-ng
+
+      -  https://www.contiki-ng.org/
+
+   *  Implementation's level of maturity: prototype
+
+   *  The implementation provides the client and the server.
+
+      OSCORE is supported:
+
+      -  Between a client and a server (end-to-end through a proxy);
+         and/or
+
+      -  Between a client and an OSCORE-capable forward-proxy
+         (externally provided).
+
+   *  Version compatibility: From version -07 onwards.
+
+   *  Licensing: according to "3-clause BSD" license.  See:
+
+      -  https://github.com/contiki-ng/contiki-ng/blob/develop/
+         LICENSE.md
+
+   *  Contact information: Rikard Höglund - rikard.hoglund@ri.se
+
+   *  Information last updated on: 2026-10-19
+
+7.3.  Interoperability
+
+   The two implementations mentioned in Section 7.1 and Section 7.2 have
+   successfully completed interoperability tests.
+
+   The scenarios considered during the interoperability tests are as
+   follows:
+
+   *  Java client and Java server
+
+   *  Java client and Contiki-NG server
+
+   *  Contiki-NG client and Java server
+
+   *  Contiki-NG client and Contiki-NG server
+
+   For every test scenario:
+
+   *  The Java OSCORE-capable forward-proxy is deployed between the
+      client and the server.
+
+   *  The client and the server share an OSCORE Security Context
+      CTX_C_S.
+
+   *  The client and the forward-proxy share an OSCORE Security Context
+      CTX_C_P.
+
+   *  The client sends requests to a target resource hosted at the
+      server, through the forward-proxy.  The server replies to every
+      request by sending a response.
+
+   *  All requests and responses are protected with OSCORE as follows:
+
+      -  With CTX_C_S (innermost layer) and with CTX_C_P (outermost
+         layer) when transferred over the communication leg between the
+         client and the proxy.
+
+      -  With CTX_C_S (single layer) when transferred over the
+         communication leg between the proxy and the server.
+
+8.  Operational Considerations
 
    This section compiles the operational considerations that hold for
    this document.
 
-7.1.  Logging
+8.1.  Logging
 
    In some use cases, it can be desirable that a proxy produces
    timestamped logs about the successful or failed forwarding of a
@@ -1328,7 +1501,7 @@ Table of Contents
    obtain such privacy-sensitive information and appropriately entitled
    to obtain it according to enforced privacy policies.
 
-7.2.  Management and Distribution of Keying Material
+8.2.  Management and Distribution of Keying Material
 
    The approaches used to manage and distribute keying material depend
    on whether any two OSCORE endpoints use OSCORE or Group OSCORE.
@@ -1347,7 +1520,7 @@ Table of Contents
    Manager is the one defined [I-D.ietf-ace-key-groupcomm-oscore] and
    based on the ACE framework [RFC9200].
 
-7.3.  Access Control
+8.3.  Access Control
 
    The enforcement of access control at a proxy makes it possible that
    only certain origin clients are able to have their requests proxied
@@ -1393,7 +1566,7 @@ Table of Contents
    example [RFC9203], [I-D.ietf-ace-edhoc-oscore-profile], or
    [I-D.ietf-ace-group-oscore-profile].
 
-8.  Security Considerations
+9.  Security Considerations
 
    The same security considerations about CoAP [RFC7252] and group
    communication for CoAP [I-D.ietf-core-groupcomm-bis] apply to this
@@ -1419,7 +1592,7 @@ Table of Contents
    message.  Therefore, the OSCORE group should only include OSCORE
    endpoints for which that is acceptable.
 
-8.1.  Preserving Location Anonymity
+9.1.  Preserving Location Anonymity
 
    As discussed in Section 2.4.1, a particularly sensitive server might
    use policies with strict criteria about what makes an OSCORE-
@@ -1452,7 +1625,7 @@ Table of Contents
    not protected with CTX, hence preserving the location anonymity of
    the origin server.
 
-8.2.  Hop-Limit Option
+9.2.  Hop-Limit Option
 
    Section 3 of this document defines that the Hop-Limit Option
    [RFC8768] is of Class U for OSCORE.  This overrides the default
@@ -1516,21 +1689,21 @@ Table of Contents
       undetectably interferes with the natural progress of such an
       ongoing process.
 
-9.  IANA Considerations
+10.  IANA Considerations
 
    This document has the following actions for IANA.
 
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-9.1.  CoAP Option Numbers Registry
+10.1.  CoAP Option Numbers Registry
 
    IANA is asked to add this document as an additional reference for the
    Hop-Limit Option in the "CoAP Option Numbers" registry
    [CoAP.Option.Numbers] within the "Constrained RESTful Environments
    (CoRE) Parameters" registry group.
 
-9.2.  DNS SVCB Service Parameter Keys (SvcParamKeys)
+10.2.  DNS SVCB Service Parameter Keys (SvcParamKeys)
 
    IANA is asked to add the following entries to the "DNS SVCB Service
    Parameter Keys (SvcParamKeys)" registry [DNS.SVCB.SvcParamKeys]
@@ -1558,9 +1731,9 @@ Table of Contents
 
    *  Reference: [RFC-XXXX, Section 5.1]
 
-10.  References
+11.  References
 
-10.1.  Normative References
+11.1.  Normative References
 
    [CoAP.Option.Numbers]
               IANA, "CoAP Option Numbers",
@@ -1641,7 +1814,7 @@ Table of Contents
               RFC 9461, DOI 10.17487/RFC9461, November 2023,
               <https://www.rfc-editor.org/rfc/rfc9461>.
 
-10.2.  Informative References
+11.2.  Informative References
 
    [DAI-SNAC] Amsüss, C., "Discovery and capabilities of guard proxies
               for CoRE networks", December 2021,
@@ -1795,6 +1968,11 @@ Table of Contents
               Application Protocol (CoAP)", RFC 7641,
               DOI 10.17487/RFC7641, September 2015,
               <https://www.rfc-editor.org/rfc/rfc7641>.
+
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/rfc/rfc7942>.
 
    [RFC8742]  Bormann, C., "Concise Binary Object Representation (CBOR)
               Sequences", RFC 8742, DOI 10.17487/RFC8742, February 2020,
@@ -3494,6 +3672,8 @@ E.1.  Version -07 to -08
    *  Added section on replay protection and ordering of responses.
 
    *  Aligned SCHC terminology with that of draft-ietf-schc-8824-update.
+
+   *  Added "Implementation Status" section.
 
    *  Added "Operational Considerations" section.
 
